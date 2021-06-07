@@ -1,5 +1,6 @@
 ﻿using DieEngine.Exceptions;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DieEngine
 {
@@ -18,10 +19,13 @@ namespace DieEngine
 			for (int dieNum = 0; dieNum < Dice.Count; dieNum++)
 			{
 				var die = Dice[dieNum];
-				var condition = Conditions[dieNum];
-				if (!condition.ShouldRoll(inputs))
+				var conditions = Conditions.Where(x => x.Order == dieNum);
+				foreach (var condition in conditions)
 				{
-					throw new RollConditionFailedException("Die not rolled per condition.");
+					if (!condition.ShouldRoll(inputs))
+					{
+						throw new RollConditionFailedException("Die not rolled per condition.");
+					}
 				}
 				DieRoll roll = die.Roll(inputs);
 				inputs[die.ResultName] = roll.Result;

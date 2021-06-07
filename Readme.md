@@ -16,7 +16,7 @@ After being rolled, the result of a die is available to the subsequent die as a 
 
 #### Roll Conditions
 
-Each die in the sequence must have a condition for whether or not it should be rolled.
+Each die in the sequence may have one or more conditions for whether it should be rolled. The condition will be associated to the die matching the Order attribute.
 
 The condition consists of an equation that will be evaluated where a value >= 1 will mean it should be rolled, and otherwise it should not.
 
