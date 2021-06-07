@@ -8,11 +8,6 @@ namespace DieEngine.Tests
 	[TestOf(typeof(DieSequence))]
 	public class DieSequenceTests
 	{
-		RollCondition AlwaysRoll = new RollCondition
-		{
-			Equation = "1"
-		};
-		
 		/// Test a single die roll
 		[Test]
 		public void OneDie_RollAll_HasDieResult()
@@ -22,10 +17,6 @@ namespace DieEngine.Tests
 				Dice = new List<Die>
 				{
 					new Die("a", "1 + 1", "ar")
-				},
-				Conditions = new List<RollCondition>
-				{
-					AlwaysRoll,
 				}
 			};
 
@@ -44,11 +35,6 @@ namespace DieEngine.Tests
 				{
 					new Die("a", "1 + 1", "ar"),
 					new Die("b", "1 + ar", "br"),
-				},
-				Conditions = new List<RollCondition>
-				{
-					AlwaysRoll,
-					AlwaysRoll,
 				}
 			};
 
@@ -71,8 +57,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<RollCondition>
 				{
-					AlwaysRoll,
-					new RollCondition("ar = 2")
+					new RollCondition("ar = 2", 1)
 				}
 			};
 
@@ -94,7 +79,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<RollCondition>
 				{
-					new RollCondition("br = 2")
+					new RollCondition("br = 2", 0)
 				}
 			};
 
@@ -114,8 +99,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<RollCondition>
 				{
-					AlwaysRoll,
-					new RollCondition("ar = 2")
+					new RollCondition("ar = 2", 1)
 				}
 			};
 
@@ -132,11 +116,6 @@ namespace DieEngine.Tests
 				{
 					new Die("a", "1", "ar"),
 					new Die("b", "1", "br"),
-				},
-				Conditions = new List<RollCondition>
-				{
-					AlwaysRoll,
-					AlwaysRoll,
 				}
 			};
 
@@ -145,6 +124,56 @@ namespace DieEngine.Tests
 			Assert.That(result.Rolls[0].Inputs != result.Rolls[1].Inputs);
 			Assert.That(result.Rolls[0].Inputs.Count, Is.EqualTo(0));
 			Assert.That(result.Rolls[1].Inputs.Count, Is.EqualTo(1));
+		}
+
+		/// Test two conditions
+		[Test]
+		public void MultipleConditionsPassTest()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+				},
+				Conditions = new List<RollCondition>
+				{
+					new RollCondition("a > 0", 0),
+					new RollCondition("a < 2", 0)
+				}
+			};
+			var inputs = new Dictionary<string, double>
+			{
+				{ "a", 1 }
+			};
+
+			var result = sequence.RollAll(inputs);
+
+			Assert.That(result.Rolls[0].Result, Is.EqualTo(1));
+		}
+
+		/// Test two conditions
+		[Test]
+		public void MultipleConditionsOneFails_ThrowsException()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+				},
+				Conditions = new List<RollCondition>
+				{
+					new RollCondition("a > 0", 0),
+					new RollCondition("a < 1", 0)
+				}
+			};
+			var inputs = new Dictionary<string, double>
+			{
+				{ "a", 1 }
+			};
+
+			Assert.Throws<RollConditionFailedException>(() => sequence.RollAll(inputs));
 		}
 	}
 }

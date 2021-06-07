@@ -9,13 +9,17 @@ namespace DieEngine
 	{
 		public RollCondition(){}
 
-		public RollCondition(string equation)
+		public RollCondition(string equation, int order)
 		{
 			Equation = equation;
+			Order = order;
 		}
 
 		/// Equation to evaluate; >= 1 is true otherwise false
-		public virtual string Equation { get; set; }
+		public string Equation { get; set; }
+
+		/// Die number to bind to; 0-indexed
+		public int Order { get; set; }
 
 		/// Determine if die should be rolled
 		public virtual bool ShouldRoll(IDictionary<string, double> inputs)
