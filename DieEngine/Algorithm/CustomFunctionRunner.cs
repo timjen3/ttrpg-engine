@@ -8,7 +8,7 @@ namespace DieEngine.Algorithm
 {
 	public class CustomFunctionRunner
 	{
-		private readonly IDictionary<string, ICustomFunction> _equationsLookup;
+		private static readonly IDictionary<string, ICustomFunction> _equationsLookup;
 
 		private IEnumerable<string> ParseCustomFunctions(string rawEquation)
 		{
@@ -25,11 +25,18 @@ namespace DieEngine.Algorithm
 			return matchStrings;
 		}
 
-		public CustomFunctionRunner()
+		// todo: maybe do this with dependency injection instead; particularly if functions need access to other services
+		static CustomFunctionRunner()
 		{
-			// todo: use reflection to add all known equations
 			_equationsLookup = new Dictionary<string, ICustomFunction>(StringComparer.OrdinalIgnoreCase);
-			_equationsLookup["Dice"] = new DiceFunction();
+			var customFunctions = AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(x => x.GetTypes())
+				.Where(x => !x.IsAbstract && !x.IsInterface && typeof(ICustomFunction).IsAssignableFrom(x))
+				.Select(x => (ICustomFunction) Activator.CreateInstance(x));
+			foreach (var customFunction in customFunctions)
+			{
+				_equationsLookup[customFunction.FunctionName] = customFunction;
+			}
 		}
 
 		public bool VerifyEquation(string rawEquation)
@@ -60,7 +67,6 @@ namespace DieEngine.Algorithm
 					throw new UnknownCustomFunctionException($"Unknown function named {functionName}.");
 				}
 			}
-
 			return formattedEquation;
 		}
 	}
