@@ -99,7 +99,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<RollCondition>
 				{
-					new RollCondition("ar = 2", 1)
+					new RollCondition("ar = 2", 1, true)
 				}
 			};
 
@@ -164,8 +164,8 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<RollCondition>
 				{
-					new RollCondition("a > 0", 0),
-					new RollCondition("a < 1", 0)
+					new RollCondition("a > 0", 0, true),
+					new RollCondition("a < 1", 0, true)
 				}
 			};
 			var inputs = new Dictionary<string, double>
@@ -174,6 +174,71 @@ namespace DieEngine.Tests
 			};
 
 			Assert.Throws<RollConditionFailedException>(() => sequence.RollAll(inputs));
+		}
+
+		/// Test that a die is skipped when it fails condition check but isn't supposed to throw
+		[Test]
+		public void ConditionFailsButDoesNotThrow_RollIsSkipped()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+				},
+				Conditions = new List<RollCondition>
+				{
+					new RollCondition("0", 0, false)
+				}
+			};
+
+			var result = sequence.RollAll();
+
+			Assert.That(result.Rolls, Is.Empty);
+		}
+
+		/// Test that a die is skipped when it fails condition check but isn't supposed to throw, but the non-failing die is rolled
+		[Test]
+		public void MultipleDieOneConditionFailsButDoesNotThrow_OneRolledOneSkipped()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+					new Die("b", "2", "br"),
+				},
+				Conditions = new List<RollCondition>
+				{
+					new RollCondition("0", 0, false)
+				}
+			};
+
+			var result = sequence.RollAll();
+
+			Assert.That(result.Rolls, Has.Count.EqualTo(1));
+			Assert.That(result.Rolls[0].Result, Is.EqualTo(2));
+		}
+
+		/// Test that a custom exception message is added when a condition check fails
+		[Test]
+		public void ConditionWithCustomExceptionMessageFails_ThrownWithCustomMessage()
+		{
+			string customExMessage = "Custom Exception Message";
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+				},
+				Conditions = new List<RollCondition>
+				{
+					new RollCondition("0", 0, true, customExMessage)
+				}
+			};
+
+			var ex = Assert.Throws<RollConditionFailedException>(() => sequence.RollAll());
+			Assert.That(ex.Message, Is.EqualTo(customExMessage));
 		}
 	}
 }

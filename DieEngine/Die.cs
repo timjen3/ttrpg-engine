@@ -63,6 +63,7 @@ namespace DieEngine
 			Equation = _customFunctionRunner.InsertEquations(Equation);
 			// perform maths
 			var exp = new Expression(Equation);
+			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing
 			if (inputs != null)
 			{
 				dieRoll.Inputs = new Dictionary<string, double>(inputs);
