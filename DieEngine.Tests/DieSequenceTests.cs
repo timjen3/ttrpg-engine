@@ -240,5 +240,134 @@ namespace DieEngine.Tests
 			var ex = Assert.Throws<RollConditionFailedException>(() => sequence.RollAll());
 			Assert.That(ex.Message, Is.EqualTo(customExMessage));
 		}
+
+		/// Inputs are renamed per mappings
+		public void MapInputToDifferentNameTest()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "im", "ar"),
+				},
+				Mappings = new List<DieMapping>
+				{
+					new DieMapping(1, new Dictionary<string, string>
+					{
+						{ "i", "im" }
+					})
+				}
+			};
+			var inputs = new Dictionary<string, double>
+			{
+				{ "i", 1 }
+			};
+
+			var results = sequence.RollAll(inputs);
+
+			Assert.That(results.Rolls[1].Result, Is.EqualTo(1));
+		}
+
+		/// Results are renamed per mappings
+		[Test]
+		public void MapDieResultToDifferentNameForNextDieTest()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+					new Die("b", "arr", "br"),
+				},
+				Mappings = new List<DieMapping>
+				{
+					new DieMapping(1, new Dictionary<string, string>
+					{
+						{ "ar", "arr" }
+					})
+				}
+			};
+
+			var results = sequence.RollAll();
+
+			Assert.That(results.Rolls[1].Result, Is.EqualTo(1));
+		}
+
+		/// The pre-mapped input name is kept after mapping
+		[Test]
+		public void OriginalNameIsNotLostWhenMappingNameTest()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+					new Die("b", "ar + arr", "br"),
+				},
+				Mappings = new List<DieMapping>
+				{
+					new DieMapping(1, new Dictionary<string, string>
+					{
+						{ "ar", "arr" }
+					})
+				}
+			};
+
+			var results = sequence.RollAll();
+
+			Assert.That(results.Rolls[1].Result, Is.EqualTo(2));
+		}
+
+		/// Test 2 input mappings
+		[Test]
+		public void Map2DieResultsToDifferentNameForNextDieTest()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+					new Die("b", "1", "br"),
+					new Die("c", "arr + brr", "cr"),
+				},
+				Mappings = new List<DieMapping>
+				{
+					new DieMapping(2, new Dictionary<string, string>
+					{
+						{ "ar", "arr" },
+						{ "br", "brr" }
+					})
+				}
+			};
+
+			var results = sequence.RollAll();
+
+			Assert.That(results.Rolls[2].Result, Is.EqualTo(2));
+		}
+
+		/// Test that mapped input is available to specified die only
+		[Test]
+		public void MapDieResultToDieAndLaterDieDoesNotSeeItTest()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "1", "ar"),
+					new Die("b", "arr", "br"),
+					new Die("c", "arr", "cr"),
+				},
+				Mappings = new List<DieMapping>
+				{
+					new DieMapping(2, new Dictionary<string, string>
+					{
+						{ "ar", "arr" }
+					})
+				}
+			};
+
+			// die c throws an exception because it does not know about the mapped input
+			Assert.Throws<DieInputArgumentException>(() => sequence.RollAll());
+		}
 	}
 }
