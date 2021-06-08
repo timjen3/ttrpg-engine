@@ -13,33 +13,11 @@ namespace DieEngine
 
 		public Die(){}
 
-		public Die(string name, string equation, string resultName, Dictionary<string, string> mappings = null)
+		public Die(string name, string equation, string resultName)
 		{
 			Name = name;
 			Equation = equation;
 			ResultName = resultName;
-			Mappings = mappings ?? new Dictionary<string, string>();
-		}
-
-		/// <summary>
-		///		Renames input variables per the mappings.
-		///		If no mapping is present, the variable is passed in as-is.
-		/// </summary>
-		/// <param name="inputs"></param>
-		/// <returns></returns>
-		protected IDictionary<string, double> GetMappedInputs(IDictionary<string, double> inputs)
-		{
-			var mappedInputs = new Dictionary<string, double>();
-			foreach (var input in inputs)
-			{
-				if (Mappings.ContainsKey(input.Key))
-				{
-					mappedInputs[Mappings[input.Key]] = input.Value;
-					continue;
-				}
-				mappedInputs[input.Key] = input.Value;
-			}
-			return mappedInputs;
 		}
 
 		// Name of Die
@@ -47,9 +25,6 @@ namespace DieEngine
 
 		// What the result of this die roll should be called
 		public string ResultName { get; set; }
-
-		// Renames input variables before plugging them into the formula
-		public Dictionary<string, string> Mappings { get; set; } = new Dictionary<string, string>();
 
 		// Algorithm for this die
 		public string Equation { get; set; }
@@ -67,8 +42,7 @@ namespace DieEngine
 			if (inputs != null)
 			{
 				dieRoll.Inputs = new Dictionary<string, double>(inputs);
-				var mappedInputs = GetMappedInputs(inputs);
-				foreach (var kvp in mappedInputs)
+				foreach (var kvp in inputs)
 				{
 					exp.addArguments(new Argument(kvp.Key.Trim(), kvp.Value));
 				}
