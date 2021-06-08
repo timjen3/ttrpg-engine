@@ -47,25 +47,6 @@ namespace DieEngine.Tests
 
 		/// Test variable substitution with a rename
 		[Test]
-		public void OnePlusOneWithVarSubstitutionAndRename_Equals_Two()
-		{
-			TestDie.Equation = "1 + b";
-			TestDie.Mappings = new Dictionary<string, string>
-			{
-				{ "a", "b" },
-			};
-			var inputs = new Dictionary<string, double>
-			{
-				{ "a", 1 },
-			};
-
-			var result = TestDie.Roll(inputs);
-
-			Assert.That(result.Result, Is.EqualTo(2));
-		}
-
-		/// Test variable substitution with a rename
-		[Test]
 		public void EquationMissingVariable_Roll_ThrowsException()
 		{
 			TestDie.Equation = "1 + a";

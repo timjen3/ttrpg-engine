@@ -22,20 +22,14 @@ Die Sequences are orchestrators of multiple die. The die are rolled in the confi
 
 Conditions can be added for Die in the sequence. Conditions that fail can either result in the whole sequence failing or steps of the sequence being skipped.
 
+Mappings can be added for die in the sequence. Mappings add aliases to input variable names (or result names from previous die) for a specified die. These makes a die's equations as clear as possible without coupling it to a specific sequence.
+
 ## Todo
 
-#### 1. Remove mapping layer from die
-
-The purpose of the mapping layer is to de-couple dice so that the output of one die is independently named from the input for another die. Therefore the mapping should be separate from die.
-
-Since Die Sequences are the orchestrators of die, they should be aware of special mappings for die. An optional mapping dictionary should be present for each die.
-
-The benefit of this is re-usability; you can create a single die and use it in multiple die sequences more easily.
-
-#### 2. Inject input variables into custom functions
+#### 1. Inject input variables into custom functions
 
 Custom functions should be able to be called with variables from the input dictionary.
 
-#### 3. Control constants via configuration
+#### 2. Control constants via configuration
 
 Currently the mxParser constants are always removed because it is can cause unexpected results due to the existence of "c" and other constants. This should be controllable by configuration instead in case someone wants access to these kinds of things. Additionally, a way to specify global constants could be very useful.
