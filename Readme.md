@@ -1,4 +1,6 @@
-﻿# About
+﻿[![Build & Tests](https://github.com/timjen3/dice-engine/actions/workflows/dotnet.yml/badge.svg)](https://github.com/timjen3/dice-engine/actions/workflows/dotnet.yml)
+ 
+ # About
 
 This project handles die rolls and sequences of die rolls. "Die Roll" is a bit of an artificial flavoring in this case, as the die can be complex algorithms. Ultimately it is intended to serve as a component in ttrpg style applications.
 
