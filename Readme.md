@@ -1,33 +1,39 @@
 ﻿# About
 
-This project handles die rolls and sequences of die rolls
+This project handles die rolls and sequences of die rolls. "Die Roll" is a bit of an artificial flavoring in this case, as the die can be complex algorithms. Ultimately it is intended to serve as a component in ttrpg style applications.
 
 ## Concepts
 
 ### Die
 
-Equations: How the result of this die is calculated
+Little more than a container for a plaintext algorithm to be parsed by the mxParser math expression parser library.
+
+See mxParser for tutorials: http://mathparser.org/
+
+For ease of use a custom function feature has been added. The custom function must be enclosed in square brackets. The function will be evaluated and replaced with the result prior to running the function through mxParser. This is a list of available custom functions:
+
+    [Dice:n,s] : roll n die with s sides.
 
 ### Die Sequences
 
-A sequence is an ordered list of Die where each Die has a Condition for being rolled
+Die Sequences are orchestrators of multiple die. The die are rolled in the configured order, with the result of earlier die available to algorithms in later die.
 
-After being rolled, the result of a die is available to the subsequent die as a variable named ResultName for the rolled die
-
-#### Roll Conditions
-
-Each die in the sequence may have one or more conditions for whether it should be rolled. The condition will be associated to the die matching the Order attribute.
-
-The condition consists of an equation that will be evaluated where a value >= 1 will mean it should be rolled, and otherwise it should not.
-
-When a condition fails for a die in the sequence a RollConditionFailedException is thrown
+Conditions can be added for Die in the sequence. Conditions that fail can either result in the whole sequence failing or steps of the sequence being skipped.
 
 ## Todo
 
-#### 1. Inject attributes into custom functions
+#### 1. Remove mapping layer from die
 
-Entity attributes should be injectable into custom functions. In V1 of this application it was done by a preliminary string.replace where variables inside functions must be inside of curly braces. Ex: [dice:{mymin},{mymax}] would be converted into [dice:1,6] prior to the custom function being performed. On the one hand it would be nice if this was done inside the DiceEngine as part of the die roll. On the other hand, it requires the Dice Engine to pull in complexity it shouldn't need. Maybe there is a way to redesign that can reduce the complexity and allow it to be in this project.
+The purpose of the mapping layer is to de-couple dice so that the output of one die is independently named from the input for another die. Therefore the mapping should be separate from die.
 
-#### 2. Failure types for roll conditions
+Since Die Sequences are the orchestrators of die, they should be aware of special mappings for die. An optional mapping dictionary should be present for each die.
 
-When a condition fails it can mean at least 2 different things. One is that the user should never have been able to roll the die; it's an invalid roll. The other is that the roll is valid, but some check failed and so part of the sequence will not be performed. For instance, if a dodge succeeds then the take damage die should not be performed.
+The benefit of this is re-usability; you can create a single die and use it in multiple die sequences more easily.
+
+#### 2. Inject input variables into custom functions
+
+Custom functions should be able to be called with variables from the input dictionary.
+
+#### 3. Control constants via configuration
+
+Currently the mxParser constants are always removed because it is can cause unexpected results due to the existence of "c" and other constants. This should be controllable by configuration instead in case someone wants access to these kinds of things. Additionally, a way to specify global constants could be very useful.

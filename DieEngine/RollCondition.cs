@@ -7,12 +7,16 @@ namespace DieEngine
 {
 	public class RollCondition
 	{
+		const string DEFAULT_FAILURE_MESSAGE = "Die could not be rolled due to failed validation.";
+
 		public RollCondition(){}
 
-		public RollCondition(string equation, int order)
+		public RollCondition(string equation, int order, bool throwOnFail = false, string failureMessage = null)
 		{
 			Equation = equation;
 			Order = order;
+			ThrowOnFail = throwOnFail;
+			FailureMessage = failureMessage;
 		}
 
 		/// Equation to evaluate; >= 1 is true otherwise false
@@ -21,10 +25,17 @@ namespace DieEngine
 		/// Die number to bind to; 0-indexed
 		public int Order { get; set; }
 
-		/// Determine if die should be rolled
-		public virtual bool ShouldRoll(IDictionary<string, double> inputs)
+		/// Whether exception should be thrown when Check fails
+		public bool ThrowOnFail { get; set; }
+
+		/// Custom message for failure if ThrowOnFail is true
+		public string FailureMessage { get; set; }
+
+		/// Determine if die passes condition (and should be rolled)
+		public virtual bool Check(IDictionary<string, double> inputs)
 		{
 			var exp = new Expression(Equation);
+			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing
 			if (inputs != null)
 			{
 				foreach (var kvp in inputs)
@@ -40,7 +51,12 @@ namespace DieEngine
 					throw new ConditionInputArgumentException($"Missing params: {string.Join(", ", missingValues)}");
 				throw new ConditionInputArgumentException(exp.getErrorMessage());
 			}
-			return result >= 1;
+			var valid = result >= 1;
+			if (!valid && ThrowOnFail)
+			{
+				throw new RollConditionFailedException(FailureMessage ?? DEFAULT_FAILURE_MESSAGE);
+			}
+			return valid;
 		}
 	}
 }
