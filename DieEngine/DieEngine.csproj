@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
+    <PackageReference Include="SmartFormat.NET" Version="2.7.0" />
   </ItemGroup>
 
 </Project>
