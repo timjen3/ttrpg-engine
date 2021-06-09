@@ -369,5 +369,37 @@ namespace DieEngine.Tests
 			// die c throws an exception because it does not know about the mapped input
 			Assert.Throws<DieInputArgumentException>(() => sequence.RollAll());
 		}
+
+		/// Test inject mapped input variables into custom function
+		[Test]
+		[Repeat(100)]
+		public void InjectMappedVarsIntoCustomDiceFunction_PerformsDieRoll()
+		{
+			var sequence = new DieSequence()
+			{
+				Dice = new List<Die>
+				{
+					new Die("a", "[dice:{minRoll},{maxRoll}]", "ar"),
+				},
+				Mappings = new List<DieMapping>
+				{
+					new DieMapping(0, new Dictionary<string, string>
+					{
+						{ "dieMin", "minRoll" },
+						{ "dieMax", "maxRoll" },
+					})
+				}
+			};
+			var inputs = new Dictionary<string, double>
+			{
+				{ "dieMin", 1 },
+				{ "dieMax", 6 }
+			};
+
+			var results = sequence.RollAll(inputs);
+
+			Assert.That(results.Rolls[0].Result, Is.GreaterThanOrEqualTo(1));
+			Assert.That(results.Rolls[0].Result, Is.LessThanOrEqualTo(6));
+		}
 	}
 }

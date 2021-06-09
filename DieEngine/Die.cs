@@ -35,7 +35,7 @@ namespace DieEngine
 			var dieRoll = new DieRoll();
 			dieRoll.RolledDie = this;
 			// inject custom function results
-			Equation = _customFunctionRunner.InsertEquations(Equation);
+			Equation = _customFunctionRunner.InsertEquations(Equation, inputs);
 			// perform maths
 			var exp = new Expression(Equation);
 			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing

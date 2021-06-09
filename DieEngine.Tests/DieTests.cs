@@ -90,5 +90,24 @@ namespace DieEngine.Tests
 
 			Assert.Throws<UnknownCustomFunctionException>(() => TestDie.Roll());
 		}
+
+		/// Test inject input variables into custom function
+		[Test]
+		[Repeat(100)]
+		public void InjectVarsIntoCustomDiceFunction_PerformsDieRoll()
+		{
+			var inputs = new Dictionary<string, double>
+			{
+				{ "minRoll", 1 },
+				{ "maxRoll", 6 }
+			};
+			TestDie.Equation = "[dice:{minRoll},{maxRoll}]";
+
+			var result = TestDie.Roll(inputs);
+			TestContext.WriteLine($"Result: {result.Result}");
+
+			Assert.That(result.Result, Is.GreaterThanOrEqualTo(1));
+			Assert.That(result.Result, Is.LessThanOrEqualTo(6));
+		}
 	}
 }
