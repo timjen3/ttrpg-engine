@@ -55,9 +55,9 @@ namespace DieEngine.Tests
 					new Die("a", "1 + 1", "ar"),
 					new Die("b", "1 + ar", "br"),
 				},
-				Conditions = new List<RollCondition>
+				Conditions = new List<Condition>
 				{
-					new RollCondition("ar = 2", 1)
+					new Condition("ar = 2", 1)
 				}
 			};
 
@@ -77,13 +77,13 @@ namespace DieEngine.Tests
 				{
 					new Die("a", "1 + 1", "ar")
 				},
-				Conditions = new List<RollCondition>
+				Conditions = new List<Condition>
 				{
-					new RollCondition("br = 2", 0)
+					new Condition("br = 2", 0)
 				}
 			};
 
-			Assert.Throws<ConditionInputArgumentException>(() => sequence.RollAll());
+			Assert.Throws<EquationInputArgumentException>(() => sequence.RollAll());
 		}
 
 		/// Test multiple die rolls where second condition is driven by a variable and fails
@@ -97,13 +97,13 @@ namespace DieEngine.Tests
 					new Die("a", "1", "ar"),
 					new Die("b", "1 + ar", "br"),
 				},
-				Conditions = new List<RollCondition>
+				Conditions = new List<Condition>
 				{
-					new RollCondition("ar = 2", 1, true)
+					new Condition("ar = 2", 1, true)
 				}
 			};
 
-			Assert.Throws<RollConditionFailedException>(() => sequence.RollAll());
+			Assert.Throws<ConditionFailedException>(() => sequence.RollAll());
 		}
 
 		/// Test that inputs is a different instance for each die roll
@@ -121,6 +121,8 @@ namespace DieEngine.Tests
 
 			var result = sequence.RollAll();
 
+			Assert.IsNotNull(result.Rolls[0].Inputs);
+			Assert.IsNotNull(result.Rolls[1].Inputs);
 			Assert.That(result.Rolls[0].Inputs != result.Rolls[1].Inputs);
 			Assert.That(result.Rolls[0].Inputs.Count, Is.EqualTo(0));
 			Assert.That(result.Rolls[1].Inputs.Count, Is.EqualTo(1));
@@ -136,10 +138,10 @@ namespace DieEngine.Tests
 				{
 					new Die("a", "1", "ar"),
 				},
-				Conditions = new List<RollCondition>
+				Conditions = new List<Condition>
 				{
-					new RollCondition("a > 0", 0),
-					new RollCondition("a < 2", 0)
+					new Condition("a > 0", 0),
+					new Condition("a < 2", 0)
 				}
 			};
 			var inputs = new Dictionary<string, double>
@@ -162,10 +164,10 @@ namespace DieEngine.Tests
 				{
 					new Die("a", "1", "ar"),
 				},
-				Conditions = new List<RollCondition>
+				Conditions = new List<Condition>
 				{
-					new RollCondition("a > 0", 0, true),
-					new RollCondition("a < 1", 0, true)
+					new Condition("a > 0", 0, true),
+					new Condition("a < 1", 0, true)
 				}
 			};
 			var inputs = new Dictionary<string, double>
@@ -173,7 +175,7 @@ namespace DieEngine.Tests
 				{ "a", 1 }
 			};
 
-			Assert.Throws<RollConditionFailedException>(() => sequence.RollAll(inputs));
+			Assert.Throws<ConditionFailedException>(() => sequence.RollAll(inputs));
 		}
 
 		/// Test that a die is skipped when it fails condition check but isn't supposed to throw
@@ -186,9 +188,9 @@ namespace DieEngine.Tests
 				{
 					new Die("a", "1", "ar"),
 				},
-				Conditions = new List<RollCondition>
+				Conditions = new List<Condition>
 				{
-					new RollCondition("0", 0, false)
+					new Condition("0", 0, false)
 				}
 			};
 
@@ -208,9 +210,9 @@ namespace DieEngine.Tests
 					new Die("a", "1", "ar"),
 					new Die("b", "2", "br"),
 				},
-				Conditions = new List<RollCondition>
+				Conditions = new List<Condition>
 				{
-					new RollCondition("0", 0, false)
+					new Condition("0", 0, false)
 				}
 			};
 
@@ -231,13 +233,13 @@ namespace DieEngine.Tests
 				{
 					new Die("a", "1", "ar"),
 				},
-				Conditions = new List<RollCondition>
+				Conditions = new List<Condition>
 				{
-					new RollCondition("0", 0, true, customExMessage)
+					new Condition("0", 0, true, customExMessage)
 				}
 			};
 
-			var ex = Assert.Throws<RollConditionFailedException>(() => sequence.RollAll());
+			var ex = Assert.Throws<ConditionFailedException>(() => sequence.RollAll());
 			Assert.That(ex.Message, Is.EqualTo(customExMessage));
 		}
 
@@ -367,7 +369,7 @@ namespace DieEngine.Tests
 			};
 
 			// die c throws an exception because it does not know about the mapped input
-			Assert.Throws<DieInputArgumentException>(() => sequence.RollAll());
+			Assert.Throws<EquationInputArgumentException>(() => sequence.RollAll());
 		}
 
 		/// Test inject mapped input variables into custom function

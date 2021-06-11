@@ -34,10 +34,22 @@ Mappings can be added for die in the sequence. Mappings add aliases to input var
 
 # Todo
 
-#### 1. Create demo project
+#### 1. Actions
+
+One or more actions can be added to a die sequence. Action have conditions just like die rolls. While it is limiting, for simplicity all actions are ran after all die rolls.
+
+#### 2. More robust use of dependency injection
+
+Add IServiceCollection extensions helper. All classes should be injected into the service collection instead of new'd up. It should be possible to inject ICustomFunctions.
+
+#### 3. Create demo project
 
 Add a demo project winform that allows you to create a dice sequence, conditions, and mappings. Load from json text.
 
-#### 2. Control constants via configuration
+#### 4. Control constants via configuration
 
 Currently the mxParser constants are always removed because it is can cause unexpected results due to the existence of "c" and other constants. This should be controllable by configuration instead in case someone wants access to these kinds of things. Additionally, a way to specify global constants could be very useful.
+
+#### 5. Die-Sequence-Roles & Entities
+
+Die Sequences will declare 0+ roles. In order to be rolled, a die sequence will require entities to be passed in to fill each role. An entity has a set of attributes. Equations can reference the roles with some special syntax (for instance maybe: `@entity1:health@`). Mappings are performed between the entity attributes and the die inputs. For instance, input defines hp but entity defines health. The mapping will inject entity1 with an extra attribute named hp.

@@ -5,18 +5,12 @@ namespace DieEngine
 {
 	public class DieSequence
 	{
-		/// <summary>
-		///		Renames input variables per the mappings.
-		///		If no mapping is present, the variable is passed in as-is.
-		/// </summary>
-		/// <param name="inputs"></param>
-		/// <returns></returns>
 		private IDictionary<string, double> GetMappedInputs(int order, IDictionary<string, double> inputs)
 		{
+			var mappedInputs = new Dictionary<string, double>(inputs);  // copy to prevent any changes to source inputs
 			var mappings = Mappings.SingleOrDefault(x => x.Order == order);
-			if (mappings == null) return inputs;
+			if (mappings == null) return mappedInputs;
 
-			var mappedInputs = new Dictionary<string, double>(inputs);
 			foreach (var input in inputs)
 			{
 				if (mappings.Mappings.ContainsKey(input.Key))
@@ -33,8 +27,12 @@ namespace DieEngine
 
 		public List<Die> Dice { get; set; } = new List<Die>();
 
-		public List<RollCondition> Conditions { get; set; } = new List<RollCondition>();
+		public List<Condition> Conditions { get; set; } = new List<Condition>();
 
+		/// <summary>
+		///		Renames input variables according to mappings before using them in conditions or die rolls.
+		///		The inputs are always copied to a new dictionary before changes are made to isolate changes for each roll.
+		/// </summary>
 		public List<DieMapping> Mappings { get; set; } = new List<DieMapping>();
 
 		public DieSequenceResult RollAll(IDictionary<string, double> inputs = null)
@@ -45,14 +43,13 @@ namespace DieEngine
 			{
 				var die = Dice[dieNum];
 				var conditions = Conditions.Where(x => x.Order == dieNum);
-				var valid = true;
 				var mappedInputs = GetMappedInputs(dieNum, inputs);
+				var isValid = true;
 				foreach (var condition in conditions)
 				{
-					if (!condition.Check(mappedInputs))
-						valid = false;
+					isValid = condition.Check(mappedInputs);
 				}
-				if (!valid) continue;
+				if (!isValid) continue;
 				DieRoll roll = die.Roll(mappedInputs);
 				inputs[die.ResultName] = roll.Result;
 				result.Rolls.Add(roll);
