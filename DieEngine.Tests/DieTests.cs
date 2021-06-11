@@ -51,7 +51,7 @@ namespace DieEngine.Tests
 		{
 			TestDie.Equation = "1 + a";
 
-			Assert.Throws<DieInputArgumentException>(() => TestDie.Roll());
+			Assert.Throws<EquationInputArgumentException>(() => TestDie.Roll());
 		}
 
 		/// Test custom dice function

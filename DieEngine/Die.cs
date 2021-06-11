@@ -1,15 +1,12 @@
 ﻿using DieEngine.Algorithm;
-using DieEngine.Exceptions;
-using org.mariuszgromada.math.mxparser;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DieEngine
 {
 	public class Die
 	{
-		// todo: downsides of tight coupling here?
-		private static CustomFunctionRunner _customFunctionRunner = new CustomFunctionRunner();
+		// todo: dependency injection
+		static EquationResolver _equatonResolver = new EquationResolver();
 
 		public Die(){}
 
@@ -33,28 +30,9 @@ namespace DieEngine
 		public DieRoll Roll(IDictionary<string, double> inputs = null)
 		{
 			var dieRoll = new DieRoll();
+			dieRoll.Inputs = inputs;
 			dieRoll.RolledDie = this;
-			// inject custom function results
-			Equation = _customFunctionRunner.InsertEquations(Equation, inputs);
-			// perform maths
-			var exp = new Expression(Equation);
-			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing
-			if (inputs != null)
-			{
-				dieRoll.Inputs = new Dictionary<string, double>(inputs);
-				foreach (var kvp in inputs)
-				{
-					exp.addArguments(new Argument(kvp.Key.Trim(), kvp.Value));
-				}
-			}
-			dieRoll.Result = exp.calculate();
-			if (double.IsNaN(dieRoll.Result))
-			{
-				string[] missingValues = exp.getMissingUserDefinedArguments();
-				if (missingValues.Any())
-					throw new DieInputArgumentException($"Missing params: {string.Join(", ", missingValues)}");
-				throw new DieInputArgumentException(exp.getErrorMessage());
-			}
+			dieRoll.Result = _equatonResolver.Process(Equation, inputs);
 
 			return dieRoll;
 		}
