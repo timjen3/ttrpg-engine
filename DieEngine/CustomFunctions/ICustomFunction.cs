@@ -1,4 +1,4 @@
-﻿namespace DieEngine.Algorithm
+﻿namespace DieEngine.CustomFunctions
 {
 	public interface ICustomFunction
 	{

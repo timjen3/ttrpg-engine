@@ -1,4 +1,4 @@
-﻿using DieEngine.Algorithm;
+﻿using DieEngine.CustomFunctions;
 using DieEngine.Exceptions;
 using System.Collections.Generic;
 

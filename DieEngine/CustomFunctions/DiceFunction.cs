@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace DieEngine.Algorithm
+namespace DieEngine.CustomFunctions
 {
 	/// <summary>
 	///		Roll 1+ same-sided die

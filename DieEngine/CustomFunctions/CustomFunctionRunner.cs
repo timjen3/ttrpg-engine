@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace DieEngine.Algorithm
+namespace DieEngine.CustomFunctions
 {
 	public class CustomFunctionRunner
 	{

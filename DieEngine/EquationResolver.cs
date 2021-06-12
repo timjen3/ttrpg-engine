@@ -1,9 +1,10 @@
-﻿using DieEngine.Exceptions;
+﻿using DieEngine.CustomFunctions;
+using DieEngine.Exceptions;
 using org.mariuszgromada.math.mxparser;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DieEngine.Algorithm
+namespace DieEngine
 {
 	public class EquationResolver
 	{

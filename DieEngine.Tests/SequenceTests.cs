@@ -1,59 +1,60 @@
 using DieEngine.Exceptions;
+using DieEngine.SequencesItems;
 using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace DieEngine.Tests
 {
 	[TestFixture]
-	[TestOf(typeof(DieSequence))]
-	public class DieSequenceTests
+	[TestOf(typeof(Sequence))]
+	public class SequenceTests
 	{
 		/// Test a single die roll
 		[Test]
 		public void OneDie_RollAll_HasDieResult()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1 + 1", "ar")
+					new DieSequenceItem("a", "1 + 1", "ar")
 				}
 			};
 
 			var result = sequence.RollAll();
 
-			Assert.That(result.Rolls[0].Result, Is.EqualTo(2));
+			Assert.That(result.Results[0].Result, Is.EqualTo(2));
 		}
 
 		/// Test multiple die rolls
 		[Test]
 		public void TwoDice_RollAll_HasDieResults()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1 + 1", "ar"),
-					new Die("b", "1 + ar", "br"),
+					new DieSequenceItem("a", "1 + 1", "ar"),
+					new DieSequenceItem("b", "1 + ar", "br"),
 				}
 			};
 
 			var result = sequence.RollAll();
 
-			Assert.That(result.Rolls[0].Result, Is.EqualTo(2));
-			Assert.That(result.Rolls[1].Result, Is.EqualTo(3));
+			Assert.That(result.Results[0].Result, Is.EqualTo(2));
+			Assert.That(result.Results[1].Result, Is.EqualTo(3));
 		}
 
 		/// Test multiple die rolls where second condition is driven by a variable and succeeds
 		[Test]
 		public void TwoDiceSecondConditionalSucceeds_RollAll_Rolls()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1 + 1", "ar"),
-					new Die("b", "1 + ar", "br"),
+					new DieSequenceItem("a", "1 + 1", "ar"),
+					new DieSequenceItem("b", "1 + ar", "br"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -63,19 +64,19 @@ namespace DieEngine.Tests
 
 			var result = sequence.RollAll();
 
-			Assert.That(result.Rolls[0].Result, Is.EqualTo(2));
-			Assert.That(result.Rolls[1].Result, Is.EqualTo(3));
+			Assert.That(result.Results[0].Result, Is.EqualTo(2));
+			Assert.That(result.Results[1].Result, Is.EqualTo(3));
 		}
 
 		/// Test if condition is missing required vars it throws
 		[Test]
 		public void ConditionalMissingRequiredParams_ThrowsException()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1 + 1", "ar")
+					new DieSequenceItem("a", "1 + 1", "ar")
 				},
 				Conditions = new List<Condition>
 				{
@@ -90,12 +91,12 @@ namespace DieEngine.Tests
 		[Test]
 		public void TwoDiceSecondConditionalBasedOnResult_RollAll_ThrowsException()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
-					new Die("b", "1 + ar", "br"),
+					new DieSequenceItem("a", "1", "ar"),
+					new DieSequenceItem("b", "1 + ar", "br"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -110,33 +111,33 @@ namespace DieEngine.Tests
 		[Test]
 		public void ConfirmInputDictionaryIsCopiedPerDieTest()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
-					new Die("b", "1", "br"),
+					new DieSequenceItem("a", "1", "ar"),
+					new DieSequenceItem("b", "1", "br"),
 				}
 			};
 
 			var result = sequence.RollAll();
 
-			Assert.IsNotNull(result.Rolls[0].Inputs);
-			Assert.IsNotNull(result.Rolls[1].Inputs);
-			Assert.That(result.Rolls[0].Inputs != result.Rolls[1].Inputs);
-			Assert.That(result.Rolls[0].Inputs.Count, Is.EqualTo(0));
-			Assert.That(result.Rolls[1].Inputs.Count, Is.EqualTo(1));
+			Assert.IsNotNull(result.Results[0].Inputs);
+			Assert.IsNotNull(result.Results[1].Inputs);
+			Assert.That(result.Results[0].Inputs != result.Results[1].Inputs);
+			Assert.That(result.Results[0].Inputs.Count, Is.EqualTo(0));
+			Assert.That(result.Results[1].Inputs.Count, Is.EqualTo(1));
 		}
 
 		/// Test two conditions
 		[Test]
 		public void MultipleConditionsPassTest()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
+					new DieSequenceItem("a", "1", "ar"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -151,18 +152,18 @@ namespace DieEngine.Tests
 
 			var result = sequence.RollAll(inputs);
 
-			Assert.That(result.Rolls[0].Result, Is.EqualTo(1));
+			Assert.That(result.Results[0].Result, Is.EqualTo(1));
 		}
 
 		/// Test two conditions
 		[Test]
 		public void MultipleConditionsOneFails_ThrowsException()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
+					new DieSequenceItem("a", "1", "ar"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -182,11 +183,11 @@ namespace DieEngine.Tests
 		[Test]
 		public void ConditionFailsButDoesNotThrow_RollIsSkipped()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
+					new DieSequenceItem("a", "1", "ar"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -196,19 +197,19 @@ namespace DieEngine.Tests
 
 			var result = sequence.RollAll();
 
-			Assert.That(result.Rolls, Is.Empty);
+			Assert.That(result.Results, Is.Empty);
 		}
 
 		/// Test that a die is skipped when it fails condition check but isn't supposed to throw, but the non-failing die is rolled
 		[Test]
 		public void MultipleDieOneConditionFailsButDoesNotThrow_OneRolledOneSkipped()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
-					new Die("b", "2", "br"),
+					new DieSequenceItem("a", "1", "ar"),
+					new DieSequenceItem("b", "2", "br"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -218,8 +219,8 @@ namespace DieEngine.Tests
 
 			var result = sequence.RollAll();
 
-			Assert.That(result.Rolls, Has.Count.EqualTo(1));
-			Assert.That(result.Rolls[0].Result, Is.EqualTo(2));
+			Assert.That(result.Results, Has.Count.EqualTo(1));
+			Assert.That(result.Results[0].Result, Is.EqualTo(2));
 		}
 
 		/// Test that a custom exception message is added when a condition check fails
@@ -227,11 +228,11 @@ namespace DieEngine.Tests
 		public void ConditionWithCustomExceptionMessageFails_ThrownWithCustomMessage()
 		{
 			string customExMessage = "Custom Exception Message";
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
+					new DieSequenceItem("a", "1", "ar"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -244,17 +245,18 @@ namespace DieEngine.Tests
 		}
 
 		/// Inputs are renamed per mappings
+		[Test]
 		public void MapInputToDifferentNameTest()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "im", "ar"),
+					new DieSequenceItem("a", "im", "ar"),
 				},
-				Mappings = new List<DieMapping>
+				Mappings = new List<Mapping>
 				{
-					new DieMapping(1, new Dictionary<string, string>
+					new Mapping(0, new Dictionary<string, string>
 					{
 						{ "i", "im" }
 					})
@@ -267,23 +269,23 @@ namespace DieEngine.Tests
 
 			var results = sequence.RollAll(inputs);
 
-			Assert.That(results.Rolls[1].Result, Is.EqualTo(1));
+			Assert.That(results.Results[0].Result, Is.EqualTo(1));
 		}
 
 		/// Results are renamed per mappings
 		[Test]
 		public void MapDieResultToDifferentNameForNextDieTest()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
-					new Die("b", "arr", "br"),
+					new DieSequenceItem("a", "1", "ar"),
+					new DieSequenceItem("b", "arr", "br"),
 				},
-				Mappings = new List<DieMapping>
+				Mappings = new List<Mapping>
 				{
-					new DieMapping(1, new Dictionary<string, string>
+					new Mapping(1, new Dictionary<string, string>
 					{
 						{ "ar", "arr" }
 					})
@@ -292,23 +294,23 @@ namespace DieEngine.Tests
 
 			var results = sequence.RollAll();
 
-			Assert.That(results.Rolls[1].Result, Is.EqualTo(1));
+			Assert.That(results.Results[1].Result, Is.EqualTo(1));
 		}
 
 		/// The pre-mapped input name is kept after mapping
 		[Test]
 		public void OriginalNameIsNotLostWhenMappingNameTest()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
-					new Die("b", "ar + arr", "br"),
+					new DieSequenceItem("a", "1", "ar"),
+					new DieSequenceItem("b", "ar + arr", "br"),
 				},
-				Mappings = new List<DieMapping>
+				Mappings = new List<Mapping>
 				{
-					new DieMapping(1, new Dictionary<string, string>
+					new Mapping(1, new Dictionary<string, string>
 					{
 						{ "ar", "arr" }
 					})
@@ -317,24 +319,24 @@ namespace DieEngine.Tests
 
 			var results = sequence.RollAll();
 
-			Assert.That(results.Rolls[1].Result, Is.EqualTo(2));
+			Assert.That(results.Results[1].Result, Is.EqualTo(2));
 		}
 
 		/// Test 2 input mappings
 		[Test]
 		public void Map2DieResultsToDifferentNameForNextDieTest()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
-					new Die("b", "1", "br"),
-					new Die("c", "arr + brr", "cr"),
+					new DieSequenceItem("a", "1", "ar"),
+					new DieSequenceItem("b", "1", "br"),
+					new DieSequenceItem("c", "arr + brr", "cr"),
 				},
-				Mappings = new List<DieMapping>
+				Mappings = new List<Mapping>
 				{
-					new DieMapping(2, new Dictionary<string, string>
+					new Mapping(2, new Dictionary<string, string>
 					{
 						{ "ar", "arr" },
 						{ "br", "brr" }
@@ -344,24 +346,24 @@ namespace DieEngine.Tests
 
 			var results = sequence.RollAll();
 
-			Assert.That(results.Rolls[2].Result, Is.EqualTo(2));
+			Assert.That(results.Results[2].Result, Is.EqualTo(2));
 		}
 
 		/// Test that mapped input is available to specified die only
 		[Test]
 		public void MapDieResultToDieAndLaterDieDoesNotSeeItTest()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "1", "ar"),
-					new Die("b", "arr", "br"),
-					new Die("c", "arr", "cr"),
+					new DieSequenceItem("a", "1", "ar"),
+					new DieSequenceItem("b", "arr", "br"),
+					new DieSequenceItem("c", "arr", "cr"),
 				},
-				Mappings = new List<DieMapping>
+				Mappings = new List<Mapping>
 				{
-					new DieMapping(2, new Dictionary<string, string>
+					new Mapping(2, new Dictionary<string, string>
 					{
 						{ "ar", "arr" }
 					})
@@ -377,15 +379,15 @@ namespace DieEngine.Tests
 		[Repeat(100)]
 		public void InjectMappedVarsIntoCustomDiceFunction_PerformsDieRoll()
 		{
-			var sequence = new DieSequence()
+			var sequence = new Sequence()
 			{
-				Dice = new List<Die>
+				Items = new List<ISequenceItem>
 				{
-					new Die("a", "[dice:{minRoll},{maxRoll}]", "ar"),
+					new DieSequenceItem("a", "[dice:{minRoll},{maxRoll}]", "ar"),
 				},
-				Mappings = new List<DieMapping>
+				Mappings = new List<Mapping>
 				{
-					new DieMapping(0, new Dictionary<string, string>
+					new Mapping(0, new Dictionary<string, string>
 					{
 						{ "dieMin", "minRoll" },
 						{ "dieMax", "maxRoll" },
@@ -400,8 +402,26 @@ namespace DieEngine.Tests
 
 			var results = sequence.RollAll(inputs);
 
-			Assert.That(results.Rolls[0].Result, Is.GreaterThanOrEqualTo(1));
-			Assert.That(results.Rolls[0].Result, Is.LessThanOrEqualTo(6));
+			Assert.That(results.Results[0].Result, Is.GreaterThanOrEqualTo(1));
+			Assert.That(results.Results[0].Result, Is.LessThanOrEqualTo(6));
+		}
+
+		/// Test processing an action
+		[Test]
+		public void ActionSequenceItemTest()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<ISequenceItem>
+				{
+					new ActionSequenceItem<string>("a", "1", "some instruction"),
+				}
+			};
+
+			var results = sequence.RollAll();
+
+			Assert.That(results.Results[0].ResolvedItem, Is.TypeOf<ActionSequenceItem<string>>());
+			Assert.That(results.Results[0].Result, Is.EqualTo(1));
 		}
 	}
 }
