@@ -1,18 +1,21 @@
-﻿using DieEngine.Exceptions;
+﻿using DieEngine.CustomFunctions;
+using DieEngine.Exceptions;
 using org.mariuszgromada.math.mxparser;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DieEngine.Algorithm
+namespace DieEngine
 {
 	public class EquationResolver
 	{
-		// todo: downsides of tight coupling here?
+		// todo: tight coupling
 		private static CustomFunctionRunner _customFunctionRunner = new CustomFunctionRunner();
 
 		public double Process(string equation, IDictionary<string, double> inputs)
 		{
+			// resolve custom functions
 			string processedEquation = _customFunctionRunner.InsertEquations(equation, inputs);
+			// resolve function with mxparser
 			var exp = new Expression(processedEquation);
 			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing
 			if (inputs != null)
@@ -24,6 +27,7 @@ namespace DieEngine.Algorithm
 				}
 			}
 			var result = exp.calculate();
+			// if function failed to resolvethrow exception
 			if (double.IsNaN(result))
 			{
 				string[] missingValues = exp.getMissingUserDefinedArguments();

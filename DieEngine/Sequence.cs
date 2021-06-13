@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using DieEngine.SequencesItems;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DieEngine
 {
-	public class DieSequence
+	public class Sequence
 	{
 		private IDictionary<string, double> GetMappedInputs(int order, IDictionary<string, double> inputs)
 		{
@@ -25,34 +26,37 @@ namespace DieEngine
 
 		public string Name { get; set; }
 
-		public List<Die> Dice { get; set; } = new List<Die>();
+		public List<ISequenceItem> Items { get; set; } = new List<ISequenceItem>();
 
 		public List<Condition> Conditions { get; set; } = new List<Condition>();
 
 		/// <summary>
-		///		Renames input variables according to mappings before using them in conditions or die rolls.
-		///		The inputs are always copied to a new dictionary before changes are made to isolate changes for each roll.
+		///		Renames input variables according to mappings before using them in conditions or sequence item equations.
+		///		The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
 		/// </summary>
-		public List<DieMapping> Mappings { get; set; } = new List<DieMapping>();
+		public List<Mapping> Mappings { get; set; } = new List<Mapping>();
 
-		public DieSequenceResult RollAll(IDictionary<string, double> inputs = null)
+		public SequenceResult Process(IDictionary<string, double> inputs = null)
 		{
 			inputs = inputs ?? new Dictionary<string, double>();
-			var result = new DieSequenceResult();
-			for (int dieNum = 0; dieNum < Dice.Count; dieNum++)
+			var result = new SequenceResult();
+			for (int i = 0; i < Items.Count; i++)
 			{
-				var die = Dice[dieNum];
-				var conditions = Conditions.Where(x => x.Order == dieNum);
-				var mappedInputs = GetMappedInputs(dieNum, inputs);
+				var item = Items[i];
+				var conditions = Conditions.Where(x => x.Order == i);
+				var mappedInputs = GetMappedInputs(i, inputs);
 				var isValid = true;
 				foreach (var condition in conditions)
 				{
 					isValid = condition.Check(mappedInputs);
 				}
 				if (!isValid) continue;
-				DieRoll roll = die.Roll(mappedInputs);
-				inputs[die.ResultName] = roll.Result;
-				result.Rolls.Add(roll);
+				SequenceItemResult itemResult = item.GetResult(mappedInputs);
+				if (item is DieSequenceItem die)  // make result available to following equations
+				{
+					inputs[die.ResultName] = itemResult.Result;
+				}
+				result.Results.Add(itemResult);
 			}
 			return result;
 		}

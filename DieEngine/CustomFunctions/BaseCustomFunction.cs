@@ -1,13 +1,13 @@
-﻿using System;
+﻿using DieEngine.Exceptions;
 
-namespace DieEngine.Algorithm
+namespace DieEngine.CustomFunctions
 {
 	public abstract class BaseCustomFunction : ICustomFunction
 	{
 		protected void Validate(string[] parameters)
 		{
 			if (parameters == null || parameters.Length < RequiredParamCount)
-				throw new ArgumentException($"The {FunctionName} equation requires {RequiredParamCount} parameters.");
+				throw new CustomFunctionArgumentException($"The {FunctionName} equation requires {RequiredParamCount} parameters.");
 		}
 
 		protected int ParseIntParamOrThrow(string value, int paramNumber, string paramName)
@@ -15,7 +15,7 @@ namespace DieEngine.Algorithm
 			if (int.TryParse(value, out int result))
 				return result;
 
-			throw new ArgumentException($"Parameter number {paramNumber} '{paramName}' could not be parsed to an integer! Value: {value}.");
+			throw new CustomFunctionArgumentException($"Parameter number {paramNumber} '{paramName}' could not be parsed to an integer! Value: {value}.");
 		}
 
 		public abstract int RequiredParamCount { get; }
