@@ -36,7 +36,7 @@ namespace DieEngine
 		/// </summary>
 		public List<Mapping> Mappings { get; set; } = new List<Mapping>();
 
-		public SequenceResult RollAll(IDictionary<string, double> inputs = null)
+		public SequenceResult Process(IDictionary<string, double> inputs = null)
 		{
 			inputs = inputs ?? new Dictionary<string, double>();
 			var result = new SequenceResult();

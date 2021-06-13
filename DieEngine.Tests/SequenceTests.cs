@@ -1,8 +1,6 @@
 using DieEngine.Exceptions;
 using DieEngine.SequencesItems;
-using Moq;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 
 namespace DieEngine.Tests
@@ -23,7 +21,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.RollAll();
+			var result = sequence.Process();
 
 			Assert.That(result.Results[0].Result, Is.EqualTo(2));
 		}
@@ -41,7 +39,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.RollAll();
+			var result = sequence.Process();
 
 			Assert.That(result.Results[0].Result, Is.EqualTo(2));
 			Assert.That(result.Results[1].Result, Is.EqualTo(3));
@@ -64,7 +62,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.RollAll();
+			var result = sequence.Process();
 
 			Assert.That(result.Results[0].Result, Is.EqualTo(2));
 			Assert.That(result.Results[1].Result, Is.EqualTo(3));
@@ -86,7 +84,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			Assert.Throws<EquationInputArgumentException>(() => sequence.RollAll());
+			Assert.Throws<EquationInputArgumentException>(() => sequence.Process());
 		}
 
 		/// Test multiple die rolls where second condition is driven by a variable and fails
@@ -106,7 +104,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			Assert.Throws<ConditionFailedException>(() => sequence.RollAll());
+			Assert.Throws<ConditionFailedException>(() => sequence.Process());
 		}
 
 		/// Test that inputs is a different instance for each die roll
@@ -122,7 +120,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.RollAll();
+			var result = sequence.Process();
 
 			Assert.IsNotNull(result.Results[0].Inputs);
 			Assert.IsNotNull(result.Results[1].Inputs);
@@ -152,7 +150,7 @@ namespace DieEngine.Tests
 				{ "a", 1 }
 			};
 
-			var result = sequence.RollAll(inputs);
+			var result = sequence.Process(inputs);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo(1));
 		}
@@ -178,7 +176,7 @@ namespace DieEngine.Tests
 				{ "a", 1 }
 			};
 
-			Assert.Throws<ConditionFailedException>(() => sequence.RollAll(inputs));
+			Assert.Throws<ConditionFailedException>(() => sequence.Process(inputs));
 		}
 
 		/// Test that a die is skipped when it fails condition check but isn't supposed to throw
@@ -197,7 +195,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.RollAll();
+			var result = sequence.Process();
 
 			Assert.That(result.Results, Is.Empty);
 		}
@@ -219,7 +217,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.RollAll();
+			var result = sequence.Process();
 
 			Assert.That(result.Results, Has.Count.EqualTo(1));
 			Assert.That(result.Results[0].Result, Is.EqualTo(2));
@@ -242,7 +240,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var ex = Assert.Throws<ConditionFailedException>(() => sequence.RollAll());
+			var ex = Assert.Throws<ConditionFailedException>(() => sequence.Process());
 			Assert.That(ex.Message, Is.EqualTo(customExMessage));
 		}
 
@@ -269,7 +267,7 @@ namespace DieEngine.Tests
 				{ "i", 1 }
 			};
 
-			var results = sequence.RollAll(inputs);
+			var results = sequence.Process(inputs);
 
 			Assert.That(results.Results[0].Result, Is.EqualTo(1));
 		}
@@ -294,7 +292,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var results = sequence.RollAll();
+			var results = sequence.Process();
 
 			Assert.That(results.Results[1].Result, Is.EqualTo(1));
 		}
@@ -319,7 +317,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var results = sequence.RollAll();
+			var results = sequence.Process();
 
 			Assert.That(results.Results[1].Result, Is.EqualTo(2));
 		}
@@ -346,7 +344,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var results = sequence.RollAll();
+			var results = sequence.Process();
 
 			Assert.That(results.Results[2].Result, Is.EqualTo(2));
 		}
@@ -373,7 +371,7 @@ namespace DieEngine.Tests
 			};
 
 			// die c throws an exception because it does not know about the mapped input
-			Assert.Throws<EquationInputArgumentException>(() => sequence.RollAll());
+			Assert.Throws<EquationInputArgumentException>(() => sequence.Process());
 		}
 
 		/// Test inject mapped input variables into custom function
@@ -402,7 +400,7 @@ namespace DieEngine.Tests
 				{ "dieMax", 6 }
 			};
 
-			var results = sequence.RollAll(inputs);
+			var results = sequence.Process(inputs);
 
 			Assert.That(results.Results[0].Result, Is.GreaterThanOrEqualTo(1));
 			Assert.That(results.Results[0].Result, Is.LessThanOrEqualTo(6));
@@ -420,7 +418,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var results = sequence.RollAll();
+			var results = sequence.Process();
 
 			Assert.That(results.Results[0].ResolvedItem, Is.TypeOf<DataSequenceItem<string>>());
 			Assert.That(results.Results[0].Result, Is.EqualTo(1));
