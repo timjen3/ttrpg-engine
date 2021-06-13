@@ -31,15 +31,15 @@ namespace DieEngine
 		public List<Condition> Conditions { get; set; } = new List<Condition>();
 
 		/// <summary>
-		///		Renames input variables according to mappings before using them in conditions or die rolls.
-		///		The inputs are always copied to a new dictionary before changes are made to isolate changes for each roll.
+		///		Renames input variables according to mappings before using them in conditions or sequence item equations.
+		///		The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
 		/// </summary>
 		public List<Mapping> Mappings { get; set; } = new List<Mapping>();
 
-		public DieSequenceResult RollAll(IDictionary<string, double> inputs = null)
+		public SequenceResult RollAll(IDictionary<string, double> inputs = null)
 		{
 			inputs = inputs ?? new Dictionary<string, double>();
-			var result = new DieSequenceResult();
+			var result = new SequenceResult();
 			for (int i = 0; i < Items.Count; i++)
 			{
 				var item = Items[i];
@@ -51,12 +51,12 @@ namespace DieEngine
 					isValid = condition.Check(mappedInputs);
 				}
 				if (!isValid) continue;
-				SequenceItemResult roll = item.GetResult(mappedInputs);
-				if (item is DieSequenceItem die)
+				SequenceItemResult itemResult = item.GetResult(mappedInputs);
+				if (item is DieSequenceItem die)  // make result available to following equations
 				{
-					inputs[die.ResultName] = roll.Result;
+					inputs[die.ResultName] = itemResult.Result;
 				}
-				result.Results.Add(roll);
+				result.Results.Add(itemResult);
 			}
 			return result;
 		}

@@ -1,5 +1,8 @@
 ﻿namespace DieEngine.SequencesItems
 {
+	/// <summary>
+	///		The result is loaded into inputs to be made available to following equations
+	/// </summary>
 	public class DieSequenceItem : BaseSequenceItem
 	{
 		public string ResultName { get; set; }

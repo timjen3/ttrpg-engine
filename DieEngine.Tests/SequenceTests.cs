@@ -1,6 +1,8 @@
 using DieEngine.Exceptions;
 using DieEngine.SequencesItems;
+using Moq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace DieEngine.Tests
@@ -406,21 +408,21 @@ namespace DieEngine.Tests
 			Assert.That(results.Results[0].Result, Is.LessThanOrEqualTo(6));
 		}
 
-		/// Test processing an action
+		/// Test processing a data sequence item
 		[Test]
-		public void ActionSequenceItemTest()
+		public void DataSequenceItemTest()
 		{
 			var sequence = new Sequence()
 			{
 				Items = new List<ISequenceItem>
 				{
-					new ActionSequenceItem<string>("a", "1", "some instruction"),
+					new DataSequenceItem<string>("a", "1", "some instruction"),
 				}
 			};
 
 			var results = sequence.RollAll();
 
-			Assert.That(results.Results[0].ResolvedItem, Is.TypeOf<ActionSequenceItem<string>>());
+			Assert.That(results.Results[0].ResolvedItem, Is.TypeOf<DataSequenceItem<string>>());
 			Assert.That(results.Results[0].Result, Is.EqualTo(1));
 		}
 	}

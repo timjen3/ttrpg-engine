@@ -1,5 +1,4 @@
-﻿using DieEngine.CustomFunctions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DieEngine.SequencesItems
 {
@@ -11,15 +10,14 @@ namespace DieEngine.SequencesItems
 		public string Name { get; set; }
 		public string Equation { get; set; }
 
-		// Roll this die
 		public SequenceItemResult GetResult(IDictionary<string, double> inputs = null)
 		{
-			var dieRoll = new SequenceItemResult();
-			dieRoll.Inputs = inputs;
-			dieRoll.ResolvedItem = this;
-			dieRoll.Result = _equationResolver.Process(Equation, inputs);
+			var result = new SequenceItemResult();
+			result.Inputs = inputs;
+			result.ResolvedItem = this;
+			result.Result = _equationResolver.Process(Equation, inputs);
 
-			return dieRoll;
+			return result;
 		}
 	}
 }

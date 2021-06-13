@@ -12,7 +12,7 @@ namespace DieEngine
 			Mappings = mappings;
 		}
 
-		// die to apply mapping to
+		// sequence item to apply mapping to
 		public int Order { get; set; }
 
 		// mappings to be applied

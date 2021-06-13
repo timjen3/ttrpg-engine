@@ -2,7 +2,7 @@
 
 namespace DieEngine.SequencesItems
 {
-	public class DieSequenceResult
+	public class SequenceResult
 	{
 		public List<SequenceItemResult> Results { get; set; } = new List<SequenceItemResult>();
 	}
