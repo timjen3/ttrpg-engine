@@ -1,4 +1,6 @@
-﻿using DieEngine.SequencesItems;
+﻿using DieEngine.CustomFunctions;
+using DieEngine.SequencesItems;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,7 +10,7 @@ namespace DieEngine
 	{
 		private IDictionary<string, double> GetMappedInputs(int order, IDictionary<string, double> inputs)
 		{
-			var mappedInputs = new Dictionary<string, double>(inputs);  // copy to prevent any changes to source inputs
+			var mappedInputs = new Dictionary<string, double>(inputs, StringComparer.OrdinalIgnoreCase);  // copy to prevent any changes to source inputs
 			var mappings = Mappings.SingleOrDefault(x => x.Order == order);
 			if (mappings == null) return mappedInputs;
 
@@ -36,7 +38,7 @@ namespace DieEngine
 		/// </summary>
 		public List<Mapping> Mappings { get; set; } = new List<Mapping>();
 
-		public SequenceResult Process(IDictionary<string, double> inputs = null)
+		public SequenceResult Process(IEquationResolver equationResolver, IDictionary<string, double> inputs = null)
 		{
 			inputs = inputs ?? new Dictionary<string, double>();
 			var result = new SequenceResult();
@@ -48,10 +50,10 @@ namespace DieEngine
 				var isValid = true;
 				foreach (var condition in conditions)
 				{
-					isValid = condition.Check(mappedInputs);
+					isValid = condition.Check(equationResolver, mappedInputs);
 				}
 				if (!isValid) continue;
-				SequenceItemResult itemResult = item.GetResult(mappedInputs);
+				SequenceItemResult itemResult = item.GetResult(equationResolver, mappedInputs);
 				if (item is DieSequenceItem die)  // make result available to following equations
 				{
 					inputs[die.ResultName] = itemResult.Result;

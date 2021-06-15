@@ -1,5 +1,7 @@
+using DieEngine.CustomFunctions;
 using DieEngine.Exceptions;
 using DieEngine.SequencesItems;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -9,12 +11,17 @@ namespace DieEngine.Tests
 	[TestOf(typeof(DieSequenceItem))]
 	public class DieSequenceItemTests
 	{
+		IEquationResolver EquationResolver;
 		DieSequenceItem TestDie;
 
 		[SetUp]
 		public void Setup()
 		{
-			TestDie = new DieSequenceItem
+			var services = new ServiceCollection();
+			services.AddDieEngineServices();
+			var provider = services.BuildServiceProvider();
+			EquationResolver = provider.GetRequiredService<IEquationResolver>();
+			TestDie = new DieSequenceItem()
 			{
 				Name = ""
 			};
@@ -26,7 +33,7 @@ namespace DieEngine.Tests
 		{
 			TestDie.Equation = "1 + 1";
 
-			var result = TestDie.GetResult();
+			var result = TestDie.GetResult(EquationResolver);
 
 			Assert.That(result.Result, Is.EqualTo(2));
 		}
@@ -41,7 +48,7 @@ namespace DieEngine.Tests
 				{ "a", 1 },
 			};
 
-			var result = TestDie.GetResult(inputs);
+			var result = TestDie.GetResult(EquationResolver, inputs);
 
 			Assert.That(result.Result, Is.EqualTo(2));
 		}
@@ -52,7 +59,7 @@ namespace DieEngine.Tests
 		{
 			TestDie.Equation = "1 + a";
 
-			Assert.Throws<EquationInputArgumentException>(() => TestDie.GetResult());
+			Assert.Throws<EquationInputArgumentException>(() => TestDie.GetResult(EquationResolver));
 		}
 
 		/// Test custom dice function
@@ -62,7 +69,7 @@ namespace DieEngine.Tests
 		{
 			TestDie.Equation = "[dice:1,6]";
 
-			var result = TestDie.GetResult();
+			var result = TestDie.GetResult(EquationResolver);
 			TestContext.WriteLine($"Result: {result.Result}");
 
 			Assert.That(result.Result, Is.GreaterThanOrEqualTo(1));
@@ -76,7 +83,7 @@ namespace DieEngine.Tests
 		{
 			TestDie.Equation = "[dice:1,6] + [dice:1,6]";
 
-			var result = TestDie.GetResult();
+			var result = TestDie.GetResult(EquationResolver);
 			TestContext.WriteLine($"Result: {result.Result}");
 
 			Assert.That(result.Result, Is.GreaterThanOrEqualTo(2));
@@ -89,7 +96,7 @@ namespace DieEngine.Tests
 		{
 			TestDie.Equation = "[unknown:1,6]";
 
-			Assert.Throws<UnknownCustomFunctionException>(() => TestDie.GetResult());
+			Assert.Throws<UnknownCustomFunctionException>(() => TestDie.GetResult(EquationResolver));
 		}
 
 		/// Test inject input variables into custom function
@@ -104,7 +111,7 @@ namespace DieEngine.Tests
 			};
 			TestDie.Equation = "[dice:{minRoll},{maxRoll}]";
 
-			var result = TestDie.GetResult(inputs);
+			var result = TestDie.GetResult(EquationResolver, inputs);
 			TestContext.WriteLine($"Result: {result.Result}");
 
 			Assert.That(result.Result, Is.GreaterThanOrEqualTo(1));

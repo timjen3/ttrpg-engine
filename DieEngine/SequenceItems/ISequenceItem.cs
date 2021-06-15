@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DieEngine.CustomFunctions;
+using System.Collections.Generic;
 
 namespace DieEngine.SequencesItems
 {
@@ -8,6 +9,6 @@ namespace DieEngine.SequencesItems
 
 		string Equation { get; }
 
-		SequenceItemResult GetResult(IDictionary<string, double> inputs = null);
+		SequenceItemResult GetResult(IEquationResolver equationResolver, IDictionary<string, double> inputs = null);
 	}
 }

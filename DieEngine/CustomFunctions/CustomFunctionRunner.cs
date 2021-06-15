@@ -1,6 +1,5 @@
 ﻿using DieEngine.Exceptions;
-using SmartFormat;
-using SmartFormat.Extensions;
+using FormatWith;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +7,9 @@ using System.Text.RegularExpressions;
 
 namespace DieEngine.CustomFunctions
 {
-	public class CustomFunctionRunner
+	public class CustomFunctionRunner : ICustomFunctionRunner
 	{
-		private static readonly IDictionary<string, ICustomFunction> _equationsLookup;
-		private static readonly SmartFormatter _formatter;
+		private readonly IDictionary<string, ICustomFunction> _equationsLookup;
 
 		private IEnumerable<string> ParseCustomFunctions(string rawEquation)
 		{
@@ -28,22 +26,13 @@ namespace DieEngine.CustomFunctions
 			return matchStrings;
 		}
 
-		// todo: maybe do this with dependency injection instead; particularly if functions need access to other services
-		static CustomFunctionRunner()
+		public CustomFunctionRunner(IEnumerable<ICustomFunction> equations)
 		{
-			// load functions with reflection
 			_equationsLookup = new Dictionary<string, ICustomFunction>(StringComparer.OrdinalIgnoreCase);
-			var customFunctions = AppDomain.CurrentDomain.GetAssemblies()
-				.SelectMany(x => x.GetTypes())
-				.Where(x => !x.IsAbstract && !x.IsInterface && typeof(ICustomFunction).IsAssignableFrom(x))
-				.Select(x => (ICustomFunction) Activator.CreateInstance(x));
-			foreach (var customFunction in customFunctions)
+			foreach (var equation in equations)
 			{
-				_equationsLookup[customFunction.FunctionName] = customFunction;
+				_equationsLookup[equation.FunctionName] = equation;
 			}
-			// set up formatter for injecting variables into custom function params
-			_formatter = Smart.CreateDefaultSmartFormat();
-			_formatter.AddExtensions(new DictionarySource(_formatter));
 		}
 
 		public bool VerifyEquation(string rawEquation)
@@ -63,7 +52,14 @@ namespace DieEngine.CustomFunctions
 				var functionParts = function.Split(':');
 				string functionName = functionParts[0];
 				string functionParams = functionParts[1];
-				functionParams = _formatter.Format(functionParams, inputs);  // replace function parameters with inputs if any matches
+				if (inputs != null)
+				{
+					// todo: avoid copy here (FormatWith library shortcoming)
+					var inputs2 = new Dictionary<string, string>();
+					foreach (var item in inputs)
+						inputs2[item.Key] = item.Value.ToString();
+					functionParams = functionParams.FormatWith(inputs2, MissingKeyBehaviour.ThrowException);  // replace function parameters with inputs if any matches
+				}
 				if (_equationsLookup.TryGetValue(functionName, out ICustomFunction value))
 				{
 					string[] functionParamsSplit = functionParams.Split(',');

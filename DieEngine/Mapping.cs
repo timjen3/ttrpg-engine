@@ -6,7 +6,7 @@ namespace DieEngine
 	{
 		public Mapping(){}
 
-		public Mapping(int order, Dictionary<string, string> mappings)
+		public Mapping(int order, IDictionary<string, string> mappings)
 		{
 			Order = order;
 			Mappings = mappings;
@@ -16,6 +16,6 @@ namespace DieEngine
 		public int Order { get; set; }
 
 		// mappings to be applied
-		public Dictionary<string, string> Mappings { get; set; }
+		public IDictionary<string, string> Mappings { get; set; }
 	}
 }

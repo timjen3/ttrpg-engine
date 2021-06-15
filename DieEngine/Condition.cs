@@ -6,9 +6,8 @@ namespace DieEngine
 {
 	public class Condition
 	{
-		// todo: dependency injection
-		static readonly EquationResolver _equationResolver = new EquationResolver();
 		const string DEFAULT_FAILURE_MESSAGE = "The condition failed.";
+
 		public Condition(){}
 
 		public Condition(string equation, int order, bool throwOnFail = false, string failureMessage = null)
@@ -32,9 +31,9 @@ namespace DieEngine
 		public string FailureMessage { get; set; }
 
 		/// Determine if the condition fails based on input variables
-		public virtual bool Check(IDictionary<string, double> inputs)
+		public virtual bool Check(IEquationResolver equationResolver, IDictionary<string, double> inputs)
 		{
-			var result = _equationResolver.Process(Equation, inputs);
+			var result = equationResolver.Process(Equation, inputs);
 			var valid = result >= 1;
 			if (!valid && ThrowOnFail)
 			{
