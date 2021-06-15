@@ -1,17 +1,26 @@
 ﻿using System;
 using System.Linq;
 
-namespace DieEngine.CustomFunctions
+namespace DieEngine.CustomFunctions.Defaults
 {
 	/// <summary>
 	///		Roll 1+ same-sided die
 	/// </summary>
 	public class DiceFunction : BaseCustomFunction
 	{
-		private readonly Random _gen = new Random();
+		private static readonly Random _gen = new Random();
 
 		public override string FunctionName => "Dice";
 		public override int RequiredParamCount => 2;
+
+		public double DoFunction(int dieCount, int maxRange)
+		{
+			int roll = Enumerable.Range(1, dieCount)
+				.Select(i => _gen.Next(1, maxRange + 1))
+				.Sum();
+
+			return roll;
+		}
 
 		public override double DoFunction(params string[] values)
 		{
@@ -19,11 +28,8 @@ namespace DieEngine.CustomFunctions
 
 			int dieCount = this.ParseIntParamOrThrow(values[0], 1, nameof(dieCount));
 			int maxRange = this.ParseIntParamOrThrow(values[1], 2, nameof(maxRange));
-			int roll = Enumerable.Range(1, dieCount)
-				.Select(i => _gen.Next(1, maxRange + 1))
-				.Sum();
 
-			return roll;
+			return DoFunction(dieCount, maxRange);
 		}
 	}
 }

@@ -1,15 +1,18 @@
-﻿using DieEngine.CustomFunctions;
-using DieEngine.Exceptions;
+﻿using DieEngine.Exceptions;
 using org.mariuszgromada.math.mxparser;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DieEngine
+namespace DieEngine.CustomFunctions
 {
-	public class EquationResolver
+	public class EquationResolver : IEquationResolver
 	{
-		// todo: tight coupling
-		private static CustomFunctionRunner _customFunctionRunner = new CustomFunctionRunner();
+		private readonly ICustomFunctionRunner _customFunctionRunner;
+
+		public EquationResolver(ICustomFunctionRunner customFunctionRunner)
+		{
+			_customFunctionRunner = customFunctionRunner;
+		}
 
 		public double Process(string equation, IDictionary<string, double> inputs)
 		{
@@ -20,14 +23,13 @@ namespace DieEngine
 			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing
 			if (inputs != null)
 			{
-				inputs = new Dictionary<string, double>(inputs);
 				foreach (var kvp in inputs)
 				{
 					exp.addArguments(new Argument(kvp.Key.Trim(), kvp.Value));
 				}
 			}
 			var result = exp.calculate();
-			// if function failed to resolvethrow exception
+			// if function failed to resolve throw exception
 			if (double.IsNaN(result))
 			{
 				string[] missingValues = exp.getMissingUserDefinedArguments();

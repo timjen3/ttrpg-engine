@@ -1,5 +1,7 @@
+﻿using DieEngine.CustomFunctions;
 using DieEngine.Exceptions;
 using DieEngine.SequencesItems;
+using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -9,6 +11,17 @@ namespace DieEngine.Tests
 	[TestOf(typeof(Sequence))]
 	public class SequenceTests
 	{
+		IEquationResolver EquationResolver;
+
+		[OneTimeSetUp]
+		public void SetupTests()
+		{
+			var services = new ServiceCollection();
+			services.AddDieEngineServices();
+			var provider = services.BuildServiceProvider();
+			EquationResolver = provider.GetRequiredService<IEquationResolver>();
+		}
+
 		/// Test a single die roll
 		[Test]
 		public void OneDie_RollAll_HasDieResult()
@@ -21,7 +34,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.Process();
+			var result = sequence.Process(EquationResolver);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo(2));
 		}
@@ -39,7 +52,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.Process();
+			var result = sequence.Process(EquationResolver);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo(2));
 			Assert.That(result.Results[1].Result, Is.EqualTo(3));
@@ -62,7 +75,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.Process();
+			var result = sequence.Process(EquationResolver);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo(2));
 			Assert.That(result.Results[1].Result, Is.EqualTo(3));
@@ -84,7 +97,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			Assert.Throws<EquationInputArgumentException>(() => sequence.Process());
+			Assert.Throws<EquationInputArgumentException>(() => sequence.Process(EquationResolver));
 		}
 
 		/// Test multiple die rolls where second condition is driven by a variable and fails
@@ -104,7 +117,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			Assert.Throws<ConditionFailedException>(() => sequence.Process());
+			Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver));
 		}
 
 		/// Test that inputs is a different instance for each die roll
@@ -120,7 +133,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.Process();
+			var result = sequence.Process(EquationResolver);
 
 			Assert.IsNotNull(result.Results[0].Inputs);
 			Assert.IsNotNull(result.Results[1].Inputs);
@@ -150,7 +163,7 @@ namespace DieEngine.Tests
 				{ "a", 1 }
 			};
 
-			var result = sequence.Process(inputs);
+			var result = sequence.Process(EquationResolver, inputs);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo(1));
 		}
@@ -176,7 +189,7 @@ namespace DieEngine.Tests
 				{ "a", 1 }
 			};
 
-			Assert.Throws<ConditionFailedException>(() => sequence.Process(inputs));
+			Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver, inputs));
 		}
 
 		/// Test that a die is skipped when it fails condition check but isn't supposed to throw
@@ -195,7 +208,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.Process();
+			var result = sequence.Process(EquationResolver);
 
 			Assert.That(result.Results, Is.Empty);
 		}
@@ -217,7 +230,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var result = sequence.Process();
+			var result = sequence.Process(EquationResolver);
 
 			Assert.That(result.Results, Has.Count.EqualTo(1));
 			Assert.That(result.Results[0].Result, Is.EqualTo(2));
@@ -240,7 +253,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var ex = Assert.Throws<ConditionFailedException>(() => sequence.Process());
+			var ex = Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver));
 			Assert.That(ex.Message, Is.EqualTo(customExMessage));
 		}
 
@@ -267,7 +280,7 @@ namespace DieEngine.Tests
 				{ "i", 1 }
 			};
 
-			var results = sequence.Process(inputs);
+			var results = sequence.Process(EquationResolver, inputs);
 
 			Assert.That(results.Results[0].Result, Is.EqualTo(1));
 		}
@@ -292,7 +305,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var results = sequence.Process();
+			var results = sequence.Process(EquationResolver);
 
 			Assert.That(results.Results[1].Result, Is.EqualTo(1));
 		}
@@ -317,7 +330,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var results = sequence.Process();
+			var results = sequence.Process(EquationResolver);
 
 			Assert.That(results.Results[1].Result, Is.EqualTo(2));
 		}
@@ -344,7 +357,7 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var results = sequence.Process();
+			var results = sequence.Process(EquationResolver);
 
 			Assert.That(results.Results[2].Result, Is.EqualTo(2));
 		}
@@ -371,7 +384,7 @@ namespace DieEngine.Tests
 			};
 
 			// die c throws an exception because it does not know about the mapped input
-			Assert.Throws<EquationInputArgumentException>(() => sequence.Process());
+			Assert.Throws<EquationInputArgumentException>(() => sequence.Process(EquationResolver));
 		}
 
 		/// Test inject mapped input variables into custom function
@@ -400,27 +413,29 @@ namespace DieEngine.Tests
 				{ "dieMax", 6 }
 			};
 
-			var results = sequence.Process(inputs);
+			var results = sequence.Process(EquationResolver, inputs);
 
 			Assert.That(results.Results[0].Result, Is.GreaterThanOrEqualTo(1));
 			Assert.That(results.Results[0].Result, Is.LessThanOrEqualTo(6));
 		}
 
-		/// Test processing a data sequence item
+		/// Test that the result contains the custom data
 		[Test]
-		public void DataSequenceItemTest()
+		public void DataSequenceItemSequencedTest()
 		{
+			string customData = "some instruction";
 			var sequence = new Sequence()
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DataSequenceItem<string>("a", "1", "some instruction"),
+					new DataSequenceItem<string>("a", "1", customData),
 				}
 			};
 
-			var results = sequence.Process();
+			var results = sequence.Process(EquationResolver);
 
 			Assert.That(results.Results[0].ResolvedItem, Is.TypeOf<DataSequenceItem<string>>());
+			Assert.That(((DataSequenceItem<string>)results.Results[0].ResolvedItem).Data, Is.EqualTo(customData));
 			Assert.That(results.Results[0].Result, Is.EqualTo(1));
 		}
 	}
