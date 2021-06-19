@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DieEngine.CustomFunctions
+namespace DieEngine.Equations
 {
 	public interface IEquationResolver
 	{

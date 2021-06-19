@@ -1,45 +1,49 @@
-﻿using DieEngine.CustomFunctions;
+﻿using DieEngine.Equations;
 using DieEngine.SequencesItems;
-using Microsoft.Extensions.DependencyInjection;
+using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace DieEngine.Tests
 {
-	[TestFixture]
+	[TestFixture(Category = "Unit")]
 	[TestOf(typeof(DataSequenceItem<string>))]
 	public class DataSequenceItemTests
 	{
-		IEquationResolver EquationResolver;
-
-		[SetUp]
-		public void Setup()
+		private IEquationResolver MockEquationResolver(int processResult)
 		{
-			var services = new ServiceCollection();
-			services.AddDieEngineServices();
-			var provider = services.BuildServiceProvider();
-			EquationResolver = provider.GetRequiredService<IEquationResolver>();
+			var resolver = new Mock<IEquationResolver>();
+			resolver.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, double>>())).Returns(processResult);
+
+			return resolver.Object;
 		}
+
+		Dictionary<string, double> Inputs = new Dictionary<string, double>();
 
 		/// Test that a data sequence item resolves a basic equation
 		[Test]
 		public void DataSequenceItemResolvesTest()
 		{
+			int equationResult = 1;
 			var item = new DataSequenceItem<string>("a", "1", "");
+			var resolver = MockEquationResolver(equationResult);
 
-			var result = item.GetResult(EquationResolver);
 
-			Assert.That(result.Result, Is.EqualTo(1));
+			var result = item.GetResult(resolver, ref Inputs);
+
+			Assert.That(result.Result, Is.EqualTo(equationResult));
 		}
 
 		/// Test that a data sequence item resolves a basic equation
 		[Test]
 		public void DataSequenceItemResultTest()
 		{
+			int equationResult = 1;
 			string customData = "some instruction";
 			var item = new DataSequenceItem<string>("a", "1", customData);
+			var resolver = MockEquationResolver(equationResult);
 
-			var result = item.GetResult(EquationResolver);
+			var result = item.GetResult(resolver, ref Inputs);
 
 			Assert.That(result.ResolvedItem, Is.TypeOf<DataSequenceItem<string>>());
 			Assert.That(((DataSequenceItem<string>)result.ResolvedItem).Data, Is.EqualTo(customData));

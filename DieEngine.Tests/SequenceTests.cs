@@ -1,5 +1,6 @@
-﻿using DieEngine.CustomFunctions;
+﻿using DieEngine.Equations;
 using DieEngine.Exceptions;
+using DieEngine.Mappings;
 using DieEngine.SequencesItems;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
@@ -7,7 +8,7 @@ using System.Collections.Generic;
 
 namespace DieEngine.Tests
 {
-	[TestFixture]
+	[TestFixture(Category="Integration")]
 	[TestOf(typeof(Sequence))]
 	public class SequenceTests
 	{
@@ -69,7 +70,7 @@ namespace DieEngine.Tests
 					new DieSequenceItem("a", "1 + 1", "ar"),
 					new DieSequenceItem("b", "1 + ar", "br"),
 				},
-				Conditions = new List<Condition>
+				Conditions = new List<ICondition>
 				{
 					new Condition("ar = 2", 1)
 				}
@@ -91,7 +92,7 @@ namespace DieEngine.Tests
 				{
 					new DieSequenceItem("a", "1 + 1", "ar")
 				},
-				Conditions = new List<Condition>
+				Conditions = new List<ICondition>
 				{
 					new Condition("br = 2", 0)
 				}
@@ -111,7 +112,7 @@ namespace DieEngine.Tests
 					new DieSequenceItem("a", "1", "ar"),
 					new DieSequenceItem("b", "1 + ar", "br"),
 				},
-				Conditions = new List<Condition>
+				Conditions = new List<ICondition>
 				{
 					new Condition("ar = 2", 1, true)
 				}
@@ -152,7 +153,7 @@ namespace DieEngine.Tests
 				{
 					new DieSequenceItem("a", "1", "ar"),
 				},
-				Conditions = new List<Condition>
+				Conditions = new List<ICondition>
 				{
 					new Condition("a > 0", 0),
 					new Condition("a < 2", 0)
@@ -178,7 +179,7 @@ namespace DieEngine.Tests
 				{
 					new DieSequenceItem("a", "1", "ar"),
 				},
-				Conditions = new List<Condition>
+				Conditions = new List<ICondition>
 				{
 					new Condition("a > 0", 0, true),
 					new Condition("a < 1", 0, true)
@@ -202,7 +203,7 @@ namespace DieEngine.Tests
 				{
 					new DieSequenceItem("a", "1", "ar"),
 				},
-				Conditions = new List<Condition>
+				Conditions = new List<ICondition>
 				{
 					new Condition("0", 0, false)
 				}
@@ -224,7 +225,7 @@ namespace DieEngine.Tests
 					new DieSequenceItem("a", "1", "ar"),
 					new DieSequenceItem("b", "2", "br"),
 				},
-				Conditions = new List<Condition>
+				Conditions = new List<ICondition>
 				{
 					new Condition("0", 0, false)
 				}
@@ -247,7 +248,7 @@ namespace DieEngine.Tests
 				{
 					new DieSequenceItem("a", "1", "ar"),
 				},
-				Conditions = new List<Condition>
+				Conditions = new List<ICondition>
 				{
 					new Condition("0", 0, true, customExMessage)
 				}
@@ -267,12 +268,9 @@ namespace DieEngine.Tests
 				{
 					new DieSequenceItem("a", "im", "ar"),
 				},
-				Mappings = new List<Mapping>
+				Mappings = new List<IMapping>
 				{
-					new Mapping(0, new Dictionary<string, string>
-					{
-						{ "i", "im" }
-					})
+					new Mapping("i", "im", 0)
 				}
 			};
 			var inputs = new Dictionary<string, double>
@@ -296,12 +294,9 @@ namespace DieEngine.Tests
 					new DieSequenceItem("a", "1", "ar"),
 					new DieSequenceItem("b", "arr", "br"),
 				},
-				Mappings = new List<Mapping>
+				Mappings = new List<IMapping>
 				{
-					new Mapping(1, new Dictionary<string, string>
-					{
-						{ "ar", "arr" }
-					})
+					new Mapping("ar", "arr", 1)
 				}
 			};
 
@@ -321,12 +316,9 @@ namespace DieEngine.Tests
 					new DieSequenceItem("a", "1", "ar"),
 					new DieSequenceItem("b", "ar + arr", "br"),
 				},
-				Mappings = new List<Mapping>
+				Mappings = new List<IMapping>
 				{
-					new Mapping(1, new Dictionary<string, string>
-					{
-						{ "ar", "arr" }
-					})
+					new Mapping("ar", "arr", 1)
 				}
 			};
 
@@ -347,13 +339,10 @@ namespace DieEngine.Tests
 					new DieSequenceItem("b", "1", "br"),
 					new DieSequenceItem("c", "arr + brr", "cr"),
 				},
-				Mappings = new List<Mapping>
+				Mappings = new List<IMapping>
 				{
-					new Mapping(2, new Dictionary<string, string>
-					{
-						{ "ar", "arr" },
-						{ "br", "brr" }
-					})
+					new Mapping("ar", "arr", 2),
+					new Mapping("br", "brr", 2),
 				}
 			};
 
@@ -374,12 +363,9 @@ namespace DieEngine.Tests
 					new DieSequenceItem("b", "arr", "br"),
 					new DieSequenceItem("c", "arr", "cr"),
 				},
-				Mappings = new List<Mapping>
+				Mappings = new List<IMapping>
 				{
-					new Mapping(2, new Dictionary<string, string>
-					{
-						{ "ar", "arr" }
-					})
+					new Mapping("ar", "arr", 2)
 				}
 			};
 
@@ -396,21 +382,18 @@ namespace DieEngine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "[dice:{minRoll},{maxRoll}]", "ar"),
+					new DieSequenceItem("a", "random(1,minValue,maxValue)", "ar"),
 				},
-				Mappings = new List<Mapping>
+				Mappings = new List<IMapping>
 				{
-					new Mapping(0, new Dictionary<string, string>
-					{
-						{ "dieMin", "minRoll" },
-						{ "dieMax", "maxRoll" },
-					})
+					new Mapping("minRange", "minValue", 0),
+					new Mapping("maxRange", "maxValue", 0)
 				}
 			};
 			var inputs = new Dictionary<string, double>
 			{
-				{ "dieMin", 1 },
-				{ "dieMax", 6 }
+				{ "minRange", 1 },
+				{ "maxRange", 6 }
 			};
 
 			var results = sequence.Process(EquationResolver, inputs);
@@ -436,6 +419,60 @@ namespace DieEngine.Tests
 
 			Assert.That(results.Results[0].ResolvedItem, Is.TypeOf<DataSequenceItem<string>>());
 			Assert.That(((DataSequenceItem<string>)results.Results[0].ResolvedItem).Data, Is.EqualTo(customData));
+			Assert.That(results.Results[0].Result, Is.EqualTo(1));
+		}
+
+		/// Test that a mapping with no order specified applies to all items
+		[Test]
+		public void UnorderedMappingTest()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<ISequenceItem>
+				{
+					new DieSequenceItem("a", "a", "ar"),
+					new DieSequenceItem("b", "a", "br"),
+				},
+				Mappings = new List<IMapping>
+				{
+					new Mapping("b", "a")
+				}
+			};
+
+			var results = sequence.Process(EquationResolver, new Dictionary<string, double>
+			{
+				{ "b", 1 }
+			});
+
+			Assert.That(results.Results[0].Result, Is.EqualTo(1));
+			Assert.That(results.Results[1].Result, Is.EqualTo(1));
+		}
+
+		/// Test that a role's attribute is mapped properly and injected into the equation
+		[Test]
+		public void RoleSequenceItemTest()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<ISequenceItem>
+				{
+					new DieSequenceItem("a", "aa", "ar"),
+				},
+				Mappings = new List<IMapping>
+				{
+					new RoleMapping("a", "aa", "r1", 0)
+				}
+			};
+			var roles = new List<Role>
+			{
+				new Role("r1", new Dictionary<string, double>
+				{
+					{ "a", 1 }
+				})
+			};
+
+			var results = sequence.Process(EquationResolver, roles: roles);
+
 			Assert.That(results.Results[0].Result, Is.EqualTo(1));
 		}
 	}

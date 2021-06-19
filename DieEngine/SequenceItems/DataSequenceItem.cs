@@ -1,4 +1,7 @@
-﻿namespace DieEngine.SequencesItems
+﻿using DieEngine.Equations;
+using System.Collections.Generic;
+
+namespace DieEngine.SequencesItems
 {
 	/// <summary>
 	///		Sequence item that carries additional data with it.
@@ -14,5 +17,10 @@
 		}
 
 		public T Data { get; set; }
+
+		public override SequenceItemResult GetResult(IEquationResolver equationResolver, ref Dictionary<string, double> inputs, IDictionary<string, double> mappedInputs = null)
+		{
+			return base.GetResult(equationResolver, mappedInputs);
+		}
 	}
 }

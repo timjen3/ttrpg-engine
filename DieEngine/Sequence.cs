@@ -1,4 +1,5 @@
-﻿using DieEngine.CustomFunctions;
+﻿using DieEngine.Equations;
+using DieEngine.Mappings;
 using DieEngine.SequencesItems;
 using System;
 using System.Collections.Generic;
@@ -8,56 +9,27 @@ namespace DieEngine
 {
 	public class Sequence
 	{
-		private IDictionary<string, double> GetMappedInputs(int order, IDictionary<string, double> inputs)
-		{
-			var mappedInputs = new Dictionary<string, double>(inputs, StringComparer.OrdinalIgnoreCase);  // copy to prevent any changes to source inputs
-			var mappings = Mappings.SingleOrDefault(x => x.Order == order);
-			if (mappings == null) return mappedInputs;
-
-			foreach (var input in inputs)
-			{
-				if (mappings.Mappings.ContainsKey(input.Key))
-				{
-					mappedInputs[mappings.Mappings[input.Key]] = input.Value;
-					continue;
-				}
-				mappedInputs[input.Key] = input.Value;
-			}
-			return mappedInputs;
-		}
+		public IEqualityComparer<string> KeyComparer { get; set; } = StringComparer.OrdinalIgnoreCase;
 
 		public string Name { get; set; }
 
 		public List<ISequenceItem> Items { get; set; } = new List<ISequenceItem>();
 
-		public List<Condition> Conditions { get; set; } = new List<Condition>();
+		public List<ICondition> Conditions { get; set; } = new List<ICondition>();
 
-		/// <summary>
-		///		Renames input variables according to mappings before using them in conditions or sequence item equations.
-		///		The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
-		/// </summary>
-		public List<Mapping> Mappings { get; set; } = new List<Mapping>();
+		public List<IMapping> Mappings { get; set; } = new List<IMapping>();
 
-		public SequenceResult Process(IEquationResolver equationResolver, IDictionary<string, double> inputs = null)
+		public SequenceResult Process(IEquationResolver equationResolver, Dictionary<string, double> inputs = null, IEnumerable<Role> roles = null)
 		{
-			inputs = inputs ?? new Dictionary<string, double>();
+			inputs = new Dictionary<string, double>(inputs ?? new Dictionary<string, double>(), KeyComparer);  // isolate changes to this method
 			var result = new SequenceResult();
-			for (int i = 0; i < Items.Count; i++)
+			for (int order = 0; order < Items.Count; order++)
 			{
-				var item = Items[i];
-				var conditions = Conditions.Where(x => x.Order == i);
-				var mappedInputs = GetMappedInputs(i, inputs);
-				var isValid = true;
-				foreach (var condition in conditions)
-				{
-					isValid = condition.Check(equationResolver, mappedInputs);
-				}
-				if (!isValid) continue;
-				SequenceItemResult itemResult = item.GetResult(equationResolver, mappedInputs);
-				if (item is DieSequenceItem die)  // make result available to following equations
-				{
-					inputs[die.ResultName] = itemResult.Result;
-				}
+				var item = Items[order];
+				var mappedInputs = new Dictionary<string, double>(inputs, KeyComparer);  // isolate mapping changes to current sequence item
+				Mappings.ForEach(x => x.Apply(order, ref mappedInputs, roles));
+				if (!Conditions.All(x => x.Check(order, equationResolver, mappedInputs))) continue;
+				var itemResult = item.GetResult(equationResolver, ref inputs, mappedInputs);
 				result.Results.Add(itemResult);
 			}
 			return result;
