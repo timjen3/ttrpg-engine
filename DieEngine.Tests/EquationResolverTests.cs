@@ -1,4 +1,4 @@
-﻿using DieEngine.CustomFunctions;
+﻿using DieEngine.Equations;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -15,8 +15,7 @@ namespace DieEngine.Tests
 		[Ignore("Not implemented yet")]
 		public void Test1()
 		{
-			var runner = new Mock<ICustomFunctionRunner>();
-			var resolver = new EquationResolver(runner.Object);
+			var resolver = new EquationResolver();
 
 			Assert.Pass();
 		}

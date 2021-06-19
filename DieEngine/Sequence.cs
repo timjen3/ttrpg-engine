@@ -1,4 +1,4 @@
-﻿using DieEngine.CustomFunctions;
+﻿using DieEngine.Equations;
 using DieEngine.Mappings;
 using DieEngine.SequencesItems;
 using System;

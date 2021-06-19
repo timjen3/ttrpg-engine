@@ -1,4 +1,4 @@
-﻿using DieEngine.CustomFunctions;
+﻿using DieEngine.Equations;
 using DieEngine.Exceptions;
 using DieEngine.Mappings;
 using DieEngine.SequencesItems;
@@ -382,7 +382,7 @@ namespace DieEngine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "[random:1,{minValue},{maxValue}]", "ar"),
+					new DieSequenceItem("a", "random(1,minValue,maxValue)", "ar"),
 				},
 				Mappings = new List<IMapping>
 				{

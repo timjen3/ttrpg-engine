@@ -1,4 +1,4 @@
-﻿using DieEngine.CustomFunctions;
+﻿using DieEngine.Equations;
 using DieEngine.SequencesItems;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;

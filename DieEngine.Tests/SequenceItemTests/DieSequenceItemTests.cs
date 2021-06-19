@@ -1,4 +1,4 @@
-using DieEngine.CustomFunctions;
+using DieEngine.Equations;
 using DieEngine.Exceptions;
 using DieEngine.SequencesItems;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,7 +69,7 @@ namespace DieEngine.Tests
 		[Repeat(100)]
 		public void CustomRandomFunction_GeneratesRandomNumber()
 		{
-			TestDie.Equation = "[random:1,1,6]";
+			TestDie.Equation = "random(1,1,6)";
 
 			var result = TestDie.GetResult(EquationResolver, ref Inputs);
 			TestContext.WriteLine($"Result: {result.Result}");
@@ -83,7 +83,7 @@ namespace DieEngine.Tests
 		[Repeat(100)]
 		public void CustomRandomFunction_Generates2RandomNumbers()
 		{
-			TestDie.Equation = "[random:1,1,6] + [random:1,1,6]";
+			TestDie.Equation = "random(1,1,6) + random(1,1,6)";
 
 			var result = TestDie.GetResult(EquationResolver, ref Inputs);
 			TestContext.WriteLine($"Result: {result.Result}");
@@ -96,7 +96,7 @@ namespace DieEngine.Tests
 		[Test]
 		public void UnknownCustomFunction_ThrowsException()
 		{
-			TestDie.Equation = "[unknown:1,6]";
+			TestDie.Equation = "unknown(1,6)";
 
 			Assert.Throws<UnknownCustomFunctionException>(() => TestDie.GetResult(EquationResolver, ref Inputs));
 		}
@@ -111,7 +111,7 @@ namespace DieEngine.Tests
 				{ "minValue", 1 },
 				{ "maxValue", 6 }
 			};
-			TestDie.Equation = "[random:1,{minValue},{maxValue}]";
+			TestDie.Equation = "random(1,minValue,maxValue)";
 
 			var result = TestDie.GetResult(EquationResolver, ref inputs, inputs);
 			TestContext.WriteLine($"Result: {result.Result}");
