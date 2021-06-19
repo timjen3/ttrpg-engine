@@ -16,7 +16,7 @@ namespace DieEngine
 		public static IServiceCollection AddDieEngineServices(this IServiceCollection services)
 		{
 			// load default custom functions (w/ parameterless constructors) from this assembly using reflection	
-			var defaultEquations = typeof(DiceFunction).Assembly
+			var defaultEquations = typeof(RandomFunction).Assembly
 				.GetTypes()
 				.Where(x => !x.IsAbstract && !x.IsInterface && typeof(ICustomFunction).IsAssignableFrom(x)
 					&& x.GetConstructor(Type.EmptyTypes) != null)

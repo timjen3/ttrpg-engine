@@ -24,11 +24,11 @@ See mxParser for tutorials: http://mathparser.org/
 
 For ease of use several custom functions can be used inside of sequence item equations (for any items implementing the BaseSequenceItem abstract class). Custom functions are denoted by square brackets. The function will be evaluated and replaced (from square bracket to square bracket) with the result prior to running the function through mxParser. This is a list of available custom functions:
 
-    [Dice:n,s] : roll n die with s sides.
+    [random:n,minRange,maxRange] : get sum of n random numbers all having values between minRange and maxRange.
 
 Inputs can be injected into custom functions. To do so, wrap your input variable in curly braces. Inputs that have been mapped in the sequence are available through this method.
 
-    [Dice:{minRoll},{maxRoll}]
+    [random:1,{minRange},{maxRange}]
 
 ## Sequences
 
@@ -42,20 +42,22 @@ Conditions can be added for items in the sequence. Conditions that fail can eith
 
 Mappings can be added for items in the sequence. Mappings add aliases to input variable names (or result names from previous DieSequenceItems) for a specified item. These makes an item's equations as clear as possible without coupling it to a specific sequence.
 
+Mappings without an order specified will be applied to all Sequence Items.
+
+#### Roles
+
+Roles contain attributes that can be used within equations. To inject role attributes into equations you must add a RoleMapping.
+
 # Todo
+
+#### 1. Try out mxparser custom functions
+
+If usable, it will eliminate a lot of redundant code in this repo
 
 #### 1. Control constants via configuration
 
 Currently the mxParser constants are always removed because it is can cause unexpected results due to the existence of "c" and other constants. This should be controllable by configuration instead in case someone wants access to these kinds of things. Additionally, a way to specify global constants could be very useful.
 
-#### 2. Create demo project
-
-Add a demo project winform that creates a sequence from json text and allows you to roll it.
-
-#### 3. Sequence-Roles & Entities
-
-Sequences will declare 0+ roles. In order to be rolled, a sequence will require entities to be passed in to fill each role. An entity has a set of attributes. Equations can reference the roles with some special syntax (for instance maybe: `@entity1:health@`). Mappings are performed between the entity attributes and the die inputs. For instance, input defines hp but entity defines health. The mapping will inject entity1 with an extra attribute named hp.
-
-#### 4. Create nuget package and rename to AlgorithmSequencer (something like that)
+#### 2. Create nuget package and rename to AlgorithmSequencer (something like that)
 
 This package can be made more generic and added on the nuget feed. Create a new project called DiceEngine that consumes this project and adds the Dice custom function (and others). Reference that project (and others) in this readme as examples of how to use the package.

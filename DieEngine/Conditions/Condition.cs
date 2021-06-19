@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace DieEngine
 {
-	public class Condition
+	public class Condition : ICondition
 	{
-		const string DEFAULT_FAILURE_MESSAGE = "The condition failed.";
+		public const string DEFAULT_FAILURE_MESSAGE = "The condition failed.";
 
-		public Condition(){}
+		public Condition() { }
 
 		public Condition(string equation, int order, bool throwOnFail = false, string failureMessage = null)
 		{
@@ -31,8 +31,12 @@ namespace DieEngine
 		public string FailureMessage { get; set; }
 
 		/// Determine if the condition fails based on input variables
-		public virtual bool Check(IEquationResolver equationResolver, IDictionary<string, double> inputs)
+		public virtual bool Check(int order, IEquationResolver equationResolver, IDictionary<string, double> inputs)
 		{
+			if (order != Order)
+			{
+				return true;
+			}
 			var result = equationResolver.Process(Equation, inputs);
 			var valid = result >= 1;
 			if (!valid && ThrowOnFail)
