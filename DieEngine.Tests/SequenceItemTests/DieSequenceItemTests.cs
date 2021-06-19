@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace DieEngine.Tests
 {
-	[TestFixture(Category = "Unit"]
+	[TestFixture(Category = "Unit")]
 	[TestOf(typeof(DieSequenceItem))]
 	public class DieSequenceItemTests
 	{
@@ -19,20 +19,6 @@ namespace DieEngine.Tests
 		}
 
 		Dictionary<string, double> Inputs = new Dictionary<string, double>();
-
-		//[SetUp]
-		//public void Setup()
-		//{
-		//	var services = new ServiceCollection();
-		//	services.AddDieEngineServices();
-		//	var provider = services.BuildServiceProvider();
-		//	EquationResolver = provider.GetRequiredService<IEquationResolver>();
-		//	TestDie = new DieSequenceItem()
-		//	{
-		//		Name = "a",
-		//		ResultName = "ar"
-		//	};
-		//}
 
 		/// Test that a data sequence item resolves a basic equation
 		[Test]
