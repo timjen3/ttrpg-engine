@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DieEngine.Tests
 {
-	[TestFixture]
+	[TestFixture(Category = "Unit"]
 	[TestOf(typeof(RoleMapping))]
 	internal class RoleMappingTests
 	{

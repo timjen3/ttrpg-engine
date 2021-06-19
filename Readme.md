@@ -32,7 +32,7 @@ Inputs can be injected into custom functions. To do so, wrap your input variable
 
 ## Sequences
 
-Sequences are orchestrators of complexity. The items are resolved in the configured order.
+Sequences pull everything together. They contain sequence items that are resolved in the configured order when Process is called.
 
 #### Conditions 
 
@@ -48,11 +48,16 @@ Mappings without an order specified will be applied to all Sequence Items.
 
 Roles contain attributes that can be used within equations. To inject role attributes into equations you must add a RoleMapping.
 
+## Exceptions
+
+    ConditionFailedException
+    CustomFunctionArgumentException
+    EquationInputArgumentException
+    MappingFailedException
+    MissingRoleException
+    UnknownCustomFunctionException
+
 # Todo
-
-#### 1. Try out mxparser custom functions
-
-If usable, it will eliminate a lot of redundant code in this repo
 
 #### 1. Control constants via configuration
 

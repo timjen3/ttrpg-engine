@@ -1,30 +1,102 @@
 ﻿using DieEngine.Equations;
-using Moq;
+using DieEngine.Exceptions;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DieEngine.Tests
 {
-	[TestFixture]
+	[TestFixture(Category = "Unit"]
 	[TestOf(typeof(EquationResolver))]
 	public class EquationResolverTests
 	{
-		[Test]
-		[Ignore("Not implemented yet")]
-		public void Test1()
-		{
-			var resolver = new EquationResolver();
+		EquationResolver EquationResolver;
 
-			Assert.Pass();
+		[SetUp]
+		public void SetupTest()
+		{
+			EquationResolver = new EquationResolver();
 		}
 
-		// todo: descrie needed tests below
-		/*	
-			1. throws when missing required args
-			2. processes inputs into equation
-			3. 
-		*/
+		[Test]
+		public void Process_OnePlusOne_Equals2()
+		{
+			var equation = "1 + 1";
+			var inputs = new Dictionary<string, double>()
+			{
+			};
+
+			var result = EquationResolver.Process(equation, inputs);
+
+			Assert.That(result, Is.EqualTo(2));
+		}
+
+		[Test]
+		public void Process_VariableSubstitution_Test()
+		{
+			var equation = "a";
+			var inputs = new Dictionary<string, double>()
+			{
+				{ "a", 1 }
+			};
+
+			var result = EquationResolver.Process(equation, inputs);
+
+			Assert.That(result, Is.EqualTo(1));
+		}
+
+		[Test]
+		public void Process_MissingInput_Throws()
+		{
+			var equation = "a";
+			var inputs = new Dictionary<string, double>()
+			{
+			};
+
+			Assert.Throws<EquationInputArgumentException>(() => EquationResolver.Process(equation, inputs));
+		}
+
+		[Test]
+		public void Process_MissingFunc_Throws()
+		{
+			var equation = "foobar(1,2,3)";
+			var inputs = new Dictionary<string, double>()
+			{
+			};
+
+			Assert.Throws<UnknownCustomFunctionException>(() => EquationResolver.Process(equation, inputs));
+		}
+
+		[Test]
+		[Repeat(1000)]
+		public void Process_RandomFunction_InsertsRandomValue()
+		{
+			var equation = "random(1,1,6)";
+			var inputs = new Dictionary<string, double>()
+			{
+			};
+
+			var result = EquationResolver.Process(equation, inputs);
+
+			TestContext.WriteLine(result);
+			Assert.That(result, Is.GreaterThanOrEqualTo(1).And.LessThanOrEqualTo(6));
+		}
+
+		[Test]
+		[Repeat(1000)]
+		public void Process_RandomFunctionWithVars_InsertsRandomValue()
+		{
+			var equation = "random(count,minRange,maxRange)";
+			var inputs = new Dictionary<string, double>()
+			{
+				{ "count", 1 },
+				{ "minRange", 1 },
+				{ "maxRange", 6 }
+			};
+
+			var result = EquationResolver.Process(equation, inputs);
+
+			TestContext.WriteLine(result);
+			Assert.That(result, Is.GreaterThanOrEqualTo(1).And.LessThanOrEqualTo(6));
+		}
 	}
 }

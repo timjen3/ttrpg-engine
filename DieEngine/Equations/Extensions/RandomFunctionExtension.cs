@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DieEngine.Equations.Extensions
 {
-	public class DiceFunctionExtension : FunctionExtension
+	public class RandomFunctionExtension : FunctionExtension
 	{
 		private static readonly Random Gen = new Random();
 		const int CountIndex = 0;
@@ -26,7 +26,7 @@ namespace DieEngine.Equations.Extensions
 
 		public FunctionExtension clone()
 		{
-			return new DiceFunctionExtension()
+			return new RandomFunctionExtension()
 			{
 				Count = Count,
 				MinRange = MinRange,
@@ -45,7 +45,7 @@ namespace DieEngine.Equations.Extensions
 				case MaxRangeIndex:
 					return nameof(MaxRange);
 				default:
-					throw new ArgumentOutOfRangeException($"{parameterIndex} is not a valid index for the {nameof(DiceFunctionExtension)}.");
+					throw new ArgumentOutOfRangeException($"{parameterIndex} is not a valid index for the {nameof(RandomFunctionExtension)}.");
 			}
 		}
 
@@ -68,7 +68,7 @@ namespace DieEngine.Equations.Extensions
 					MaxRange = parameterValue;
 					return;
 				default:
-					throw new ArgumentOutOfRangeException($"{parameterIndex} is not a valid index for the {nameof(DiceFunctionExtension)}.");
+					throw new ArgumentOutOfRangeException($"{parameterIndex} is not a valid index for the {nameof(RandomFunctionExtension)}.");
 			}
 		}
 	}

@@ -12,7 +12,7 @@ namespace DieEngine.Equations
 		{
 			// resolve function with mxparser
 			var exp = new Expression(equation);
-			var func = new Function("random", new DiceFunctionExtension());
+			var func = new Function("random", new RandomFunctionExtension());
 			exp.addFunctions(func);
 			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing
 			if (inputs != null)
