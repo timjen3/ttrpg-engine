@@ -73,7 +73,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("ar = 2", 1)
+					new Condition("b", "ar = 2")
 				}
 			};
 
@@ -95,7 +95,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("br = 2", 0)
+					new Condition("a", "br = 2")
 				}
 			};
 
@@ -115,14 +115,14 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("ar = 2", 1, true)
+					new Condition("b", "ar = 2", throwOnFail: true)
 				}
 			};
 
 			Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver));
 		}
 
-		/// Test that inputs is a different instance for each die roll
+		/// Test that inputs are different instances for each die roll
 		[Test]
 		public void ConfirmInputDictionaryIsCopiedPerDieTest()
 		{
@@ -156,8 +156,8 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("a > 0", 0),
-					new Condition("a < 2", 0)
+					new Condition("a", "a > 0"),
+					new Condition("a", "a < 2")
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -182,8 +182,8 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("a > 0", 0, true),
-					new Condition("a < 1", 0, true)
+					new Condition("a", "a > 0", throwOnFail: true),
+					new Condition("a", "a < 1", throwOnFail: true)
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -206,7 +206,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("0", 0, false)
+					new Condition("a", "0")
 				}
 			};
 
@@ -228,7 +228,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("0", 0, false)
+					new Condition("a", "0")
 				}
 			};
 
@@ -251,7 +251,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("0", 0, true, customExMessage)
+					new Condition("a", "0", throwOnFail: true, failureMessage: customExMessage)
 				}
 			};
 
@@ -271,7 +271,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("i", "im", 0)
+					new Mapping("i", "im", "a")
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -297,7 +297,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", 1)
+					new Mapping("ar", "arr", "b")
 				}
 			};
 
@@ -319,7 +319,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", 1)
+					new Mapping("ar", "arr", "b")
 				}
 			};
 
@@ -342,8 +342,8 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", 2),
-					new Mapping("br", "brr", 2),
+					new Mapping("ar", "arr", "c"),
+					new Mapping("br", "brr", "c"),
 				}
 			};
 
@@ -366,7 +366,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", 2)
+					new Mapping("ar", "arr", "c")
 				}
 			};
 
@@ -387,8 +387,8 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("minRange", "minValue", 0),
-					new Mapping("maxRange", "maxValue", 0)
+					new Mapping("minRange", "minValue", "a"),
+					new Mapping("maxRange", "maxValue", "a")
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -423,7 +423,7 @@ namespace DieEngine.Tests
 			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
 
-		/// Test that a mapping with no order specified applies to all items
+		/// Test that a mapping with no item specified applies to all items
 		[Test]
 		public void UnorderedMappingTest()
 		{
@@ -461,7 +461,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new RoleMapping("a", "aa", "r1", 0)
+					new RoleMapping("a", "aa", "r1", "a")
 				}
 			};
 			var roles = new List<Role>

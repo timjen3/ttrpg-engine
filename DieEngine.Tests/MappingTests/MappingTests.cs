@@ -26,7 +26,7 @@ namespace DieEngine.Tests
 			mapping.To = "b";
 			inputs["a"] = "1";
 
-			mapping.Apply(0, ref inputs, null);
+			mapping.Apply("a", ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -39,35 +39,35 @@ namespace DieEngine.Tests
 			mapping.To = "b";
 			inputs["a"] = "1";
 
-			mapping.Apply(0, ref inputs, null);
+			mapping.Apply("a", ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("a"));
 			Assert.That(inputs["a"], Is.EqualTo("1"));
 		}
 
 		[Test]
-		public void MappingIsPerformedWhenOrderMatches()
+		public void MappingIsPerformedWhenMatch()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.Order = 0;
+			mapping.ItemName = "a";
 			inputs["a"] = "1";
 
-			mapping.Apply(0, ref inputs, null);
+			mapping.Apply("a", ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
 		[Test]
-		public void MappingIsNotPerformedWhenOrderDoesNotMatch()
+		public void MappingIsNotPerformedWhenNotMatch()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.Order = 1;
+			mapping.ItemName = "b";
 			inputs["a"] = "1";
 
-			mapping.Apply(0, ref inputs, null);
+			mapping.Apply("a", ref inputs, null);
 
 			Assert.True(!inputs.ContainsKey("b"));
 		}
@@ -77,10 +77,10 @@ namespace DieEngine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.Order = 1;
+			mapping.ItemName = "b";
 			mapping.ThrowOnFailure = true;
 
-			var ex = Assert.Throws<MappingFailedException>(() => mapping.Apply(1, ref inputs, null));
+			var ex = Assert.Throws<MappingFailedException>(() => mapping.Apply("b", ref inputs, null));
 
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing key: '{mapping.From}'."));
 		}

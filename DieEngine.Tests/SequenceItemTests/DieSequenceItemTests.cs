@@ -20,18 +20,19 @@ namespace DieEngine.Tests
 
 		Dictionary<string, string> Inputs = new Dictionary<string, string>();
 
-		/// Test that a data sequence item resolves a basic equation
+		/// Test that a die sequence item resolves a basic equation
 		[Test]
 		public void DieSequenceItemResolvesTest()
 		{
 			int equationResult = 1;
-			var item = new DataSequenceItem<string>("a", "1", "");
+			int order = 0;
+			var item = new DieSequenceItem("a", "1", "ar");
 			var resolver = MockEquationResolver(equationResult);
 
-
-			var result = item.GetResult(0, resolver, ref Inputs);
+			var result = item.GetResult(order, resolver, ref Inputs);
 
 			Assert.That(result.Result, Is.EqualTo(equationResult.ToString()));
+			Assert.That(result.Order, Is.EqualTo(order));
 		}
 	}
 }

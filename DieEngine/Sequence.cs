@@ -28,8 +28,8 @@ namespace DieEngine
 			{
 				var item = Items[order];
 				var mappedInputs = new Dictionary<string, string>(inputs, KeyComparer);  // isolate mapping changes to current sequence item
-				Mappings.ForEach(x => x.Apply(order, ref mappedInputs, roles));
-				if (!Conditions.All(x => x.Check(order, equationResolver, mappedInputs, result))) continue;
+				Mappings.ForEach(x => x.Apply(item.Name, ref mappedInputs, roles));
+				if (!Conditions.All(x => x.Check(item.Name, equationResolver, mappedInputs, result))) continue;
 				var itemResult = item.GetResult(order, equationResolver, ref inputs, mappedInputs);
 				result.Results.Add(itemResult);
 			}

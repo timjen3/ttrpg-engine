@@ -1,4 +1,5 @@
 ﻿using DieEngine.Exceptions;
+using System;
 using System.Collections.Generic;
 
 namespace DieEngine.Mappings
@@ -11,11 +12,12 @@ namespace DieEngine.Mappings
 	{
 		public Mapping(){}
 
-		public Mapping(string from, string to, int? order = null, bool throwWhenMissing = false)
+		public Mapping(string from, string to, string itemName = null, bool throwOnFailure = false)
 		{
 			From = from;
 			To = to;
-			Order = order;
+			ItemName = itemName;
+			ThrowOnFailure = throwOnFailure;
 		}
 
 		// source property key
@@ -25,14 +27,14 @@ namespace DieEngine.Mappings
 		public string To { get; set; }
 
 		// sequence item to apply mapping to
-		public int? Order { get; set; }
+		public string ItemName { get; set; }
 
 		// whether to throw exception when From key is missing from inputs. If false, value will be set to 0
 		public bool ThrowOnFailure { get; set; }
 
-		public void Apply(int order, ref Dictionary<string, string> inputs, IEnumerable<Role> roles)
+		public void Apply(string itemName, ref Dictionary<string, string> inputs, IEnumerable<Role> roles)
 		{
-			if (!Order.HasValue || Order == order)
+			if (string.IsNullOrWhiteSpace(ItemName) || string.Equals(itemName, ItemName, StringComparison.OrdinalIgnoreCase))
 			{
 				if (inputs.ContainsKey(From))
 				{

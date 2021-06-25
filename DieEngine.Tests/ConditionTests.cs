@@ -3,6 +3,7 @@ using DieEngine.Equations;
 using DieEngine.Exceptions;
 using Moq;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace DieEngine.Tests
@@ -20,88 +21,104 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void Check_OrderMatchesAndResolverReturnsTrue_ReturnsTrue()
+		public void Check_MatchAndResolverReturnsTrue_ReturnsTrue()
 		{
-			int conditionOrder = 0;
-			int itemOrder = 0;
+			var itemName = "a";
+			var equation = "anything";
+			var conditionItemName = "a";
 			int resolverResult = 1;
 			var resolver = MockEquationResolver(resolverResult);
-			var condition = new Condition("", conditionOrder);
+			var condition = new Condition(conditionItemName, equation);
 
-			bool result = condition.Check(itemOrder, resolver, null, null);
+			bool result = condition.Check(itemName, resolver, null, null);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_OrderMatchesAndResolverReturnsFalse_ReturnsFalse()
+		public void Check_MatchAndResolverReturnsFalse_ReturnsFalse()
 		{
-			int conditionOrder = 0;
-			int itemOrder = 0;
+			var itemName = "a";
+			var equation = "anything";
+			var conditionItemName = "a";
 			int resolverResult = 0;
 			var resolver = MockEquationResolver(resolverResult);
-			var condition = new Condition("", conditionOrder, false, null);
+			var condition = new Condition(conditionItemName, equation);
 			
-			bool result = condition.Check(itemOrder, resolver, null, null);
+			bool result = condition.Check(itemName, resolver, null, null);
 
 			Assert.IsFalse(result);
 		}
 
 		[Test]
-		public void Check_OrderNotMatchesAndResolverReturnsFalse_ReturnsTrue()
+		public void Check_NotMatchAndResolverReturnsFalse_ReturnsTrue()
 		{
-			int conditionOrder = 0;
-			int itemOrder = 1;
+			var itemName = "a";
+			var equation = "anything";
+			var conditionItemName = "b";
 			int resolverResult = 0;
 			var resolver = MockEquationResolver(resolverResult);
-			var condition = new Condition("", conditionOrder, false, null);
+			var condition = new Condition(conditionItemName, equation);
 
-			bool result = condition.Check(itemOrder, resolver, null, null);
+			bool result = condition.Check(itemName, resolver, null, null);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_OrderNotMatchesAndResolverReturnsTrue_ReturnsTrue()
+		public void Check_NotMatchAndResolverReturnsTrue_ReturnsTrue()
 		{
-			int conditionOrder = 0;
-			int itemOrder = 0;
-			int resolverResult = 1;
+			var itemName = "a";
+			var equation = "anything";
+			var conditionItemName = "b";
+			int resolverResult = 0;
 			var resolver = MockEquationResolver(resolverResult);
-			var condition = new Condition("", conditionOrder, false, null);
+			var condition = new Condition(conditionItemName, equation);
 
-			bool result = condition.Check(itemOrder, resolver, null, null);
+			bool result = condition.Check(itemName, resolver, null, null);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_OrderMatchesAndResolverReturnsFalseThrowIsTrueNoExMsg_ThrowsExWithDefaultMessage()
+		public void Check_MatchAndResolverReturnsFalseThrowIsTrueNoExMsg_ThrowsExWithDefaultMessage()
 		{
-			int conditionOrder = 0;
-			int itemOrder = 0;
+			var itemName = "a";
+			var equation = "anything";
+			var conditionItemName = "a";
 			int resolverResult = 0;
 			var resolver = MockEquationResolver(resolverResult);
-			var condition = new Condition("", conditionOrder, true, null);
+			var condition = new Condition(conditionItemName, equation, throwOnFail: true);
 
-			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemOrder, resolver, null, null));
+			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemName, resolver, null, null));
 
 			Assert.That(ex.Message, Is.EqualTo(Condition.DEFAULT_FAILURE_MESSAGE));
 		}
 
 		[Test]
-		public void Check_OrderMatchesAndResolverReturnsFalseThrowIsTrueExMsg_ThrowsExWithCustomMessage()
+		public void Check_MatchAndResolverReturnsFalseThrowIsTrueExMsg_ThrowsExWithCustomMessage()
 		{
-			int conditionOrder = 0;
-			int itemOrder = 0;
+			var itemName = "a";
+			var equation = "anything";
+			var conditionItemName = "a";
 			int resolverResult = 0;
 			string customMessage = "custom ex message";
 			var resolver = MockEquationResolver(resolverResult);
-			var condition = new Condition("", conditionOrder, true, customMessage);
+			var condition = new Condition(conditionItemName, equation, throwOnFail: true, failureMessage: customMessage);
 
-			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemOrder, resolver, null, null));
+			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemName, resolver, null, null));
 
 			Assert.That(ex.Message, Is.EqualTo(customMessage));
+		}
+
+		[Test]
+		public void Check_ConditionCreatedWithoutEquationOrDependentItem_ThrowsArgumentNullException()
+		{
+			var conditionItemName = "a";
+			int resolverResult = 0;
+			var resolver = MockEquationResolver(resolverResult);
+
+			var ex = Assert.Throws<ArgumentNullException>(() => new Condition(conditionItemName));
 		}
 	}
 }

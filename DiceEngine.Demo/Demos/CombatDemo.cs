@@ -16,26 +16,26 @@ namespace DieEngine.Demo.Demos
 	public class CombatDemo
 	{
 		EquationResolver Resolver = new EquationResolver();
-		Role Hero = new Role("Troy", new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
-		Role Bandit = new Role("Sebastian", new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
+		Role Troy = new Role("Troy", new Dictionary<string, string>());
+		Role Sebastian = new Role("Sebastian", new Dictionary<string, string>());
 
 		public CombatDemo()
 		{
-			Hero.Attributes["HP"] = "12";
-			Hero.Attributes["Str"] = "18";
-			Hero.Attributes["Dex"] = "16";
-			Hero.Attributes["Ac"] = "2";
-			Hero.Attributes["Weapon.Hits"] = "2";
-			Hero.Attributes["Weapon.Min"] = "1";
-			Hero.Attributes["Weapon.Max"] = "6";
+			Troy.Attributes["HP"] = "12";
+			Troy.Attributes["Str"] = "18";
+			Troy.Attributes["Dex"] = "16";
+			Troy.Attributes["Ac"] = "2";
+			Troy.Attributes["Weapon.Hits"] = "2";
+			Troy.Attributes["Weapon.Min"] = "1";
+			Troy.Attributes["Weapon.Max"] = "6";
 
-			Bandit.Attributes["HP"] = "8";
-			Bandit.Attributes["Str"] = "12";
-			Bandit.Attributes["Dex"] = "16";
-			Bandit.Attributes["Ac"] = "2";
-			Bandit.Attributes["Weapon.Hits"] = "1";
-			Bandit.Attributes["Weapon.Min"] = "1";
-			Bandit.Attributes["Weapon.Max"] = "6";
+			Sebastian.Attributes["HP"] = "12";
+			Sebastian.Attributes["Str"] = "18";
+			Sebastian.Attributes["Dex"] = "16";
+			Sebastian.Attributes["Ac"] = "2";
+			Sebastian.Attributes["Weapon.Hits"] = "1";
+			Sebastian.Attributes["Weapon.Min"] = "1";
+			Sebastian.Attributes["Weapon.Max"] = "8";
 		}
 
 		public SequenceResult Attack(Role attacker, Role defender)
@@ -54,28 +54,29 @@ namespace DieEngine.Demo.Demos
 					new DieSequenceItem("Dodge", "random(1,1,20) + dex", "dodge", false),
 					new MessageSequenceItem("Report To Hit", "To Hit of {toHit} vs Dodge of {dodge}."),
 					new DieSequenceItem("Damage", "max(random(wHits,wMin,wMax) - ac, 0)", "damage", false),
-					new MessageSequenceItem("Report Damage", "Dealt {damage} damage."),
-					new DieSequenceItem("TakeDamage", "hp - damage", "newHp", false),
+					new MessageSequenceItem("Report Damage", "Dealt {damage} damage from {wHits} attacks."),
+					new DieSequenceItem("Take Damage", "hp - damage", "newHp", false),
 					new MessageSequenceItem("Report Damage Taken", "Took {damage} damage and now has {newHp} HP."),
 					new DataSequenceItem<UpdateAttributeCommand>("Update Attribute", "newHp", updateHPCommand)
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("dodge < toHit", 3),
-					new Condition(4, 3),
-					new Condition(5, 3),
-					new Condition(6, 3),
-					new Condition(7, 3),
+					new Condition(itemName: "Damage", equation: "dodge < toHit"),
+					new Condition(itemName: "Report Damage", dependentOnItem: "Damage"),
+					new Condition(itemName: "Take Damage", dependentOnItem: "Damage", equation: "damage > 0"),
+					new Condition(itemName: "Report Damage Taken", dependentOnItem: "Damage", equation: "damage > 0"),
+					new Condition(itemName: "Update Attribute", dependentOnItem: "Damage", equation: "damage > 0"),
 				},
 				Mappings = new List<IMapping>
 				{
-					new RoleMapping("dex", "dex", "attacker", 0),
-					new RoleMapping("dex", "dex", "defender", 1),
-					new RoleMapping("ac", "ac", "defender", 3),
-					new RoleMapping("Weapon.Hits", "wHits", "attacker", 3),
-					new RoleMapping("Weapon.Min", "wMin", "attacker", 3),
-					new RoleMapping("Weapon.Max", "wMax", "attacker", 3),
-					new RoleMapping("hp", "hp", "defender", 5)
+					new RoleMapping("dex", "dex", "attacker", "To Hit"),
+					new RoleMapping("dex", "dex", "defender", "Dodge"),
+					new RoleMapping("Weapon.Hits", "wHits", "attacker", "Report Damage"),
+					new RoleMapping("ac", "ac", "defender", "Damage"),
+					new RoleMapping("Weapon.Hits", "wHits", "attacker", "Damage"),
+					new RoleMapping("Weapon.Min", "wMin", "attacker", "Damage"),
+					new RoleMapping("Weapon.Max", "wMax", "attacker", "Damage"),
+					new RoleMapping("hp", "hp", "defender", "Take Damage")
 				}
 			};
 			var roles = new List<Role>
@@ -89,9 +90,9 @@ namespace DieEngine.Demo.Demos
 
 		public void DoDemo()
 		{
-			Role attacker = Hero;
-			Role defender = Bandit;
-			while (int.Parse(Hero.Attributes["hp"]) > 0 && int.Parse(Bandit.Attributes["hp"]) > 0)
+			Role attacker = Troy;
+			Role defender = Sebastian;
+			while (int.Parse(Troy.Attributes["hp"]) > 0 && int.Parse(Sebastian.Attributes["hp"]) > 0)
 			{
 				Console.WriteLine($"  {attacker.Name}'s turn!");
 				var result = Attack(attacker, defender);
@@ -103,7 +104,7 @@ namespace DieEngine.Demo.Demos
 					}
 					if (itemResult.ResolvedItem is DataSequenceItem<UpdateAttributeCommand> command)
 					{
-						Bandit.Attributes[command.Data.Attribute] = itemResult.Result;
+						defender.Attributes[command.Data.Attribute] = itemResult.Result;
 					}
 				}
 				Role swap = attacker;
@@ -111,8 +112,8 @@ namespace DieEngine.Demo.Demos
 				defender = swap;
 				Console.WriteLine("--------------------");
 			}
-			if (int.Parse(Hero.Attributes["hp"]) <= 0) Console.WriteLine("Hero was defeated!");
-			if (int.Parse(Bandit.Attributes["hp"]) <= 0) Console.WriteLine("Bandit was defeated!");
+			if (int.Parse(Troy.Attributes["hp"]) <= 0) Console.WriteLine($"{Troy.Name} was defeated!");
+			if (int.Parse(Sebastian.Attributes["hp"]) <= 0) Console.WriteLine($"{Sebastian.Name} was defeated!");
 		}
 	}
 }
