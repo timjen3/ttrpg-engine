@@ -271,7 +271,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("i", "im", 0)
+					new Mapping("i", "im", "a")
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -297,7 +297,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", 1)
+					new Mapping("ar", "arr", "b")
 				}
 			};
 
@@ -319,7 +319,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", 1)
+					new Mapping("ar", "arr", "b")
 				}
 			};
 
@@ -342,8 +342,8 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", 2),
-					new Mapping("br", "brr", 2),
+					new Mapping("ar", "arr", "c"),
+					new Mapping("br", "brr", "c"),
 				}
 			};
 
@@ -366,7 +366,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", 2)
+					new Mapping("ar", "arr", "c")
 				}
 			};
 
@@ -387,8 +387,8 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("minRange", "minValue", 0),
-					new Mapping("maxRange", "maxValue", 0)
+					new Mapping("minRange", "minValue", "a"),
+					new Mapping("maxRange", "maxValue", "a")
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -461,7 +461,7 @@ namespace DieEngine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new RoleMapping("a", "aa", "r1", 0)
+					new RoleMapping("a", "aa", "r1", "a")
 				}
 			};
 			var roles = new List<Role>

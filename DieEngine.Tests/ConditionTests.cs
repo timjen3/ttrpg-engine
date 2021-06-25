@@ -114,7 +114,6 @@ namespace DieEngine.Tests
 		[Test]
 		public void Check_ConditionCreatedWithoutEquationOrDependentItem_ThrowsArgumentNullException()
 		{
-			var itemName = "a";
 			var conditionItemName = "a";
 			int resolverResult = 0;
 			var resolver = MockEquationResolver(resolverResult);

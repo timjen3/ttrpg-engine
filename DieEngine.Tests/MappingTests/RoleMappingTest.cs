@@ -32,7 +32,7 @@ namespace DieEngine.Tests
 			mapping.To = "b";
 			role.Attributes["a"] = "1";
 
-			mapping.Apply(0, ref inputs, roles);
+			mapping.Apply("a", ref inputs, roles);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -43,10 +43,10 @@ namespace DieEngine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.Order = 0;
+			mapping.ItemName = "a";
 			role.Attributes["a"] = "1";
 
-			mapping.Apply(0, ref inputs, roles);
+			mapping.Apply("a", ref inputs, roles);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -57,10 +57,10 @@ namespace DieEngine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.Order = 1;
+			mapping.ItemName = "b";
 			role.Attributes["a"] = "1";
 
-			mapping.Apply(0, ref inputs, roles);
+			mapping.Apply("a", ref inputs, roles);
 
 			Assert.True(!inputs.ContainsKey("b"));
 		}
@@ -70,10 +70,10 @@ namespace DieEngine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.Order = 0;
+			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 
-			var ex = Assert.Throws<MappingFailedException>(() => mapping.Apply(0, ref inputs, roles));
+			var ex = Assert.Throws<MappingFailedException>(() => mapping.Apply("a", ref inputs, roles));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing key: '{mapping.From}'."));
 		}
 
@@ -82,11 +82,11 @@ namespace DieEngine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.Order = 0;
+			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 			roles.Clear();
 
-			var ex = Assert.Throws<MissingRoleException>(() => mapping.Apply(0, ref inputs, roles));
+			var ex = Assert.Throws<MissingRoleException>(() => mapping.Apply("a", ref inputs, roles));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing role: '{mapping.RoleName}'."));
 		}
 	}

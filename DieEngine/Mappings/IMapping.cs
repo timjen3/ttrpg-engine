@@ -4,6 +4,6 @@ namespace DieEngine.Mappings
 {
 	public interface IMapping
 	{
-		void Apply(int order, ref Dictionary<string, string> inputs, IEnumerable<Role> roles);
+		void Apply(string itemName, ref Dictionary<string, string> inputs, IEnumerable<Role> roles);
 	}
 }
