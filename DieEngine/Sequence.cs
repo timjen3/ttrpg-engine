@@ -24,6 +24,7 @@ namespace DieEngine
 		{
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), KeyComparer);  // isolate changes to this method
 			var result = new SequenceResult();
+			result.Input = this;
 			for (int order = 0; order < Items.Count; order++)
 			{
 				var item = Items[order];
