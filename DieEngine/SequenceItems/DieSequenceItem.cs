@@ -12,19 +12,20 @@ namespace DieEngine.SequencesItems
 
 		public DieSequenceItem(){}
 
-		public DieSequenceItem(string name, string equation, string resultName)
+		public DieSequenceItem(string name, string equation, string resultName, bool publishResult = true)
 		{
 			Name = name;
 			Equation = equation;
 			ResultName = resultName;
+			PublishResult = publishResult;
 		}
 
-		public override SequenceItemResult GetResult(IEquationResolver equationResolver, ref Dictionary<string, double> inputs, IDictionary<string, double> mappedInputs = null)
+		public override SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
 		{
-			var result = base.GetResult(equationResolver, mappedInputs);
+			var result = base.GetResult(order, equationResolver, mappedInputs);
 			if (inputs != null)
 			{
-				inputs[ResultName] = result.Result;
+				inputs[ResultName] = result.Result.ToString();
 			}
 
 			return result;

@@ -10,13 +10,13 @@ namespace DieEngine.Tests
 	internal class MappingTests
 	{
 		Mapping mapping;
-		Dictionary<string, double> inputs;
+		Dictionary<string, string> inputs;
 
 		[SetUp]
 		public void SetupTests()
 		{
 			mapping = new Mapping();
-			inputs = new Dictionary<string, double>();
+			inputs = new Dictionary<string, string>();
 		}
 
 		[Test]
@@ -24,12 +24,12 @@ namespace DieEngine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			inputs["a"] = 1;
+			inputs["a"] = "1";
 
 			mapping.Apply(0, ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("b"));
-			Assert.That(inputs["b"], Is.EqualTo(1));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
 		[Test]
@@ -37,12 +37,12 @@ namespace DieEngine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			inputs["a"] = 1;
+			inputs["a"] = "1";
 
 			mapping.Apply(0, ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("a"));
-			Assert.That(inputs["a"], Is.EqualTo(1));
+			Assert.That(inputs["a"], Is.EqualTo("1"));
 		}
 
 		[Test]
@@ -51,12 +51,12 @@ namespace DieEngine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.Order = 0;
-			inputs["a"] = 1;
+			inputs["a"] = "1";
 
 			mapping.Apply(0, ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("b"));
-			Assert.That(inputs["b"], Is.EqualTo(1));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
 		[Test]
@@ -65,7 +65,7 @@ namespace DieEngine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.Order = 1;
-			inputs["a"] = 1;
+			inputs["a"] = "1";
 
 			mapping.Apply(0, ref inputs, null);
 

@@ -12,16 +12,16 @@ namespace DieEngine.Tests
 		RoleMapping mapping;
 		List<Role> roles;
 		Role role;
-		Dictionary<string, double> inputs;
+		Dictionary<string, string> inputs;
 
 		[SetUp]
 		public void SetupTests()
 		{
 			mapping = new RoleMapping();
 			mapping.RoleName = "r1";
-			inputs = new Dictionary<string, double>();
+			inputs = new Dictionary<string, string>();
 			roles = new List<Role>();
-			role = new Role("r1", new Dictionary<string, double>());
+			role = new Role("r1", new Dictionary<string, string>());
 			roles.Add(role);
 		}
 
@@ -30,12 +30,12 @@ namespace DieEngine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			role.Attributes["a"] = 1;
+			role.Attributes["a"] = "1";
 
 			mapping.Apply(0, ref inputs, roles);
 
 			Assert.That(inputs, Contains.Key("b"));
-			Assert.That(inputs["b"], Is.EqualTo(1));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
 		[Test]
@@ -44,12 +44,12 @@ namespace DieEngine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.Order = 0;
-			role.Attributes["a"] = 1;
+			role.Attributes["a"] = "1";
 
 			mapping.Apply(0, ref inputs, roles);
 
 			Assert.That(inputs, Contains.Key("b"));
-			Assert.That(inputs["b"], Is.EqualTo(1));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
 		[Test]
@@ -58,7 +58,7 @@ namespace DieEngine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.Order = 1;
-			role.Attributes["a"] = 1;
+			role.Attributes["a"] = "1";
 
 			mapping.Apply(0, ref inputs, roles);
 

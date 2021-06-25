@@ -1,27 +1,29 @@
 ﻿using DieEngine.Equations;
 using System.Collections.Generic;
+using FormatWith;
 
 namespace DieEngine.SequencesItems
 {
 	/// <summary>
-	///		Sequence item that carries additional data with it.
+	///		Sequence item that creates a formatted message.
 	/// </summary>
-	/// <typeparam name="T">Data payload type</typeparam>
-	public class DataSequenceItem<T> : BaseSequenceItem
+	public class MessageSequenceItem : BaseSequenceItem
 	{
-		public DataSequenceItem(string name, string equation, T data, bool publishResult = true)
+		public MessageSequenceItem(string name, string equation, bool publishResult = true)
 		{
 			Name = name;
 			Equation = equation;
-			Data = data;
 			PublishResult = publishResult;
 		}
 
-		public T Data { get; set; }
-
 		public override SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
 		{
-			return base.GetResult(order, equationResolver, mappedInputs);
+			var result = new SequenceItemResult();
+			result.Inputs = mappedInputs;
+			result.ResolvedItem = this;
+			result.Result = Equation.FormatWith(mappedInputs);
+
+			return result;
 		}
 	}
 }

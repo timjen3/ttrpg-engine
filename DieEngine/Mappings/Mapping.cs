@@ -30,7 +30,7 @@ namespace DieEngine.Mappings
 		// whether to throw exception when From key is missing from inputs. If false, value will be set to 0
 		public bool ThrowOnFailure { get; set; }
 
-		public void Apply(int order, ref Dictionary<string, double> inputs, IEnumerable<Role> roles)
+		public void Apply(int order, ref Dictionary<string, string> inputs, IEnumerable<Role> roles)
 		{
 			if (!Order.HasValue || Order == order)
 			{
@@ -40,7 +40,7 @@ namespace DieEngine.Mappings
 					return;
 				}
 				if (ThrowOnFailure) throw new MappingFailedException($"Mapping failed due to missing key: '{From}'.");
-				inputs[To] = 0;
+				inputs[To] = "0";
 			}
 		}
 	}

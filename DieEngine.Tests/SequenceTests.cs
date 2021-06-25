@@ -1,4 +1,5 @@
-﻿using DieEngine.Equations;
+﻿using DieEngine.Conditions;
+using DieEngine.Equations;
 using DieEngine.Exceptions;
 using DieEngine.Mappings;
 using DieEngine.SequencesItems;
@@ -37,7 +38,7 @@ namespace DieEngine.Tests
 
 			var result = sequence.Process(EquationResolver);
 
-			Assert.That(result.Results[0].Result, Is.EqualTo(2));
+			Assert.That(result.Results[0].Result, Is.EqualTo("2"));
 		}
 
 		/// Test multiple die rolls
@@ -55,8 +56,8 @@ namespace DieEngine.Tests
 
 			var result = sequence.Process(EquationResolver);
 
-			Assert.That(result.Results[0].Result, Is.EqualTo(2));
-			Assert.That(result.Results[1].Result, Is.EqualTo(3));
+			Assert.That(result.Results[0].Result, Is.EqualTo("2"));
+			Assert.That(result.Results[1].Result, Is.EqualTo("3"));
 		}
 
 		/// Test multiple die rolls where second condition is driven by a variable and succeeds
@@ -78,8 +79,8 @@ namespace DieEngine.Tests
 
 			var result = sequence.Process(EquationResolver);
 
-			Assert.That(result.Results[0].Result, Is.EqualTo(2));
-			Assert.That(result.Results[1].Result, Is.EqualTo(3));
+			Assert.That(result.Results[0].Result, Is.EqualTo("2"));
+			Assert.That(result.Results[1].Result, Is.EqualTo("3"));
 		}
 
 		/// Test if condition is missing required vars it throws
@@ -159,14 +160,14 @@ namespace DieEngine.Tests
 					new Condition("a < 2", 0)
 				}
 			};
-			var inputs = new Dictionary<string, double>
+			var inputs = new Dictionary<string, string>
 			{
-				{ "a", 1 }
+				{ "a", "1" }
 			};
 
 			var result = sequence.Process(EquationResolver, inputs);
 
-			Assert.That(result.Results[0].Result, Is.EqualTo(1));
+			Assert.That(result.Results[0].Result, Is.EqualTo("1"));
 		}
 
 		/// Test two conditions
@@ -185,9 +186,9 @@ namespace DieEngine.Tests
 					new Condition("a < 1", 0, true)
 				}
 			};
-			var inputs = new Dictionary<string, double>
+			var inputs = new Dictionary<string, string>
 			{
-				{ "a", 1 }
+				{ "a", "1" }
 			};
 
 			Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver, inputs));
@@ -234,7 +235,7 @@ namespace DieEngine.Tests
 			var result = sequence.Process(EquationResolver);
 
 			Assert.That(result.Results, Has.Count.EqualTo(1));
-			Assert.That(result.Results[0].Result, Is.EqualTo(2));
+			Assert.That(result.Results[0].Result, Is.EqualTo("2"));
 		}
 
 		/// Test that a custom exception message is added when a condition check fails
@@ -273,14 +274,14 @@ namespace DieEngine.Tests
 					new Mapping("i", "im", 0)
 				}
 			};
-			var inputs = new Dictionary<string, double>
+			var inputs = new Dictionary<string, string>
 			{
-				{ "i", 1 }
+				{ "i", "1" }
 			};
 
 			var results = sequence.Process(EquationResolver, inputs);
 
-			Assert.That(results.Results[0].Result, Is.EqualTo(1));
+			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
 
 		/// Results are renamed per mappings
@@ -302,7 +303,7 @@ namespace DieEngine.Tests
 
 			var results = sequence.Process(EquationResolver);
 
-			Assert.That(results.Results[1].Result, Is.EqualTo(1));
+			Assert.That(results.Results[1].Result, Is.EqualTo("1"));
 		}
 
 		/// The pre-mapped input name is kept after mapping
@@ -324,7 +325,7 @@ namespace DieEngine.Tests
 
 			var results = sequence.Process(EquationResolver);
 
-			Assert.That(results.Results[1].Result, Is.EqualTo(2));
+			Assert.That(results.Results[1].Result, Is.EqualTo("2"));
 		}
 
 		/// Test 2 input mappings
@@ -348,7 +349,7 @@ namespace DieEngine.Tests
 
 			var results = sequence.Process(EquationResolver);
 
-			Assert.That(results.Results[2].Result, Is.EqualTo(2));
+			Assert.That(results.Results[2].Result, Is.EqualTo("2"));
 		}
 
 		/// Test that mapped input is available to specified die only
@@ -390,16 +391,16 @@ namespace DieEngine.Tests
 					new Mapping("maxRange", "maxValue", 0)
 				}
 			};
-			var inputs = new Dictionary<string, double>
+			var inputs = new Dictionary<string, string>
 			{
-				{ "minRange", 1 },
-				{ "maxRange", 6 }
+				{ "minRange", "1" },
+				{ "maxRange", "6" }
 			};
 
 			var results = sequence.Process(EquationResolver, inputs);
 
-			Assert.That(results.Results[0].Result, Is.GreaterThanOrEqualTo(1));
-			Assert.That(results.Results[0].Result, Is.LessThanOrEqualTo(6));
+			Assert.That(results.Results[0].Result, Is.GreaterThanOrEqualTo("1"));
+			Assert.That(results.Results[0].Result, Is.LessThanOrEqualTo("6"));
 		}
 
 		/// Test that the result contains the custom data
@@ -419,7 +420,7 @@ namespace DieEngine.Tests
 
 			Assert.That(results.Results[0].ResolvedItem, Is.TypeOf<DataSequenceItem<string>>());
 			Assert.That(((DataSequenceItem<string>)results.Results[0].ResolvedItem).Data, Is.EqualTo(customData));
-			Assert.That(results.Results[0].Result, Is.EqualTo(1));
+			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
 
 		/// Test that a mapping with no order specified applies to all items
@@ -439,13 +440,13 @@ namespace DieEngine.Tests
 				}
 			};
 
-			var results = sequence.Process(EquationResolver, new Dictionary<string, double>
+			var results = sequence.Process(EquationResolver, new Dictionary<string, string>
 			{
-				{ "b", 1 }
+				{ "b", "1" }
 			});
 
-			Assert.That(results.Results[0].Result, Is.EqualTo(1));
-			Assert.That(results.Results[1].Result, Is.EqualTo(1));
+			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
+			Assert.That(results.Results[1].Result, Is.EqualTo("1"));
 		}
 
 		/// Test that a role's attribute is mapped properly and injected into the equation
@@ -465,15 +466,35 @@ namespace DieEngine.Tests
 			};
 			var roles = new List<Role>
 			{
-				new Role("r1", new Dictionary<string, double>
+				new Role("r1", new Dictionary<string, string>
 				{
-					{ "a", 1 }
+					{ "a", "1" }
 				})
 			};
 
 			var results = sequence.Process(EquationResolver, roles: roles);
 
-			Assert.That(results.Results[0].Result, Is.EqualTo(1));
+			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
+		}
+
+		/// Test that a item's result is missing when publishresult is false
+		[Test]
+		public void UnpublishedResultTest()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<ISequenceItem>
+				{
+					new DieSequenceItem("a", "1", "ar", false),
+				},
+				Mappings = new List<IMapping>
+				{
+				}
+			};
+
+			var results = sequence.Process(EquationResolver);
+
+			Assert.IsEmpty(results.Results);
 		}
 	}
 }

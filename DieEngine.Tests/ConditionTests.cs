@@ -1,4 +1,5 @@
-﻿using DieEngine.Equations;
+﻿using DieEngine.Conditions;
+using DieEngine.Equations;
 using DieEngine.Exceptions;
 using Moq;
 using NUnit.Framework;
@@ -13,7 +14,7 @@ namespace DieEngine.Tests
 		private IEquationResolver MockEquationResolver(int processResult)
 		{
 			var resolver = new Mock<IEquationResolver>();
-			resolver.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, double>>())).Returns(processResult);
+			resolver.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>())).Returns(processResult);
 
 			return resolver.Object;
 		}
@@ -27,7 +28,7 @@ namespace DieEngine.Tests
 			var resolver = MockEquationResolver(resolverResult);
 			var condition = new Condition("", conditionOrder);
 
-			bool result = condition.Check(itemOrder, resolver, null);
+			bool result = condition.Check(itemOrder, resolver, null, null);
 
 			Assert.IsTrue(result);
 		}
@@ -41,7 +42,7 @@ namespace DieEngine.Tests
 			var resolver = MockEquationResolver(resolverResult);
 			var condition = new Condition("", conditionOrder, false, null);
 			
-			bool result = condition.Check(itemOrder, resolver, null);
+			bool result = condition.Check(itemOrder, resolver, null, null);
 
 			Assert.IsFalse(result);
 		}
@@ -55,7 +56,7 @@ namespace DieEngine.Tests
 			var resolver = MockEquationResolver(resolverResult);
 			var condition = new Condition("", conditionOrder, false, null);
 
-			bool result = condition.Check(itemOrder, resolver, null);
+			bool result = condition.Check(itemOrder, resolver, null, null);
 
 			Assert.IsTrue(result);
 		}
@@ -69,7 +70,7 @@ namespace DieEngine.Tests
 			var resolver = MockEquationResolver(resolverResult);
 			var condition = new Condition("", conditionOrder, false, null);
 
-			bool result = condition.Check(itemOrder, resolver, null);
+			bool result = condition.Check(itemOrder, resolver, null, null);
 
 			Assert.IsTrue(result);
 		}
@@ -83,7 +84,7 @@ namespace DieEngine.Tests
 			var resolver = MockEquationResolver(resolverResult);
 			var condition = new Condition("", conditionOrder, true, null);
 
-			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemOrder, resolver, null));
+			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemOrder, resolver, null, null));
 
 			Assert.That(ex.Message, Is.EqualTo(Condition.DEFAULT_FAILURE_MESSAGE));
 		}
@@ -98,7 +99,7 @@ namespace DieEngine.Tests
 			var resolver = MockEquationResolver(resolverResult);
 			var condition = new Condition("", conditionOrder, true, customMessage);
 
-			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemOrder, resolver, null));
+			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemOrder, resolver, null, null));
 
 			Assert.That(ex.Message, Is.EqualTo(customMessage));
 		}

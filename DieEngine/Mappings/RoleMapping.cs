@@ -27,11 +27,11 @@ namespace DieEngine.Mappings
 
 		public bool ThrowOnFailure { get; set; }
 
-		public void Apply(int order, ref Dictionary<string, double> inputs, IEnumerable<Role> roles)
+		public void Apply(int order, ref Dictionary<string, string> inputs, IEnumerable<Role> roles)
 		{
 			if (!Order.HasValue || Order == order)
 			{
-				inputs[To] = 0;
+				inputs[To] = "0";
 				var role = roles.SingleOrDefault(x => x.Name.Equals(RoleName, System.StringComparison.OrdinalIgnoreCase));
 				if (ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to missing role: '{RoleName}'.");
 				else if (ThrowOnFailure && role != null && !role.Attributes.ContainsKey(From)) throw new MappingFailedException($"Mapping failed due to missing key: '{From}'.");
