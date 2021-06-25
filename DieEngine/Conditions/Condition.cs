@@ -14,9 +14,14 @@ namespace DieEngine.Conditions
 		public Condition() { }
 
 		public Condition(string itemName, string equation = null, string dependentOnItem = null, bool throwOnFail = false, string failureMessage = null)
+			: this(new string[] { itemName }, equation, dependentOnItem, throwOnFail, failureMessage)
+		{
+		}
+
+		public Condition(IEnumerable<string> itemNames, string equation = null, string dependentOnItem = null, bool throwOnFail = false, string failureMessage = null)
 		{
 			if (string.IsNullOrWhiteSpace(equation) && string.IsNullOrWhiteSpace(dependentOnItem)) throw new ArgumentNullException($"Either of arguments: {nameof(equation)} or {nameof(dependentOnItem)} are required.");
-			ItemName = itemName;
+			ItemNames = itemNames;
 			Equation = equation;
 			DependentOnItem = dependentOnItem;
 			ThrowOnFail = throwOnFail;
@@ -30,7 +35,7 @@ namespace DieEngine.Conditions
 		public string Equation { get; set; }
 
 		/// Name of sequence item to bind to
-		public string ItemName { get; set; }
+		public IEnumerable<string> ItemNames { get; set; }
 
 		/// Whether exception should be thrown when Check fails
 		public bool ThrowOnFail { get; set; }
@@ -42,7 +47,7 @@ namespace DieEngine.Conditions
 		public virtual bool Check(string itemName, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results)
 		{
 			var valid = true;
-			if (itemName == ItemName)
+			if (ItemNames.Contains(itemName))
 			{
 				if (!string.IsNullOrWhiteSpace(DependentOnItem))
 				{

@@ -120,5 +120,35 @@ namespace DieEngine.Tests
 
 			var ex = Assert.Throws<ArgumentNullException>(() => new Condition(conditionItemName));
 		}
+
+		[Test]
+		public void Check_MultipleItemsAndMatchResolvesFalse_ReturnsFalse()
+		{
+			var itemName = "a";
+			var equation = "anything";
+			var conditionItemNames = new string[] { "a", "b" };
+			int resolverResult = 0;
+			var resolver = MockEquationResolver(resolverResult);
+			var condition = new Condition(conditionItemNames, equation);
+
+			bool result = condition.Check(itemName, resolver, null, null);
+
+			Assert.IsFalse(result);
+		}
+
+		[Test]
+		public void Check_MultipleItemsNoMatchResolvesFalse_ReturnsTrue()
+		{
+			var itemName = "c";
+			var equation = "anything";
+			var conditionItemNames = new string[] { "a", "b" };
+			int resolverResult = 0;
+			var resolver = MockEquationResolver(resolverResult);
+			var condition = new Condition(conditionItemNames, equation);
+
+			bool result = condition.Check(itemName, resolver, null, null);
+
+			Assert.IsTrue(result);
+		}
 	}
 }
