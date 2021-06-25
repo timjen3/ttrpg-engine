@@ -59,10 +59,14 @@ Roles contain attributes that can be used within equations. To inject role attri
 
 # Todo
 
-#### 1. Control constants via configuration
+#### Improve Data Sequence Items (actions)
+
+The idea behind these was to have actions to result from the sequence. They don't work currently because you can't define dynamic data payloads. Also, what's the point of the calculation for data sequence items if not used in other calculations?
+
+#### Control constants via configuration
 
 Currently the mxParser constants are always removed because it is can cause unexpected results due to the existence of "c" and other constants. This should be controllable by configuration instead in case someone wants access to these kinds of things. Additionally, a way to specify global constants could be very useful.
 
-#### 2. Create nuget package and rename to AlgorithmSequencer (something like that)
+#### Create nuget package and rename to AlgorithmSequencer (something like that)
 
 This package can be made more generic and added on the nuget feed. Create a new project called DiceEngine that consumes this project and adds the Dice custom function (and others). Reference that project (and others) in this readme as examples of how to use the package.

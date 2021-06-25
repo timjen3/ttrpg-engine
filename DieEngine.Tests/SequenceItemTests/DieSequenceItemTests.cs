@@ -13,12 +13,12 @@ namespace DieEngine.Tests
 		private IEquationResolver MockEquationResolver(int processResult)
 		{
 			var resolver = new Mock<IEquationResolver>();
-			resolver.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, double>>())).Returns(processResult);
+			resolver.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>())).Returns(processResult);
 
 			return resolver.Object;
 		}
 
-		Dictionary<string, double> Inputs = new Dictionary<string, double>();
+		Dictionary<string, string> Inputs = new Dictionary<string, string>();
 
 		/// Test that a data sequence item resolves a basic equation
 		[Test]
@@ -29,9 +29,9 @@ namespace DieEngine.Tests
 			var resolver = MockEquationResolver(equationResult);
 
 
-			var result = item.GetResult(resolver, ref Inputs);
+			var result = item.GetResult(0, resolver, ref Inputs);
 
-			Assert.That(result.Result, Is.EqualTo(equationResult));
+			Assert.That(result.Result, Is.EqualTo(equationResult.ToString()));
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace DieEngine.Equations
 {
 	public class EquationResolver : IEquationResolver
 	{
-		public double Process(string equation, IDictionary<string, double> inputs)
+		public double Process(string equation, IDictionary<string, string> inputs)
 		{
 			// resolve function with mxparser
 			var exp = new Expression(equation);

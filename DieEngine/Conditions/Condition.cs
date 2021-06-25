@@ -1,8 +1,10 @@
 ﻿using DieEngine.Equations;
 using DieEngine.Exceptions;
+using DieEngine.SequencesItems;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace DieEngine
+namespace DieEngine.Conditions
 {
 	public class Condition : ICondition
 	{
@@ -12,11 +14,31 @@ namespace DieEngine
 
 		public Condition(string equation, int order, bool throwOnFail = false, string failureMessage = null)
 		{
-			Equation = equation;
 			Order = order;
+			Equation = equation;
 			ThrowOnFail = throwOnFail;
 			FailureMessage = failureMessage;
 		}
+
+		public Condition(int order, int dependency, bool throwOnFail = false, string failureMessage = null)
+		{
+			Order = order;
+			Dependency = dependency;
+			ThrowOnFail = throwOnFail;
+			FailureMessage = failureMessage;
+		}
+
+		public Condition(int order, string equation = null, int? dependency = null, bool throwOnFail = false, string failureMessage = null)
+		{
+			Order = order;
+			Equation = equation;
+			Dependency = dependency;
+			ThrowOnFail = throwOnFail;
+			FailureMessage = failureMessage;
+		}
+
+		/// Condition requires item with this order having been processed
+		public int? Dependency { get; set; }
 
 		/// Equation to evaluate; >= 1 is true otherwise false
 		public string Equation { get; set; }
@@ -31,14 +53,22 @@ namespace DieEngine
 		public string FailureMessage { get; set; }
 
 		/// Determine if the condition fails based on input variables
-		public virtual bool Check(int order, IEquationResolver equationResolver, IDictionary<string, double> inputs)
+		public virtual bool Check(int order, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results)
 		{
-			if (order != Order)
+			var valid = true;
+			if (order == Order)
 			{
-				return true;
+				if (Dependency.HasValue)
+				{
+					valid = results.Results.Any(y => y.Order == Dependency);
+				}
+				// only check equation if dependency is fulfilled; since dependency may be responsible for defining requisite variables
+				if (valid && !string.IsNullOrWhiteSpace(Equation))
+				{
+					var result = equationResolver.Process(Equation, inputs);
+					valid = result >= 1;
+				}
 			}
-			var result = equationResolver.Process(Equation, inputs);
-			var valid = result >= 1;
 			if (!valid && ThrowOnFail)
 			{
 				throw new ConditionFailedException(FailureMessage ?? DEFAULT_FAILURE_MESSAGE);

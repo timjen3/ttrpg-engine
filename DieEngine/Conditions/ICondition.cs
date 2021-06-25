@@ -1,10 +1,11 @@
 ﻿using DieEngine.Equations;
+using DieEngine.SequencesItems;
 using System.Collections.Generic;
 
-namespace DieEngine
+namespace DieEngine.Conditions
 {
 	public interface ICondition
 	{
-		bool Check(int order, IEquationResolver equationResolver, IDictionary<string, double> inputs);
+		bool Check(int order, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results);
 	}
 }

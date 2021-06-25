@@ -5,9 +5,14 @@ namespace DieEngine.SequencesItems
 	public class SequenceItemResult
 	{
 		/// <summary>
+		///		The order of the processed sequence item in sequence, considered as if all items were processed
+		/// </summary>
+		public int Order { get; set; }
+
+		/// <summary>
 		///		Snapshot of inputs used by this item (may vary from later items)
 		/// </summary>
-		public IDictionary<string, double> Inputs { get; set; }
+		public IDictionary<string, string> Inputs { get; set; }
 
 		/// <summary>
 		///		The item that was rolled
@@ -17,6 +22,6 @@ namespace DieEngine.SequencesItems
 		/// <summary>
 		///		What item resolved to
 		/// </summary>
-		public double Result { get; set; }
+		public string Result { get; set; }
 	}
 }

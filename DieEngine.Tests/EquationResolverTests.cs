@@ -21,7 +21,7 @@ namespace DieEngine.Tests
 		public void Process_OnePlusOne_Equals2()
 		{
 			var equation = "1 + 1";
-			var inputs = new Dictionary<string, double>()
+			var inputs = new Dictionary<string, string>()
 			{
 			};
 
@@ -34,9 +34,9 @@ namespace DieEngine.Tests
 		public void Process_VariableSubstitution_Test()
 		{
 			var equation = "a";
-			var inputs = new Dictionary<string, double>()
+			var inputs = new Dictionary<string, string>()
 			{
-				{ "a", 1 }
+				{ "a", "1" }
 			};
 
 			var result = EquationResolver.Process(equation, inputs);
@@ -48,7 +48,7 @@ namespace DieEngine.Tests
 		public void Process_MissingInput_Throws()
 		{
 			var equation = "a";
-			var inputs = new Dictionary<string, double>()
+			var inputs = new Dictionary<string, string>()
 			{
 			};
 
@@ -59,7 +59,7 @@ namespace DieEngine.Tests
 		public void Process_MissingFunc_Throws()
 		{
 			var equation = "foobar(1,2,3)";
-			var inputs = new Dictionary<string, double>()
+			var inputs = new Dictionary<string, string>()
 			{
 			};
 
@@ -71,7 +71,7 @@ namespace DieEngine.Tests
 		public void Process_RandomFunction_InsertsRandomValue()
 		{
 			var equation = "random(1,1,6)";
-			var inputs = new Dictionary<string, double>()
+			var inputs = new Dictionary<string, string>()
 			{
 			};
 
@@ -86,11 +86,11 @@ namespace DieEngine.Tests
 		public void Process_RandomFunctionWithVars_InsertsRandomValue()
 		{
 			var equation = "random(count,minRange,maxRange)";
-			var inputs = new Dictionary<string, double>()
+			var inputs = new Dictionary<string, string>()
 			{
-				{ "count", 1 },
-				{ "minRange", 1 },
-				{ "maxRange", 6 }
+				{ "count", "1" },
+				{ "minRange", "1" },
+				{ "maxRange", "6" }
 			};
 
 			var result = EquationResolver.Process(equation, inputs);
