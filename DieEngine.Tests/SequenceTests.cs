@@ -73,7 +73,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("ar = 2", 1)
+					new Condition("b", "ar = 2")
 				}
 			};
 
@@ -95,7 +95,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("br = 2", 0)
+					new Condition("a", "br = 2")
 				}
 			};
 
@@ -115,7 +115,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("ar = 2", 1, true)
+					new Condition("b", "ar = 2", throwOnFail: true)
 				}
 			};
 
@@ -156,8 +156,8 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("a > 0", 0),
-					new Condition("a < 2", 0)
+					new Condition("a", "a > 0"),
+					new Condition("a", "a < 2")
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -182,8 +182,8 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("a > 0", 0, true),
-					new Condition("a < 1", 0, true)
+					new Condition("a", "a > 0", throwOnFail: true),
+					new Condition("a", "a < 1", throwOnFail: true)
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -206,7 +206,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("0", 0, false)
+					new Condition("a", "0")
 				}
 			};
 
@@ -228,7 +228,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("0", 0, false)
+					new Condition("a", "0")
 				}
 			};
 
@@ -251,7 +251,7 @@ namespace DieEngine.Tests
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("0", 0, true, customExMessage)
+					new Condition("a", "0", throwOnFail: true, failureMessage: customExMessage)
 				}
 			};
 

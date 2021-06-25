@@ -6,6 +6,6 @@ namespace DieEngine.Conditions
 {
 	public interface ICondition
 	{
-		bool Check(int order, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results);
+		bool Check(string itemName, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results);
 	}
 }

@@ -61,11 +61,11 @@ namespace DieEngine.Demo.Demos
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("dodge < toHit", 3),
-					new Condition(4, 3),
-					new Condition(5, 3),
-					new Condition(6, 3),
-					new Condition(7, 3),
+					new Condition(itemName: "Damage", equation: "dodge < toHit"),
+					new Condition(itemName: "Report Damage", dependentOnItem: "Damage"),
+					new Condition(itemName: "TakeDamage", dependentOnItem: "Damage", equation: "damage > 0"),
+					new Condition(itemName: "Report Damage Taken", dependentOnItem: "Damage", equation: "damage > 0"),
+					new Condition(itemName: "Update Attribute", dependentOnItem: "Damage", equation: "damage > 0"),
 				},
 				Mappings = new List<IMapping>
 				{

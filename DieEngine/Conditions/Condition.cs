@@ -1,6 +1,7 @@
 ﻿using DieEngine.Equations;
 using DieEngine.Exceptions;
 using DieEngine.SequencesItems;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,39 +13,24 @@ namespace DieEngine.Conditions
 
 		public Condition() { }
 
-		public Condition(string equation, int order, bool throwOnFail = false, string failureMessage = null)
+		public Condition(string itemName, string equation = null, string dependentOnItem = null, bool throwOnFail = false, string failureMessage = null)
 		{
-			Order = order;
+			if (string.IsNullOrWhiteSpace(equation) && string.IsNullOrWhiteSpace(dependentOnItem)) throw new ArgumentNullException($"Either of arguments: {nameof(equation)} or {nameof(dependentOnItem)} are required.");
+			ItemName = itemName;
 			Equation = equation;
+			DependentOnItem = dependentOnItem;
 			ThrowOnFail = throwOnFail;
 			FailureMessage = failureMessage;
 		}
 
-		public Condition(int order, int dependency, bool throwOnFail = false, string failureMessage = null)
-		{
-			Order = order;
-			Dependency = dependency;
-			ThrowOnFail = throwOnFail;
-			FailureMessage = failureMessage;
-		}
-
-		public Condition(int order, string equation = null, int? dependency = null, bool throwOnFail = false, string failureMessage = null)
-		{
-			Order = order;
-			Equation = equation;
-			Dependency = dependency;
-			ThrowOnFail = throwOnFail;
-			FailureMessage = failureMessage;
-		}
-
-		/// Condition requires item with this order having been processed
-		public int? Dependency { get; set; }
+		/// Condition requires that this item was not skipped
+		public string DependentOnItem { get; set; }
 
 		/// Equation to evaluate; >= 1 is true otherwise false
 		public string Equation { get; set; }
 
-		/// Sequence number to bind to; 0-indexed
-		public int Order { get; set; }
+		/// Name of sequence item to bind to
+		public string ItemName { get; set; }
 
 		/// Whether exception should be thrown when Check fails
 		public bool ThrowOnFail { get; set; }
@@ -53,14 +39,14 @@ namespace DieEngine.Conditions
 		public string FailureMessage { get; set; }
 
 		/// Determine if the condition fails based on input variables
-		public virtual bool Check(int order, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results)
+		public virtual bool Check(string itemName, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results)
 		{
 			var valid = true;
-			if (order == Order)
+			if (itemName == ItemName)
 			{
-				if (Dependency.HasValue)
+				if (!string.IsNullOrWhiteSpace(DependentOnItem))
 				{
-					valid = results.Results.Any(y => y.Order == Dependency);
+					valid = results.Results.Any(y => string.Equals(y.ResolvedItem.Name, DependentOnItem, StringComparison.OrdinalIgnoreCase));
 				}
 				// only check equation if dependency is fulfilled; since dependency may be responsible for defining requisite variables
 				if (valid && !string.IsNullOrWhiteSpace(Equation))
