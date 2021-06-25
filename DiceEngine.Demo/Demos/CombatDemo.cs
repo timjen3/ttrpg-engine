@@ -60,7 +60,7 @@ namespace DieEngine.Demo.Demos
 				Name = "Heal",
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("Calculate Heal Amount", "max(max_hp - old_hp, random(1,1,8) + floor(con / 5))", "heal_amt", false),
+					new DieSequenceItem("Calculate Heal Amount", "min(max_hp - old_hp, random(1,1,8) + floor(con / 5))", "heal_amt", false),
 					new DieSequenceItem("Apply Healing", "heal_amt + old_hp", "new_hp", false),
 					new MessageSequenceItem("Heal", "Healed {heal_amt}. HP : {old_hp} => {new_hp}"),
 					new DataSequenceItem<UpdateAttributeCommand>("Update Attribute", "new_hp", updateHPCommand)
