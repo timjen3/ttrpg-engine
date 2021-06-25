@@ -122,7 +122,7 @@ namespace DieEngine.Tests
 			Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver));
 		}
 
-		/// Test that inputs is a different instance for each die roll
+		/// Test that inputs are different instances for each die roll
 		[Test]
 		public void ConfirmInputDictionaryIsCopiedPerDieTest()
 		{
@@ -423,7 +423,7 @@ namespace DieEngine.Tests
 			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
 
-		/// Test that a mapping with no order specified applies to all items
+		/// Test that a mapping with no item specified applies to all items
 		[Test]
 		public void UnorderedMappingTest()
 		{

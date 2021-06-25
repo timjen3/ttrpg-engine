@@ -25,13 +25,14 @@ namespace DieEngine.Tests
 		public void DataSequenceItemResolvesTest()
 		{
 			int equationResult = 1;
+			int order = 0;
 			var item = new DataSequenceItem<string>("a", "1", "");
 			var resolver = MockEquationResolver(equationResult);
 
-
-			var result = item.GetResult(0, resolver, ref Inputs);
+			var result = item.GetResult(order, resolver, ref Inputs);
 
 			Assert.That(result.Result, Is.EqualTo(equationResult.ToString()));
+			Assert.That(result.Order, Is.EqualTo(order));
 		}
 
 		/// Test that a data sequence item resolves a basic equation

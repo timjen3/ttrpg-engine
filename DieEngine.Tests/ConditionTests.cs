@@ -21,7 +21,7 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void Check_OrderMatchesAndResolverReturnsTrue_ReturnsTrue()
+		public void Check_MatchAndResolverReturnsTrue_ReturnsTrue()
 		{
 			var itemName = "a";
 			var equation = "anything";
@@ -36,7 +36,7 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void Check_OrderMatchesAndResolverReturnsFalse_ReturnsFalse()
+		public void Check_MatchAndResolverReturnsFalse_ReturnsFalse()
 		{
 			var itemName = "a";
 			var equation = "anything";
@@ -51,7 +51,7 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void Check_OrderNotMatchesAndResolverReturnsFalse_ReturnsTrue()
+		public void Check_NotMatchAndResolverReturnsFalse_ReturnsTrue()
 		{
 			var itemName = "a";
 			var equation = "anything";
@@ -66,7 +66,7 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void Check_OrderNotMatchesAndResolverReturnsTrue_ReturnsTrue()
+		public void Check_NotMatchAndResolverReturnsTrue_ReturnsTrue()
 		{
 			var itemName = "a";
 			var equation = "anything";
@@ -81,7 +81,7 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void Check_OrderMatchesAndResolverReturnsFalseThrowIsTrueNoExMsg_ThrowsExWithDefaultMessage()
+		public void Check_MatchAndResolverReturnsFalseThrowIsTrueNoExMsg_ThrowsExWithDefaultMessage()
 		{
 			var itemName = "a";
 			var equation = "anything";
@@ -96,7 +96,7 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void Check_OrderMatchesAndResolverReturnsFalseThrowIsTrueExMsg_ThrowsExWithCustomMessage()
+		public void Check_MatchAndResolverReturnsFalseThrowIsTrueExMsg_ThrowsExWithCustomMessage()
 		{
 			var itemName = "a";
 			var equation = "anything";

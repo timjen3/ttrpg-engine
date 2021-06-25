@@ -39,7 +39,7 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void MappingIsPerformedWhenOrderMatches()
+		public void MappingIsPerformedWhenMatch()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -53,7 +53,7 @@ namespace DieEngine.Tests
 		}
 
 		[Test]
-		public void MappingIsNotPerformedWhenOrderDoesNotMatch()
+		public void MappingIsNotPerformedWhenNotMatch()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
