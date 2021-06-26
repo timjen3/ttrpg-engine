@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TTRPG.Engine</name>
+    </assembly>
+    <members>
+        <member name="P:TTRPG.Engine.Conditions.Condition.DependentOnItem">
+            Condition requires that this item was not skipped
+        </member>
+        <member name="P:TTRPG.Engine.Conditions.Condition.Equation">
+            Equation to evaluate; >= 1 is true otherwise false
+        </member>
+        <member name="P:TTRPG.Engine.Conditions.Condition.ItemNames">
+            Name of sequence item to bind to
+        </member>
+        <member name="P:TTRPG.Engine.Conditions.Condition.ThrowOnFail">
+            Whether exception should be thrown when Check fails
+        </member>
+        <member name="P:TTRPG.Engine.Conditions.Condition.FailureMessage">
+            Custom message for failure if ThrowOnFail is true
+        </member>
+        <member name="M:TTRPG.Engine.Conditions.Condition.Check(System.String,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.SequenceItems.SequenceResult)">
+            Determine if the condition fails based on input variables
+        </member>
+        <member name="M:TTRPG.Engine.IServiceCollectionExtensions.AddTTRPGEngineServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            	Adds required services for ttrpg engine
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:TTRPG.Engine.Mappings.Mapping">
+            <summary>
+            	Renames input variables according to mappings before using them in conditions or sequence item equations.
+            	The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
+            </summary>
+        </member>
+        <member name="T:TTRPG.Engine.SequenceItems.DataSequenceItem`1">
+            <summary>
+            	Sequence item that carries additional data with it.
+            </summary>
+            <typeparam name="T">Data payload type</typeparam>
+        </member>
+        <member name="T:TTRPG.Engine.SequenceItems.DieSequenceItem">
+            <summary>
+            	The result is loaded into inputs to be made available to following equations
+            </summary>
+        </member>
+        <member name="M:TTRPG.Engine.SequenceItems.ISequenceItem.GetResult(System.Int32,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            	Process equation and get result.
+            </summary>
+            <param name="order">Order of this item in sequence</param>
+            <param name="equationResolver"></param>
+            <param name="sharedInputs">Global shared inputs; may be modified to pass data to downstream items</param>
+            <param name="mappedInputs">Inputs mapped for this specific item</param>
+            <returns></returns>
+        </member>
+        <member name="T:TTRPG.Engine.SequenceItems.MessageSequenceItem">
+            <summary>
+            	Sequence item that creates a formatted message.
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.SequenceItems.SequenceItemResult.Order">
+            <summary>
+            	The order of the processed sequence item in sequence, considered as if all items were processed
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.SequenceItems.SequenceItemResult.Inputs">
+            <summary>
+            	Snapshot of inputs used by this item (may vary from later items)
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.SequenceItems.SequenceItemResult.ResolvedItem">
+            <summary>
+            	The item that was rolled
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.SequenceItems.SequenceItemResult.Result">
+            <summary>
+            	What item resolved to
+            </summary>
+        </member>
+    </members>
+</doc>

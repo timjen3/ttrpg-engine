@@ -1,10 +1,10 @@
-﻿[![Build & Tests](https://github.com/timjen3/dice-engine/actions/workflows/dotnet.yml/badge.svg)](https://github.com/timjen3/dice-engine/actions/workflows/dotnet.yml)
+﻿[![Build & Tests](https://github.com/timjen3/ttrpg-engine/actions/workflows/dotnet.yml/badge.svg)](https://github.com/timjen3/ttrpg-engine/actions/workflows/dotnet.yml)
  
  # About
 
-This project handles die rolls and sequences of die rolls. "Die Roll" is a bit of an artificial flavoring, as the die can be complex algorithms. Ultimately this library is intended to serve as a component in ttrpg style applications. But it is built to be generic and could be used for other applications.
+Use this project to create ttrpg or crpg algorithms.
 
-On Nuget: https://www.nuget.org/packages/DieEngine
+On Nuget: https://www.nuget.org/packages/TTRPG.Engine
 
 # Concepts
 
@@ -44,7 +44,7 @@ Conditions can be added for items in the sequence. Conditions that fail can eith
 
 Mappings can be added for items in the sequence. Mappings add aliases to input variable names (or result names from previous DieSequenceItems) for a specified item. These makes an item's equations as clear as possible without coupling it to a specific sequence.
 
-Mappings without an order specified will be applied to all Sequence Items.
+Mappings without a specific item specified will be applied to all items in the sequence.
 
 #### Roles
 
@@ -58,17 +58,3 @@ Roles contain attributes that can be used within equations. To inject role attri
     MappingFailedException
     MissingRoleException
     UnknownCustomFunctionException
-
-# Todo
-
-#### Improve Data Sequence Items (actions)
-
-The idea behind these was to have actions to result from the sequence. They don't work currently because you can't define dynamic data payloads. Also, what's the point of the calculation for data sequence items if not used in other calculations?
-
-#### Control constants via configuration
-
-Currently the mxParser constants are always removed because it is can cause unexpected results due to the existence of "c" and other constants. This should be controllable by configuration instead in case someone wants access to these kinds of things. Additionally, a way to specify global constants could be very useful.
-
-#### Create nuget package and rename to AlgorithmSequencer (something like that)
-
-This package can be made more generic and added on the nuget feed. Create a new project called DiceEngine that consumes this project and adds the Dice custom function (and others). Reference that project (and others) in this readme as examples of how to use the package.
