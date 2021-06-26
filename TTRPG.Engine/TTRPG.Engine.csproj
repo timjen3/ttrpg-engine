@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+
+    <IsPackable>true</IsPackable>
+
+    <Version>0.5.0</Version>
+
+    <Authors>Timothy Jannace</Authors>
+
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+
+    <RepositoryUrl>https://github.com/timjen3/ttrpg-engine</RepositoryUrl>
+
+    <RepositoryType>git</RepositoryType>
+
+    <PackageTags>ttrpg</PackageTags>
+
+    <PackageProjectUrl></PackageProjectUrl>
+
+    <Description>Manage game algorithms in serializable structures.
+
+https://github.com/timjen3/ttrpg-engine/blob/main/Readme.md</Description>
+
+    <PackageReleaseNotes></PackageReleaseNotes>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\timje\source\repos\ttrpg-engine\TTRPG.Engine\TTRPG.Engine.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FormatWith" Version="3.0.1" />
+    <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
