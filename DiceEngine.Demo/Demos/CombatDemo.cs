@@ -27,50 +27,63 @@ namespace DieEngine.Demo.Demos
 
 		public CombatDemo()
 		{
-			Player.Attributes["MAX_HP"] = "12";
-			Player.Attributes["HP"] = "12";
+			Player.Attributes["MAX_HP"] = "20";
+			Player.Attributes["HP"] = "20";
 			Player.Attributes["Str"] = "18";
-			Player.Attributes["Dex"] = "16";
+			Player.Attributes["Dex"] = "18";
 			Player.Attributes["Ac"] = "2";
 			Player.Attributes["Con"] = "12";
-			Player.Attributes["Weapon.Hits"] = "2";
+			Player.Attributes["Potions"] = "5";
+			Player.Attributes["Weapon.Hits"] = "1";
 			Player.Attributes["Weapon.Min"] = "1";
 			Player.Attributes["Weapon.Max"] = "6";
 
-			Computer.Attributes["MAX_HP"] = "12";
-			Computer.Attributes["HP"] = "12";
+			Computer.Attributes["MAX_HP"] = "50";
+			Computer.Attributes["HP"] = "50";
 			Computer.Attributes["Str"] = "18";
-			Computer.Attributes["Dex"] = "16";
+			Computer.Attributes["Dex"] = "14";
 			Computer.Attributes["Ac"] = "2";
+			Computer.Attributes["Con"] = "20";
+			Computer.Attributes["Potions"] = "2";
 			Computer.Attributes["Weapon.Hits"] = "1";
 			Computer.Attributes["Weapon.Min"] = "1";
 			Computer.Attributes["Weapon.Max"] = "8";
 		}
 
 		#region Actions
-		SequenceResult Heal(Role target)
+		SequenceResult UsePotion(Role target)
 		{
 			var updateHPCommand = new UpdateAttributeCommand
 			{
 				Attribute = "HP",
 				Entity = target
 			};
+			var updatePotionsCommand = new UpdateAttributeCommand
+			{
+				Attribute = "Potions",
+				Entity = target
+			};
 			var sequence = new Sequence()
 			{
-				Name = "Heal",
+				Name = "Use Potion",
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("Calculate Heal Amount", "min(max_hp - old_hp, random(1,1,8) + floor(con / 5))", "heal_amt", false),
+					new DieSequenceItem("Calculate Heal Amount", "min(max_hp - old_hp, random(1,3,12) + floor(con / 4))", "heal_amt", false),
 					new DieSequenceItem("Apply Healing", "heal_amt + old_hp", "new_hp", false),
+					new DieSequenceItem("Deduct Potion", "potions - 1", "new_potions", false),
 					new MessageSequenceItem("Heal", "Healed {heal_amt}. HP : {old_hp} => {new_hp}"),
-					new DataSequenceItem<UpdateAttributeCommand>("Update Attribute", "new_hp", updateHPCommand)
+					new MessageSequenceItem("Heal", "Used 1 potion. Potions: {potions} => {new_potions}"),
+					new DataSequenceItem<UpdateAttributeCommand>("Update Attribute", "new_hp", updateHPCommand),
+					new DataSequenceItem<UpdateAttributeCommand>("Update Attribute", "new_potions", updatePotionsCommand)
 				},
 				Conditions = new List<ICondition>
 				{
-					new Condition("Calculate Heal Amount", "old_hp != max_hp", throwOnFail: true, failureMessage: "Already at Max HP")
+					new Condition("Calculate Heal Amount", "old_hp != max_hp", throwOnFail: true, failureMessage: "Already at Max HP"),
+					new Condition("Calculate Heal Amount", "potions > 0", throwOnFail: true, failureMessage: "No potions left")
 				},
 				Mappings = new List<IMapping>
 				{
+					new RoleMapping("potions", "potions", "target"),
 					new RoleMapping("con", "con", "target"),
 					new RoleMapping("hp", "old_hp", "target"),
 					new RoleMapping("max_hp", "max_hp", "target"),
@@ -100,7 +113,7 @@ namespace DieEngine.Demo.Demos
 					new DieSequenceItem("Dodge", "random(1,1,20) + dex", "dodge", false),
 					new MessageSequenceItem("Report Hit", "The attack lands! (To Hit: {toHit}, Dodge: {dodge})"),
 					new MessageSequenceItem("Report Miss", "Miss! (To Hit: {toHit}, Dodge: {dodge})"),
-					new DieSequenceItem("Damage", "max(random(wHits,wMin,wMax) - ac, 0)", "damage", false),
+					new DieSequenceItem("Damage", "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)", "damage", false),
 					new MessageSequenceItem("Report Damage", "Dealt {damage} damage from {wHits} attacks."),
 					new DieSequenceItem("Take Damage", "hp - damage", "newHp", false),
 					new MessageSequenceItem("Report Damage Taken", "Took {damage} damage. HP : {oldHp} => {newHp}."),
@@ -119,6 +132,7 @@ namespace DieEngine.Demo.Demos
 					new RoleMapping("dex", "dex", "defender", "Dodge"),
 					new RoleMapping("Weapon.Hits", "wHits", "attacker", "Report Damage"),
 					new RoleMapping("ac", "ac", "defender", "Damage"),
+					new RoleMapping("str", "str", "attacker", "Damage"),
 					new RoleMapping("Weapon.Hits", "wHits", "attacker", "Damage"),
 					new RoleMapping("Weapon.Min", "wMin", "attacker", "Damage"),
 					new RoleMapping("Weapon.Max", "wMax", "attacker", "Damage"),
@@ -158,10 +172,12 @@ namespace DieEngine.Demo.Demos
 			RoundNumber++;
 			if ((RoundNumber - 1) % 2 == 0)
 			{
-				Console.WriteLine($"--BEGIN ROUND {(RoundNumber / 2) + 1}--");
-				Console.WriteLine();
+				Console.ForegroundColor = ConsoleColor.Blue;
+				Console.WriteLine($"---BEGIN ROUND {(RoundNumber / 2) + 1}---");
 			}
-			Console.WriteLine($"    [ {current.Name}'s turn! ]");
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine($"[ {current.Name}'s turn! ]");
+			Console.ResetColor();
 			Console.WriteLine();
 		}
 
@@ -190,6 +206,59 @@ namespace DieEngine.Demo.Demos
 			}
 		}
 
+		void AiDecision()
+		{
+			// occassionally heal when wounded, otherwise attack
+			bool missingHalfHp = int.Parse(Attacker.Attributes["HP"]) < int.Parse(Attacker.Attributes["MAX_HP"]) / 2;
+			if (missingHalfHp && int.Parse(Attacker.Attributes["Potions"]) > 0 && Gen.Next(3) == 1)
+			{
+				var result = UsePotion(Attacker);
+				HandleResults(result, Attacker);
+			}
+			else
+			{
+				var result = Attack(Attacker, Defender);
+				HandleResults(result, Defender);
+			}
+		}
+
+		void PlayerDecision()
+		{
+			bool missingHp = int.Parse(Attacker.Attributes["HP"]) < int.Parse(Attacker.Attributes["MAX_HP"]);
+			if (missingHp && int.Parse(Attacker.Attributes["Potions"]) > 0)
+			{
+				Console.Write($"What do you do? HP is {Attacker.Attributes["HP"]} (1: Attack 2: Heal)\n");
+				while (true)
+				{
+					var keyPress = Console.ReadKey();
+					if (keyPress.KeyChar == '1')
+					{
+						Console.Write("\r");
+						var result = Attack(Attacker, Defender);
+						HandleResults(result, Defender);
+						break;
+					}
+					else if (keyPress.KeyChar == '2')
+					{
+						Console.Write("\r");
+						var result = UsePotion(Attacker);
+						HandleResults(result, Attacker);
+						break;
+					}
+					else
+					{
+						Console.Write("\r");
+						Console.WriteLine("Invalid Input.");
+					}
+				}
+			}
+			else
+			{
+				var result = Attack(Attacker, Defender);
+				HandleResults(result, Defender);
+			}
+		}
+
 		void ReportVictor()
 		{
 			if (int.Parse(Player.Attributes["hp"]) <= 0) Console.WriteLine($"{Player.Name} was defeated!");
@@ -203,19 +272,11 @@ namespace DieEngine.Demo.Demos
 			while (int.Parse(Player.Attributes["hp"]) > 0 && int.Parse(Computer.Attributes["hp"]) > 0)
 			{
 				RoundStart(Attacker);
-				// occassionally heal when wounded, otherwise attack
-				bool missingHp = int.Parse(Attacker.Attributes["HP"]) < int.Parse(Attacker.Attributes["MAX_HP"]);
-				if (missingHp && Gen.Next(3) == 1)
-				{
-					var result = Heal(Attacker);
-					HandleResults(result, Attacker);
-				}
-				else
-				{
-					var result = Attack(Attacker, Defender);
-					HandleResults(result, Defender);
-				}
+				if (Attacker == Player) PlayerDecision();
+				else AiDecision();
 				TurnEnd();
+				Console.ReadKey();
+				Console.Write("\r");
 			}
 			ReportVictor();
 		}
