@@ -4,6 +4,8 @@
 
 This project handles die rolls and sequences of die rolls. "Die Roll" is a bit of an artificial flavoring, as the die can be complex algorithms. Ultimately this library is intended to serve as a component in ttrpg style applications. But it is built to be generic and could be used for other applications.
 
+On Nuget: https://www.nuget.org/packages/DieEngine
+
 # Concepts
 
 ## Sequence Items
