@@ -12,8 +12,9 @@ namespace TTRPG.Engine.Equations
 		{
 			// resolve function with mxparser
 			var exp = new Expression(equation);
-			var func = new Function("random", new RandomFunctionExtension());
-			exp.addFunctions(func);
+			exp.addFunctions(
+				new Function("random", new RandomFunctionExtension()),
+				new Function("toss", new CoinTossFunctionExtension()));
 			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing
 			if (inputs != null)
 			{
