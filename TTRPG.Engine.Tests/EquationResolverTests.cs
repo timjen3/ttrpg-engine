@@ -83,6 +83,21 @@ namespace TTRPG.Engine.Tests
 
 		[Test]
 		[Repeat(1000)]
+		public void Process_TossFunction_Inserts0or1()
+		{
+			var equation = "toss(0)";
+			var inputs = new Dictionary<string, string>()
+			{
+			};
+
+			var result = EquationResolver.Process(equation, inputs);
+
+			TestContext.WriteLine(result);
+			Assert.That(result, Is.EqualTo(0).Or.EqualTo(1));
+		}
+
+		[Test]
+		[Repeat(1000)]
 		public void Process_RandomFunctionWithVars_InsertsRandomValue()
 		{
 			var equation = "random(count,minRange,maxRange)";

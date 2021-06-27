@@ -26,11 +26,12 @@ See mxParser for tutorials: http://mathparser.org/
 
 For ease of use several custom functions can be used inside of sequence item equations (for any items implementing the BaseSequenceItem abstract class). Custom functions are denoted by square brackets. The function will be evaluated and replaced (from square bracket to square bracket) with the result prior to running the function through mxParser. This is a list of available custom functions:
 
-    [random:n,minRange,maxRange] : get sum of n random numbers all having values between minRange and maxRange.
+    random(n,minRange,maxRange) : get sum of n random numbers all having values between minRange and maxRange.
+    toss(0) : returns 0 or 1 at random; parameter does nothing (mxParser requires >=1 param for user defined functions)
 
-Inputs can be injected into custom functions. To do so, wrap your input variable in curly braces. Inputs that have been mapped in the sequence are available through this method.
+Variables from inputs/roles can be injected into custom functions.
 
-    [random:1,{minRange},{maxRange}]
+    random(1,minRange,maxRange)
 
 ## Sequences
 
@@ -48,7 +49,7 @@ Mappings without a specific item specified will be applied to all items in the s
 
 #### Roles
 
-Roles contain attributes that can be used within equations. To inject role attributes into equations you must add a RoleMapping.
+Roles contain attributes that can be used within equations. To inject role attributes into equations you must add a RoleMapping. Role Mappings can apply to specific items, or to all items.
 
 ## Exceptions
 
