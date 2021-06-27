@@ -1,7 +1,8 @@
-﻿using TTRPG.Engine.Equations;
-using TTRPG.Engine.Exceptions;
+﻿using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.Collections.Generic;
+using TTRPG.Engine.Equations;
+using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Tests
 {
@@ -9,12 +10,21 @@ namespace TTRPG.Engine.Tests
 	[TestOf(typeof(EquationResolver))]
 	public class EquationResolverTests
 	{
-		EquationResolver EquationResolver;
+		IEquationResolver EquationResolver;
 
-		[SetUp]
-		public void SetupTest()
+		[OneTimeSetUp]
+		public void SetupTests()
 		{
-			EquationResolver = new EquationResolver();
+			var services = new ServiceCollection();
+			services.AddTTRPGEngineServices();
+			var provider = services.BuildServiceProvider();
+			EquationResolver = provider.GetRequiredService<IEquationResolver>();
+		}
+
+		[Test]
+		public void ServiceCollectionExtensions_TypeIsEquationResolver()
+		{
+			Assert.That(EquationResolver, Is.TypeOf<EquationResolver>());
 		}
 
 		[Test]

@@ -4,6 +4,7 @@ using TTRPG.Engine.Mappings;
 using TTRPG.Engine.SequenceItems;
 using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace TTRPG.Engine.Demo.Demos
 {
@@ -16,17 +17,23 @@ namespace TTRPG.Engine.Demo.Demos
 	public class CombatDemo
 	{
 		int RoundNumber = 0;
-		EquationResolver Resolver = new EquationResolver();
 		Role Player = new Role("Player", new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
 		Role Computer = new Role("Bandit", new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase));
 
 		Role Attacker;
 		Role Defender;
 
+		IEquationResolver Resolver;
+
 		Random Gen = new Random();
 
 		public CombatDemo()
 		{
+			var services = new ServiceCollection();
+			services.AddTTRPGEngineServices();
+			var provider = services.BuildServiceProvider();
+			Resolver = provider.GetRequiredService<IEquationResolver>();
+
 			Player.Attributes["MAX_HP"] = "20";
 			Player.Attributes["HP"] = "20";
 			Player.Attributes["Str"] = "18";

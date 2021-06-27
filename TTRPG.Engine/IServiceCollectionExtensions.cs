@@ -1,5 +1,7 @@
 ﻿using TTRPG.Engine.Equations;
 using Microsoft.Extensions.DependencyInjection;
+using org.mariuszgromada.math.mxparser;
+using TTRPG.Engine.Equations.Extensions;
 
 namespace TTRPG.Engine
 {
@@ -12,6 +14,8 @@ namespace TTRPG.Engine
 		/// <returns></returns>
 		public static IServiceCollection AddTTRPGEngineServices(this IServiceCollection services)
 		{
+			services.AddSingleton(new Function("random", new RandomFunctionExtension()));
+			services.AddSingleton(new Function("toss", new CoinTossFunctionExtension()));
 			services.AddSingleton<IEquationResolver, EquationResolver>();
 
 			return services;

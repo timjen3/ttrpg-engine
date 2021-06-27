@@ -1,20 +1,24 @@
-﻿using TTRPG.Engine.Equations.Extensions;
-using TTRPG.Engine.Exceptions;
-using org.mariuszgromada.math.mxparser;
+﻿using org.mariuszgromada.math.mxparser;
 using System.Collections.Generic;
 using System.Linq;
+using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Equations
 {
 	public class EquationResolver : IEquationResolver
 	{
+		private readonly Function[] _functions;
+
+		public EquationResolver(IEnumerable<Function> functions)
+		{
+			_functions = functions.ToArray();
+		}
+
 		public double Process(string equation, IDictionary<string, string> inputs)
 		{
 			// resolve function with mxparser
 			var exp = new Expression(equation);
-			exp.addFunctions(
-				new Function("random", new RandomFunctionExtension()),
-				new Function("toss", new CoinTossFunctionExtension()));
+			exp.addFunctions(_functions);
 			exp.removeAllConstants();  // reduce confusion from variables like "c" already existing
 			if (inputs != null)
 			{
