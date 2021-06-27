@@ -5,6 +5,7 @@ using TTRPG.Engine.SequenceItems;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TTRPG.Engine.OutputGroupings;
 
 namespace TTRPG.Engine
 {
@@ -20,6 +21,10 @@ namespace TTRPG.Engine
 
 		public List<IMapping> Mappings { get; set; } = new List<IMapping>();
 
+		public List<ICondition> OutputConditions { get; set; } = new List<ICondition>();
+
+		public List<IOutputGrouping> OutputGroupings { get; set; } = new List<IOutputGrouping>();
+
 		public SequenceResult Process(IEquationResolver equationResolver, Dictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), KeyComparer);  // isolate changes to this method
@@ -34,7 +39,14 @@ namespace TTRPG.Engine
 				var itemResult = item.GetResult(order, equationResolver, ref inputs, mappedInputs);
 				result.Results.Add(itemResult);
 			}
-			result.Results.RemoveAll(x => !x.ResolvedItem.PublishResult);
+			foreach (var grouping in OutputGroupings)
+			{
+				var inputsCopy = new Dictionary<string, string>(inputs, KeyComparer);  // isolate mapping changes to current sequence item
+				if (!OutputConditions.All(x => x.Check(grouping.Name, equationResolver, inputsCopy, result))) continue;
+				Mappings.ForEach(x => x.Apply(grouping.Name, ref inputsCopy, roles));
+				var groupingResult = grouping.GetResult(inputsCopy);
+				result.GroupingResults.Add(groupingResult);
+			}
 
 			return result;
 		}

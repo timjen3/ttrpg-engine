@@ -20,16 +20,16 @@ namespace TTRPG.Engine.Mappings
 			ThrowOnFailure = throwOnFailure;
 		}
 
-		// source property key
+		/// source property key
 		public string From { get; set; }
 
-		// destination property key
+		/// destination property key
 		public string To { get; set; }
 
-		// sequence item to apply mapping to
+		/// sequence item to apply mapping to
 		public string ItemName { get; set; }
 
-		// whether to throw exception when From key is missing from inputs. If false, value will be set to 0
+		/// whether to throw exception when From key is missing from inputs. If false, value will be set to 0
 		public bool ThrowOnFailure { get; set; }
 
 		public void Apply(string itemName, ref Dictionary<string, string> inputs, IEnumerable<Role> roles)
@@ -41,7 +41,7 @@ namespace TTRPG.Engine.Mappings
 					inputs[To] = inputs[From];
 					return;
 				}
-				if (ThrowOnFailure) throw new MappingFailedException($"Mapping failed due to missing key: '{From}'.");
+				if (ThrowOnFailure) throw new MappingFailedException($"Mapping '{To}' failed due to missing key: '{From}'.");
 				inputs[To] = "0";
 			}
 		}

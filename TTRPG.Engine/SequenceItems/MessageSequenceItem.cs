@@ -9,16 +9,14 @@ namespace TTRPG.Engine.SequenceItems
 	/// </summary>
 	public class MessageSequenceItem : ISequenceItem
 	{
-		public MessageSequenceItem(string name, string equation, bool publishResult = true)
+		public MessageSequenceItem(string name, string equation)
 		{
 			Name = name;
 			Equation = equation;
-			PublishResult = publishResult;
 		}
 
 		public string Name { get; set; }
 		public string Equation { get; set; }
-		public bool PublishResult { get; set; } = true;
 
 		public SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
 		{

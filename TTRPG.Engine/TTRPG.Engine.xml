@@ -35,11 +35,17 @@
             	The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
             </summary>
         </member>
-        <member name="T:TTRPG.Engine.SequenceItems.DataSequenceItem`1">
-            <summary>
-            	Sequence item that carries additional data with it.
-            </summary>
-            <typeparam name="T">Data payload type</typeparam>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.From">
+            source property key
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.To">
+            destination property key
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.ItemName">
+            sequence item to apply mapping to
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.ThrowOnFailure">
+            whether to throw exception when From key is missing from inputs. If false, value will be set to 0
         </member>
         <member name="T:TTRPG.Engine.SequenceItems.DieSequenceItem">
             <summary>

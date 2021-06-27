@@ -82,7 +82,7 @@ namespace TTRPG.Engine.Tests
 
 			var ex = Assert.Throws<MappingFailedException>(() => mapping.Apply("b", ref inputs, null));
 
-			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing key: '{mapping.From}'."));
+			Assert.That(ex.Message, Is.EqualTo($"Mapping '{mapping.To}' failed due to missing key: '{mapping.From}'."));
 		}
 	}
 }

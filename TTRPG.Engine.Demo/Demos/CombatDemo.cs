@@ -5,13 +5,13 @@ using TTRPG.Engine.SequenceItems;
 using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
+using TTRPG.Engine.OutputGroupings;
 
 namespace TTRPG.Engine.Demo.Demos
 {
-	public class UpdateAttributeCommand
+	public class UpdateAttributesCommand
 	{
 		public Role Entity { get; set; }
-		public string Attribute { get; set; }
 	}
 
 	public class CombatDemo
@@ -60,14 +60,8 @@ namespace TTRPG.Engine.Demo.Demos
 		#region Actions
 		SequenceResult UsePotion(Role target)
 		{
-			var updateHPCommand = new UpdateAttributeCommand
+			var updateTargetCommand = new UpdateAttributesCommand
 			{
-				Attribute = "HP",
-				Entity = target
-			};
-			var updatePotionsCommand = new UpdateAttributeCommand
-			{
-				Attribute = "Potions",
 				Entity = target
 			};
 			var sequence = new Sequence()
@@ -75,13 +69,11 @@ namespace TTRPG.Engine.Demo.Demos
 				Name = "Use Potion",
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("Calculate Heal Amount", "min(max_hp - old_hp, random(1,3,12) + floor(con / 4))", "heal_amt", false),
-					new DieSequenceItem("Apply Healing", "heal_amt + old_hp", "new_hp", false),
-					new DieSequenceItem("Deduct Potion", "potions - 1", "new_potions", false),
+					new DieSequenceItem("Calculate Heal Amount", "min(max_hp - old_hp, random(1,3,12) + floor(con / 4))", "heal_amt"),
+					new DieSequenceItem("Apply Healing", "heal_amt + old_hp", "new_hp"),
+					new DieSequenceItem("Deduct Potion", "potions - 1", "new_potions"),
 					new MessageSequenceItem("Heal", "Healed {heal_amt}. HP : {old_hp} => {new_hp}"),
-					new MessageSequenceItem("Heal", "Used 1 potion. Potions: {potions} => {new_potions}"),
-					new DataSequenceItem<UpdateAttributeCommand>("Update Attribute", "new_hp", updateHPCommand),
-					new DataSequenceItem<UpdateAttributeCommand>("Update Attribute", "new_potions", updatePotionsCommand)
+					new MessageSequenceItem("Heal", "Used 1 potion. Potions: {potions} => {new_potions}")
 				},
 				Conditions = new List<ICondition>
 				{
@@ -94,6 +86,13 @@ namespace TTRPG.Engine.Demo.Demos
 					new RoleMapping("con", "con", "target"),
 					new RoleMapping("hp", "old_hp", "target"),
 					new RoleMapping("max_hp", "max_hp", "target"),
+				},
+				OutputGroupings = new List<IOutputGrouping>
+				{
+					new OutputGrouping<UpdateAttributesCommand>("Update Attributes", updateTargetCommand, new OutputGroupingItem[] {
+						new OutputGroupingItem("Potions", "new_potions", true),
+						new OutputGroupingItem("HP", "new_hp", true)
+					})
 				}
 			};
 			var roles = new List<Role>
@@ -106,9 +105,8 @@ namespace TTRPG.Engine.Demo.Demos
 
 		SequenceResult Attack(Role attacker, Role defender)
 		{
-			var updateHPCommand = new UpdateAttributeCommand
+			var updateDefenderAttributesCommand = new UpdateAttributesCommand
 			{
-				Attribute = "HP",
 				Entity = defender
 			};
 			var sequence = new Sequence()
@@ -116,15 +114,14 @@ namespace TTRPG.Engine.Demo.Demos
 				Name = "Attack",
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("To Hit", "random(1,1,20) + dex", "toHit", false),
-					new DieSequenceItem("Dodge", "random(1,1,20) + dex", "dodge", false),
+					new DieSequenceItem("To Hit", "random(1,1,20) + dex", "toHit"),
+					new DieSequenceItem("Dodge", "random(1,1,20) + dex", "dodge"),
 					new MessageSequenceItem("Report Hit", "The attack lands! (To Hit: {toHit}, Dodge: {dodge})"),
 					new MessageSequenceItem("Report Miss", "Miss! (To Hit: {toHit}, Dodge: {dodge})"),
-					new DieSequenceItem("Damage", "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)", "damage", false),
+					new DieSequenceItem("Damage", "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)", "damage"),
 					new MessageSequenceItem("Report Damage", "Dealt {damage} damage from {wHits} attacks."),
-					new DieSequenceItem("Take Damage", "hp - damage", "newHp", false),
-					new MessageSequenceItem("Report Damage Taken", "Took {damage} damage. HP : {oldHp} => {newHp}."),
-					new DataSequenceItem<UpdateAttributeCommand>("Update Attribute", "newHp", updateHPCommand)
+					new DieSequenceItem("Take Damage", "hp - damage", "new_hp"),
+					new MessageSequenceItem("Report Damage Taken", "Took {damage} damage. HP : {old_hp} => {new_hp}.")
 				},
 				Conditions = new List<ICondition>
 				{
@@ -144,7 +141,17 @@ namespace TTRPG.Engine.Demo.Demos
 					new RoleMapping("Weapon.Min", "wMin", "attacker", "Damage"),
 					new RoleMapping("Weapon.Max", "wMax", "attacker", "Damage"),
 					new RoleMapping("hp", "hp", "defender", "Take Damage"),
-					new RoleMapping("hp", "oldHp", "defender", "Report Damage Taken")
+					new RoleMapping("hp", "old_hp", "defender", "Report Damage Taken")
+				},
+				OutputGroupings = new List<IOutputGrouping>
+				{
+					new OutputGrouping<UpdateAttributesCommand>("Update Attributes", updateDefenderAttributesCommand, new OutputGroupingItem[]{
+						new OutputGroupingItem("HP", "new_hp", true)
+					})
+				},
+				OutputConditions = new List<ICondition>
+				{
+					new Condition("Update Attributes", dependentOnItem: "Damage", equation: "damage > 0")
 				}
 			};
 			var roles = new List<Role>
@@ -198,7 +205,7 @@ namespace TTRPG.Engine.Demo.Demos
 			Console.WriteLine();
 		}
 
-		void HandleResults(SequenceResult result, Role target)
+		void HandleResults(SequenceResult result)
 		{
 			foreach (var itemResult in result.Results)
 			{
@@ -206,9 +213,15 @@ namespace TTRPG.Engine.Demo.Demos
 				{
 					Console.WriteLine(itemResult.Result);
 				}
-				if (itemResult.ResolvedItem is DataSequenceItem<UpdateAttributeCommand> command)
+			}
+			foreach (var groupingResult in result.GroupingResults)
+			{
+				if (groupingResult is OutputGroupingResult<UpdateAttributesCommand> updateAttributeCommand)
 				{
-					target.Attributes[command.Data.Attribute] = itemResult.Result;
+					foreach (var attribute in updateAttributeCommand.Results)
+					{
+						updateAttributeCommand.Payload.Entity.Attributes[attribute.Key] = attribute.Value;
+					}
 				}
 			}
 		}
@@ -220,12 +233,12 @@ namespace TTRPG.Engine.Demo.Demos
 			if (missingHalfHp && int.Parse(Attacker.Attributes["Potions"]) > 0 && Gen.Next(3) == 1)
 			{
 				var result = UsePotion(Attacker);
-				HandleResults(result, Attacker);
+				HandleResults(result);
 			}
 			else
 			{
 				var result = Attack(Attacker, Defender);
-				HandleResults(result, Defender);
+				HandleResults(result);
 			}
 		}
 
@@ -242,14 +255,14 @@ namespace TTRPG.Engine.Demo.Demos
 					{
 						Console.Write("\r");
 						var result = Attack(Attacker, Defender);
-						HandleResults(result, Defender);
+						HandleResults(result);
 						break;
 					}
 					else if (keyPress.KeyChar == '2')
 					{
 						Console.Write("\r");
 						var result = UsePotion(Attacker);
-						HandleResults(result, Attacker);
+						HandleResults(result);
 						break;
 					}
 					else
@@ -262,7 +275,7 @@ namespace TTRPG.Engine.Demo.Demos
 			else
 			{
 				var result = Attack(Attacker, Defender);
-				HandleResults(result, Defender);
+				HandleResults(result);
 			}
 		}
 

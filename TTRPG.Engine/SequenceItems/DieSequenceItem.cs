@@ -12,12 +12,11 @@ namespace TTRPG.Engine.SequenceItems
 
 		public DieSequenceItem(){}
 
-		public DieSequenceItem(string name, string equation, string resultName, bool publishResult = true)
+		public DieSequenceItem(string name, string equation, string resultName)
 		{
 			Name = name;
 			Equation = equation;
 			ResultName = resultName;
-			PublishResult = publishResult;
 		}
 
 		public override SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)

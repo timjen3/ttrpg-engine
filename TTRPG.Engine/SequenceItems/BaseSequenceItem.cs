@@ -7,7 +7,6 @@ namespace TTRPG.Engine.SequenceItems
 	{
 		public string Name { get; set; }
 		public string Equation { get; set; }
-		public bool PublishResult { get; set; } = true;
 
 		protected SequenceItemResult GetResult(int order, IEquationResolver equationResolver, IDictionary<string, string> inputs)
 		{
