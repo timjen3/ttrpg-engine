@@ -7,7 +7,7 @@ namespace TTRPG.Engine.SequenceItems
 	/// <summary>
 	///		Sequence item that creates a formatted message.
 	/// </summary>
-	public class MessageSequenceItem : BaseSequenceItem
+	public class MessageSequenceItem : ISequenceItem
 	{
 		public MessageSequenceItem(string name, string equation, bool publishResult = true)
 		{
@@ -16,7 +16,11 @@ namespace TTRPG.Engine.SequenceItems
 			PublishResult = publishResult;
 		}
 
-		public override SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
+		public string Name { get; set; }
+		public string Equation { get; set; }
+		public bool PublishResult { get; set; } = true;
+
+		public SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
 		{
 			var result = new SequenceItemResult();
 			result.Inputs = mappedInputs;
