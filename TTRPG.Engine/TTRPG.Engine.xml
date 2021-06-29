@@ -35,12 +35,6 @@
             	The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
             </summary>
         </member>
-        <member name="T:TTRPG.Engine.SequenceItems.DataSequenceItem`1">
-            <summary>
-            	Sequence item that carries additional data with it.
-            </summary>
-            <typeparam name="T">Data payload type</typeparam>
-        </member>
         <member name="T:TTRPG.Engine.SequenceItems.DieSequenceItem">
             <summary>
             	The result is loaded into inputs to be made available to following equations

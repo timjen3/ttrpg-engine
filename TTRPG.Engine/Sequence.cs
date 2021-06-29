@@ -34,7 +34,6 @@ namespace TTRPG.Engine
 				var itemResult = item.GetResult(order, equationResolver, ref inputs, mappedInputs);
 				result.Results.Add(itemResult);
 			}
-			result.Results.RemoveAll(x => !x.ResolvedItem.PublishResult);
 
 			return result;
 		}
