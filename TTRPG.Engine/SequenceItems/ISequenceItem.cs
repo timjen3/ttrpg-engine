@@ -7,11 +7,6 @@ namespace TTRPG.Engine.SequenceItems
 	{
 		string Name { get; }
 
-		string Equation { get; }
-
-		// whether result should be returned in sequence resultss
-		bool PublishResult { get; }
-
 		/// <summary>
 		///		Process equation and get result.
 		/// </summary>

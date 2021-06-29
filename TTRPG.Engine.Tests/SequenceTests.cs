@@ -403,26 +403,6 @@ namespace TTRPG.Engine.Tests
 			Assert.That(results.Results[0].Result, Is.LessThanOrEqualTo("6"));
 		}
 
-		/// Test that the result contains the custom data
-		[Test]
-		public void DataSequenceItemSequencedTest()
-		{
-			string customData = "some instruction";
-			var sequence = new Sequence()
-			{
-				Items = new List<ISequenceItem>
-				{
-					new DataSequenceItem<string>("a", "1", customData),
-				}
-			};
-
-			var results = sequence.Process(EquationResolver);
-
-			Assert.That(results.Results[0].ResolvedItem, Is.TypeOf<DataSequenceItem<string>>());
-			Assert.That(((DataSequenceItem<string>)results.Results[0].ResolvedItem).Data, Is.EqualTo(customData));
-			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
-		}
-
 		/// Test that a mapping with no item specified applies to all items
 		[Test]
 		public void UnorderedMappingTest()
@@ -475,26 +455,6 @@ namespace TTRPG.Engine.Tests
 			var results = sequence.Process(EquationResolver, roles: roles);
 
 			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
-		}
-
-		/// Test that a item's result is missing when publishresult is false
-		[Test]
-		public void UnpublishedResultTest()
-		{
-			var sequence = new Sequence()
-			{
-				Items = new List<ISequenceItem>
-				{
-					new DieSequenceItem("a", "1", "ar", false),
-				},
-				Mappings = new List<IMapping>
-				{
-				}
-			};
-
-			var results = sequence.Process(EquationResolver);
-
-			Assert.IsEmpty(results.Results);
 		}
 	}
 }
