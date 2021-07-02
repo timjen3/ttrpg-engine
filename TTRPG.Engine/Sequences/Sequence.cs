@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TTRPG.Engine
+namespace TTRPG.Engine.Sequences
 {
 	public class Sequence
 	{
@@ -24,7 +24,7 @@ namespace TTRPG.Engine
 		{
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), KeyComparer);  // isolate changes to this method
 			var result = new SequenceResult();
-			result.Input = this;
+			result.Sequence = this;
 			for (int order = 0; order < Items.Count; order++)
 			{
 				var item = Items[order];
@@ -34,6 +34,7 @@ namespace TTRPG.Engine
 				var itemResult = item.GetResult(order, equationResolver, ref inputs, mappedInputs);
 				result.Results.Add(itemResult);
 			}
+			result.Output = inputs;
 
 			return result;
 		}

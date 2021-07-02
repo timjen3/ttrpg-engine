@@ -1,9 +1,9 @@
-﻿using TTRPG.Engine.Equations;
-using TTRPG.Engine.Exceptions;
-using TTRPG.Engine.SequenceItems;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TTRPG.Engine.Equations;
+using TTRPG.Engine.Exceptions;
+using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Conditions
 {

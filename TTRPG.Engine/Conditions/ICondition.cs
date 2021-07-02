@@ -1,6 +1,6 @@
-﻿using TTRPG.Engine.Equations;
-using TTRPG.Engine.SequenceItems;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using TTRPG.Engine.Equations;
+using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Conditions
 {

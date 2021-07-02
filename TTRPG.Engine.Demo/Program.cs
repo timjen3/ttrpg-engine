@@ -1,9 +1,4 @@
-﻿//using TTRPG.Engine.Demo.Demos;
-using TTRPG.Engine.Equations;
-using TTRPG.Engine.Mappings;
-using TTRPG.Engine.SequenceItems;
-using System;
-using System.Collections.Generic;
+﻿using TTRPG.Engine.Demo.Demo;
 
 namespace TTRPG.Engine.Demo
 {
@@ -11,8 +6,8 @@ namespace TTRPG.Engine.Demo
 	{
 		static void Main(string[] args)
 		{
-			//var demo = new CombatDemo();
-			//demo.DoDemo();
+			var demo = new CombatDemo();
+			demo.DoDemo();
 		}
 	}
 }

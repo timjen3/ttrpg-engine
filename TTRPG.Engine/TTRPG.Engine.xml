@@ -19,7 +19,7 @@
         <member name="P:TTRPG.Engine.Conditions.Condition.FailureMessage">
             Custom message for failure if ThrowOnFail is true
         </member>
-        <member name="M:TTRPG.Engine.Conditions.Condition.Check(System.String,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.SequenceResult)">
+        <member name="M:TTRPG.Engine.Conditions.Condition.Check(System.String,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult)">
             Determine if the condition fails based on input variables
         </member>
         <member name="M:TTRPG.Engine.IServiceCollectionExtensions.AddTTRPGEngineServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
@@ -53,6 +53,11 @@
         <member name="T:TTRPG.Engine.SequenceItems.MessageSequenceItem">
             <summary>
             	Sequence item that creates a formatted message.
+            </summary>
+        </member>
+        <member name="T:TTRPG.Engine.SequenceItems.SequenceItemResult">
+            <summary>
+            	Result for one resolved SequenceItem
             </summary>
         </member>
         <member name="P:TTRPG.Engine.SequenceItems.SequenceItemResult.Order">
