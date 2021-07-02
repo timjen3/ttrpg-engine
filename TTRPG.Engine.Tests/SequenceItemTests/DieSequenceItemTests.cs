@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace TTRPG.Engine.Tests
 {
 	[TestFixture(Category = "Unit")]
-	[TestOf(typeof(DieSequenceItem))]
+	[TestOf(typeof(SequenceItem))]
 	public class DieSequenceItemTests
 	{
 		private IEquationResolver MockEquationResolver(int processResult)
@@ -26,7 +26,7 @@ namespace TTRPG.Engine.Tests
 		{
 			int equationResult = 1;
 			int order = 0;
-			var item = new DieSequenceItem("a", "1", "ar");
+			var item = new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm);
 			var resolver = MockEquationResolver(equationResult);
 
 			var result = item.GetResult(order, resolver, ref Inputs);

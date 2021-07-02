@@ -35,11 +35,6 @@
             	The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
             </summary>
         </member>
-        <member name="T:TTRPG.Engine.SequenceItems.DieSequenceItem">
-            <summary>
-            	The result is loaded into inputs to be made available to following equations
-            </summary>
-        </member>
         <member name="M:TTRPG.Engine.SequenceItems.ISequenceItem.GetResult(System.Int32,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             	Process equation and get result.
@@ -50,9 +45,9 @@
             <param name="mappedInputs">Inputs mapped for this specific item</param>
             <returns></returns>
         </member>
-        <member name="T:TTRPG.Engine.SequenceItems.MessageSequenceItem">
+        <member name="T:TTRPG.Engine.SequenceItems.SequenceItem">
             <summary>
-            	Sequence item that creates a formatted message.
+            	The result is loaded into inputs to be made available to following equations
             </summary>
         </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItemResult">
@@ -78,6 +73,21 @@
         <member name="P:TTRPG.Engine.SequenceItems.SequenceItemResult.Result">
             <summary>
             	What item resolved to
+            </summary>
+        </member>
+        <member name="T:TTRPG.Engine.SequenceItems.SequenceItemType">
+            <summary>
+            	Identifies the type of sequence item
+            </summary>
+        </member>
+        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemType.Algorithm">
+            <summary>
+            	Equation will be processed as an algorithm
+            </summary>
+        </member>
+        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemType.Message">
+            <summary>
+            	Equation will be processed as a message
             </summary>
         </member>
     </members>

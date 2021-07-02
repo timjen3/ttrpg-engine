@@ -18,7 +18,7 @@ namespace TTRPG.Engine.Demo.Demo
 		{
 			foreach (var itemResult in result.Results)
 			{
-				if (itemResult.ResolvedItem is MessageSequenceItem)
+				if (itemResult.ResolvedItem.SequenceItemType == SequenceItemType.Message)
 				{
 					Console.WriteLine(itemResult.Result);
 				}
@@ -37,11 +37,11 @@ namespace TTRPG.Engine.Demo.Demo
 				Name = "UsePotion",
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("Calculate Heal Amount", "min(max_hp - old_hp, random(1,3,12) + floor(con / 4))", "heal_amt"),
-					new DieSequenceItem("Apply Healing", "heal_amt + old_hp", "new_hp"),
-					new DieSequenceItem("Deduct Potion", "potions - 1", "new_potions"),
-					new MessageSequenceItem("Heal", "Healed {heal_amt}. HP : {old_hp} => {new_hp}"),
-					new MessageSequenceItem("Heal", "Used 1 potion. Potions: {potions} => {new_potions}")
+					new SequenceItem("Calculate Heal Amount", "min(max_hp - old_hp, random(1,3,12) + floor(con / 4))", "heal_amt", SequenceItemType.Algorithm),
+					new SequenceItem("Apply Healing", "heal_amt + old_hp", "new_hp", SequenceItemType.Algorithm),
+					new SequenceItem("Deduct Potion", "potions - 1", "new_potions", SequenceItemType.Algorithm),
+					new SequenceItem("Heal", "Healed {heal_amt}. HP : {old_hp} => {new_hp}", "HealMsg", SequenceItemType.Message),
+					new SequenceItem("Heal", "Used 1 potion. Potions: {potions} => {new_potions}", "PotionMsg", SequenceItemType.Message)
 				},
 				Conditions = new List<ICondition>
 				{
@@ -79,14 +79,14 @@ namespace TTRPG.Engine.Demo.Demo
 				Name = "Attack",
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("To Hit", "random(1,1,20) + dex", "to_hit"),
-					new DieSequenceItem("Dodge", "random(1,1,20) + dex", "dodge"),
-					new MessageSequenceItem("Report Hit", "The attack lands! (To Hit: {to_hit}, Dodge: {dodge})"),
-					new MessageSequenceItem("Report Miss", "Miss! (To Hit: {to_hit}, Dodge: {dodge})"),
-					new DieSequenceItem("Damage", "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)", "damage"),
-					new MessageSequenceItem("Report Damage", "Dealt {damage} damage from {wHits} attacks."),
-					new DieSequenceItem("Take Damage", "hp - damage", "new_hp"),
-					new MessageSequenceItem("Report Damage Taken", "Took {damage} damage. HP : {old_hp} => {new_hp}.")
+					new SequenceItem("To Hit", "random(1,1,20) + dex", "to_hit", SequenceItemType.Algorithm),
+					new SequenceItem("Dodge", "random(1,1,20) + dex", "dodge", SequenceItemType.Algorithm),
+					new SequenceItem("Report Hit", "The attack lands! (To Hit: {to_hit}, Dodge: {dodge})", "ToHitMsg", SequenceItemType.Message),
+					new SequenceItem("Report Miss", "Miss! (To Hit: {to_hit}, Dodge: {dodge})", "ToHitMsg", SequenceItemType.Message),
+					new SequenceItem("Damage", "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)", "damage", SequenceItemType.Algorithm),
+					new SequenceItem("Report Damage", "Dealt {damage} damage from {wHits} attacks.", "DamageMsg", SequenceItemType.Message),
+					new SequenceItem("Take Damage", "hp - damage", "new_hp", SequenceItemType.Algorithm),
+					new SequenceItem("Report Damage Taken", "Took {damage} damage. HP : {old_hp} => {new_hp}.", "DamageTakenMsg", SequenceItemType.Message)
 				},
 				Conditions = new List<ICondition>
 				{
