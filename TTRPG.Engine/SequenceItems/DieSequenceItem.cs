@@ -6,10 +6,8 @@ namespace TTRPG.Engine.SequenceItems
 	/// <summary>
 	///		The result is loaded into inputs to be made available to following equations
 	/// </summary>
-	public class DieSequenceItem : BaseSequenceItem
+	public class DieSequenceItem : ISequenceItem
 	{
-		public string ResultName { get; set; }
-
 		public DieSequenceItem(){}
 
 		public DieSequenceItem(string name, string equation, string resultName)
@@ -19,14 +17,21 @@ namespace TTRPG.Engine.SequenceItems
 			ResultName = resultName;
 		}
 
-		public override SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
+		public string Name { get; set; }
+		public string Equation { get; set; }
+		public string ResultName { get; set; }
+
+		public SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
 		{
-			var result = base.GetResult(order, equationResolver, mappedInputs);
+			var result = new SequenceItemResult();
+			result.Order = order;
+			result.Inputs = mappedInputs;
+			result.ResolvedItem = this;
+			result.Result = equationResolver.Process(Equation, mappedInputs).ToString();
 			if (inputs != null)
 			{
 				inputs[ResultName] = result.Result.ToString();
 			}
-
 			return result;
 		}
 	}

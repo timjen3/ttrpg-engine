@@ -2,6 +2,9 @@
 
 namespace TTRPG.Engine.SequenceItems
 {
+	/// <summary>
+	///		Result for one resolved SequenceItem
+	/// </summary>
 	public class SequenceItemResult
 	{
 		/// <summary>
