@@ -1,11 +1,12 @@
-﻿using TTRPG.Engine.Conditions;
+﻿using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
+using System.Collections.Generic;
+using TTRPG.Engine.Conditions;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
 using TTRPG.Engine.Mappings;
 using TTRPG.Engine.SequenceItems;
-using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
-using System.Collections.Generic;
+using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Tests
 {
