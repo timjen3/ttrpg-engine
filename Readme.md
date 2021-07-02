@@ -18,17 +18,17 @@ Little more than a container for a plaintext algorithm to be parsed by the mxPar
 
 See mxParser for tutorials: http://mathparser.org/
 
-#### Concrete Implementations of ISequenceItems
+#### ISequenceItems
 
-There are several types of sequence items included in the package:
+Sequence Items declare a `ResultName`. After being resolved the result is injected into the inputs collection for use by following sequence items, conditions, and mappings. Use these to chain sequence item algorithms or to inform actions.
 
-1. Die Sequence Items: These declare a `ResultName`. After being resolved the result will be injected into the inputs collection for use by following sequence items, conditions, and mappings. Use these to chain sequence item algorithms or to inform actions.
+There are two types of sequence items included in the package as differentiated by the SequenceItemType enum.
 
-2. Data Sequence Items: These are generics that carry a data payload that can be used by a consuming application.
+1. Algorithm: As the name implies this is an algorithm to be processed through mxParser. All variables are usable, but be aware that the order of the item matters when items use the results from other items. For instance `(damage + damage_modifier) / 2`.
 
-3. Message Sequence Items: Produce custom messages.
+2. Message: The Equation property contains a format string to be populated with variables. For instance `{damage} damage was dealt to the target.`
 
-4. *Other*: Custom Sequence Items can be created by implementing the ISequenceItem interface or BaseSequenceItem abstract class.
+3. *Other*: Custom Sequence Items can be created by implementing the ISequenceItem interface.
 
 #### Custom Functions
 
@@ -45,21 +45,27 @@ To add additional user defined functions simply add singletons of type org.mariu
 
 ## Sequences
 
-Sequences pull everything together. They contain sequence items that are resolved in the configured order when Process is called.
+Sequences are currently the way to model an event with the library. They contain a list of sequence items that are resolved in the configured order when `Process()` is called.
 
 #### Conditions 
 
 Conditions can be added for items in the sequence. Conditions that fail can either result in the whole sequence failing or steps of the sequence being skipped.
 
+Conditions can specify dependencies for SequenceItems. If a dependenct SequenceItem is not resolved (due to a failed condition) then the condition will fail.
+
+If the dependencies were processed and the condition has an Equation it will be evaluated. The Equation can contain the ResultNames from previously processed SequenceItes as variables.
+
+Example: `toHit > dodge`
+
 #### Mappings
 
-Mappings can be added for items in the sequence. Mappings add aliases to input variable names (or result names from previous DieSequenceItems) for a specified item. These makes an item's equations as clear as possible without coupling it to a specific sequence.
+Mappings can be added for items in the sequence. Mappings add aliases to input variable names (or result names from previous SequenceItems) for a specified item.
 
 Mappings without a specific item specified will be applied to all items in the sequence.
 
 #### Roles
 
-Roles contain attributes that can be used within equations. To inject role attributes into equations you must add a RoleMapping. Role Mappings can apply to specific items, or to all items.
+Roles have attributes that can be used within equations. To inject role attributes into equations you must add a RoleMapping. Like regular Mappings, Role Mappings can apply to specific items or to all items.
 
 ## Exceptions
 

@@ -6,6 +6,7 @@ namespace TTRPG.Engine.SequenceItems
 	public interface ISequenceItem
 	{
 		string Name { get; }
+		SequenceItemType SequenceItemType { get; }
 
 		/// <summary>
 		///		Process equation and get result.

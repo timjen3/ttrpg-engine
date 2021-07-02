@@ -33,7 +33,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1 + 1", "ar")
+					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm)
 				}
 			};
 
@@ -50,8 +50,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1 + 1", "ar"),
-					new DieSequenceItem("b", "1 + ar", "br"),
+					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
 				}
 			};
 
@@ -69,8 +69,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1 + 1", "ar"),
-					new DieSequenceItem("b", "1 + ar", "br"),
+					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
 				},
 				Conditions = new List<ICondition>
 				{
@@ -92,7 +92,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1 + 1", "ar")
+					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm)
 				},
 				Conditions = new List<ICondition>
 				{
@@ -111,8 +111,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
-					new DieSequenceItem("b", "1 + ar", "br"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
 				},
 				Conditions = new List<ICondition>
 				{
@@ -131,8 +131,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
-					new DieSequenceItem("b", "1", "br"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "1", "br", SequenceItemType.Algorithm),
 				}
 			};
 
@@ -153,7 +153,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 				},
 				Conditions = new List<ICondition>
 				{
@@ -179,7 +179,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 				},
 				Conditions = new List<ICondition>
 				{
@@ -203,7 +203,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 				},
 				Conditions = new List<ICondition>
 				{
@@ -224,8 +224,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
-					new DieSequenceItem("b", "2", "br"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "2", "br", SequenceItemType.Algorithm),
 				},
 				Conditions = new List<ICondition>
 				{
@@ -248,7 +248,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 				},
 				Conditions = new List<ICondition>
 				{
@@ -268,7 +268,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "im", "ar"),
+					new SequenceItem("a", "im", "ar", SequenceItemType.Algorithm),
 				},
 				Mappings = new List<IMapping>
 				{
@@ -293,8 +293,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
-					new DieSequenceItem("b", "arr", "br"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "arr", "br", SequenceItemType.Algorithm),
 				},
 				Mappings = new List<IMapping>
 				{
@@ -315,8 +315,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
-					new DieSequenceItem("b", "ar + arr", "br"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "ar + arr", "br", SequenceItemType.Algorithm),
 				},
 				Mappings = new List<IMapping>
 				{
@@ -337,9 +337,9 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
-					new DieSequenceItem("b", "1", "br"),
-					new DieSequenceItem("c", "arr + brr", "cr"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "1", "br", SequenceItemType.Algorithm),
+					new SequenceItem("c", "arr + brr", "cr", SequenceItemType.Algorithm),
 				},
 				Mappings = new List<IMapping>
 				{
@@ -361,9 +361,9 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "1", "ar"),
-					new DieSequenceItem("b", "arr", "br"),
-					new DieSequenceItem("c", "arr", "cr"),
+					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "arr", "br", SequenceItemType.Algorithm),
+					new SequenceItem("c", "arr", "cr", SequenceItemType.Algorithm),
 				},
 				Mappings = new List<IMapping>
 				{
@@ -384,7 +384,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "random(1,minValue,maxValue)", "ar"),
+					new SequenceItem("a", "random(1,minValue,maxValue)", "ar", SequenceItemType.Algorithm),
 				},
 				Mappings = new List<IMapping>
 				{
@@ -412,8 +412,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "a", "ar"),
-					new DieSequenceItem("b", "a", "br"),
+					new SequenceItem("a", "a", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("b", "a", "br", SequenceItemType.Algorithm),
 				},
 				Mappings = new List<IMapping>
 				{
@@ -438,7 +438,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<ISequenceItem>
 				{
-					new DieSequenceItem("a", "aa", "ar"),
+					new SequenceItem("a", "aa", "ar", SequenceItemType.Algorithm),
 				},
 				Mappings = new List<IMapping>
 				{
