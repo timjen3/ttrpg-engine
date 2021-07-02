@@ -21,6 +21,7 @@ namespace TTRPG.Engine.SequenceItems
 		public SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
 		{
 			var result = new SequenceItemResult();
+			result.Order = order;
 			result.Inputs = mappedInputs;
 			result.ResolvedItem = this;
 			result.Result = Equation.FormatWith(mappedInputs);

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using TTRPG.Engine.SequenceItems;
 
-namespace TTRPG.Engine.SequenceItems
+namespace TTRPG.Engine
 {
 	public class SequenceResult
 	{
