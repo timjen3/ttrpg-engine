@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TTRPG.Engine.Conditions;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Mappings;
@@ -16,6 +14,7 @@ namespace TTRPG.Engine.Demo.Demo
 
 		private void HandleResultItems(SequenceResult result)
 		{
+			Console.WriteLine();
 			foreach (var itemResult in result.Results)
 			{
 				if (itemResult.ResolvedItem.SequenceItemType == SequenceItemType.Message)
@@ -23,6 +22,7 @@ namespace TTRPG.Engine.Demo.Demo
 					Console.WriteLine(itemResult.Result);
 				}
 			}
+			Console.WriteLine();
 		}
 
 		public CombatSequences(IEquationResolver resolver)

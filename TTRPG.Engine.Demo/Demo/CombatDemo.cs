@@ -1,30 +1,15 @@
-﻿using org.mariuszgromada.math.mxparser;
+﻿using EasyConsole;
+using org.mariuszgromada.math.mxparser;
 using System;
+using System.Threading;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Equations.Extensions;
-using TTRPG.Engine.SequenceItems;
 
 namespace TTRPG.Engine.Demo.Demo
 {
-	public class UpdateAttributeCommand
-	{
-		public Role Entity { get; set; }
-		public string Attribute { get; set; }
-	}
-
 	public class CombatDemo
 	{
-		int RoundNumber = 0;
 		CombatSequences Sequences;
-
-		public CombatDemo()
-		{
-			var func1 = new Function("random", new RandomFunctionExtension());
-			var func2 = new Function("toss", new CoinTossFunctionExtension());
-			var funcs = new Function[] { func1, func2 };
-			var resolver = new EquationResolver(funcs);
-			Sequences = new CombatSequences(resolver);
-		}
 
 		Role Player = CombatRoles.Player;
 		Role Computer = CombatRoles.Computer;
@@ -34,35 +19,18 @@ namespace TTRPG.Engine.Demo.Demo
 
 		Random Gen = new Random();
 
-		#region Events
-		void CombatStart()
-		{
-			int playerInitiative = (int.Parse(Player.Attributes["Dex"]) / 4) + Gen.Next(1, 20);
-			int computerInitiative = (int.Parse(Computer.Attributes["Dex"]) / 4) + Gen.Next(1, 20);
-			if (playerInitiative > computerInitiative)
-			{
-				Attacker = Player;
-				Defender = Computer;
-			}
-			else
-			{
-				Attacker = Computer;
-				Defender = Player;
-			}
-		}
+		bool PlayerIsDead => int.Parse(Player.Attributes["hp"]) <= 0;
+		bool ComputerIsDead => int.Parse(Computer.Attributes["hp"]) <= 0;
 
-		void RoundStart(Role current)
+		public CombatDemo()
 		{
-			RoundNumber++;
-			if ((RoundNumber - 1) % 2 == 0)
-			{
-				Console.ForegroundColor = ConsoleColor.Blue;
-				Console.WriteLine($"---BEGIN ROUND {(RoundNumber / 2) + 1}---");
-			}
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine($"[ {current.Name}'s turn! ]");
-			Console.ResetColor();
-			Console.WriteLine();
+			var func1 = new Function("random", new RandomFunctionExtension());
+			var func2 = new Function("toss", new CoinTossFunctionExtension());
+			var funcs = new Function[] { func1, func2 };
+			var resolver = new EquationResolver(funcs);
+			Sequences = new CombatSequences(resolver);
+			Attacker = Computer;
+			Defender = Player;
 		}
 
 		void TurnEnd()
@@ -73,6 +41,8 @@ namespace TTRPG.Engine.Demo.Demo
 			Console.WriteLine();
 			Console.WriteLine("--------------------");
 			Console.WriteLine();
+			Thread.Sleep(2000);
+			Console.Clear();
 		}
 
 		void AiDecision()
@@ -85,62 +55,35 @@ namespace TTRPG.Engine.Demo.Demo
 			}
 			else
 			{
+				Console.WriteLine($"{Attacker.Name} swings his blade wildly.");
 				Sequences.Attack(Attacker, Defender);
 			}
 		}
 
 		void PlayerDecision()
 		{
-			bool missingHp = int.Parse(Attacker.Attributes["HP"]) < int.Parse(Attacker.Attributes["MAX_HP"]);
-			if (missingHp && int.Parse(Attacker.Attributes["Potions"]) > 0)
-			{
-				Console.Write($"What do you do? HP is {Attacker.Attributes["HP"]} (1: Attack 2: Heal)\n");
-				while (true)
-				{
-					var keyPress = Console.ReadKey();
-					if (keyPress.KeyChar == '1')
-					{
-						Console.Write("\r");
-						Sequences.Attack(Attacker, Defender);
-						break;
-					}
-					else if (keyPress.KeyChar == '2')
-					{
-						Console.Write("\r");
-						Sequences.UsePotion(Attacker);
-						break;
-					}
-					else
-					{
-						Console.Write("\r");
-						Console.WriteLine("Invalid Input.");
-					}
-				}
-			}
-			else
-			{
-				Sequences.Attack(Attacker, Defender);
-			}
+			Output.WriteLine("Your turn!");
+			Output.WriteLine($"{Player.Attributes["HP"]} / {Player.Attributes["MAX_HP"]} HP");
+			var menu = new Menu()
+				.Add("Attack", () => Sequences.Attack(Attacker, Defender))
+				.Add("Use Potion", () => Sequences.UsePotion(Attacker));
+			menu.Display();
 		}
 
 		void ReportVictor()
 		{
-			if (int.Parse(Player.Attributes["hp"]) <= 0) Console.WriteLine($"{Player.Name} was defeated!");
-			if (int.Parse(Computer.Attributes["hp"]) <= 0) Console.WriteLine($"{Computer.Name} was defeated!");
+			if (PlayerIsDead) Console.WriteLine($"{Player.Name} was defeated!");
+			if (ComputerIsDead) Console.WriteLine($"{Computer.Name} was defeated!");
 		}
-		#endregion
 
 		public void DoDemo()
 		{
-			CombatStart();
-			while (int.Parse(Player.Attributes["hp"]) > 0 && int.Parse(Computer.Attributes["hp"]) > 0)
+			while (!PlayerIsDead && !ComputerIsDead)
 			{
-				RoundStart(Attacker);
+				Output.WriteLine(ConsoleColor.Green, $"[ {Attacker.Name}'s turn! ]");
 				if (Attacker == Player) PlayerDecision();
 				else AiDecision();
 				TurnEnd();
-				Console.ReadKey();
-				Console.Write("\r");
 			}
 			ReportVictor();
 		}
