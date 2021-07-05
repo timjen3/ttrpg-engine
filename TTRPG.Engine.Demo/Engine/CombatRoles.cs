@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TTRPG.Engine.Demo.Demo
+namespace TTRPG.Engine.Demo2.Engine
 {
 	public static class CombatRoles
 	{
 		public static Role Player => new Role("Player", new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 		{
+			{ "Name", "Player" },
 			{ "MAX_HP", "20" },
 			{ "HP", "20" },
 			{ "Str", "18" },
@@ -21,6 +22,7 @@ namespace TTRPG.Engine.Demo.Demo
 
 		public static Role Computer => new Role("Bandit", new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
 		{
+			{ "Name", "Bandit" },
 			{ "MAX_HP", "50" },
 			{ "HP", "50" },
 			{ "Str", "18" },
