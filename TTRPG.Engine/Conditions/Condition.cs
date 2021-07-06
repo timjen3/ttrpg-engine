@@ -13,14 +13,24 @@ namespace TTRPG.Engine.Conditions
 
 		public Condition() { }
 
+		/// sequence-level condition
+		public Condition(string equation)
+		{
+			if (string.IsNullOrWhiteSpace(equation)) throw new ArgumentNullException($"Argument {nameof(equation)} is required.");
+			Equation = equation;
+		}
+
+		/// condition for 1 item
 		public Condition(string itemName, string equation = null, string dependentOnItem = null, bool throwOnFail = false, string failureMessage = null)
 			: this(new string[] { itemName }, equation, dependentOnItem, throwOnFail, failureMessage)
 		{
 		}
 
+		/// condition for 1+ items
 		public Condition(IEnumerable<string> itemNames, string equation = null, string dependentOnItem = null, bool throwOnFail = false, string failureMessage = null)
 		{
 			if (string.IsNullOrWhiteSpace(equation) && string.IsNullOrWhiteSpace(dependentOnItem)) throw new ArgumentNullException($"Either of arguments: {nameof(equation)} or {nameof(dependentOnItem)} are required.");
+			if (itemNames == null || !itemNames.Any()) throw new ArgumentNullException($"Argument: {nameof(itemNames)} cannot be null for a sequence item condition.");
 			ItemNames = itemNames;
 			Equation = equation;
 			DependentOnItem = dependentOnItem;
@@ -43,11 +53,17 @@ namespace TTRPG.Engine.Conditions
 		/// Custom message for failure if ThrowOnFail is true
 		public string FailureMessage { get; set; }
 
-		/// Determine if the condition fails based on input variables
-		public virtual bool Check(string itemName, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results)
+		/// Determine if the condition passes for the sequence
+		public bool Check(IEquationResolver equationResolver, IDictionary<string, string> inputs)
+		{
+			return Check(null, equationResolver, inputs, null);
+		}
+
+		/// Determine if the condition passes for a sequence item
+		public bool Check(string itemName, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results)
 		{
 			var valid = true;
-			if (ItemNames.Contains(itemName))
+			if (ItemNames == null || ItemNames.Contains(itemName))
 			{
 				if (!string.IsNullOrWhiteSpace(DependentOnItem))
 				{

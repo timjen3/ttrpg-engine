@@ -31,6 +31,8 @@ namespace TTRPG.Engine.Demo2
 			txt_ComputerPotions.Text = $"{_demo.Computer.Attributes["Potions"]}";
 			txt_PlayerHP.Text = $"{_demo.Player.Attributes["HP"]} / {_demo.Player.Attributes["MAX_HP"]}";
 			txt_PlayerPotions.Text = $"{_demo.Player.Attributes["Potions"]}";
+			btn_Attack.Enabled = _demo.CheckPlayerAttack();
+			btn_UsePotion.Enabled = _demo.CheckPlayerUsePotion();
 		}
 
 		private void btn_Attack_Click(object sender, EventArgs e)
@@ -53,10 +55,8 @@ namespace TTRPG.Engine.Demo2
 		{
 			txtBox_MessageLog.Clear();
 			_demo = new CombatDemoService(WriteMessage);
-			UpdateState();
-			btn_Attack.Enabled = true;
-			btn_UsePotion.Enabled = true;
 			btn_NewGame.Visible = false;
+			UpdateState();
 		}
 	}
 }

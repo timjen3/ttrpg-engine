@@ -158,6 +158,7 @@ namespace TTRPG.Engine.Demo2
 			this.txt_PlayerPotions.Name = "txt_PlayerPotions";
 			this.txt_PlayerPotions.Size = new System.Drawing.Size(278, 27);
 			this.txt_PlayerPotions.TabIndex = 3;
+			this.txt_PlayerPotions.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// txt_PlayerHP
 			// 
@@ -165,6 +166,7 @@ namespace TTRPG.Engine.Demo2
 			this.txt_PlayerHP.Name = "txt_PlayerHP";
 			this.txt_PlayerHP.Size = new System.Drawing.Size(278, 27);
 			this.txt_PlayerHP.TabIndex = 2;
+			this.txt_PlayerHP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// txt_ComputerPotions
 			// 
@@ -172,6 +174,7 @@ namespace TTRPG.Engine.Demo2
 			this.txt_ComputerPotions.Name = "txt_ComputerPotions";
 			this.txt_ComputerPotions.Size = new System.Drawing.Size(278, 27);
 			this.txt_ComputerPotions.TabIndex = 1;
+			this.txt_ComputerPotions.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// txt_ComputerHP
 			// 
@@ -179,6 +182,7 @@ namespace TTRPG.Engine.Demo2
 			this.txt_ComputerHP.Name = "txt_ComputerHP";
 			this.txt_ComputerHP.Size = new System.Drawing.Size(278, 27);
 			this.txt_ComputerHP.TabIndex = 0;
+			this.txt_ComputerHP.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			// 
 			// btn_NewGame
 			// 

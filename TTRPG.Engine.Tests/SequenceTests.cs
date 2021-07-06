@@ -457,5 +457,143 @@ namespace TTRPG.Engine.Tests
 
 			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
+
+		[Test]
+		public void Check_NoConditions_ReturnsTrue()
+		{
+			var sequence = new Sequence();
+
+			var valid = sequence.Check(EquationResolver);
+
+			Assert.IsTrue(valid);
+		}
+
+		[Test]
+		public void Check_ValidSequenceCondition_ReturnsTrue()
+		{
+			var sequence = new Sequence()
+			{
+				Conditions = new List<ICondition>
+				{
+					new Condition("1")
+				}
+			};
+
+			var valid = sequence.Check(EquationResolver);
+
+			Assert.IsTrue(valid);
+		}
+
+		[Test]
+		public void Check_ValidSequenceCondition_ReturnsFalse()
+		{
+			var sequence = new Sequence()
+			{
+				Conditions = new List<ICondition>
+				{
+					new Condition("0")
+				}
+			};
+
+			var valid = sequence.Check(EquationResolver);
+
+			Assert.IsFalse(valid);
+		}
+
+		[Test]
+		public void Check_RoleMappingIntoSequenceCondition_ReturnsTrue()
+		{
+			var sequence = new Sequence()
+			{
+				Mappings = new List<IMapping>
+				{
+					new RoleMapping("a", "aa", "r1")
+				},
+				Conditions = new List<ICondition>
+				{
+					new Condition("aa = 1")
+				}
+			};
+			var roles = new List<Role>
+			{
+				new Role("r1", new Dictionary<string, string>
+				{
+					{ "a", "1" }
+				})
+			};
+
+			var valid = sequence.Check(EquationResolver, roles: roles);
+
+			Assert.IsTrue(valid);
+		}
+
+		[Test]
+		public void Check_RoleMappingIntoSequenceCondition_ReturnsFalse()
+		{
+			var sequence = new Sequence()
+			{
+				Mappings = new List<IMapping>
+				{
+					new RoleMapping("a", "aa", "r1")
+				},
+				Conditions = new List<ICondition>
+				{
+					new Condition("aa = 1")
+				}
+			};
+			var roles = new List<Role>
+			{
+				new Role("r1", new Dictionary<string, string>
+				{
+					{ "a", "0" }
+				})
+			};
+
+			var valid = sequence.Check(EquationResolver, roles: roles);
+
+			Assert.IsFalse(valid);
+		}
+
+		[Test]
+		public void Check_InputMappingIntoSequenceCondition_ReturnsTrue()
+		{
+			var sequence = new Sequence()
+			{
+				Mappings = new List<IMapping>
+				{
+					new Mapping("a", "aa")
+				},
+				Conditions = new List<ICondition>
+				{
+					new Condition("a")
+				}
+			};
+			var inputs = new Dictionary<string, string> { { "a", "1" } };
+
+			var valid = sequence.Check(EquationResolver, inputs: inputs);
+
+			Assert.IsTrue(valid);
+		}
+
+		[Test]
+		public void Check_InputMappingIntoSequenceCondition_ReturnsFalse()
+		{
+			var sequence = new Sequence()
+			{
+				Mappings = new List<IMapping>
+				{
+					new Mapping("a", "aa")
+				},
+				Conditions = new List<ICondition>
+				{
+					new Condition("a")
+				}
+			};
+			var inputs = new Dictionary<string, string> { { "a", "0" } };
+
+			var valid = sequence.Check(EquationResolver, inputs: inputs);
+
+			Assert.IsFalse(valid);
+		}
 	}
 }

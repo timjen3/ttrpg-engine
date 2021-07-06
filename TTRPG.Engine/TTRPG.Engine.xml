@@ -4,6 +4,15 @@
         <name>TTRPG.Engine</name>
     </assembly>
     <members>
+        <member name="M:TTRPG.Engine.Conditions.Condition.#ctor(System.String)">
+            sequence-level condition
+        </member>
+        <member name="M:TTRPG.Engine.Conditions.Condition.#ctor(System.String,System.String,System.String,System.Boolean,System.String)">
+            condition for 1 item
+        </member>
+        <member name="M:TTRPG.Engine.Conditions.Condition.#ctor(System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.Boolean,System.String)">
+            condition for 1+ items
+        </member>
         <member name="P:TTRPG.Engine.Conditions.Condition.DependentOnItem">
             Condition requires that this item was not skipped
         </member>
@@ -19,8 +28,11 @@
         <member name="P:TTRPG.Engine.Conditions.Condition.FailureMessage">
             Custom message for failure if ThrowOnFail is true
         </member>
+        <member name="M:TTRPG.Engine.Conditions.Condition.Check(TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String})">
+            Determine if the condition passes for the sequence
+        </member>
         <member name="M:TTRPG.Engine.Conditions.Condition.Check(System.String,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult)">
-            Determine if the condition fails based on input variables
+            Determine if the condition passes for a sequence item
         </member>
         <member name="M:TTRPG.Engine.IServiceCollectionExtensions.AddTTRPGEngineServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
@@ -89,6 +101,24 @@
             <summary>
             	Equation will be processed as a message
             </summary>
+        </member>
+        <member name="M:TTRPG.Engine.Sequences.Sequence.Check(TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            <summary>
+            	Check if sequence can be executed with the provided parameters
+            </summary>
+            <param name="equationResolver"></param>
+            <param name="inputs"></param>
+            <param name="roles"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.Sequences.Sequence.Process(TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            <summary>
+            	Process sequence items and get result
+            </summary>
+            <param name="equationResolver"></param>
+            <param name="inputs"></param>
+            <param name="roles"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>
