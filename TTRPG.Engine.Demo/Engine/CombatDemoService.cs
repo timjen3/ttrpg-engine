@@ -40,6 +40,10 @@ namespace TTRPG.Engine.Demo2.Engine
 			}
 		}
 
+		public bool CheckPlayerAttack() => Sequences.CheckAttack(Player, Computer);
+
+		public bool CheckPlayerUsePotion() => Sequences.CheckUsePotion(Player);
+
 		public void PlayerAttack()
 		{
 			Sequences.Attack(Player, Computer);

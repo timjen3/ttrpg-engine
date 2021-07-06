@@ -51,11 +51,15 @@ Sequences are currently the way to model an event with the library. They contain
 
 Conditions can be added for items in the sequence. Conditions that fail can either result in the whole sequence failing or steps of the sequence being skipped.
 
-Conditions can specify dependencies for SequenceItems. If a dependenct SequenceItem is not resolved (due to a failed condition) then the condition will fail.
+Conditions can specify dependencies for SequenceItems. If a dependent SequenceItem is not resolved (due to a failed condition) then the condition will fail.
 
 If the dependencies were processed and the condition has an Equation it will be evaluated. The Equation can contain the ResultNames from previously processed SequenceItes as variables.
 
 Example: `toHit > dodge`
+
+## Sequence Conditions
+
+When a condition does not specify sequence items to apply to and also does not specify dependent items it will be considered as a Sequence-level condition. When a sequence's `Check()` method is called these conditions will be checked to see if the sequence is suitable to be processed with the provided parameters.
 
 #### Mappings
 

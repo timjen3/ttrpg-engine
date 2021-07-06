@@ -20,6 +20,29 @@ namespace TTRPG.Engine.Sequences
 
 		public List<IMapping> Mappings { get; set; } = new List<IMapping>();
 
+		/// <summary>
+		///		Check if sequence can be executed with the provided parameters
+		/// </summary>
+		/// <param name="equationResolver"></param>
+		/// <param name="inputs"></param>
+		/// <param name="roles"></param>
+		/// <returns></returns>
+		public bool Check(IEquationResolver equationResolver, Dictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
+		{
+			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), KeyComparer);  // isolate changes to this method
+			var mappedInputs = new Dictionary<string, string>(inputs, KeyComparer);  // isolate mapping changes to current sequence item
+			Mappings.ForEach(x => x.Apply(null, ref mappedInputs, roles));
+
+			return Conditions.All(x => x.Check(equationResolver, mappedInputs));
+		}
+
+		/// <summary>
+		///		Process sequence items and get result
+		/// </summary>
+		/// <param name="equationResolver"></param>
+		/// <param name="inputs"></param>
+		/// <param name="roles"></param>
+		/// <returns></returns>
 		public SequenceResult Process(IEquationResolver equationResolver, Dictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), KeyComparer);  // isolate changes to this method

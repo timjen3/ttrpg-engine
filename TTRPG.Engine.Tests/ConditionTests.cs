@@ -118,7 +118,7 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 0;
 			var resolver = MockEquationResolver(resolverResult);
 
-			var ex = Assert.Throws<ArgumentNullException>(() => new Condition(conditionItemName));
+			var ex = Assert.Throws<ArgumentNullException>(() => new Condition(conditionItemName, equation: null, dependentOnItem: null));
 		}
 
 		[Test]
@@ -147,6 +147,46 @@ namespace TTRPG.Engine.Tests
 			var condition = new Condition(conditionItemNames, equation);
 
 			bool result = condition.Check(itemName, resolver, null, null);
+
+			Assert.IsTrue(result);
+		}
+
+		[Test]
+		public void Check_SequenceLevelConditionIsFalse_ReturnsFalseForSequence()
+		{
+			var equation = "anything";
+			int resolverResult = 0;
+			var resolver = MockEquationResolver(resolverResult);
+			var condition = new Condition(equation);
+
+			bool result = condition.Check(resolver, inputs: null);
+
+			Assert.IsFalse(result);
+		}
+
+		[Test]
+		public void Check_SequenceLevelConditionIsFalse_ReturnsFalseForSequenceItem()
+		{
+			var itemName = "a";
+			var equation = "anything";
+			int resolverResult = 0;
+			var resolver = MockEquationResolver(resolverResult);
+			var condition = new Condition(equation);
+
+			bool result = condition.Check(itemName, resolver, null, null);
+
+			Assert.IsFalse(result);
+		}
+
+		[Test]
+		public void Check_SequenceLevelConditionIsTrue_ReturnsTrue()
+		{
+			var equation = "anything";
+			int resolverResult = 1;
+			var resolver = MockEquationResolver(resolverResult);
+			var condition = new Condition(equation);
+
+			bool result = condition.Check(resolver, inputs: null);
 
 			Assert.IsTrue(result);
 		}
