@@ -57,7 +57,7 @@ If the dependencies were processed and the condition has an Equation it will be 
 
 Example: `toHit > dodge`
 
-## Sequence Conditions
+##### Sequence Conditions
 
 When a condition does not specify sequence items to apply to and also does not specify dependent items it will be considered as a Sequence-level condition. When a sequence's `Check()` method is called these conditions will be checked to see if the sequence is suitable to be processed with the provided parameters.
 
