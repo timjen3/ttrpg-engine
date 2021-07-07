@@ -1,22 +1,89 @@
 ﻿using org.mariuszgromada.math.mxparser;
 using System;
+using System.Collections.Generic;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Equations.Extensions;
+using TTRPG.Engine.SequenceItems;
+using TTRPG.Engine.Sequences;
 
-namespace TTRPG.Engine.Demo2.Engine
+namespace TTRPG.Engine.Demo.Engine
 {
 	public class CombatDemoService
 	{
-		CombatSequences Sequences;
-
-		public Role Player = CombatRoles.Player;
-		public Role PlayerWeapon = CombatRoles.PlayerWeapon;
-		public Role Computer = CombatRoles.Computer;
-		public Role ComputerWeapon = CombatRoles.ComputerWeapon;
-
 		Random Gen = new Random();
 
-		private Action<string> _writeMessage;
+		private readonly Action<string> _writeMessage;
+		private readonly IEquationResolver _resolver;
+
+		/// output any messages found in results
+		private void HandleResultItems(SequenceResult result)
+		{
+			foreach (var itemResult in result.Results)
+			{
+				if (itemResult.ResolvedItem.SequenceItemType == SequenceItemType.Message)
+				{
+					_writeMessage(itemResult.Result);
+				}
+			}
+		}
+
+		private void UsePotion(Role target)
+		{
+			var sequence = UsePotionSequence;
+			var roles = new List<Role>
+			{
+				target.CloneAs("target")
+			};
+
+			var result = sequence.Process(_resolver, null, roles);
+			HandleResultItems(result);
+
+			// update attributes
+			if (result.Output.ContainsKey("new_hp"))
+			{
+				target.Attributes["HP"] = result.Output["new_hp"];
+				target.Attributes["Potions"] = result.Output["new_potions"];
+			}
+		}
+
+		private void Attack(Role attacker, Role defender, Role weapon)
+		{
+			var sequence = AttackSequence;
+			var roles = new List<Role>
+			{
+				attacker.CloneAs("attacker"),
+				defender.CloneAs("defender"),
+				weapon.CloneAs("weapon")
+			};
+
+			var result = sequence.Process(_resolver, null, roles);
+			HandleResultItems(result);
+
+			// update attributes
+			if (result.Output.ContainsKey("new_hp"))
+				defender.Attributes["HP"] = result.Output["new_hp"];
+		}
+
+		/// occassionally heal when wounded, otherwise attack
+		private void AiDecision()
+		{
+			bool missingHalfHp = int.Parse(Computer.Attributes["HP"]) < int.Parse(Computer.Attributes["MAX_HP"]) / 2;
+			if (missingHalfHp && int.Parse(Computer.Attributes["Potions"]) > 0 && Gen.Next(3) == 1)
+			{
+				UsePotion(Computer);
+			}
+			else
+			{
+				Attack(Computer, Player, ComputerWeapon);
+			}
+		}
+
+		Sequence UsePotionSequence;
+		Sequence AttackSequence;
+		Role PlayerWeapon;
+		Role ComputerWeapon;
+		Role Player;
+		Role Computer;
 
 		public CombatDemoService(Action<string> writeMessage)
 		{
@@ -24,33 +91,55 @@ namespace TTRPG.Engine.Demo2.Engine
 			var func1 = new Function("random", new RandomFunctionExtension());
 			var func2 = new Function("toss", new CoinTossFunctionExtension());
 			var funcs = new Function[] { func1, func2 };
-			var resolver = new EquationResolver(funcs);
-			Sequences = new CombatSequences(resolver, writeMessage);
+			_resolver = new EquationResolver(funcs);
+			var loader = new CombatSequenceDataLoader();
+			loader.Load();
+			UsePotionSequence = loader.UsePotionSequence;
+			AttackSequence = loader.AttackSequence;
+			Player = loader.Player;
+			PlayerWeapon = loader.PlayerWeapon;
+			Computer = loader.Computer;
+			ComputerWeapon = loader.ComputerWeapon;
 		}
 
-		void AiDecision()
+
+		public string PlayerPotions => Player.Attributes["Potions"];
+
+		public string PlayerHPStatus => $"{Player.Attributes["HP"]} / {Player.Attributes["MAX_HP"]}";
+
+		public string ComputerPotions => Computer.Attributes["Potions"];
+
+		public string ComputerHPStatus => $"{Computer.Attributes["HP"]} / {Computer.Attributes["MAX_HP"]}";
+
+		public bool CheckPlayerAttack()
 		{
-			// occassionally heal when wounded, otherwise attack
-			bool missingHalfHp = int.Parse(Computer.Attributes["HP"]) < int.Parse(Computer.Attributes["MAX_HP"]) / 2;
-			if (missingHalfHp && int.Parse(Computer.Attributes["Potions"]) > 0 && Gen.Next(3) == 1)
+			var sequence = AttackSequence;
+			var roles = new List<Role>
 			{
-				Sequences.UsePotion(Computer);
-			}
-			else
-			{
-				Sequences.Attack(Computer, Player, ComputerWeapon);
-			}
+				Player.CloneAs("attacker"),
+				Computer.CloneAs("defender"),
+				PlayerWeapon.CloneAs("weapon")
+			};
+
+			return sequence.Check(_resolver, null, roles);
 		}
 
-		public bool CheckPlayerAttack() => Sequences.CheckAttack(Player, Computer, PlayerWeapon);
+		public bool CheckPlayerUsePotion()
+		{
+			var sequence = UsePotionSequence;
+			var roles = new List<Role>
+			{
+				Player.CloneAs("target")
+			};
 
-		public bool CheckPlayerUsePotion() => Sequences.CheckUsePotion(Player);
+			return sequence.Check(_resolver, null, roles);
+		}
 
 		public void PlayerAttack()
 		{
-			Sequences.Attack(Player, Computer, PlayerWeapon);
+			Attack(Player, Computer, PlayerWeapon);
 			_writeMessage("------------------");
-			if (!(int.Parse(Computer.Attributes["hp"]) <= 0))
+			if (!(int.Parse(Computer.Attributes["HP"]) <= 0))
 			{
 				AiDecision();
 				_writeMessage("------------------");
@@ -59,14 +148,14 @@ namespace TTRPG.Engine.Demo2.Engine
 
 		public void PlayerUsePotion()
 		{
-			Sequences.UsePotion(Player);
+			UsePotion(Player);
 			_writeMessage("------------------");
 			AiDecision();
 			_writeMessage("------------------");
 		}
 
 		public bool IsGameOver()
-			=> int.Parse(Player.Attributes["hp"]) <= 0
-				|| int.Parse(Computer.Attributes["hp"]) <= 0;
+			=> int.Parse(Player.Attributes["HP"]) <= 0
+				|| int.Parse(Computer.Attributes["HP"]) <= 0;
 	}
 }

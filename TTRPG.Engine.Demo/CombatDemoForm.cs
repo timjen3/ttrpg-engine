@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using TTRPG.Engine.Demo2.Engine;
+using TTRPG.Engine.Demo.Engine;
 
 namespace TTRPG.Engine.Demo2
 {
@@ -27,10 +27,10 @@ namespace TTRPG.Engine.Demo2
 
 		private void UpdateState()
 		{
-			txt_ComputerHP.Text = $"{_demo.Computer.Attributes["HP"]} / {_demo.Computer.Attributes["MAX_HP"]}";
-			txt_ComputerPotions.Text = $"{_demo.Computer.Attributes["Potions"]}";
-			txt_PlayerHP.Text = $"{_demo.Player.Attributes["HP"]} / {_demo.Player.Attributes["MAX_HP"]}";
-			txt_PlayerPotions.Text = $"{_demo.Player.Attributes["Potions"]}";
+			txt_ComputerHP.Text = _demo.ComputerHPStatus;
+			txt_ComputerPotions.Text = _demo.ComputerPotions;
+			txt_PlayerHP.Text = _demo.PlayerHPStatus;
+			txt_PlayerPotions.Text = _demo.PlayerPotions;
 			btn_Attack.Enabled = _demo.CheckPlayerAttack();
 			btn_UsePotion.Enabled = _demo.CheckPlayerUsePotion();
 		}
