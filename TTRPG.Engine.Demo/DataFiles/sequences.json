@@ -1,0 +1,351 @@
+[
+    {
+        "Name": "Attack",
+        "Items": [
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Intention",
+                "Equation": "{attacker_name} {wAction} at {defender_name}.",
+                "ResultName": "intention",
+                "SequenceItemType": "Message"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "To Hit",
+                "Equation": "random(1,1,20) + dex",
+                "ResultName": "to_hit",
+                "SequenceItemType": "Algorithm"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Dodge",
+                "Equation": "random(1,1,20) + dex",
+                "ResultName": "dodge",
+                "SequenceItemType": "Algorithm"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Report Hit",
+                "Equation": "The attack lands! ({to_hit} To Hit > {dodge} dodge)",
+                "ResultName": "ToHitMsg",
+                "SequenceItemType": "Message"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Report Miss",
+                "Equation": "Miss! ({to_hit} To Hit <= {dodge} Dodge)",
+                "ResultName": "ToHitMsg",
+                "SequenceItemType": "Message"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Damage",
+                "Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
+                "ResultName": "damage",
+                "SequenceItemType": "Algorithm"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Report Damage",
+                "Equation": "{attacker_name} dealt {damage} damage to {defender_name} from {wHits} attacks.",
+                "ResultName": "DamageMsg",
+                "SequenceItemType": "Message"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Take Damage",
+                "Equation": "hp - damage",
+                "ResultName": "new_hp",
+                "SequenceItemType": "Algorithm"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Report Damage Taken",
+                "Equation": "{defender_name} HP : {old_hp} => {new_hp}",
+                "ResultName": "DamageTakenMsg",
+                "SequenceItemType": "Message"
+            }
+        ],
+        "Conditions": [
+            {
+                "$type": "TTRPG.Engine.Conditions.Condition, TTRPG.Engine",
+                "DependentOnItem": null,
+                "Equation": "dodge >= to_hit",
+                "ItemNames": {
+                    "$type": "System.String[], System.Private.CoreLib",
+                    "$values": [
+                        "Report Miss"
+                    ]
+                },
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            },
+            {
+                "$type": "TTRPG.Engine.Conditions.Condition, TTRPG.Engine",
+                "DependentOnItem": null,
+                "Equation": "dodge < to_hit",
+                "ItemNames": {
+                    "$type": "System.String[], System.Private.CoreLib",
+                    "$values": [
+                        "Report Hit",
+                        "Damage"
+                    ]
+                },
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            },
+            {
+                "$type": "TTRPG.Engine.Conditions.Condition, TTRPG.Engine",
+                "DependentOnItem": "Damage",
+                "Equation": null,
+                "ItemNames": {
+                    "$type": "System.String[], System.Private.CoreLib",
+                    "$values": [
+                        "Report Damage"
+                    ]
+                },
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            },
+            {
+                "$type": "TTRPG.Engine.Conditions.Condition, TTRPG.Engine",
+                "DependentOnItem": "Damage",
+                "Equation": "damage > 0",
+                "ItemNames": {
+                    "$type": "System.String[], System.Private.CoreLib",
+                    "$values": [
+                        "Take Damage",
+                        "Report Damage Taken",
+                        "Update Attribute"
+                    ]
+                },
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            }
+        ],
+        "Mappings": [
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "name",
+                "To": "attacker_name",
+                "ItemName": null,
+                "RoleName": "attacker",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "name",
+                "To": "defender_name",
+                "ItemName": null,
+                "RoleName": "defender",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "dex",
+                "To": "dex",
+                "ItemName": "To Hit",
+                "RoleName": "attacker",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "dex",
+                "To": "dex",
+                "ItemName": "Dodge",
+                "RoleName": "defender",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "hits",
+                "To": "wHits",
+                "ItemName": "Report Damage",
+                "RoleName": "weapon",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "ac",
+                "To": "ac",
+                "ItemName": "Damage",
+                "RoleName": "defender",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "str",
+                "To": "str",
+                "ItemName": "Damage",
+                "RoleName": "attacker",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "hits",
+                "To": "wHits",
+                "ItemName": "Damage",
+                "RoleName": "weapon",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "min",
+                "To": "wMin",
+                "ItemName": "Damage",
+                "RoleName": "weapon",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "max",
+                "To": "wMax",
+                "ItemName": "Damage",
+                "RoleName": "weapon",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "action",
+                "To": "wAction",
+                "ItemName": "Intention",
+                "RoleName": "weapon",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "hp",
+                "To": "hp",
+                "ItemName": "Take Damage",
+                "RoleName": "defender",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "hp",
+                "To": "old_hp",
+                "ItemName": "Report Damage Taken",
+                "RoleName": "defender",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            }
+        ]
+    },
+    {
+        "Name": "UsePotion",
+        "Items": [
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Calculate Heal Amount",
+                "Equation": "min(max_hp - old_hp, random(1,3,12) + floor(con / 4))",
+                "ResultName": "heal_amt",
+                "SequenceItemType": "Algorithm"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Apply Healing",
+                "Equation": "heal_amt + old_hp",
+                "ResultName": "new_hp",
+                "SequenceItemType": "Algorithm"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Deduct Potion",
+                "Equation": "potions - 1",
+                "ResultName": "new_potions",
+                "SequenceItemType": "Algorithm"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Heal",
+                "Equation": "{target_name} used 1 potion ({potions} => {new_potions})",
+                "ResultName": "PotionMsg",
+                "SequenceItemType": "Message"
+            },
+            {
+                "$type": "TTRPG.Engine.SequenceItems.SequenceItem, TTRPG.Engine",
+                "Name": "Heal",
+                "Equation": "{target_name} healed {heal_amt} HP. ({old_hp} => {new_hp})",
+                "ResultName": "HealMsg",
+                "SequenceItemType": "Message"
+            }
+        ],
+        "Conditions": [
+            {
+                "$type": "TTRPG.Engine.Conditions.Condition, TTRPG.Engine",
+                "DependentOnItem": null,
+                "Equation": "old_hp != max_hp",
+                "ItemNames": null,
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            },
+            {
+                "$type": "TTRPG.Engine.Conditions.Condition, TTRPG.Engine",
+                "DependentOnItem": null,
+                "Equation": "potions > 0",
+                "ItemNames": null,
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            }
+        ],
+        "Mappings": [
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "name",
+                "To": "target_name",
+                "ItemName": null,
+                "RoleName": "target",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "potions",
+                "To": "potions",
+                "ItemName": null,
+                "RoleName": "target",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "con",
+                "To": "con",
+                "ItemName": null,
+                "RoleName": "target",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "hp",
+                "To": "old_hp",
+                "ItemName": null,
+                "RoleName": "target",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "$type": "TTRPG.Engine.Mappings.Mapping, TTRPG.Engine",
+                "From": "max_hp",
+                "To": "max_hp",
+                "ItemName": null,
+                "RoleName": "target",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            }
+        ]
+    }
+]

@@ -1,0 +1,48 @@
+[
+    {
+        "Name": "Player",
+        "Attributes": {
+            "Name": "Player",
+            "MAX_HP": "20",
+            "HP": "20",
+            "Str": "18",
+            "Dex": "18",
+            "Ac": "2",
+            "Con": "12",
+            "Potions": "5"
+        }
+    },
+    {
+        "Name": "Sword",
+        "Attributes": {
+            "Name": "Sword",
+            "Action": "slices sword",
+            "Hits": "1",
+            "Min": "1",
+            "Max": "6"
+        }
+    },
+    {
+        "Name": "Bandit",
+        "Attributes": {
+            "Name": "Bandit",
+            "MAX_HP": "50",
+            "HP": "50",
+            "Str": "18",
+            "Dex": "14",
+            "Ac": "2",
+            "Con": "20",
+            "Potions": "2"
+        }
+    },
+    {
+        "Name": "Crude Sword",
+        "Attributes": {
+            "Name": "Crude Sword",
+            "Action": "swings sword wildly",
+            "Hits": "1",
+            "Min": "1",
+            "Max": "8"
+        }
+    }
+]
