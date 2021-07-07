@@ -16,6 +16,7 @@ namespace TTRPG.Engine.Tests
 		public void SetupTests()
 		{
 			mapping = new Mapping();
+			mapping.MappingType = MappingType.Input;
 			inputs = new Dictionary<string, string>();
 		}
 

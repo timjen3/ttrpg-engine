@@ -10,7 +10,9 @@ namespace TTRPG.Engine.Demo2.Engine
 		CombatSequences Sequences;
 
 		public Role Player = CombatRoles.Player;
+		public Role PlayerWeapon = CombatRoles.PlayerWeapon;
 		public Role Computer = CombatRoles.Computer;
+		public Role ComputerWeapon = CombatRoles.ComputerWeapon;
 
 		Random Gen = new Random();
 
@@ -36,17 +38,17 @@ namespace TTRPG.Engine.Demo2.Engine
 			}
 			else
 			{
-				Sequences.Attack(Computer, Player);
+				Sequences.Attack(Computer, Player, ComputerWeapon);
 			}
 		}
 
-		public bool CheckPlayerAttack() => Sequences.CheckAttack(Player, Computer);
+		public bool CheckPlayerAttack() => Sequences.CheckAttack(Player, Computer, PlayerWeapon);
 
 		public bool CheckPlayerUsePotion() => Sequences.CheckUsePotion(Player);
 
 		public void PlayerAttack()
 		{
-			Sequences.Attack(Player, Computer);
+			Sequences.Attack(Player, Computer, PlayerWeapon);
 			_writeMessage("------------------");
 			if (!(int.Parse(Computer.Attributes["hp"]) <= 0))
 			{

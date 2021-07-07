@@ -6,10 +6,10 @@ using System.Collections.Generic;
 namespace TTRPG.Engine.Tests
 {
 	[TestFixture(Category = "Unit")]
-	[TestOf(typeof(RoleMapping))]
+	[TestOf(typeof(Mapping))]
 	internal class RoleMappingTests
 	{
-		RoleMapping mapping;
+		Mapping mapping;
 		List<Role> roles;
 		Role role;
 		Dictionary<string, string> inputs;
@@ -17,7 +17,8 @@ namespace TTRPG.Engine.Tests
 		[SetUp]
 		public void SetupTests()
 		{
-			mapping = new RoleMapping();
+			mapping = new Mapping();
+			mapping.MappingType = MappingType.Role;
 			mapping.RoleName = "r1";
 			inputs = new Dictionary<string, string>();
 			roles = new List<Role>();
