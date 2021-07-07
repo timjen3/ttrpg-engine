@@ -4,13 +4,15 @@
  
  # About
 
-Use this project to create ttrpg or crpg algorithms.
+Use TTRPG.Engine to create ttrpg or crpg algorithms. Algorithms are referred to as "sequences" in this library. Each step of the sequence is called a "sequence item".
 
-# Demo
-
-The easiest way to learn how this package works is to review the demo. It will illustrate the concepts below in action.
+The easiest way to learn how this package works is to review the demo.
 
 # Concepts
+
+## Strings all the way down.
+
+The philosophy of this project is that it should be possible to build out a game engine entirely with text. This will facilitate the serialization of algorithms into a data store. Consequently there should be no reason to do conversions or math in code since sequences can be used for that.
 
 ## Sequence Items (ISequenceItems)
 
