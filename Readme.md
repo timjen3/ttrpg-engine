@@ -1,6 +1,6 @@
 ﻿[![Build & Tests](https://github.com/timjen3/ttrpg-engine/actions/workflows/dotnet.yml/badge.svg)](https://github.com/timjen3/ttrpg-engine/actions/workflows/dotnet.yml)
  
- [![NuGet version (TTRPG.Engine)](https://img.shields.io/nuget/v/TTRPG.Engine.svg?style=flat-square)](https://www.nuget.org/packages/TTRPG.Engine/)
+ [![NuGet version (TTRPG.Engine)](https://img.shields.io/nuget/v/TTRPG.Engine.svg?style=flat)](https://www.nuget.org/packages/TTRPG.Engine/)
  
  # About
 
