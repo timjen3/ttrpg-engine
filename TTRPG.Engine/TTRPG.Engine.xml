@@ -34,6 +34,15 @@
         <member name="M:TTRPG.Engine.Conditions.Condition.Check(System.String,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult)">
             Determine if the condition passes for a sequence item
         </member>
+        <member name="T:TTRPG.Engine.Conditions.ICondition">
+            a condition that is either for a sequence or a sequence item
+        </member>
+        <member name="M:TTRPG.Engine.Conditions.ICondition.Check(TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String})">
+            Determine if the condition passes for the sequence
+        </member>
+        <member name="M:TTRPG.Engine.Conditions.ICondition.Check(System.String,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult)">
+            Determine if the condition passes for a sequence item
+        </member>
         <member name="M:TTRPG.Engine.IServiceCollectionExtensions.AddTTRPGEngineServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
             	Adds required services for ttrpg engine
@@ -46,6 +55,50 @@
             	Renames input variables according to mappings before using them in conditions or sequence item equations.
             	The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
             </summary>
+        </member>
+        <member name="M:TTRPG.Engine.Mappings.Mapping.GetSourceData(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            Returns source data depending on MappingType
+        </member>
+        <member name="M:TTRPG.Engine.Mappings.Mapping.#ctor">
+            Parameterless constructor
+        </member>
+        <member name="M:TTRPG.Engine.Mappings.Mapping.#ctor(System.String,System.String,System.String,System.String,System.Boolean)">
+            Constructor for a Role Mapping
+        </member>
+        <member name="M:TTRPG.Engine.Mappings.Mapping.#ctor(System.String,System.String,System.String,System.Boolean)">
+            Constructor for an Input Mapping
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.From">
+            source property key
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.To">
+            destination property key
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.ItemName">
+            sequence item to apply mapping to
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.RoleName">
+            role to pull properties from
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.MappingType">
+            type of mapping
+        </member>
+        <member name="P:TTRPG.Engine.Mappings.Mapping.ThrowOnFailure">
+            whether to throw exception when From key is missing from inputs. If false, value will be set to 0
+        </member>
+        <member name="M:TTRPG.Engine.Mappings.Mapping.Apply(System.String,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            Injects the specified mapping into <param name="inputs"/> from the configured source determined by <see cref="P:TTRPG.Engine.Mappings.Mapping.MappingType"/>
+            <param name="itemName">The sequence item name mapping is being applied for. If the mapping does not apply to that item nothing will happen.</param>
+            <param name="roles">All roles available to the sequence.</param>
+        </member>
+        <member name="T:TTRPG.Engine.Mappings.MappingType">
+            specifies type of mapping
+        </member>
+        <member name="F:TTRPG.Engine.Mappings.MappingType.Input">
+            item is mapped from the input collection
+        </member>
+        <member name="F:TTRPG.Engine.Mappings.MappingType.Role">
+            item is mapped from a role
         </member>
         <member name="M:TTRPG.Engine.SequenceItems.ISequenceItem.GetResult(System.Int32,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>

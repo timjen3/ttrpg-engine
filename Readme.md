@@ -69,7 +69,7 @@ Mappings without a specific item specified will be applied to all items in the s
 
 #### Roles
 
-Roles have attributes that can be used within equations. To inject role attributes into equations you must add a RoleMapping. Like regular Mappings, Role Mappings can apply to specific items or to all items.
+Roles have attributes that can be used within equations. To inject role attributes into equations you must add a Mapping with a Role property set. Setting the Role property will make the mapping source the role with the specified name.
 
 ## Exceptions
 

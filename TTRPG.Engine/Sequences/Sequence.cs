@@ -57,7 +57,7 @@ namespace TTRPG.Engine.Sequences
 				var itemResult = item.GetResult(order, equationResolver, ref inputs, mappedInputs);
 				result.Results.Add(itemResult);
 			}
-			result.Output = inputs;
+			result.Output = inputs;  // final state of input becomes output
 
 			return result;
 		}

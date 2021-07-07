@@ -272,7 +272,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("i", "im", "a")
+					new Mapping("i", "im", itemName: "a")
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -298,7 +298,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", "b")
+					new Mapping("ar", "arr", itemName: "b")
 				}
 			};
 
@@ -320,7 +320,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", "b")
+					new Mapping("ar", "arr", itemName: "b")
 				}
 			};
 
@@ -343,8 +343,8 @@ namespace TTRPG.Engine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", "c"),
-					new Mapping("br", "brr", "c"),
+					new Mapping("ar", "arr", itemName: "c"),
+					new Mapping("br", "brr", itemName: "c"),
 				}
 			};
 
@@ -367,7 +367,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("ar", "arr", "c")
+					new Mapping("ar", "arr", itemName: "c")
 				}
 			};
 
@@ -388,8 +388,8 @@ namespace TTRPG.Engine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new Mapping("minRange", "minValue", "a"),
-					new Mapping("maxRange", "maxValue", "a")
+					new Mapping("minRange", "minValue", itemName: "a"),
+					new Mapping("maxRange", "maxValue", itemName: "a")
 				}
 			};
 			var inputs = new Dictionary<string, string>
@@ -442,7 +442,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Mappings = new List<IMapping>
 				{
-					new RoleMapping("a", "aa", "r1", "a")
+					new Mapping("a", "aa", roleName: "r1", itemName: "a")
 				}
 			};
 			var roles = new List<Role>
@@ -507,7 +507,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Mappings = new List<IMapping>
 				{
-					new RoleMapping("a", "aa", "r1")
+					new Mapping("a", "aa", roleName: "r1")
 				},
 				Conditions = new List<ICondition>
 				{
@@ -534,7 +534,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Mappings = new List<IMapping>
 				{
-					new RoleMapping("a", "aa", "r1")
+					new Mapping("a", "aa", roleName: "r1")
 				},
 				Conditions = new List<ICondition>
 				{

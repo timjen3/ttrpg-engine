@@ -48,11 +48,11 @@ namespace TTRPG.Engine.Demo2.Engine
 				},
 			Mappings = new List<IMapping>
 				{
-					new RoleMapping("name", "target_name", "target"),
-					new RoleMapping("potions", "potions", "target"),
-					new RoleMapping("con", "con", "target"),
-					new RoleMapping("hp", "old_hp", "target"),
-					new RoleMapping("max_hp", "max_hp", "target"),
+					new Mapping("name", "target_name", roleName: "target"),
+					new Mapping("potions", "potions", roleName: "target"),
+					new Mapping("con", "con", roleName: "target"),
+					new Mapping("hp", "old_hp", roleName: "target"),
+					new Mapping("max_hp", "max_hp", roleName: "target"),
 				}
 		};
 
@@ -61,11 +61,11 @@ namespace TTRPG.Engine.Demo2.Engine
 			Name = "Attack",
 			Items = new List<ISequenceItem>
 				{
-					new SequenceItem("Intention", "{attacker_name} swings at {defender_name}.", "intention", SequenceItemType.Message),
+					new SequenceItem("Intention", "{attacker_name} {wAction} at {defender_name}.", "intention", SequenceItemType.Message),
 					new SequenceItem("To Hit", "random(1,1,20) + dex", "to_hit", SequenceItemType.Algorithm),
 					new SequenceItem("Dodge", "random(1,1,20) + dex", "dodge", SequenceItemType.Algorithm),
 					new SequenceItem("Report Hit", "The attack lands! ({to_hit} To Hit > {dodge} dodge)", "ToHitMsg", SequenceItemType.Message),
-					new SequenceItem("Report Miss", "Miss! ({to_hit} To Hit < {dodge} Dodge)", "ToHitMsg", SequenceItemType.Message),
+					new SequenceItem("Report Miss", "Miss! ({to_hit} To Hit <= {dodge} Dodge)", "ToHitMsg", SequenceItemType.Message),
 					new SequenceItem("Damage", "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)", "damage", SequenceItemType.Algorithm),
 					new SequenceItem("Report Damage", "{attacker_name} dealt {damage} damage to {defender_name} from {wHits} attacks.", "DamageMsg", SequenceItemType.Message),
 					new SequenceItem("Take Damage", "hp - damage", "new_hp", SequenceItemType.Algorithm),
@@ -80,18 +80,19 @@ namespace TTRPG.Engine.Demo2.Engine
 				},
 			Mappings = new List<IMapping>
 				{
-					new RoleMapping("name", "attacker_name", "attacker"),
-					new RoleMapping("name", "defender_name", "defender"),
-					new RoleMapping("dex", "dex", "attacker", "To Hit"),
-					new RoleMapping("dex", "dex", "defender", "Dodge"),
-					new RoleMapping("Weapon.Hits", "wHits", "attacker", "Report Damage"),
-					new RoleMapping("ac", "ac", "defender", "Damage"),
-					new RoleMapping("str", "str", "attacker", "Damage"),
-					new RoleMapping("Weapon.Hits", "wHits", "attacker", "Damage"),
-					new RoleMapping("Weapon.Min", "wMin", "attacker", "Damage"),
-					new RoleMapping("Weapon.Max", "wMax", "attacker", "Damage"),
-					new RoleMapping("hp", "hp", "defender", "Take Damage"),
-					new RoleMapping("hp", "old_hp", "defender", "Report Damage Taken")
+					new Mapping("name", "attacker_name", roleName: "attacker"),
+					new Mapping("name", "defender_name", roleName: "defender"),
+					new Mapping("dex", "dex", roleName: "attacker", itemName: "To Hit"),
+					new Mapping("dex", "dex", roleName: "defender", itemName: "Dodge"),
+					new Mapping("hits", "wHits", roleName: "weapon", itemName: "Report Damage"),
+					new Mapping("ac", "ac", roleName: "defender", itemName: "Damage"),
+					new Mapping("str", "str", roleName: "attacker", itemName: "Damage"),
+					new Mapping("hits", "wHits", roleName: "weapon", itemName: "Damage"),
+					new Mapping("min", "wMin", roleName: "weapon", itemName: "Damage"),
+					new Mapping("max", "wMax", roleName: "weapon", itemName: "Damage"),
+					new Mapping("action", "wAction", roleName: "weapon", itemName: "Intention"),
+					new Mapping("hp", "hp", roleName: "defender", itemName: "Take Damage"),
+					new Mapping("hp", "old_hp", roleName: "defender", itemName: "Report Damage Taken")
 				}
 		};
 
@@ -125,25 +126,27 @@ namespace TTRPG.Engine.Demo2.Engine
 			}
 		}
 
-		public bool CheckAttack(Role attacker, Role defender)
+		public bool CheckAttack(Role attacker, Role defender, Role weapon)
 		{
 			var sequence = AttackSequence;
 			var roles = new List<Role>
 			{
 				attacker.CloneAs("attacker"),
-				defender.CloneAs("defender")
+				defender.CloneAs("defender"),
+				weapon.CloneAs("weapon")
 			};
 
 			return sequence.Check(_resolver, null, roles);
 		}
 
-		public void Attack(Role attacker, Role defender)
+		public void Attack(Role attacker, Role defender, Role weapon)
 		{
 			var sequence = AttackSequence;
 			var roles = new List<Role>
 			{
 				attacker.CloneAs("attacker"),
-				defender.CloneAs("defender")
+				defender.CloneAs("defender"),
+				weapon.CloneAs("weapon")
 			};
 
 			var result = sequence.Process(_resolver, null, roles);
