@@ -20,7 +20,7 @@ namespace TTRPG.Engine.SequenceItems
 		/// <summary>
 		///		The item that was rolled
 		/// </summary>
-		public ISequenceItem ResolvedItem { get; set; }
+		public SequenceItem ResolvedItem { get; set; }
 
 		/// <summary>
 		///		What item resolved to

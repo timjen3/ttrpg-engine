@@ -4,44 +4,80 @@
         <name>TTRPG.Engine</name>
     </assembly>
     <members>
-        <member name="M:TTRPG.Engine.Conditions.Condition.#ctor(System.String)">
-            sequence-level condition
+        <member name="M:TTRPG.Engine.Condition.#ctor">
+            constructor for condition
         </member>
-        <member name="M:TTRPG.Engine.Conditions.Condition.#ctor(System.String,System.String,System.String,System.Boolean,System.String)">
-            condition for 1 item
+        <member name="M:TTRPG.Engine.Condition.#ctor(System.String)">
+            constructor for sequence-level condition
         </member>
-        <member name="M:TTRPG.Engine.Conditions.Condition.#ctor(System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.Boolean,System.String)">
+        <member name="M:TTRPG.Engine.Condition.#ctor(System.String,System.String,System.String,System.Boolean,System.String)">
+            constructor for condition for 1 item
+        </member>
+        <member name="M:TTRPG.Engine.Condition.#ctor(System.Collections.Generic.IEnumerable{System.String},System.String,System.String,System.Boolean,System.String)">
             condition for 1+ items
         </member>
-        <member name="P:TTRPG.Engine.Conditions.Condition.DependentOnItem">
+        <member name="P:TTRPG.Engine.Condition.DependentOnItem">
             Condition requires that this item was not skipped
         </member>
-        <member name="P:TTRPG.Engine.Conditions.Condition.Equation">
+        <member name="P:TTRPG.Engine.Condition.Equation">
             Equation to evaluate; >= 1 is true otherwise false
         </member>
-        <member name="P:TTRPG.Engine.Conditions.Condition.ItemNames">
+        <member name="P:TTRPG.Engine.Condition.ItemNames">
             Name of sequence item to bind to
         </member>
-        <member name="P:TTRPG.Engine.Conditions.Condition.ThrowOnFail">
+        <member name="P:TTRPG.Engine.Condition.ThrowOnFail">
             Whether exception should be thrown when Check fails
         </member>
-        <member name="P:TTRPG.Engine.Conditions.Condition.FailureMessage">
+        <member name="P:TTRPG.Engine.Condition.FailureMessage">
             Custom message for failure if ThrowOnFail is true
         </member>
-        <member name="M:TTRPG.Engine.Conditions.Condition.Check(TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="T:TTRPG.Engine.Equations.EquationResolver">
+            Resolves an equation using  mxParser
+        </member>
+        <member name="M:TTRPG.Engine.Equations.EquationResolver.#ctor(System.Collections.Generic.IEnumerable{org.mariuszgromada.math.mxparser.Function})">
+            Constructor for Equation Resolver
+        </member>
+        <member name="M:TTRPG.Engine.Equations.EquationResolver.Process(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
+            adds inputs as arguments and resolves equation with mxParser
+        </member>
+        <member name="T:TTRPG.Engine.Equations.EquationService">
+            contains logic for sequence components
+        </member>
+        <member name="M:TTRPG.Engine.Equations.EquationService.#ctor(TTRPG.Engine.Equations.IEquationResolver)">
+            EquationService Constructor
+        </member>
+        <member name="M:TTRPG.Engine.Equations.EquationService.GetSourceMappingData(TTRPG.Engine.Mapping,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            Returns source data depending on MappingType
+        </member>
+        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Condition,System.Collections.Generic.IDictionary{System.String,System.String})">
             Determine if the condition passes for the sequence
         </member>
-        <member name="M:TTRPG.Engine.Conditions.Condition.Check(System.String,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult)">
+        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Condition,System.String,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult)">
             Determine if the condition passes for a sequence item
         </member>
-        <member name="T:TTRPG.Engine.Conditions.ICondition">
-            a condition that is either for a sequence or a sequence item
+        <member name="M:TTRPG.Engine.Equations.EquationService.Apply(TTRPG.Engine.Mapping,System.String,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            Injects the specified mapping into <param name="inputs"/> from the configured source determined by <see cref="T:TTRPG.Engine.MappingType"/>
+            <param name="itemName">The sequence item name mapping is being applied for. If the mapping does not apply to that item nothing will happen.</param>
+            <param name="roles">All roles available to the sequence.</param>
         </member>
-        <member name="M:TTRPG.Engine.Conditions.ICondition.Check(TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String})">
-            Determine if the condition passes for the sequence
+        <member name="M:TTRPG.Engine.Equations.EquationService.GetResult(TTRPG.Engine.SequenceItems.SequenceItem,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IDictionary{System.String,System.String})">
+            Process a sequence item and get the result
         </member>
-        <member name="M:TTRPG.Engine.Conditions.ICondition.Check(System.String,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult)">
-            Determine if the condition passes for a sequence item
+        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            <summary>
+            	Check if sequence can be executed with the provided parameters
+            </summary>
+            <param name="inputs"></param>
+            <param name="roles"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.Equations.EquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            <summary>
+            	Process sequence items and get result
+            </summary>
+            <param name="inputs"></param>
+            <param name="roles"></param>
+            <returns></returns>
         </member>
         <member name="M:TTRPG.Engine.IServiceCollectionExtensions.AddTTRPGEngineServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
             <summary>
@@ -50,65 +86,47 @@
             <param name="services"></param>
             <returns></returns>
         </member>
-        <member name="T:TTRPG.Engine.Mappings.Mapping">
+        <member name="T:TTRPG.Engine.Mapping">
             <summary>
             	Renames input variables according to mappings before using them in conditions or sequence item equations.
             	The inputs are always copied to a new dictionary before changes are made to isolate changes to equations and reduce side effects.
             </summary>
         </member>
-        <member name="M:TTRPG.Engine.Mappings.Mapping.GetSourceData(System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            Returns source data depending on MappingType
-        </member>
-        <member name="M:TTRPG.Engine.Mappings.Mapping.#ctor">
+        <member name="M:TTRPG.Engine.Mapping.#ctor">
             Parameterless constructor
         </member>
-        <member name="M:TTRPG.Engine.Mappings.Mapping.#ctor(System.String,System.String,System.String,System.String,System.Boolean)">
+        <member name="M:TTRPG.Engine.Mapping.#ctor(System.String,System.String,System.String,System.String,System.Boolean)">
             Constructor for a Role Mapping
         </member>
-        <member name="M:TTRPG.Engine.Mappings.Mapping.#ctor(System.String,System.String,System.String,System.Boolean)">
+        <member name="M:TTRPG.Engine.Mapping.#ctor(System.String,System.String,System.String,System.Boolean)">
             Constructor for an Input Mapping
         </member>
-        <member name="P:TTRPG.Engine.Mappings.Mapping.From">
+        <member name="P:TTRPG.Engine.Mapping.From">
             source property key
         </member>
-        <member name="P:TTRPG.Engine.Mappings.Mapping.To">
+        <member name="P:TTRPG.Engine.Mapping.To">
             destination property key
         </member>
-        <member name="P:TTRPG.Engine.Mappings.Mapping.ItemName">
+        <member name="P:TTRPG.Engine.Mapping.ItemName">
             sequence item to apply mapping to
         </member>
-        <member name="P:TTRPG.Engine.Mappings.Mapping.RoleName">
+        <member name="P:TTRPG.Engine.Mapping.RoleName">
             role to pull properties from
         </member>
-        <member name="P:TTRPG.Engine.Mappings.Mapping.MappingType">
+        <member name="P:TTRPG.Engine.Mapping.MappingType">
             type of mapping
         </member>
-        <member name="P:TTRPG.Engine.Mappings.Mapping.ThrowOnFailure">
+        <member name="P:TTRPG.Engine.Mapping.ThrowOnFailure">
             whether to throw exception when From key is missing from inputs. If false, value will be set to 0
         </member>
-        <member name="M:TTRPG.Engine.Mappings.Mapping.Apply(System.String,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            Injects the specified mapping into <param name="inputs"/> from the configured source determined by <see cref="P:TTRPG.Engine.Mappings.Mapping.MappingType"/>
-            <param name="itemName">The sequence item name mapping is being applied for. If the mapping does not apply to that item nothing will happen.</param>
-            <param name="roles">All roles available to the sequence.</param>
-        </member>
-        <member name="T:TTRPG.Engine.Mappings.MappingType">
+        <member name="T:TTRPG.Engine.MappingType">
             specifies type of mapping
         </member>
-        <member name="F:TTRPG.Engine.Mappings.MappingType.Input">
+        <member name="F:TTRPG.Engine.MappingType.Input">
             item is mapped from the input collection
         </member>
-        <member name="F:TTRPG.Engine.Mappings.MappingType.Role">
+        <member name="F:TTRPG.Engine.MappingType.Role">
             item is mapped from a role
-        </member>
-        <member name="M:TTRPG.Engine.SequenceItems.ISequenceItem.GetResult(System.Int32,TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IDictionary{System.String,System.String})">
-            <summary>
-            	Process equation and get result.
-            </summary>
-            <param name="order">Order of this item in sequence</param>
-            <param name="equationResolver"></param>
-            <param name="sharedInputs">Global shared inputs; may be modified to pass data to downstream items</param>
-            <param name="mappedInputs">Inputs mapped for this specific item</param>
-            <returns></returns>
         </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItem">
             <summary>
@@ -154,24 +172,6 @@
             <summary>
             	Equation will be processed as a message
             </summary>
-        </member>
-        <member name="M:TTRPG.Engine.Sequences.Sequence.Check(TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            <summary>
-            	Check if sequence can be executed with the provided parameters
-            </summary>
-            <param name="equationResolver"></param>
-            <param name="inputs"></param>
-            <param name="roles"></param>
-            <returns></returns>
-        </member>
-        <member name="M:TTRPG.Engine.Sequences.Sequence.Process(TTRPG.Engine.Equations.IEquationResolver,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            <summary>
-            	Process sequence items and get result
-            </summary>
-            <param name="equationResolver"></param>
-            <param name="inputs"></param>
-            <param name="roles"></param>
-            <returns></returns>
         </member>
     </members>
 </doc>

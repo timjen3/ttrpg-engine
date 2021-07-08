@@ -1,10 +1,9 @@
-﻿using TTRPG.Engine.Conditions;
-using TTRPG.Engine.Equations;
-using TTRPG.Engine.Exceptions;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using TTRPG.Engine.Equations;
+using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Tests
 {
@@ -12,12 +11,13 @@ namespace TTRPG.Engine.Tests
 	[TestOf(typeof(Condition))]
 	public class ConditionTests
 	{
-		private IEquationResolver MockEquationResolver(int processResult)
+		private EquationService MockEquationService(int processResult)
 		{
-			var resolver = new Mock<IEquationResolver>();
-			resolver.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>())).Returns(processResult);
+			var mockResolver = new Mock<IEquationResolver>();
+			mockResolver.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>())).Returns(processResult);
+			var resolver = mockResolver.Object;
 
-			return resolver.Object;
+			return new EquationService(resolver);
 		}
 
 		[Test]
@@ -27,10 +27,10 @@ namespace TTRPG.Engine.Tests
 			var equation = "anything";
 			var conditionItemName = "a";
 			int resolverResult = 1;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
 
-			bool result = condition.Check(itemName, resolver, null, null);
+			bool result = resolver.Check(condition, itemName, null, null);
 
 			Assert.IsTrue(result);
 		}
@@ -42,10 +42,10 @@ namespace TTRPG.Engine.Tests
 			var equation = "anything";
 			var conditionItemName = "a";
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
 			
-			bool result = condition.Check(itemName, resolver, null, null);
+			bool result = resolver.Check(condition, itemName, null, null);
 
 			Assert.IsFalse(result);
 		}
@@ -57,10 +57,10 @@ namespace TTRPG.Engine.Tests
 			var equation = "anything";
 			var conditionItemName = "b";
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
 
-			bool result = condition.Check(itemName, resolver, null, null);
+			bool result = resolver.Check(condition, itemName, null, null);
 
 			Assert.IsTrue(result);
 		}
@@ -72,10 +72,10 @@ namespace TTRPG.Engine.Tests
 			var equation = "anything";
 			var conditionItemName = "b";
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
 
-			bool result = condition.Check(itemName, resolver, null, null);
+			bool result = resolver.Check(condition, itemName, null, null);
 
 			Assert.IsTrue(result);
 		}
@@ -87,10 +87,10 @@ namespace TTRPG.Engine.Tests
 			var equation = "anything";
 			var conditionItemName = "a";
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation, throwOnFail: true);
 
-			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemName, resolver, null, null));
+			var ex = Assert.Throws<ConditionFailedException>(() => resolver.Check(condition, itemName, null, null));
 
 			Assert.That(ex.Message, Is.EqualTo(Condition.DEFAULT_FAILURE_MESSAGE));
 		}
@@ -103,10 +103,10 @@ namespace TTRPG.Engine.Tests
 			var conditionItemName = "a";
 			int resolverResult = 0;
 			string customMessage = "custom ex message";
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation, throwOnFail: true, failureMessage: customMessage);
 
-			var ex = Assert.Throws<ConditionFailedException>(() => condition.Check(itemName, resolver, null, null));
+			var ex = Assert.Throws<ConditionFailedException>(() => resolver.Check(condition, itemName, null, null));
 
 			Assert.That(ex.Message, Is.EqualTo(customMessage));
 		}
@@ -116,7 +116,7 @@ namespace TTRPG.Engine.Tests
 		{
 			var conditionItemName = "a";
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 
 			var ex = Assert.Throws<ArgumentNullException>(() => new Condition(conditionItemName, equation: null, dependentOnItem: null));
 		}
@@ -128,10 +128,10 @@ namespace TTRPG.Engine.Tests
 			var equation = "anything";
 			var conditionItemNames = new string[] { "a", "b" };
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemNames, equation);
 
-			bool result = condition.Check(itemName, resolver, null, null);
+			bool result = resolver.Check(condition, itemName, null, null);
 
 			Assert.IsFalse(result);
 		}
@@ -143,10 +143,10 @@ namespace TTRPG.Engine.Tests
 			var equation = "anything";
 			var conditionItemNames = new string[] { "a", "b" };
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemNames, equation);
 
-			bool result = condition.Check(itemName, resolver, null, null);
+			bool result = resolver.Check(condition, itemName, null, null);
 
 			Assert.IsTrue(result);
 		}
@@ -156,10 +156,10 @@ namespace TTRPG.Engine.Tests
 		{
 			var equation = "anything";
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(equation);
 
-			bool result = condition.Check(resolver, inputs: null);
+			bool result = resolver.Check(condition, inputs: null);
 
 			Assert.IsFalse(result);
 		}
@@ -170,10 +170,10 @@ namespace TTRPG.Engine.Tests
 			var itemName = "a";
 			var equation = "anything";
 			int resolverResult = 0;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(equation);
 
-			bool result = condition.Check(itemName, resolver, null, null);
+			bool result = resolver.Check(condition, itemName, null, null);
 
 			Assert.IsFalse(result);
 		}
@@ -183,10 +183,10 @@ namespace TTRPG.Engine.Tests
 		{
 			var equation = "anything";
 			int resolverResult = 1;
-			var resolver = MockEquationResolver(resolverResult);
+			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(equation);
 
-			bool result = condition.Check(resolver, inputs: null);
+			bool result = resolver.Check(condition, inputs: null);
 
 			Assert.IsTrue(result);
 		}

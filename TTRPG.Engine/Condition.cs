@@ -1,26 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TTRPG.Engine.Equations;
-using TTRPG.Engine.Exceptions;
-using TTRPG.Engine.Sequences;
 
-namespace TTRPG.Engine.Conditions
+namespace TTRPG.Engine
 {
-	public class Condition : ICondition
+	public class Condition
 	{
 		public const string DEFAULT_FAILURE_MESSAGE = "The condition failed.";
 
+		/// constructor for condition
 		public Condition() { }
 
-		/// sequence-level condition
+		/// constructor for sequence-level condition
 		public Condition(string equation)
 		{
 			if (string.IsNullOrWhiteSpace(equation)) throw new ArgumentNullException($"Argument {nameof(equation)} is required.");
 			Equation = equation;
 		}
 
-		/// condition for 1 item
+		/// constructor for condition for 1 item
 		public Condition(string itemName, string equation = null, string dependentOnItem = null, bool throwOnFail = false, string failureMessage = null)
 			: this(new string[] { itemName }, equation, dependentOnItem, throwOnFail, failureMessage)
 		{
@@ -52,35 +50,5 @@ namespace TTRPG.Engine.Conditions
 
 		/// Custom message for failure if ThrowOnFail is true
 		public string FailureMessage { get; set; }
-
-		/// Determine if the condition passes for the sequence
-		public bool Check(IEquationResolver equationResolver, IDictionary<string, string> inputs)
-		{
-			return Check(null, equationResolver, inputs, null);
-		}
-
-		/// Determine if the condition passes for a sequence item
-		public bool Check(string itemName, IEquationResolver equationResolver, IDictionary<string, string> inputs, SequenceResult results)
-		{
-			var valid = true;
-			if (ItemNames == null || ItemNames.Contains(itemName))
-			{
-				if (!string.IsNullOrWhiteSpace(DependentOnItem))
-				{
-					valid = results.Results.Any(y => string.Equals(y.ResolvedItem.Name, DependentOnItem, StringComparison.OrdinalIgnoreCase));
-				}
-				// only check equation if dependency is fulfilled; since dependency may be responsible for defining requisite variables
-				if (valid && !string.IsNullOrWhiteSpace(Equation))
-				{
-					var result = equationResolver.Process(Equation, inputs);
-					valid = result >= 1;
-				}
-			}
-			if (!valid && ThrowOnFail)
-			{
-				throw new ConditionFailedException(FailureMessage ?? DEFAULT_FAILURE_MESSAGE);
-			}
-			return valid;
-		}
 	}
 }

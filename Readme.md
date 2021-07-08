@@ -20,17 +20,13 @@ Little more than a container for a plaintext algorithm to be parsed by the mxPar
 
 See mxParser for tutorials: http://mathparser.org/
 
-#### ISequenceItems
-
 Sequence Items declare a `ResultName`. After being resolved the result is injected into the inputs collection for use by following sequence items, conditions, and mappings. Use these to chain sequence item algorithms or to inform actions.
 
-There are two types of sequence items included in the package as differentiated by the SequenceItemType enum.
+There are two types of sequence items differentiated by the SequenceItemType enum.
 
 1. Algorithm: As the name implies this is an algorithm to be processed through mxParser. All variables are usable, but be aware that the order of the item matters when items use the results from other items. For instance `(damage + damage_modifier) / 2`.
 
 2. Message: The Equation property contains a format string to be populated with variables. For instance `{damage} damage was dealt to the target.`
-
-3. *Other*: Custom Sequence Items can be created by implementing the ISequenceItem interface.
 
 #### Custom Functions
 
@@ -53,15 +49,13 @@ Sequences are currently the way to model an event with the library. They contain
 
 Conditions can be added for items in the sequence. Conditions that fail can either result in the whole sequence failing or steps of the sequence being skipped.
 
-Conditions can specify dependencies for SequenceItems. If a dependent SequenceItem is not resolved (due to a failed condition) then the condition will fail.
-
-If the dependencies were processed and the condition has an Equation it will be evaluated. The Equation can contain the ResultNames from previously processed SequenceItes as variables.
+Conditions can specify dependencies for SequenceItems. Equations are not processed unless the dependencies are fulfilled since equations may rely on the results from previously processed SequenceItes.
 
 Example: `toHit > dodge`
 
 ##### Sequence Conditions
 
-When a condition does not specify sequence items to apply to and also does not specify dependent items it will be considered as a Sequence-level condition. When a sequence's `Check()` method is called these conditions will be checked to see if the sequence is suitable to be processed with the provided parameters.
+When a condition does not specify sequence items to apply to it will be considered a Sequence-level condition. When a Sequence is checked these conditions will be evaluated to determine if the sequence is suitable to be processed with the provided parameters.
 
 #### Mappings
 

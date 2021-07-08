@@ -1,4 +1,4 @@
-﻿namespace TTRPG.Engine.Mappings
+﻿namespace TTRPG.Engine
 {
 	/// specifies type of mapping
 	public enum MappingType
