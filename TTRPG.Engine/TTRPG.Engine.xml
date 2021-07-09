@@ -128,6 +128,27 @@
         <member name="F:TTRPG.Engine.MappingType.Role">
             item is mapped from a role
         </member>
+        <member name="T:TTRPG.Engine.Role">
+            a role carries a set of attributes into equations
+        </member>
+        <member name="M:TTRPG.Engine.Role.#ctor">
+            role parameterless constructor
+        </member>
+        <member name="M:TTRPG.Engine.Role.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String})">
+            role constructor
+        </member>
+        <member name="P:TTRPG.Engine.Role.Name">
+            role's name
+        </member>
+        <member name="P:TTRPG.Engine.Role.Attributes">
+            role's attributes
+        </member>
+        <member name="P:TTRPG.Engine.Role.Categories">
+            categories that role belongs to
+        </member>
+        <member name="M:TTRPG.Engine.Role.CloneAs(System.String)">
+            creates a clone with a different name
+        </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItem">
             <summary>
             	The result is loaded into inputs to be made available to following equations
