@@ -448,7 +448,7 @@ namespace TTRPG.Engine.Tests
 				new Role("r1", new Dictionary<string, string>
 				{
 					{ "a", "1" }
-				})
+				}, new List<string>())
 			};
 
 			var results = EquationService.Process(sequence, roles: roles);
@@ -517,7 +517,7 @@ namespace TTRPG.Engine.Tests
 				new Role("r1", new Dictionary<string, string>
 				{
 					{ "a", "1" }
-				})
+				}, new List<string>())
 			};
 
 			var valid = EquationService.Check(sequence, roles: roles);
@@ -544,7 +544,7 @@ namespace TTRPG.Engine.Tests
 				new Role("r1", new Dictionary<string, string>
 				{
 					{ "a", "0" }
-				})
+				}, new List<string>())
 			};
 
 			var valid = EquationService.Check(sequence, roles: roles);

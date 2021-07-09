@@ -1,6 +1,7 @@
 ﻿using org.mariuszgromada.math.mxparser;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Equations.Extensions;
 using TTRPG.Engine.SequenceItems;
@@ -37,6 +38,7 @@ namespace TTRPG.Engine.Demo.Engine
 
 			var result = _equationService.Process(sequence, null, roles);
 			HandleResultItems(result);
+			_writeMessage("------------------");
 
 			// update attributes
 			if (result.Output.ContainsKey("new_hp"))
@@ -58,6 +60,7 @@ namespace TTRPG.Engine.Demo.Engine
 
 			var result = _equationService.Process(sequence, null, roles);
 			HandleResultItems(result);
+			_writeMessage("------------------");
 
 			// update attributes
 			if (result.Output.ContainsKey("new_hp"))
@@ -67,14 +70,18 @@ namespace TTRPG.Engine.Demo.Engine
 		/// occassionally heal when wounded, otherwise attack
 		private void AiDecision()
 		{
-			bool missingHalfHp = int.Parse(Computer.Attributes["HP"]) < int.Parse(Computer.Attributes["MAX_HP"]) / 2;
-			if (missingHalfHp && int.Parse(Computer.Attributes["Potions"]) > 0 && Gen.Next(3) == 1)
+			var liveTargets = Targets.Where(x => int.Parse(x.Attributes["HP"]) > 0);
+			foreach (var target in liveTargets)
 			{
-				UsePotion(Computer);
-			}
-			else
-			{
-				Attack(Computer, Player, ComputerWeapon);
+				bool missingHalfHp = int.Parse(target.Attributes["HP"]) < int.Parse(target.Attributes["MAX_HP"]) / 2;
+				if (missingHalfHp && int.Parse(target.Attributes["Potions"]) > 0 && Gen.Next(3) == 1)
+				{
+					UsePotion(target);
+				}
+				else
+				{
+					Attack(target, Player, ComputerWeapon);
+				}
 			}
 		}
 
@@ -84,6 +91,7 @@ namespace TTRPG.Engine.Demo.Engine
 		Role ComputerWeapon;
 		Role Player;
 		Role Computer;
+		List<Role> Targets;
 
 		public CombatDemoService(Action<string> writeMessage)
 		{
@@ -99,10 +107,10 @@ namespace TTRPG.Engine.Demo.Engine
 			AttackSequence = loader.AttackSequence;
 			Player = loader.Player;
 			PlayerWeapon = loader.PlayerWeapon;
-			Computer = loader.Computer;
+			Targets = loader.Targets;
 			ComputerWeapon = loader.ComputerWeapon;
+			Computer = Targets.FirstOrDefault();
 		}
-
 
 		public string PlayerPotions => Player.Attributes["Potions"];
 
@@ -136,27 +144,30 @@ namespace TTRPG.Engine.Demo.Engine
 			return _equationService.Check(sequence, null, roles);
 		}
 
+		public void SetTarget(string name)
+		{
+			Computer = Targets.FirstOrDefault(x => x.Name == name);
+		}
+
+		public IEnumerable<string> ListTargetNames()
+		{
+			return Targets.Select(x => x.Name);
+		}
+
 		public void PlayerAttack()
 		{
 			Attack(Player, Computer, PlayerWeapon);
-			_writeMessage("------------------");
-			if (!(int.Parse(Computer.Attributes["HP"]) <= 0))
-			{
-				AiDecision();
-				_writeMessage("------------------");
-			}
+			AiDecision();
 		}
 
 		public void PlayerUsePotion()
 		{
 			UsePotion(Player);
-			_writeMessage("------------------");
 			AiDecision();
-			_writeMessage("------------------");
 		}
 
 		public bool IsGameOver()
 			=> int.Parse(Player.Attributes["HP"]) <= 0
-				|| int.Parse(Computer.Attributes["HP"]) <= 0;
+				|| Targets.All(x => int.Parse(x.Attributes["HP"]) <= 0);
 	}
 }

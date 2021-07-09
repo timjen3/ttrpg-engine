@@ -23,7 +23,7 @@ namespace TTRPG.Engine.Tests
 			mapping.RoleName = "r1";
 			inputs = new Dictionary<string, string>();
 			roles = new List<Role>();
-			role = new Role("r1", new Dictionary<string, string>());
+			role = new Role("r1", new Dictionary<string, string>(), new List<string>());
 			roles.Add(role);
 			service = new EquationService(null);
 		}
