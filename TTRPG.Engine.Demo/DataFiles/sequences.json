@@ -60,6 +60,13 @@
         "Conditions": [
             {
                 "DependentOnItem": null,
+                "Equation": "hp > 0",
+                "ItemNames": null,
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            },
+            {
+                "DependentOnItem": null,
                 "Equation": "dodge >= to_hit",
                 "ItemNames": [
                     "Report Miss"
@@ -110,6 +117,14 @@
             {
                 "From": "name",
                 "To": "defender_name",
+                "ItemName": null,
+                "RoleName": "defender",
+                "MappingType": "Role",
+                "ThrowOnFailure": false
+            },
+            {
+                "From": "hp",
+                "To": "hp",
                 "ItemName": null,
                 "RoleName": "defender",
                 "MappingType": "Role",
@@ -184,14 +199,6 @@
                 "To": "wAction",
                 "ItemName": "Intention",
                 "RoleName": "weapon",
-                "MappingType": "Role",
-                "ThrowOnFailure": false
-            },
-            {
-                "From": "hp",
-                "To": "hp",
-                "ItemName": "Take Damage",
-                "RoleName": "defender",
                 "MappingType": "Role",
                 "ThrowOnFailure": false
             },
