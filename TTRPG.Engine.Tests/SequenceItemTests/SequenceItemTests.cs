@@ -10,16 +10,19 @@ namespace TTRPG.Engine.Tests
 	[TestOf(typeof(SequenceItem))]
 	public class SequenceItemTests
 	{
-		private IEquationResolver MockEquationResolver(int processResult)
+		private EquationService MockEquationService(int processResult)
 		{
-			var resolver = new Mock<IEquationResolver>();
-			resolver.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>())).Returns(processResult);
+			var resolverMock = new Mock<IEquationResolver>();
+			resolverMock.Setup(x => x.Process(It.IsAny<string>(), It.IsAny<IDictionary<string, string>>())).Returns(processResult);
+			var resolver = resolverMock.Object;
 
-			return resolver.Object;
+			return new EquationService(resolver);
 		}
 
 		Dictionary<string, string> GlobalInputs;
 		Dictionary<string, string> MappedInputs;
+
+		EquationService service;
 
 		[SetUp]
 		public void SetupTest()
@@ -35,9 +38,9 @@ namespace TTRPG.Engine.Tests
 			int equationResult = 1;
 			int order = 0;
 			var item = new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm);
-			var resolver = MockEquationResolver(equationResult);
+			var resolver = MockEquationService(equationResult);
 
-			var result = item.GetResult(order, resolver, ref GlobalInputs);
+			var result = resolver.GetResult(item, order, ref GlobalInputs);
 
 			Assert.That(result.Result, Is.EqualTo(equationResult.ToString()));
 			Assert.That(result.Order, Is.EqualTo(order));
@@ -50,10 +53,10 @@ namespace TTRPG.Engine.Tests
 			string messageResult = "Hello a.";
 			int order = 0;
 			var item = new SequenceItem("a", "Hello {name}.", "ar", SequenceItemType.Message);
-			var resolver = MockEquationResolver(0);
+			var resolver = MockEquationService(0);
 			MappedInputs["name"] = "a";
 
-			var result = item.GetResult(order, resolver, ref GlobalInputs, MappedInputs);
+			var result = resolver.GetResult(item, order, ref GlobalInputs, MappedInputs);
 
 			Assert.That(result.Result, Is.EqualTo(messageResult));
 			Assert.That(result.Order, Is.EqualTo(order));

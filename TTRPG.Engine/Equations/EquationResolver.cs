@@ -5,15 +5,18 @@ using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Equations
 {
+	/// Resolves an equation using  mxParser
 	public class EquationResolver : IEquationResolver
 	{
 		private readonly Function[] _functions;
 
+		/// Constructor for Equation Resolver
 		public EquationResolver(IEnumerable<Function> functions)
 		{
 			_functions = functions.ToArray();
 		}
 
+		/// adds inputs as arguments and resolves equation with mxParser
 		public double Process(string equation, IDictionary<string, string> inputs)
 		{
 			// resolve function with mxparser

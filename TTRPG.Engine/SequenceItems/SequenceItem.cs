@@ -1,14 +1,14 @@
-﻿using FormatWith;
-using System.Collections.Generic;
-using TTRPG.Engine.Equations;
+﻿using System;
 
 namespace TTRPG.Engine.SequenceItems
 {
 	/// <summary>
 	///		The result is loaded into inputs to be made available to following equations
 	/// </summary>
-	public class SequenceItem : ISequenceItem
+	public class SequenceItem
 	{
+		private SequenceItemType _sequenceItemType;
+
 		public SequenceItem(){}
 
 		public SequenceItem(string name, string equation, string resultName, SequenceItemType sequenceItemType)
@@ -20,29 +20,19 @@ namespace TTRPG.Engine.SequenceItems
 		}
 
 		public string Name { get; set; }
-		public string Equation { get; set; }
-		public string ResultName { get; set; }
-		public SequenceItemType SequenceItemType { get; set; }
 
-		public SequenceItemResult GetResult(int order, IEquationResolver equationResolver, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
+		public string Equation { get; set; }
+
+		public string ResultName { get; set; }
+
+		public SequenceItemType SequenceItemType
 		{
-			var result = new SequenceItemResult();
-			result.Order = order;
-			result.Inputs = mappedInputs;
-			result.ResolvedItem = this;
-			if (SequenceItemType == SequenceItemType.Algorithm)
+			get => _sequenceItemType;
+			set
 			{
-				result.Result = equationResolver.Process(Equation, mappedInputs).ToString();
+				if (!Enum.IsDefined(typeof(SequenceItemType), value)) throw new ArgumentException($"{value} is an invalid value for Mapping property '{nameof(SequenceItemType)}'.");
+				_sequenceItemType = value;
 			}
-			else if (SequenceItemType == SequenceItemType.Message)
-			{
-				result.Result = Equation.FormatWith(mappedInputs);
-			}
-			if (inputs != null)
-			{
-				inputs[ResultName] = result.Result.ToString();
-			}
-			return result;
 		}
 	}
 }

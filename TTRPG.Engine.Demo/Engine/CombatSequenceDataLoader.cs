@@ -16,17 +16,16 @@ namespace TTRPG.Engine.Demo.Engine
 
 			return JsonConvert.DeserializeObject<T>(jsonText, new JsonSerializerSettings
 			{
-				TypeNameHandling = TypeNameHandling.Auto,
+				TypeNameHandling = TypeNameHandling.None,
 			});
 		}
 
-		/// save object with type names so interfaces can be deserialized
 		public static string SerializeObject(object value)
 		{
 			return JsonConvert.SerializeObject(value, Formatting.Indented, new JsonSerializerSettings
 			{
 				Converters = new List<JsonConverter> { new StringEnumConverter() },
-				TypeNameHandling = TypeNameHandling.Auto
+				TypeNameHandling = TypeNameHandling.None
 			});
 		}
 

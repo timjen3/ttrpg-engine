@@ -1,7 +1,7 @@
-﻿using TTRPG.Engine.Exceptions;
-using TTRPG.Engine.Mappings;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
+using TTRPG.Engine.Equations;
+using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Tests
 {
@@ -11,6 +11,7 @@ namespace TTRPG.Engine.Tests
 	{
 		Mapping mapping;
 		Dictionary<string, string> inputs;
+		EquationService equationService;
 
 		[SetUp]
 		public void SetupTests()
@@ -18,6 +19,7 @@ namespace TTRPG.Engine.Tests
 			mapping = new Mapping();
 			mapping.MappingType = MappingType.Input;
 			inputs = new Dictionary<string, string>();
+			equationService = new EquationService(null);
 		}
 
 		[Test]
@@ -27,7 +29,7 @@ namespace TTRPG.Engine.Tests
 			mapping.To = "b";
 			inputs["a"] = "1";
 
-			mapping.Apply("a", ref inputs, null);
+			equationService.Apply(mapping, "a", ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -40,7 +42,7 @@ namespace TTRPG.Engine.Tests
 			mapping.To = "b";
 			inputs["a"] = "1";
 
-			mapping.Apply("a", ref inputs, null);
+			equationService.Apply(mapping, "a", ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("a"));
 			Assert.That(inputs["a"], Is.EqualTo("1"));
@@ -54,7 +56,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			inputs["a"] = "1";
 
-			mapping.Apply("a", ref inputs, null);
+			equationService.Apply(mapping, "a", ref inputs, null);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -68,7 +70,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "b";
 			inputs["a"] = "1";
 
-			mapping.Apply("a", ref inputs, null);
+			equationService.Apply(mapping, "a", ref inputs, null);
 
 			Assert.True(!inputs.ContainsKey("b"));
 		}
@@ -81,7 +83,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "b";
 			mapping.ThrowOnFailure = true;
 
-			var ex = Assert.Throws<MappingFailedException>(() => mapping.Apply("b", ref inputs, null));
+			var ex = Assert.Throws<MappingFailedException>(() => equationService.Apply(mapping, "b", ref inputs, null));
 
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing key: '{mapping.From}'."));
 		}

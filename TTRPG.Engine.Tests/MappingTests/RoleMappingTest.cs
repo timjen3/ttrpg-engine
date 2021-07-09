@@ -1,7 +1,7 @@
-﻿using TTRPG.Engine.Exceptions;
-using TTRPG.Engine.Mappings;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System.Collections.Generic;
+using TTRPG.Engine.Equations;
+using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Tests
 {
@@ -13,6 +13,7 @@ namespace TTRPG.Engine.Tests
 		List<Role> roles;
 		Role role;
 		Dictionary<string, string> inputs;
+		EquationService service;
 
 		[SetUp]
 		public void SetupTests()
@@ -24,6 +25,7 @@ namespace TTRPG.Engine.Tests
 			roles = new List<Role>();
 			role = new Role("r1", new Dictionary<string, string>());
 			roles.Add(role);
+			service = new EquationService(null);
 		}
 
 		[Test]
@@ -33,7 +35,7 @@ namespace TTRPG.Engine.Tests
 			mapping.To = "b";
 			role.Attributes["a"] = "1";
 
-			mapping.Apply("a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, roles);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -47,7 +49,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			role.Attributes["a"] = "1";
 
-			mapping.Apply("a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, roles);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -61,7 +63,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "b";
 			role.Attributes["a"] = "1";
 
-			mapping.Apply("a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, roles);
 
 			Assert.True(!inputs.ContainsKey("b"));
 		}
@@ -74,7 +76,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 
-			var ex = Assert.Throws<MappingFailedException>(() => mapping.Apply("a", ref inputs, roles));
+			var ex = Assert.Throws<MappingFailedException>(() => service.Apply(mapping, "a", ref inputs, roles));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing key: '{mapping.From}'."));
 		}
 
@@ -87,7 +89,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ThrowOnFailure = true;
 			roles.Clear();
 
-			var ex = Assert.Throws<MissingRoleException>(() => mapping.Apply("a", ref inputs, roles));
+			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing role: '{mapping.RoleName}'."));
 		}
 	}

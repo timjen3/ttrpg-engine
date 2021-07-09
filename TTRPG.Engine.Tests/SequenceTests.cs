@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using System.Collections.Generic;
-using TTRPG.Engine.Conditions;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
-using TTRPG.Engine.Mappings;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
@@ -14,7 +12,7 @@ namespace TTRPG.Engine.Tests
 	[TestOf(typeof(Sequence))]
 	public class SequenceTests
 	{
-		IEquationResolver EquationResolver;
+		EquationService EquationService;
 
 		[OneTimeSetUp]
 		public void SetupTests()
@@ -22,7 +20,7 @@ namespace TTRPG.Engine.Tests
 			var services = new ServiceCollection();
 			services.AddTTRPGEngineServices();
 			var provider = services.BuildServiceProvider();
-			EquationResolver = provider.GetRequiredService<IEquationResolver>();
+			EquationService = provider.GetRequiredService<EquationService>();
 		}
 
 		/// Test a single die roll
@@ -31,13 +29,13 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm)
 				}
 			};
 
-			var result = sequence.Process(EquationResolver);
+			var result = EquationService.Process(sequence);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo("2"));
 		}
@@ -48,14 +46,14 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
 				}
 			};
 
-			var result = sequence.Process(EquationResolver);
+			var result = EquationService.Process(sequence);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo("2"));
 			Assert.That(result.Results[1].Result, Is.EqualTo("3"));
@@ -67,18 +65,18 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("b", "ar = 2")
 				}
 			};
 
-			var result = sequence.Process(EquationResolver);
+			var result = EquationService.Process(sequence);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo("2"));
 			Assert.That(result.Results[1].Result, Is.EqualTo("3"));
@@ -90,17 +88,17 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm)
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("a", "br = 2")
 				}
 			};
 
-			Assert.Throws<EquationInputArgumentException>(() => sequence.Process(EquationResolver));
+			Assert.Throws<EquationInputArgumentException>(() => EquationService.Process(sequence));
 		}
 
 		/// Test multiple die rolls where second condition is driven by a variable and fails
@@ -109,18 +107,18 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("b", "ar = 2", throwOnFail: true)
 				}
 			};
 
-			Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver));
+			Assert.Throws<ConditionFailedException>(() => EquationService.Process(sequence));
 		}
 
 		/// Test that inputs are different instances for each die roll
@@ -129,14 +127,14 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "1", "br", SequenceItemType.Algorithm),
 				}
 			};
 
-			var result = sequence.Process(EquationResolver);
+			var result = EquationService.Process(sequence);
 
 			Assert.IsNotNull(result.Results[0].Inputs);
 			Assert.IsNotNull(result.Results[1].Inputs);
@@ -151,11 +149,11 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("a", "a > 0"),
 					new Condition("a", "a < 2")
@@ -166,7 +164,7 @@ namespace TTRPG.Engine.Tests
 				{ "a", "1" }
 			};
 
-			var result = sequence.Process(EquationResolver, inputs);
+			var result = EquationService.Process(sequence, inputs);
 
 			Assert.That(result.Results[0].Result, Is.EqualTo("1"));
 		}
@@ -177,11 +175,11 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("a", "a > 0", throwOnFail: true),
 					new Condition("a", "a < 1", throwOnFail: true)
@@ -192,7 +190,7 @@ namespace TTRPG.Engine.Tests
 				{ "a", "1" }
 			};
 
-			Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver, inputs));
+			Assert.Throws<ConditionFailedException>(() => EquationService.Process(sequence, inputs));
 		}
 
 		/// Test that a die is skipped when it fails condition check but isn't supposed to throw
@@ -201,17 +199,17 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("a", "0")
 				}
 			};
 
-			var result = sequence.Process(EquationResolver);
+			var result = EquationService.Process(sequence);
 
 			Assert.That(result.Results, Is.Empty);
 		}
@@ -222,18 +220,18 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "2", "br", SequenceItemType.Algorithm),
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("a", "0")
 				}
 			};
 
-			var result = sequence.Process(EquationResolver);
+			var result = EquationService.Process(sequence);
 
 			Assert.That(result.Results, Has.Count.EqualTo(1));
 			Assert.That(result.Results[0].Result, Is.EqualTo("2"));
@@ -246,17 +244,17 @@ namespace TTRPG.Engine.Tests
 			string customExMessage = "Custom Exception Message";
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("a", "0", throwOnFail: true, failureMessage: customExMessage)
 				}
 			};
 
-			var ex = Assert.Throws<ConditionFailedException>(() => sequence.Process(EquationResolver));
+			var ex = Assert.Throws<ConditionFailedException>(() => EquationService.Process(sequence));
 			Assert.That(ex.Message, Is.EqualTo(customExMessage));
 		}
 
@@ -266,11 +264,11 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "im", "ar", SequenceItemType.Algorithm),
 				},
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("i", "im", itemName: "a")
 				}
@@ -280,7 +278,7 @@ namespace TTRPG.Engine.Tests
 				{ "i", "1" }
 			};
 
-			var results = sequence.Process(EquationResolver, inputs);
+			var results = EquationService.Process(sequence, inputs);
 
 			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
@@ -291,18 +289,18 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "arr", "br", SequenceItemType.Algorithm),
 				},
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("ar", "arr", itemName: "b")
 				}
 			};
 
-			var results = sequence.Process(EquationResolver);
+			var results = EquationService.Process(sequence);
 
 			Assert.That(results.Results[1].Result, Is.EqualTo("1"));
 		}
@@ -313,18 +311,18 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "ar + arr", "br", SequenceItemType.Algorithm),
 				},
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("ar", "arr", itemName: "b")
 				}
 			};
 
-			var results = sequence.Process(EquationResolver);
+			var results = EquationService.Process(sequence);
 
 			Assert.That(results.Results[1].Result, Is.EqualTo("2"));
 		}
@@ -335,20 +333,20 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "1", "br", SequenceItemType.Algorithm),
 					new SequenceItem("c", "arr + brr", "cr", SequenceItemType.Algorithm),
 				},
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("ar", "arr", itemName: "c"),
 					new Mapping("br", "brr", itemName: "c"),
 				}
 			};
 
-			var results = sequence.Process(EquationResolver);
+			var results = EquationService.Process(sequence);
 
 			Assert.That(results.Results[2].Result, Is.EqualTo("2"));
 		}
@@ -359,20 +357,20 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "arr", "br", SequenceItemType.Algorithm),
 					new SequenceItem("c", "arr", "cr", SequenceItemType.Algorithm),
 				},
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("ar", "arr", itemName: "c")
 				}
 			};
 
 			// die c throws an exception because it does not know about the mapped input
-			Assert.Throws<EquationInputArgumentException>(() => sequence.Process(EquationResolver));
+			Assert.Throws<EquationInputArgumentException>(() => EquationService.Process(sequence));
 		}
 
 		/// Test inject mapped input variables into custom function
@@ -382,11 +380,11 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "random(1,minValue,maxValue)", "ar", SequenceItemType.Algorithm),
 				},
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("minRange", "minValue", itemName: "a"),
 					new Mapping("maxRange", "maxValue", itemName: "a")
@@ -398,7 +396,7 @@ namespace TTRPG.Engine.Tests
 				{ "maxRange", "6" }
 			};
 
-			var results = sequence.Process(EquationResolver, inputs);
+			var results = EquationService.Process(sequence, inputs);
 
 			Assert.That(results.Results[0].Result, Is.GreaterThanOrEqualTo("1"));
 			Assert.That(results.Results[0].Result, Is.LessThanOrEqualTo("6"));
@@ -410,18 +408,18 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "a", "ar", SequenceItemType.Algorithm),
 					new SequenceItem("b", "a", "br", SequenceItemType.Algorithm),
 				},
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("b", "a")
 				}
 			};
 
-			var results = sequence.Process(EquationResolver, new Dictionary<string, string>
+			var results = EquationService.Process(sequence, new Dictionary<string, string>
 			{
 				{ "b", "1" }
 			});
@@ -436,11 +434,11 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Items = new List<ISequenceItem>
+				Items = new List<SequenceItem>
 				{
 					new SequenceItem("a", "aa", "ar", SequenceItemType.Algorithm),
 				},
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("a", "aa", roleName: "r1", itemName: "a")
 				}
@@ -453,7 +451,7 @@ namespace TTRPG.Engine.Tests
 				})
 			};
 
-			var results = sequence.Process(EquationResolver, roles: roles);
+			var results = EquationService.Process(sequence, roles: roles);
 
 			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
@@ -463,7 +461,7 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence();
 
-			var valid = sequence.Check(EquationResolver);
+			var valid = EquationService.Check(sequence);
 
 			Assert.IsTrue(valid);
 		}
@@ -473,13 +471,13 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("1")
 				}
 			};
 
-			var valid = sequence.Check(EquationResolver);
+			var valid = EquationService.Check(sequence);
 
 			Assert.IsTrue(valid);
 		}
@@ -489,13 +487,13 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("0")
 				}
 			};
 
-			var valid = sequence.Check(EquationResolver);
+			var valid = EquationService.Check(sequence);
 
 			Assert.IsFalse(valid);
 		}
@@ -505,11 +503,11 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("a", "aa", roleName: "r1")
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("aa = 1")
 				}
@@ -522,7 +520,7 @@ namespace TTRPG.Engine.Tests
 				})
 			};
 
-			var valid = sequence.Check(EquationResolver, roles: roles);
+			var valid = EquationService.Check(sequence, roles: roles);
 
 			Assert.IsTrue(valid);
 		}
@@ -532,11 +530,11 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("a", "aa", roleName: "r1")
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("aa = 1")
 				}
@@ -549,7 +547,7 @@ namespace TTRPG.Engine.Tests
 				})
 			};
 
-			var valid = sequence.Check(EquationResolver, roles: roles);
+			var valid = EquationService.Check(sequence, roles: roles);
 
 			Assert.IsFalse(valid);
 		}
@@ -559,18 +557,18 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("a", "aa")
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("a")
 				}
 			};
 			var inputs = new Dictionary<string, string> { { "a", "1" } };
 
-			var valid = sequence.Check(EquationResolver, inputs: inputs);
+			var valid = EquationService.Check(sequence, inputs: inputs);
 
 			Assert.IsTrue(valid);
 		}
@@ -580,18 +578,18 @@ namespace TTRPG.Engine.Tests
 		{
 			var sequence = new Sequence()
 			{
-				Mappings = new List<IMapping>
+				Mappings = new List<Mapping>
 				{
 					new Mapping("a", "aa")
 				},
-				Conditions = new List<ICondition>
+				Conditions = new List<Condition>
 				{
 					new Condition("a")
 				}
 			};
 			var inputs = new Dictionary<string, string> { { "a", "0" } };
 
-			var valid = sequence.Check(EquationResolver, inputs: inputs);
+			var valid = EquationService.Check(sequence, inputs: inputs);
 
 			Assert.IsFalse(valid);
 		}

@@ -13,7 +13,7 @@ namespace TTRPG.Engine.Demo.Engine
 		Random Gen = new Random();
 
 		private readonly Action<string> _writeMessage;
-		private readonly IEquationResolver _resolver;
+		private readonly EquationService _equationService;
 
 		/// output any messages found in results
 		private void HandleResultItems(SequenceResult result)
@@ -35,7 +35,7 @@ namespace TTRPG.Engine.Demo.Engine
 				target.CloneAs("target")
 			};
 
-			var result = sequence.Process(_resolver, null, roles);
+			var result = _equationService.Process(sequence, null, roles);
 			HandleResultItems(result);
 
 			// update attributes
@@ -56,7 +56,7 @@ namespace TTRPG.Engine.Demo.Engine
 				weapon.CloneAs("weapon")
 			};
 
-			var result = sequence.Process(_resolver, null, roles);
+			var result = _equationService.Process(sequence, null, roles);
 			HandleResultItems(result);
 
 			// update attributes
@@ -91,7 +91,8 @@ namespace TTRPG.Engine.Demo.Engine
 			var func1 = new Function("random", new RandomFunctionExtension());
 			var func2 = new Function("toss", new CoinTossFunctionExtension());
 			var funcs = new Function[] { func1, func2 };
-			_resolver = new EquationResolver(funcs);
+			var resolver = new EquationResolver(funcs);
+			_equationService = new EquationService(resolver);
 			var loader = new CombatSequenceDataLoader();
 			loader.Load();
 			UsePotionSequence = loader.UsePotionSequence;
@@ -121,7 +122,7 @@ namespace TTRPG.Engine.Demo.Engine
 				PlayerWeapon.CloneAs("weapon")
 			};
 
-			return sequence.Check(_resolver, null, roles);
+			return _equationService.Check(sequence, null, roles);
 		}
 
 		public bool CheckPlayerUsePotion()
@@ -132,7 +133,7 @@ namespace TTRPG.Engine.Demo.Engine
 				Player.CloneAs("target")
 			};
 
-			return sequence.Check(_resolver, null, roles);
+			return _equationService.Check(sequence, null, roles);
 		}
 
 		public void PlayerAttack()
