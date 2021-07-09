@@ -37,7 +37,7 @@ namespace TTRPG.Engine.Demo.Engine
 			var roles = ReadFromJsonFile<IEnumerable<Role>>("DataFiles/roles.json");
 			Player = roles.FirstOrDefault(x => x.Name == "Player");
 			PlayerWeapon = roles.FirstOrDefault(x => x.Name == "Sword");
-			Computer = roles.FirstOrDefault(x => x.Name == "Bandit");
+			Targets = roles.Where(x => x.Categories.Contains("Entity") && x.Categories.Contains("Enemy")).ToList();
 			ComputerWeapon = roles.FirstOrDefault(x => x.Name == "Crude Sword");
 		}
 
@@ -49,7 +49,7 @@ namespace TTRPG.Engine.Demo.Engine
 
 		public Role PlayerWeapon { get; private set; }
 
-		public Role Computer { get; private set; }
+		public List<Role> Targets { get; private set; }
 
 		public Role ComputerWeapon { get; private set; }
 	}

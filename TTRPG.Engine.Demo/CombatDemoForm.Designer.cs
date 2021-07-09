@@ -44,17 +44,19 @@ namespace TTRPG.Engine.Demo2
 			this.txt_ComputerPotions = new System.Windows.Forms.TextBox();
 			this.txt_ComputerHP = new System.Windows.Forms.TextBox();
 			this.btn_NewGame = new System.Windows.Forms.Button();
+			this.list_Targets = new System.Windows.Forms.ListBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.pnl_Stats.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// txtBox_MessageLog
 			// 
-			this.txtBox_MessageLog.Location = new System.Drawing.Point(31, 22);
+			this.txtBox_MessageLog.Location = new System.Drawing.Point(31, 186);
 			this.txtBox_MessageLog.Multiline = true;
 			this.txtBox_MessageLog.Name = "txtBox_MessageLog";
 			this.txtBox_MessageLog.ReadOnly = true;
 			this.txtBox_MessageLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtBox_MessageLog.Size = new System.Drawing.Size(414, 447);
+			this.txtBox_MessageLog.Size = new System.Drawing.Size(414, 283);
 			this.txtBox_MessageLog.TabIndex = 0;
 			// 
 			// btn_Attack
@@ -109,11 +111,11 @@ namespace TTRPG.Engine.Demo2
 			// 
 			this.lbl_ComputerName.AutoSize = true;
 			this.lbl_ComputerName.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-			this.lbl_ComputerName.Location = new System.Drawing.Point(219, 28);
+			this.lbl_ComputerName.Location = new System.Drawing.Point(241, 28);
 			this.lbl_ComputerName.Name = "lbl_ComputerName";
-			this.lbl_ComputerName.Size = new System.Drawing.Size(79, 20);
+			this.lbl_ComputerName.Size = new System.Drawing.Size(54, 20);
 			this.lbl_ComputerName.TabIndex = 8;
-			this.lbl_ComputerName.Text = "Computer";
+			this.lbl_ComputerName.Text = "Target";
 			this.lbl_ComputerName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			// 
 			// lbl_PlayerPotions
@@ -195,11 +197,33 @@ namespace TTRPG.Engine.Demo2
 			this.btn_NewGame.Visible = false;
 			this.btn_NewGame.Click += new System.EventHandler(this.btn_NewGame_Click);
 			// 
+			// list_Targets
+			// 
+			this.list_Targets.FormattingEnabled = true;
+			this.list_Targets.ItemHeight = 20;
+			this.list_Targets.Location = new System.Drawing.Point(31, 45);
+			this.list_Targets.Name = "list_Targets";
+			this.list_Targets.Size = new System.Drawing.Size(414, 124);
+			this.list_Targets.TabIndex = 6;
+			this.list_Targets.SelectedIndexChanged += new System.EventHandler(this.list_Targets_SelectedIndexChanged);
+			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+			this.label1.Location = new System.Drawing.Point(202, 22);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(67, 20);
+			this.label1.TabIndex = 7;
+			this.label1.Text = "Enemies";
+			// 
 			// CombatDemoForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 486);
+			this.ClientSize = new System.Drawing.Size(797, 486);
+			this.Controls.Add(this.label1);
+			this.Controls.Add(this.list_Targets);
 			this.Controls.Add(this.btn_NewGame);
 			this.Controls.Add(this.pnl_Stats);
 			this.Controls.Add(this.btn_UsePotion);
@@ -231,5 +255,7 @@ namespace TTRPG.Engine.Demo2
 		private System.Windows.Forms.TextBox txt_ComputerPotions;
 		private System.Windows.Forms.TextBox txt_ComputerHP;
 		private System.Windows.Forms.Button btn_NewGame;
+		private System.Windows.Forms.ListBox list_Targets;
+		private System.Windows.Forms.Label label1;
 	}
 }

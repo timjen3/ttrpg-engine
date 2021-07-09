@@ -22,6 +22,10 @@ namespace TTRPG.Engine.Demo2
 		{
 			_demo = new CombatDemoService(WriteMessage);
 			InitializeComponent();
+			foreach (var target in _demo.ListTargetNames())
+			{
+				list_Targets.Items.Add(target);
+			}
 			UpdateState();
 		}
 
@@ -31,8 +35,8 @@ namespace TTRPG.Engine.Demo2
 			txt_ComputerPotions.Text = _demo.ComputerPotions;
 			txt_PlayerHP.Text = _demo.PlayerHPStatus;
 			txt_PlayerPotions.Text = _demo.PlayerPotions;
-			btn_Attack.Enabled = _demo.CheckPlayerAttack();
-			btn_UsePotion.Enabled = _demo.CheckPlayerUsePotion();
+			btn_Attack.Enabled = !_demo.IsGameOver() && _demo.CheckPlayerAttack();
+			btn_UsePotion.Enabled = !_demo.IsGameOver() && _demo.CheckPlayerUsePotion();
 		}
 
 		private void btn_Attack_Click(object sender, EventArgs e)
@@ -57,6 +61,16 @@ namespace TTRPG.Engine.Demo2
 			_demo = new CombatDemoService(WriteMessage);
 			btn_NewGame.Visible = false;
 			UpdateState();
+		}
+
+		private void list_Targets_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			var targetName = list_Targets.SelectedItem?.ToString();
+			if (!string.IsNullOrWhiteSpace(targetName))
+			{
+				_demo.SetTarget(targetName);
+				UpdateState();
+			}
 		}
 	}
 }
