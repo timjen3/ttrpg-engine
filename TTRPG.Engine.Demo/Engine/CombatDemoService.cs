@@ -16,13 +16,23 @@ namespace TTRPG.Engine.Demo.Engine
 		private readonly CombatSequenceDataLoader _loader;
 
 		/// output any messages found in results
-		private void HandleResultItems(SequenceResult result)
+		private void HandleResultItems(SequenceResult result, IEnumerable<Role> originalRoles)
 		{
 			foreach (var itemResult in result.Results)
 			{
-				if (itemResult.ResolvedItem.SequenceItemType == SequenceItemType.Message)
+				if (itemResult.ResolvedItem.SequenceItemEquationType == SequenceItemEquationType.Message)
 				{
 					_writeMessage(itemResult.Result);
+				}
+			}
+			_writeMessage("------------------");
+			// todo: find a way to make aliasing less convoluted
+			foreach (var itemResult in result.ResultItems)
+			{
+				if (itemResult.Category == "UpdateAttribute")
+				{
+					var role = originalRoles.Single(x => x.Name == itemResult.Role.Attributes["Name"]);
+					role.Attributes[itemResult.Name] = itemResult.Result;
 				}
 			}
 		}
@@ -36,15 +46,7 @@ namespace TTRPG.Engine.Demo.Engine
 			};
 
 			var result = _equationService.Process(sequence, null, roles);
-			HandleResultItems(result);
-			_writeMessage("------------------");
-
-			// update attributes
-			if (result.Output.ContainsKey("new_hp"))
-			{
-				target.Attributes["HP"] = result.Output["new_hp"];
-				target.Attributes["Potions"] = result.Output["new_potions"];
-			}
+			HandleResultItems(result, new Role[] { target });
 		}
 
 		private void Attack(Role attacker, Role defender, Role weapon)
@@ -58,12 +60,7 @@ namespace TTRPG.Engine.Demo.Engine
 			};
 
 			var result = _equationService.Process(sequence, null, roles);
-			HandleResultItems(result);
-			_writeMessage("------------------");
-
-			// update attributes
-			if (result.Output.ContainsKey("new_hp"))
-				defender.Attributes["HP"] = result.Output["new_hp"];
+			HandleResultItems(result, new Role[] { attacker, defender });
 		}
 
 		/// occassionally heal when wounded, otherwise attack

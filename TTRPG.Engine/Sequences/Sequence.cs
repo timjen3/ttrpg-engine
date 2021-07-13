@@ -9,6 +9,8 @@ namespace TTRPG.Engine.Sequences
 
 		public List<SequenceItem> Items { get; set; } = new List<SequenceItem>();
 
+		public List<ResultItem> ResultItems { get; set; } = new List<ResultItem>();
+
 		public List<Condition> Conditions { get; set; } = new List<Condition>();
 
 		public List<Mapping> Mappings { get; set; } = new List<Mapping>();

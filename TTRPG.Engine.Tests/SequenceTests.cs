@@ -31,7 +31,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm)
+					new SequenceItem("a", "1 + 1", "ar", SequenceItemEquationType.Algorithm)
 				}
 			};
 
@@ -48,8 +48,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1 + 1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "1 + ar", "br", SequenceItemEquationType.Algorithm),
 				}
 			};
 
@@ -67,8 +67,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1 + 1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "1 + ar", "br", SequenceItemEquationType.Algorithm),
 				},
 				Conditions = new List<Condition>
 				{
@@ -90,7 +90,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1 + 1", "ar", SequenceItemType.Algorithm)
+					new SequenceItem("a", "1 + 1", "ar", SequenceItemEquationType.Algorithm)
 				},
 				Conditions = new List<Condition>
 				{
@@ -109,8 +109,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "1 + ar", "br", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "1 + ar", "br", SequenceItemEquationType.Algorithm),
 				},
 				Conditions = new List<Condition>
 				{
@@ -129,8 +129,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "1", "br", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "1", "br", SequenceItemEquationType.Algorithm),
 				}
 			};
 
@@ -151,7 +151,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
 				},
 				Conditions = new List<Condition>
 				{
@@ -177,7 +177,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
 				},
 				Conditions = new List<Condition>
 				{
@@ -201,7 +201,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
 				},
 				Conditions = new List<Condition>
 				{
@@ -222,8 +222,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "2", "br", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "2", "br", SequenceItemEquationType.Algorithm),
 				},
 				Conditions = new List<Condition>
 				{
@@ -246,7 +246,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
 				},
 				Conditions = new List<Condition>
 				{
@@ -266,7 +266,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "im", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("a", "im", "ar", SequenceItemEquationType.Algorithm),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -291,8 +291,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "arr", "br", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "arr", "br", SequenceItemEquationType.Algorithm),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -313,8 +313,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "ar + arr", "br", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "ar + arr", "br", SequenceItemEquationType.Algorithm),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -335,9 +335,9 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "1", "br", SequenceItemType.Algorithm),
-					new SequenceItem("c", "arr + brr", "cr", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "1", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("c", "arr + brr", "cr", SequenceItemEquationType.Algorithm),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -359,9 +359,9 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "arr", "br", SequenceItemType.Algorithm),
-					new SequenceItem("c", "arr", "cr", SequenceItemType.Algorithm),
+					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "arr", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("c", "arr", "cr", SequenceItemEquationType.Algorithm),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -382,7 +382,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "random(1,minValue,maxValue)", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("a", "random(1,minValue,maxValue)", "ar", SequenceItemEquationType.Algorithm),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -410,8 +410,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "a", "ar", SequenceItemType.Algorithm),
-					new SequenceItem("b", "a", "br", SequenceItemType.Algorithm),
+					new SequenceItem("a", "a", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("b", "a", "br", SequenceItemEquationType.Algorithm),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -436,7 +436,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "aa", "ar", SequenceItemType.Algorithm),
+					new SequenceItem("a", "aa", "ar", SequenceItemEquationType.Algorithm),
 				},
 				Mappings = new List<Mapping>
 				{

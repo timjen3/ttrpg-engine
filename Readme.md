@@ -21,7 +21,7 @@ Sequences contain a list of sequence items that are resolved in the configured o
 
 Sequence Items declare a `ResultName`. After being resolved the result is injected into the inputs collection for use by following sequence items, conditions, and mappings.
 
-There are two types of sequence items differentiated by the SequenceItemType enum.
+Equations work in different ways depending on the value of SequenceItemEquationType:
 
 1. Algorithm: The Equation property contains a formula to be ran through mxParser. All variables are usable, but be aware that the order of the item matters when items use the results from other items. For instance `(damage + damage_modifier) / 2`. See mxParser for tutorials: http://mathparser.org/
 
@@ -44,7 +44,7 @@ To add additional user defined functions simply add singletons of type org.mariu
 
 Conditions can be added for items in the sequence. Conditions that fail can either result in the whole sequence failing or steps of the sequence being skipped.
 
-Conditions can specify dependencies for SequenceItems. Equations are not processed unless the dependencies are fulfilled since equations may rely on the results from previously processed SequenceItes.
+Conditions can specify dependencies for SequenceItems. Equations are not processed unless the dependencies are fulfilled since equations may rely on the results from previously processed SequenceItems.
 
 Example: `toHit > dodge`
 
@@ -63,6 +63,10 @@ Mappings without a specific item specified will be applied to all items in the s
 Roles have attributes that can be used within equations. To inject role attributes into equations you must add a Mapping with a Role property set. Setting the Role property will make the mapping source the role with the specified name.
 
 Roles can have 0+ categories for organizational purposes.
+
+### ResultItems
+
+While the results of all processed SequenceItems are accessible in the SequenceResult object, it is easier to work with results through the ResultItems pattern.
 
 ## Exceptions
 

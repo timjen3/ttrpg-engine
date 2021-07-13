@@ -7,6 +7,6 @@ namespace TTRPG.Engine.Sequences
 	{
 		public Sequence Sequence { get; set; }
 		public List<SequenceItemResult> Results { get; set; } = new List<SequenceItemResult>();
-		public IDictionary<string, string> Output { get; set; }
+		public List<SequenceResultItem> ResultItems { get; set; } = new List<SequenceResultItem>();
 	}
 }

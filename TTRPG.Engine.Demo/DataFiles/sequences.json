@@ -6,55 +6,55 @@
                 "Name": "Intention",
                 "Equation": "{attacker_name} {wAction} at {defender_name}.",
                 "ResultName": "intention",
-                "SequenceItemType": "Message"
+                "SequenceItemEquationType": "Message"
             },
             {
                 "Name": "To Hit",
                 "Equation": "random(1,1,20) + dex",
                 "ResultName": "to_hit",
-                "SequenceItemType": "Algorithm"
+                "SequenceItemEquationType": "Algorithm"
             },
             {
                 "Name": "Dodge",
                 "Equation": "random(1,1,20) + dex",
                 "ResultName": "dodge",
-                "SequenceItemType": "Algorithm"
+                "SequenceItemEquationType": "Algorithm"
             },
             {
                 "Name": "Report Hit",
                 "Equation": "The attack lands! ({to_hit} To Hit > {dodge} dodge)",
                 "ResultName": "ToHitMsg",
-                "SequenceItemType": "Message"
+                "SequenceItemEquationType": "Message"
             },
             {
                 "Name": "Report Miss",
                 "Equation": "Miss! ({to_hit} To Hit <= {dodge} Dodge)",
                 "ResultName": "ToHitMsg",
-                "SequenceItemType": "Message"
+                "SequenceItemEquationType": "Message"
             },
             {
                 "Name": "Damage",
                 "Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
                 "ResultName": "damage",
-                "SequenceItemType": "Algorithm"
+                "SequenceItemEquationType": "Algorithm"
             },
             {
                 "Name": "Report Damage",
                 "Equation": "{attacker_name} dealt {damage} damage to {defender_name} from {wHits} attacks.",
                 "ResultName": "DamageMsg",
-                "SequenceItemType": "Message"
+                "SequenceItemEquationType": "Message"
             },
             {
                 "Name": "Take Damage",
                 "Equation": "hp - damage",
                 "ResultName": "new_hp",
-                "SequenceItemType": "Algorithm"
+                "SequenceItemEquationType": "Algorithm"
             },
             {
                 "Name": "Report Damage Taken",
                 "Equation": "{defender_name} HP : {old_hp} => {new_hp}",
                 "ResultName": "DamageTakenMsg",
-                "SequenceItemType": "Message"
+                "SequenceItemEquationType": "Message"
             }
         ],
         "Conditions": [
@@ -210,6 +210,14 @@
                 "MappingType": "Role",
                 "ThrowOnFailure": false
             }
+        ],
+        "ResultItems": [
+            {
+                "Name": "HP",
+                "Category": "UpdateAttribute",
+                "Source": "new_hp",
+                "RoleName":  "defender"
+            }
         ]
     },
     {
@@ -219,31 +227,31 @@
                 "Name": "Calculate Heal Amount",
                 "Equation": "min(max_hp - old_hp, random(1,3,12) + floor(con / 4))",
                 "ResultName": "heal_amt",
-                "SequenceItemType": "Algorithm"
+                "SequenceItemEquationType": "Algorithm"
             },
             {
                 "Name": "Apply Healing",
                 "Equation": "heal_amt + old_hp",
                 "ResultName": "new_hp",
-                "SequenceItemType": "Algorithm"
+                "SequenceItemEquationType": "Algorithm"
             },
             {
                 "Name": "Deduct Potion",
                 "Equation": "potions - 1",
                 "ResultName": "new_potions",
-                "SequenceItemType": "Algorithm"
+                "SequenceItemEquationType": "Algorithm"
             },
             {
                 "Name": "Heal",
                 "Equation": "{target_name} used 1 potion ({potions} => {new_potions})",
                 "ResultName": "PotionMsg",
-                "SequenceItemType": "Message"
+                "SequenceItemEquationType": "Message"
             },
             {
                 "Name": "Heal",
                 "Equation": "{target_name} healed {heal_amt} HP. ({old_hp} => {new_hp})",
                 "ResultName": "HealMsg",
-                "SequenceItemType": "Message"
+                "SequenceItemEquationType": "Message"
             }
         ],
         "Conditions": [
@@ -302,6 +310,20 @@
                 "RoleName": "target",
                 "MappingType": "Role",
                 "ThrowOnFailure": false
+            }
+        ],
+        "ResultItems": [
+            {
+                "Name": "Potions",
+                "Category": "UpdateAttribute",
+                "Source": "new_potions",
+                "RoleName": "target"
+            },
+            {
+                "Name": "HP",
+                "Category": "UpdateAttribute",
+                "Source": "new_hp",
+                "RoleName": "target"
             }
         ]
     }
