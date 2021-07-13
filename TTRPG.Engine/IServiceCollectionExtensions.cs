@@ -5,6 +5,9 @@ using TTRPG.Engine.Equations.Extensions;
 
 namespace TTRPG.Engine
 {
+	/// <summary>
+	///		Add TTRPG.Engine services to an IServiceCollection.
+	/// </summary>
 	public static class IServiceCollectionExtensions
 	{
 		/// <summary>
@@ -17,7 +20,7 @@ namespace TTRPG.Engine
 			services.AddSingleton(new Function("random", new RandomFunctionExtension()));
 			services.AddSingleton(new Function("toss", new CoinTossFunctionExtension()));
 			services.AddSingleton<IEquationResolver, EquationResolver>();
-			services.AddSingleton<EquationService>();
+			services.AddSingleton<IEquationService, EquationService>();
 
 			return services;
 		}

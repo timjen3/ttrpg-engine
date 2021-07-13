@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using TTRPG.Engine.Demo.Engine;
+using TTRPG.Engine.Equations;
 
 namespace TTRPG.Engine.Demo2
 {
@@ -18,9 +19,9 @@ namespace TTRPG.Engine.Demo2
 			btn_NewGame.Visible = true;
 		}
 
-		public CombatDemoForm()
+		public CombatDemoForm(IEquationService equationService, CombatSequenceDataLoader loader)
 		{
-			_demo = new CombatDemoService(WriteMessage);
+			_demo = new CombatDemoService(WriteMessage, equationService, loader);
 			InitializeComponent();
 			foreach (var target in _demo.ListTargetNames())
 			{
@@ -58,7 +59,7 @@ namespace TTRPG.Engine.Demo2
 		private void btn_NewGame_Click(object sender, EventArgs e)
 		{
 			txtBox_MessageLog.Clear();
-			_demo = new CombatDemoService(WriteMessage);
+			_demo.NewGame();
 			btn_NewGame.Visible = false;
 			UpdateState();
 		}

@@ -20,7 +20,7 @@ namespace TTRPG.Engine.Tests
 			var services = new ServiceCollection();
 			services.AddTTRPGEngineServices();
 			var provider = services.BuildServiceProvider();
-			EquationService = provider.GetRequiredService<EquationService>();
+			EquationService = (EquationService) provider.GetRequiredService<IEquationService>();
 		}
 
 		/// Test a single die roll

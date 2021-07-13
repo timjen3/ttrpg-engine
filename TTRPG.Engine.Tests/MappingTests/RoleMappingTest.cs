@@ -29,7 +29,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void KeyIsMappedTest()
+		public void Apply_KeyIsMappedTest()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -42,7 +42,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void MappingIsPerformedWhenMatch()
+		public void Apply_MappingIsPerformedWhenMatch()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -56,7 +56,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void MappingIsNotPerformedWhenNotMatch()
+		public void Apply_MappingIsNotPerformedWhenNotMatch()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -69,7 +69,19 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void MissingMappingThrow()
+		public void Apply_DoesNotThrowWhenSucceeds()
+		{
+			mapping.From = "a";
+			mapping.To = "b";
+			mapping.ItemName = "a";
+			role.Attributes["a"] = "1";
+			mapping.ThrowOnFailure = true;
+
+			service.Apply(mapping, "a", ref inputs, roles);
+		}
+
+		[Test]
+		public void Apply_MissingMappingThrow()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -81,7 +93,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void MissingRoleThrow()
+		public void Apply_MissingRoleThrow()
 		{
 			mapping.From = "a";
 			mapping.To = "b";

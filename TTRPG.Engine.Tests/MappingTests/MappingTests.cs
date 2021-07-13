@@ -23,7 +23,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void KeyIsMappedTest()
+		public void Apply_KeyIsMappedTest()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -36,7 +36,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void FromKeyIsKeptTest()
+		public void Apply_FromKeyIsKeptTest()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -49,7 +49,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void MappingIsPerformedWhenMatch()
+		public void Apply_MappingIsPerformedWhenMatch()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -63,7 +63,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void MappingIsNotPerformedWhenNotMatch()
+		public void Apply_MappingIsNotPerformedWhenNotMatch()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
@@ -72,11 +72,23 @@ namespace TTRPG.Engine.Tests
 
 			equationService.Apply(mapping, "a", ref inputs, null);
 
-			Assert.True(!inputs.ContainsKey("b"));
+			Assert.False(inputs.ContainsKey("b"));
 		}
 
 		[Test]
-		public void ThrowsWhenMissingKey()
+		public void Apply_DoesNotThrowWhenMappingSucceeds()
+		{
+			mapping.From = "a";
+			mapping.To = "b";
+			mapping.ItemName = "b";
+			mapping.ThrowOnFailure = true;
+			inputs["a"] = "1";
+
+			equationService.Apply(mapping, "b", ref inputs, null);
+		}
+
+		[Test]
+		public void Apply_ThrowsWhenMissingKey()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
