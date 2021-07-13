@@ -9,15 +9,9 @@ using TTRPG.Engine.Sequences;
 namespace TTRPG.Engine.Equations
 {
 	/// contains logic for sequence components
-	public class EquationService
+	public class EquationService : IEquationService
 	{
 		private readonly IEquationResolver _equationResolver;
-
-		/// EquationService Constructor
-		public EquationService(IEquationResolver equationResolver)
-		{
-			_equationResolver = equationResolver;
-		}
 
 		/// Returns source data depending on MappingType
 		IDictionary<string, string> GetSourceMappingData(Mapping mapping, Dictionary<string, string> inputs, IEnumerable<Role> roles)
@@ -39,14 +33,20 @@ namespace TTRPG.Engine.Equations
 			}
 		}
 
+		/// EquationService Constructor
+		public EquationService(IEquationResolver equationResolver)
+		{
+			_equationResolver = equationResolver;
+		}
+
 		/// Determine if the condition passes for the sequence
-		public bool Check(Condition condition, IDictionary<string, string> inputs)
+		internal bool Check(Condition condition, IDictionary<string, string> inputs)
 		{
 			return Check(condition, null, inputs, null);
 		}
 
 		/// Determine if the condition passes for a sequence item
-		public bool Check(Condition condition, string itemName, IDictionary<string, string> inputs, SequenceResult results)
+		internal bool Check(Condition condition, string itemName, IDictionary<string, string> inputs, SequenceResult results)
 		{
 			var valid = true;
 			if (condition.ItemNames == null || condition.ItemNames.Contains(itemName))
@@ -72,7 +72,7 @@ namespace TTRPG.Engine.Equations
 		/// Injects the specified mapping into <param name="inputs"/> from the configured source determined by <see cref="MappingType"/>
 		/// <param name="itemName">The sequence item name mapping is being applied for. If the mapping does not apply to that item nothing will happen.</param>
 		/// <param name="roles">All roles available to the sequence.</param>
-		public void Apply(Mapping mapping, string itemName, ref Dictionary<string, string> inputs, IEnumerable<Role> roles)
+		internal void Apply(Mapping mapping, string itemName, ref Dictionary<string, string> inputs, IEnumerable<Role> roles)
 		{
 			if (string.IsNullOrWhiteSpace(mapping.ItemName) || string.Equals(itemName, mapping.ItemName, StringComparison.OrdinalIgnoreCase))
 			{
@@ -82,12 +82,12 @@ namespace TTRPG.Engine.Equations
 				{
 					inputs[mapping.To] = source[mapping.From];
 				}
-				if (mapping.ThrowOnFailure) throw new MappingFailedException($"Mapping failed due to missing key: '{mapping.From}'.");
+				else if (mapping.ThrowOnFailure) throw new MappingFailedException($"Mapping failed due to missing key: '{mapping.From}'.");
 			}
 		}
 
 		/// Process a sequence item and get the result
-		public SequenceItemResult GetResult(SequenceItem item, int order, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
+		internal SequenceItemResult GetResult(SequenceItem item, int order, ref Dictionary<string, string> inputs, IDictionary<string, string> mappedInputs = null)
 		{
 			var result = new SequenceItemResult();
 			result.Order = order;
@@ -111,10 +111,11 @@ namespace TTRPG.Engine.Equations
 		/// <summary>
 		///		Check if sequence can be executed with the provided parameters
 		/// </summary>
+		/// <param name="sequence"></param>
 		/// <param name="inputs"></param>
 		/// <param name="roles"></param>
 		/// <returns></returns>
-		public bool Check(Sequence sequence, Dictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
+		public bool Check(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var mappedInputs = new Dictionary<string, string>(inputs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
@@ -126,24 +127,25 @@ namespace TTRPG.Engine.Equations
 		/// <summary>
 		///		Process sequence items and get result
 		/// </summary>
+		/// <param name="sequence"></param>
 		/// <param name="inputs"></param>
 		/// <param name="roles"></param>
 		/// <returns></returns>
-		public SequenceResult Process(Sequence sequence, Dictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
+		public SequenceResult Process(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
-			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
+			var sArgs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var result = new SequenceResult();
 			result.Sequence = sequence;
 			for (int order = 0; order < sequence.Items.Count; order++)
 			{
 				var item = sequence.Items[order];
-				var mappedInputs = new Dictionary<string, string>(inputs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
+				var mappedInputs = new Dictionary<string, string>(sArgs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
 				sequence.Mappings.ForEach(x => Apply(x, item.Name, ref mappedInputs, roles));
 				if (!sequence.Conditions.All(x => Check(x, item.Name, mappedInputs, result))) continue;
-				var itemResult = GetResult(item, order, ref inputs, mappedInputs);
+				var itemResult = GetResult(item, order, ref sArgs, mappedInputs);
 				result.Results.Add(itemResult);
 			}
-			result.Output = inputs;
+			result.Output = sArgs;
 
 			return result;
 		}

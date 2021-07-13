@@ -150,45 +150,5 @@ namespace TTRPG.Engine.Tests
 
 			Assert.IsTrue(result);
 		}
-
-		[Test]
-		public void Check_SequenceLevelConditionIsFalse_ReturnsFalseForSequence()
-		{
-			var equation = "anything";
-			int resolverResult = 0;
-			var resolver = MockEquationService(resolverResult);
-			var condition = new Condition(equation);
-
-			bool result = resolver.Check(condition, inputs: null);
-
-			Assert.IsFalse(result);
-		}
-
-		[Test]
-		public void Check_SequenceLevelConditionIsFalse_ReturnsFalseForSequenceItem()
-		{
-			var itemName = "a";
-			var equation = "anything";
-			int resolverResult = 0;
-			var resolver = MockEquationService(resolverResult);
-			var condition = new Condition(equation);
-
-			bool result = resolver.Check(condition, itemName, null, null);
-
-			Assert.IsFalse(result);
-		}
-
-		[Test]
-		public void Check_SequenceLevelConditionIsTrue_ReturnsTrue()
-		{
-			var equation = "anything";
-			int resolverResult = 1;
-			var resolver = MockEquationService(resolverResult);
-			var condition = new Condition(equation);
-
-			bool result = resolver.Check(condition, inputs: null);
-
-			Assert.IsTrue(result);
-		}
 	}
 }

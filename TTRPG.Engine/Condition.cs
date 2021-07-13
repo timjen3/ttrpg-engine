@@ -4,9 +4,10 @@ using System.Linq;
 
 namespace TTRPG.Engine
 {
+	/// Condition on Sequence or SequenceItem
 	public class Condition
 	{
-		public const string DEFAULT_FAILURE_MESSAGE = "The condition failed.";
+		internal const string DEFAULT_FAILURE_MESSAGE = "The condition failed.";
 
 		/// constructor for condition
 		public Condition() { }

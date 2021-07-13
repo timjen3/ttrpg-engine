@@ -38,6 +38,12 @@ https://github.com/timjen3/ttrpg-engine/blob/main/Readme.md</Description>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+            <_Parameter1>TTRPG.Engine.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
   <ItemGroup>
     <None Include="..\LICENSE">
       <Pack>True</Pack>

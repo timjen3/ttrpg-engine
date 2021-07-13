@@ -5,7 +5,7 @@ using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Equations
 {
-	/// Resolves an equation using  mxParser
+	/// Resolves an equation using mxParser
 	public class EquationResolver : IEquationResolver
 	{
 		private readonly Function[] _functions;

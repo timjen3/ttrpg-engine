@@ -1,9 +1,7 @@
-﻿using org.mariuszgromada.math.mxparser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using TTRPG.Engine.Equations;
-using TTRPG.Engine.Equations.Extensions;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
@@ -14,7 +12,8 @@ namespace TTRPG.Engine.Demo.Engine
 		Random Gen = new Random();
 
 		private readonly Action<string> _writeMessage;
-		private readonly EquationService _equationService;
+		private readonly IEquationService _equationService;
+		private readonly CombatSequenceDataLoader _loader;
 
 		/// output any messages found in results
 		private void HandleResultItems(SequenceResult result)
@@ -93,23 +92,12 @@ namespace TTRPG.Engine.Demo.Engine
 		Role Computer;
 		List<Role> Targets;
 
-		public CombatDemoService(Action<string> writeMessage)
+		public CombatDemoService(Action<string> writeMessage, IEquationService equationService, CombatSequenceDataLoader loader)
 		{
 			_writeMessage = writeMessage;
-			var func1 = new Function("random", new RandomFunctionExtension());
-			var func2 = new Function("toss", new CoinTossFunctionExtension());
-			var funcs = new Function[] { func1, func2 };
-			var resolver = new EquationResolver(funcs);
-			_equationService = new EquationService(resolver);
-			var loader = new CombatSequenceDataLoader();
-			loader.Load();
-			UsePotionSequence = loader.UsePotionSequence;
-			AttackSequence = loader.AttackSequence;
-			Player = loader.Player;
-			PlayerWeapon = loader.PlayerWeapon;
-			Targets = loader.Targets;
-			ComputerWeapon = loader.ComputerWeapon;
-			Computer = Targets.FirstOrDefault();
+			_equationService = equationService;
+			_loader = loader;
+			NewGame();
 		}
 
 		public string PlayerPotions => Player.Attributes["Potions"];
@@ -119,6 +107,18 @@ namespace TTRPG.Engine.Demo.Engine
 		public string ComputerPotions => Computer.Attributes["Potions"];
 
 		public string ComputerHPStatus => $"{Computer.Attributes["HP"]} / {Computer.Attributes["MAX_HP"]}";
+
+		public void NewGame()
+		{
+			_loader.Load();
+			UsePotionSequence = _loader.UsePotionSequence;
+			AttackSequence = _loader.AttackSequence;
+			Player = _loader.Player;
+			PlayerWeapon = _loader.PlayerWeapon;
+			Targets = _loader.Targets;
+			ComputerWeapon = _loader.ComputerWeapon;
+			Computer = Targets.FirstOrDefault();
+		}
 
 		public bool CheckPlayerAttack()
 		{

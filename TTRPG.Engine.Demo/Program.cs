@@ -1,8 +1,8 @@
+using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using TTRPG.Engine.Demo.Engine;
+using TTRPG.Engine.Equations;
 
 namespace TTRPG.Engine.Demo2
 {
@@ -17,7 +17,19 @@ namespace TTRPG.Engine.Demo2
 			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new CombatDemoForm());
+			Application.Run(GetForm());
+		}
+
+		private static Form GetForm()
+		{
+			var collection = new ServiceCollection();
+			collection.AddTTRPGEngineServices();
+			var provider = collection.BuildServiceProvider();
+			var equationService = provider.GetRequiredService<IEquationService>();
+
+			var loader = new CombatSequenceDataLoader();
+
+			return new CombatDemoForm(equationService, loader);
 		}
 	}
 }
