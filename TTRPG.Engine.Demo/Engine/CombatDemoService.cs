@@ -38,7 +38,7 @@ namespace TTRPG.Engine.Demo.Engine
 
 		private void UsePotion(Role target)
 		{
-			var sequence = UsePotionSequence;
+			var sequence = Repo.UsePotionSequence;
 			var roles = new List<Role>
 			{
 				target.CloneAs("target")
@@ -50,7 +50,7 @@ namespace TTRPG.Engine.Demo.Engine
 
 		private void Attack(Role attacker, Role defender, Role weapon)
 		{
-			var sequence = AttackSequence;
+			var sequence = Repo.AttackSequence;
 			var roles = new List<Role>
 			{
 				attacker.CloneAs("attacker"),
@@ -65,7 +65,7 @@ namespace TTRPG.Engine.Demo.Engine
 		/// occassionally heal when wounded, otherwise attack
 		private void AiDecision()
 		{
-			var liveTargets = Targets.Where(x => int.Parse(x.Attributes["HP"]) > 0);
+			var liveTargets = Repo.Targets.Where(x => int.Parse(x.Attributes["HP"]) > 0);
 			foreach (var target in liveTargets)
 			{
 				bool missingHalfHp = int.Parse(target.Attributes["HP"]) < int.Parse(target.Attributes["MAX_HP"]) / 2;
@@ -75,55 +75,42 @@ namespace TTRPG.Engine.Demo.Engine
 				}
 				else
 				{
-					Attack(target, Player, ComputerWeapon);
+					Attack(target, Repo.Player, Repo.ComputerWeapon);
 				}
 			}
 		}
 
-		Sequence UsePotionSequence;
-		Sequence AttackSequence;
-		Role PlayerWeapon;
-		Role ComputerWeapon;
-		Role Player;
-		Role Computer;
-		List<Role> Targets;
+		GameObject Repo;
 
 		public CombatDemoService(Action<string> writeMessage, IEquationService equationService, CombatSequenceDataLoader loader)
 		{
 			_writeMessage = writeMessage;
 			_equationService = equationService;
 			_loader = loader;
-			NewGame();
+			Repo = _loader.Load();
 		}
 
-		public string PlayerPotions => Player.Attributes["Potions"];
+		public string PlayerPotions => Repo.Player.Attributes["Potions"];
 
-		public string PlayerHPStatus => $"{Player.Attributes["HP"]} / {Player.Attributes["MAX_HP"]}";
+		public string PlayerHPStatus => $"{Repo.Player.Attributes["HP"]} / {Repo.Player.Attributes["MAX_HP"]}";
 
-		public string ComputerPotions => Computer.Attributes["Potions"];
+		public string ComputerPotions => Repo.Target.Attributes["Potions"];
 
-		public string ComputerHPStatus => $"{Computer.Attributes["HP"]} / {Computer.Attributes["MAX_HP"]}";
+		public string ComputerHPStatus => $"{Repo.Target.Attributes["HP"]} / {Repo.Target.Attributes["MAX_HP"]}";
 
 		public void NewGame()
 		{
-			_loader.Load();
-			UsePotionSequence = _loader.UsePotionSequence;
-			AttackSequence = _loader.AttackSequence;
-			Player = _loader.Player;
-			PlayerWeapon = _loader.PlayerWeapon;
-			Targets = _loader.Targets;
-			ComputerWeapon = _loader.ComputerWeapon;
-			Computer = Targets.FirstOrDefault();
+			Repo = _loader.Load();
 		}
 
 		public bool CheckPlayerAttack()
 		{
-			var sequence = AttackSequence;
+			var sequence = Repo.AttackSequence;
 			var roles = new List<Role>
 			{
-				Player.CloneAs("attacker"),
-				Computer.CloneAs("defender"),
-				PlayerWeapon.CloneAs("weapon")
+				Repo.Player.CloneAs("attacker"),
+				Repo.Target.CloneAs("defender"),
+				Repo.PlayerWeapon.CloneAs("weapon")
 			};
 
 			return _equationService.Check(sequence, null, roles);
@@ -131,10 +118,10 @@ namespace TTRPG.Engine.Demo.Engine
 
 		public bool CheckPlayerUsePotion()
 		{
-			var sequence = UsePotionSequence;
+			var sequence = Repo.UsePotionSequence;
 			var roles = new List<Role>
 			{
-				Player.CloneAs("target")
+				Repo.Player.CloneAs("target")
 			};
 
 			return _equationService.Check(sequence, null, roles);
@@ -142,28 +129,28 @@ namespace TTRPG.Engine.Demo.Engine
 
 		public void SetTarget(string name)
 		{
-			Computer = Targets.FirstOrDefault(x => x.Name == name);
+			Repo.SetTarget(name);
 		}
 
 		public IEnumerable<string> ListTargetNames()
 		{
-			return Targets.Select(x => x.Name);
+			return Repo.Targets.Select(x => x.Name);
 		}
 
 		public void PlayerAttack()
 		{
-			Attack(Player, Computer, PlayerWeapon);
+			Attack(Repo.Player, Repo.Target, Repo.PlayerWeapon);
 			AiDecision();
 		}
 
 		public void PlayerUsePotion()
 		{
-			UsePotion(Player);
+			UsePotion(Repo.Player);
 			AiDecision();
 		}
 
 		public bool IsGameOver()
-			=> int.Parse(Player.Attributes["HP"]) <= 0
-				|| Targets.All(x => int.Parse(x.Attributes["HP"]) <= 0);
+			=> int.Parse(Repo.Player.Attributes["HP"]) <= 0
+				|| Repo.Targets.All(x => int.Parse(x.Attributes["HP"]) <= 0);
 	}
 }

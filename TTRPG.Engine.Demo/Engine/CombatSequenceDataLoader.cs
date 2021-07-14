@@ -29,28 +29,52 @@ namespace TTRPG.Engine.Demo.Engine
 			});
 		}
 
-		public void Load()
+		public GameObject Load()
 		{
+			var gameObject = new GameObject();
 			var sequences = ReadFromJsonFile<IEnumerable<Sequence>>("DataFiles/sequences.json");
-			UsePotionSequence = sequences.FirstOrDefault(x => x.Name == "UsePotion");
-			AttackSequence = sequences.FirstOrDefault(x => x.Name == "Attack");
+			gameObject.UsePotionSequence = sequences.FirstOrDefault(x => x.Name == "UsePotion");
+			gameObject.AttackSequence = sequences.FirstOrDefault(x => x.Name == "Attack");
 			var roles = ReadFromJsonFile<IEnumerable<Role>>("DataFiles/roles.json");
-			Player = roles.FirstOrDefault(x => x.Name == "Player");
-			PlayerWeapon = roles.FirstOrDefault(x => x.Name == "Sword");
-			Targets = roles.Where(x => x.Categories.Contains("Entity") && x.Categories.Contains("Enemy")).ToList();
-			ComputerWeapon = roles.FirstOrDefault(x => x.Name == "Crude Sword");
+			gameObject.Player = roles.FirstOrDefault(x => x.Name == "Player");
+			gameObject.PlayerWeapon = roles.FirstOrDefault(x => x.Name == "Sword");
+			gameObject.Targets = roles.Where(x => x.Categories.Contains("Entity") && x.Categories.Contains("Enemy")).ToList();
+			gameObject.ComputerWeapon = roles.FirstOrDefault(x => x.Name == "Crude Sword");
+
+			return gameObject;
+		}
+	}
+
+	public class GameObject
+	{
+		private Role _target;
+		List<Role> _targets;
+
+		public Sequence UsePotionSequence { get; set; }
+
+		public Sequence AttackSequence { get; set; }
+
+		public Role Player { get; set; }
+
+		public Role PlayerWeapon { get; set; }
+
+		public List<Role> Targets
+		{
+			get => _targets;
+			set
+			{
+				_targets = value;
+				_target = _targets?.FirstOrDefault();
+			}
 		}
 
-		public Sequence UsePotionSequence { get; private set; }
+		public Role ComputerWeapon { get; set; }
 
-		public Sequence AttackSequence { get; private set; }
+		public Role Target => _target;
 
-		public Role Player { get; private set; }
-
-		public Role PlayerWeapon { get; private set; }
-
-		public List<Role> Targets { get; private set; }
-
-		public Role ComputerWeapon { get; private set; }
+		public void SetTarget(string name)
+		{
+			_target = Targets?.FirstOrDefault(x => x.Name == name);
+		}
 	}
 }
