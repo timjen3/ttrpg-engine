@@ -7,16 +7,16 @@ namespace TTRPG.Engine.SequenceItems
 	/// </summary>
 	public class SequenceItem
 	{
-		private SequenceItemType _sequenceItemType;
+		private SequenceItemEquationType _sequenceItemEquationType;
 
 		public SequenceItem(){}
 
-		public SequenceItem(string name, string equation, string resultName, SequenceItemType sequenceItemType)
+		public SequenceItem(string name, string equation, string resultName, SequenceItemEquationType sequenceItemType)
 		{
 			Name = name;
 			Equation = equation;
 			ResultName = resultName;
-			SequenceItemType = sequenceItemType;
+			SequenceItemEquationType = sequenceItemType;
 		}
 
 		public string Name { get; set; }
@@ -25,13 +25,13 @@ namespace TTRPG.Engine.SequenceItems
 
 		public string ResultName { get; set; }
 
-		public SequenceItemType SequenceItemType
+		public SequenceItemEquationType SequenceItemEquationType
 		{
-			get => _sequenceItemType;
+			get => _sequenceItemEquationType;
 			set
 			{
-				if (!Enum.IsDefined(typeof(SequenceItemType), value)) throw new ArgumentException($"{value} is an invalid value for Mapping property '{nameof(SequenceItemType)}'.");
-				_sequenceItemType = value;
+				if (!Enum.IsDefined(typeof(SequenceItemEquationType), value)) throw new ArgumentException($"{value} is an invalid value for Mapping property '{nameof(SequenceItemEquationType)}'.");
+				_sequenceItemEquationType = value;
 			}
 		}
 	}

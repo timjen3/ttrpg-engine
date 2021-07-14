@@ -20,7 +20,7 @@ namespace TTRPG.Engine.Equations
 			{
 				case MappingType.Role:
 					{
-						var role = roles.SingleOrDefault(x => x.Name.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
+						var role = roles.SingleOrDefault(x => x.Alias.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
 						if (mapping.ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to missing role: '{mapping.RoleName}'.");
 
 						return role.Attributes;
@@ -93,11 +93,11 @@ namespace TTRPG.Engine.Equations
 			result.Order = order;
 			result.Inputs = mappedInputs;
 			result.ResolvedItem = item;
-			if (item.SequenceItemType == SequenceItemType.Algorithm)
+			if (item.SequenceItemEquationType == SequenceItemEquationType.Algorithm)
 			{
 				result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
 			}
-			else if (item.SequenceItemType == SequenceItemType.Message)
+			else if (item.SequenceItemEquationType == SequenceItemEquationType.Message)
 			{
 				result.Result = item.Equation.FormatWith(mappedInputs);
 			}
@@ -106,6 +106,29 @@ namespace TTRPG.Engine.Equations
 				inputs[item.ResultName] = result.Result.ToString();
 			}
 			return result;
+		}
+
+		/// Process a sequence item and get the result
+		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Role> roles)
+		{
+			var results = new List<SequenceResultItem>();
+			foreach (var item in items)
+			{
+				var result = new SequenceResultItem();
+				result.Name = item.Name;
+				result.Category = item.Category;
+				if (inputs.TryGetValue(item.Source, out string value))
+				{
+					result.Result = value;
+					if (!string.IsNullOrWhiteSpace(item.RoleName))
+					{
+						result.Role = roles.SingleOrDefault(x => x.Alias.Equals(item.RoleName, StringComparison.OrdinalIgnoreCase));
+					}
+					results.Add(result);
+				}
+			}
+
+			return results;
 		}
 
 		/// <summary>
@@ -145,7 +168,7 @@ namespace TTRPG.Engine.Equations
 				var itemResult = GetResult(item, order, ref sArgs, mappedInputs);
 				result.Results.Add(itemResult);
 			}
-			result.Output = sArgs;
+			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, roles);
 
 			return result;
 		}

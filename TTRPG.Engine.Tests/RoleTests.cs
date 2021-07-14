@@ -18,9 +18,11 @@ namespace TTRPG.Engine.Tests
 			var clone = role.CloneAs("b");
 
 			Assert.False(Is.ReferenceEquals(role, clone));
-			Assert.That(role.Name, Is.Not.EqualTo(clone.Name));
+			Assert.That(role.Name, Is.EqualTo(clone.Name));
 			Assert.That(role.Name, Is.EqualTo("a"));
-			Assert.That(clone.Name, Is.EqualTo("b"));
+			Assert.That(clone.Name, Is.EqualTo("a"));
+			Assert.That(role.Alias, Is.Null);
+			Assert.That(clone.Alias, Is.EqualTo("b"));
 			Assert.False(Is.ReferenceEquals(role.Attributes, clone.Attributes));
 			Assert.False(Is.ReferenceEquals(role.Categories, clone.Categories));
 		}

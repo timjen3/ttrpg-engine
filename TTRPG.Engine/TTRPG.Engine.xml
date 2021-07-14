@@ -66,6 +66,9 @@
         <member name="M:TTRPG.Engine.Equations.EquationService.GetResult(TTRPG.Engine.SequenceItems.SequenceItem,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IDictionary{System.String,System.String})">
             Process a sequence item and get the result
         </member>
+        <member name="M:TTRPG.Engine.Equations.EquationService.ProcessResults(System.Collections.Generic.IEnumerable{TTRPG.Engine.SequenceItems.ResultItem},System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            Process a sequence item and get the result
+        </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
             <summary>
             	Check if sequence can be executed with the provided parameters
@@ -195,12 +198,33 @@
         <member name="P:TTRPG.Engine.Role.Categories">
             categories that role belongs to
         </member>
+        <member name="P:TTRPG.Engine.Role.Alias">
+            on originals matches Name, on clones it differs
+        </member>
         <member name="M:TTRPG.Engine.Role.CloneAs(System.String)">
             creates a clone with a different name
+        </member>
+        <member name="T:TTRPG.Engine.SequenceItems.ResultItem">
+            Configures a result
         </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItem">
             <summary>
             	The result is loaded into inputs to be made available to following equations
+            </summary>
+        </member>
+        <member name="T:TTRPG.Engine.SequenceItems.SequenceItemEquationType">
+            <summary>
+            	Identifies the equation type of the sequence item
+            </summary>
+        </member>
+        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemEquationType.Algorithm">
+            <summary>
+            	Equation will be processed as an algorithm
+            </summary>
+        </member>
+        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemEquationType.Message">
+            <summary>
+            	Equation will be processed as a message
             </summary>
         </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItemResult">
@@ -226,21 +250,6 @@
         <member name="P:TTRPG.Engine.SequenceItems.SequenceItemResult.Result">
             <summary>
             	What item resolved to
-            </summary>
-        </member>
-        <member name="T:TTRPG.Engine.SequenceItems.SequenceItemType">
-            <summary>
-            	Identifies the type of sequence item
-            </summary>
-        </member>
-        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemType.Algorithm">
-            <summary>
-            	Equation will be processed as an algorithm
-            </summary>
-        </member>
-        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemType.Message">
-            <summary>
-            	Equation will be processed as a message
             </summary>
         </member>
     </members>

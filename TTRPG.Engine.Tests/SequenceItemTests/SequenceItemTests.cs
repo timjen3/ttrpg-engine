@@ -22,8 +22,6 @@ namespace TTRPG.Engine.Tests
 		Dictionary<string, string> GlobalInputs;
 		Dictionary<string, string> MappedInputs;
 
-		EquationService service;
-
 		[SetUp]
 		public void SetupTest()
 		{
@@ -37,7 +35,7 @@ namespace TTRPG.Engine.Tests
 		{
 			int equationResult = 1;
 			int order = 0;
-			var item = new SequenceItem("a", "1", "ar", SequenceItemType.Algorithm);
+			var item = new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm);
 			var resolver = MockEquationService(equationResult);
 
 			var result = resolver.GetResult(item, order, ref GlobalInputs);
@@ -52,7 +50,7 @@ namespace TTRPG.Engine.Tests
 		{
 			string messageResult = "Hello a.";
 			int order = 0;
-			var item = new SequenceItem("a", "Hello {name}.", "ar", SequenceItemType.Message);
+			var item = new SequenceItem("a", "Hello {name}.", "ar", SequenceItemEquationType.Message);
 			var resolver = MockEquationService(0);
 			MappedInputs["name"] = "a";
 
