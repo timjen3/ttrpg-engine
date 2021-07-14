@@ -20,7 +20,7 @@ namespace TTRPG.Engine.Equations
 			{
 				case MappingType.Role:
 					{
-						var role = roles.SingleOrDefault(x => x.Name.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
+						var role = roles.SingleOrDefault(x => x.Alias.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
 						if (mapping.ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to missing role: '{mapping.RoleName}'.");
 
 						return role.Attributes;
@@ -122,7 +122,7 @@ namespace TTRPG.Engine.Equations
 					result.Result = value;
 					if (!string.IsNullOrWhiteSpace(item.RoleName))
 					{
-						result.Role = roles.SingleOrDefault(x => x.Name.Equals(item.RoleName, StringComparison.OrdinalIgnoreCase));
+						result.Role = roles.SingleOrDefault(x => x.Alias.Equals(item.RoleName, StringComparison.OrdinalIgnoreCase));
 					}
 					results.Add(result);
 				}

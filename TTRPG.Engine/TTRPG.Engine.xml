@@ -198,6 +198,9 @@
         <member name="P:TTRPG.Engine.Role.Categories">
             categories that role belongs to
         </member>
+        <member name="P:TTRPG.Engine.Role.Alias">
+            on originals matches Name, on clones it differs
+        </member>
         <member name="M:TTRPG.Engine.Role.CloneAs(System.String)">
             creates a clone with a different name
         </member>

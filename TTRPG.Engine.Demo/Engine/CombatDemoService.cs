@@ -26,12 +26,11 @@ namespace TTRPG.Engine.Demo.Engine
 				}
 			}
 			_writeMessage("------------------");
-			// todo: find a way to make aliasing less convoluted
 			foreach (var itemResult in result.ResultItems)
 			{
 				if (itemResult.Category == "UpdateAttribute")
 				{
-					var role = originalRoles.Single(x => x.Name == itemResult.Role.Attributes["Name"]);
+					var role = originalRoles.Single(x => x.Name == itemResult.Role.Name);
 					role.Attributes[itemResult.Name] = itemResult.Result;
 				}
 			}
