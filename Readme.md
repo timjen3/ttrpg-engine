@@ -64,6 +64,8 @@ Roles have attributes that can be used within equations. To inject role attribut
 
 Roles can have 0+ categories for organizational purposes.
 
+Sequences require roles to be aliased according to their purpose in the sequence. To alias a role just clone it with the required name. This will create a deep copy with the alias set accordingly.
+
 ### ResultItems
 
 While the results of all processed SequenceItems are accessible in the SequenceResult object, it is easier to work with results through the ResultItems pattern.
