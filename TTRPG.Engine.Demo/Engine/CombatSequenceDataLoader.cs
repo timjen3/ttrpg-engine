@@ -36,9 +36,11 @@ namespace TTRPG.Engine.Demo.Engine
 			gameObject.UsePotionSequence = sequences.FirstOrDefault(x => x.Name == "UsePotion");
 			gameObject.AttackSequence = sequences.FirstOrDefault(x => x.Name == "Attack");
 			var roles = ReadFromJsonFile<IEnumerable<Role>>("DataFiles/roles.json");
+			gameObject.Roles = roles.ToList();
 			gameObject.Player = roles.FirstOrDefault(x => x.Name == "Player");
 			gameObject.PlayerWeapon = roles.FirstOrDefault(x => x.Name == "Sword");
 			gameObject.Targets = roles.Where(x => x.Categories.Contains("Entity") && x.Categories.Contains("Enemy")).ToList();
+			gameObject.Target = gameObject.Targets?.FirstOrDefault();
 			gameObject.ComputerWeapon = roles.FirstOrDefault(x => x.Name == "Crude Sword");
 
 			return gameObject;
@@ -47,9 +49,6 @@ namespace TTRPG.Engine.Demo.Engine
 
 	public class GameObject
 	{
-		private Role _target;
-		List<Role> _targets;
-
 		public Sequence UsePotionSequence { get; set; }
 
 		public Sequence AttackSequence { get; set; }
@@ -58,23 +57,17 @@ namespace TTRPG.Engine.Demo.Engine
 
 		public Role PlayerWeapon { get; set; }
 
-		public List<Role> Targets
-		{
-			get => _targets;
-			set
-			{
-				_targets = value;
-				_target = _targets?.FirstOrDefault();
-			}
-		}
+		public List<Role> Roles { get; set; }
+
+		public List<Role> Targets { get; set; }
 
 		public Role ComputerWeapon { get; set; }
 
-		public Role Target => _target;
+		public Role Target { get; set; }
 
 		public void SetTarget(string name)
 		{
-			_target = Targets?.FirstOrDefault(x => x.Name == name);
+			Target = Targets?.FirstOrDefault(x => x.Name == name);
 		}
 	}
 }
