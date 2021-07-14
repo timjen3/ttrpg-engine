@@ -16,7 +16,7 @@ namespace TTRPG.Engine.Demo.Engine
 		private readonly CombatSequenceDataLoader _loader;
 
 		/// output any messages found in results
-		private void HandleResultItems(SequenceResult result, IEnumerable<Role> originalRoles)
+		private void HandleResultItems(SequenceResult result)
 		{
 			foreach (var itemResult in result.Results)
 			{
@@ -30,7 +30,7 @@ namespace TTRPG.Engine.Demo.Engine
 			{
 				if (itemResult.Category == "UpdateAttribute")
 				{
-					var role = originalRoles.Single(x => x.Name == itemResult.Role.Name);
+					var role = Repo.Roles.Single(x => x.Name == itemResult.Role.Name);
 					role.Attributes[itemResult.Name] = itemResult.Result;
 				}
 			}
@@ -45,7 +45,7 @@ namespace TTRPG.Engine.Demo.Engine
 			};
 
 			var result = _equationService.Process(sequence, null, roles);
-			HandleResultItems(result, new Role[] { target });
+			HandleResultItems(result);
 		}
 
 		private void Attack(Role attacker, Role defender, Role weapon)
@@ -59,7 +59,7 @@ namespace TTRPG.Engine.Demo.Engine
 			};
 
 			var result = _equationService.Process(sequence, null, roles);
-			HandleResultItems(result, new Role[] { attacker, defender });
+			HandleResultItems(result);
 		}
 
 		/// occassionally heal when wounded, otherwise attack
