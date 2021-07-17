@@ -65,5 +65,40 @@ namespace TTRPG.Engine.Tests
 			Assert.That(resultItems, Has.Count.EqualTo(1));
 			Assert.AreSame(Roles[0], resultItems[0].Role);
 		}
+
+		[Test]
+		public void ProcessResults_RoleNotFound_RoleIsNull()
+		{
+			var item = new ResultItem();
+			item.Name = "a";
+			item.Category = "b";
+			item.Source = "c";
+			Inputs["c"] = "1";
+			item.RoleName = null;
+			Roles.Add(new Role("d", null, null));
+
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+
+			Assert.That(resultItems, Has.Count.EqualTo(1));
+			Assert.That(resultItems[0].Role, Is.Null);
+		}
+
+		[Test]
+		public void ProcessResults_FirstRoleSelected_FirstRoleChosen()
+		{
+			var item = new ResultItem();
+			item.Name = "a";
+			item.Category = "b";
+			item.Source = "c";
+			item.FirstRole = true;
+			Inputs["c"] = "1";
+			item.RoleName = null;
+			Roles.Add(new Role("d", null, null));
+
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+
+			Assert.That(resultItems, Has.Count.EqualTo(1));
+			Assert.AreSame(Roles[0], resultItems[0].Role);
+		}
 	}
 }

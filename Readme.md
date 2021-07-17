@@ -42,11 +42,11 @@ To add additional user defined functions simply add singletons of type org.mariu
 
 ### Conditions 
 
+Example: `toHit > dodge`
+
 Conditions can be added for items in the sequence. Conditions that fail can either result in the whole sequence failing or steps of the sequence being skipped.
 
-Conditions can specify dependencies for SequenceItems. Equations are not processed unless the dependencies are fulfilled since equations may rely on the results from previously processed SequenceItems.
-
-Example: `toHit > dodge`
+If a sequence item relies on the results from a previous sequence item it should declare a dependency on that item. That will prevent it from running without the pre-requisite.
 
 ##### Sequence Conditions
 
@@ -66,9 +66,15 @@ Roles can have 0+ categories for organizational purposes.
 
 Sequences require roles to be aliased according to their purpose in the sequence. To alias a role just clone it with the required name. This will create a deep copy with the alias set accordingly.
 
+When no RoleName is specified for a Role mapping the first role passed will be chosen.
+
 ### ResultItems
 
 While the results of all processed SequenceItems are accessible in the SequenceResult object, it is easier to work with results through the ResultItems pattern.
+
+If a RoleName is set the passed role with that Alias will be attached.
+
+If FirstRole is true, then the first role passed will be attached.
 
 ## Exceptions
 

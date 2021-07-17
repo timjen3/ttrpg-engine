@@ -104,5 +104,53 @@ namespace TTRPG.Engine.Tests
 			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing role: '{mapping.RoleName}'."));
 		}
+
+		[Test]
+		public void Apply_MultipleRolesChoosesCorrectOne()
+		{
+			mapping.From = "a";
+			mapping.To = "b";
+			mapping.ItemName = "a";
+			mapping.ThrowOnFailure = true;
+			role.Attributes["a"] = "1";
+			var role2 = new Role("r2", new Dictionary<string, string>(), new List<string>());
+			role2.Attributes["a"] = "2";
+			roles.Add(role2);
+
+			service.Apply(mapping, "a", ref inputs, roles);
+
+			Assert.That(inputs, Contains.Key("b"));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
+		}
+
+		[Test]
+		public void Apply_RoleNameNotSetChooseFirst()
+		{
+			mapping.From = "a";
+			mapping.To = "b";
+			mapping.RoleName = null;
+			mapping.ItemName = "a";
+			role.Attributes["a"] = "1";
+			mapping.ThrowOnFailure = true;
+
+			service.Apply(mapping, "a", ref inputs, roles);
+
+			Assert.That(inputs, Contains.Key("b"));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
+		}
+
+		[Test]
+		public void Apply_RoleNameNotSetNoRolesPassedThrow()
+		{
+			mapping.From = "a";
+			mapping.To = "b";
+			mapping.RoleName = null;
+			mapping.ItemName = "a";
+			mapping.ThrowOnFailure = true;
+			roles.Clear();
+
+			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			Assert.That(ex.Message, Is.EqualTo("Mapping failed due to no roles being passed."));
+		}
 	}
 }

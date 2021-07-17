@@ -35,6 +35,7 @@ namespace TTRPG.Engine.Demo.Engine
 			var sequences = ReadFromJsonFile<IEnumerable<Sequence>>("DataFiles/sequences.json");
 			gameObject.UsePotionSequence = sequences.FirstOrDefault(x => x.Name == "UsePotion");
 			gameObject.AttackSequence = sequences.FirstOrDefault(x => x.Name == "Attack");
+			gameObject.CheckIsDead = sequences.FirstOrDefault(x => x.Name == "CheckIsDead");
 			var roles = ReadFromJsonFile<IEnumerable<Role>>("DataFiles/roles.json");
 			gameObject.Roles = roles.ToList();
 			gameObject.Player = roles.FirstOrDefault(x => x.Name == "Player");
@@ -52,6 +53,8 @@ namespace TTRPG.Engine.Demo.Engine
 		public Sequence UsePotionSequence { get; set; }
 
 		public Sequence AttackSequence { get; set; }
+
+		public Sequence CheckIsDead { get; set; }
 
 		public Role Player { get; set; }
 
