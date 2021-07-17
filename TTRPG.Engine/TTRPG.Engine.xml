@@ -69,6 +69,9 @@
         <member name="M:TTRPG.Engine.Equations.EquationService.ProcessResults(System.Collections.Generic.IEnumerable{TTRPG.Engine.SequenceItems.ResultItem},System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
             Process a sequence item and get the result
         </member>
+        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
+            
+        </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
             <summary>
             	Check if sequence can be executed with the provided parameters
@@ -104,6 +107,18 @@
             <summary>
             	Processes Sequences.
             </summary>
+        </member>
+        <member name="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            	Check if a sequence can be resolved with the given arguments for the specified role.
+            </summary>
+            <remarks>
+            	Sequence Conditions are used for validation.
+            </remarks>
+            <param name="sequence"></param>
+            <param name="role"></param>
+            <param name="inputs"></param>
+            <returns></returns>
         </member>
         <member name="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
             <summary>

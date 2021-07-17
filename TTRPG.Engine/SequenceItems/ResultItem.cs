@@ -10,5 +10,7 @@
 		public string Source { get; set; }
 
 		public string RoleName { get; set; }
+
+		public bool FirstRole { get; set; }
 	}
 }

@@ -275,7 +275,7 @@
                 "From": "name",
                 "To": "target_name",
                 "ItemName": null,
-                "RoleName": "target",
+                "RoleName": null,
                 "MappingType": "Role",
                 "ThrowOnFailure": false
             },
@@ -283,7 +283,7 @@
                 "From": "potions",
                 "To": "potions",
                 "ItemName": null,
-                "RoleName": "target",
+                "RoleName": null,
                 "MappingType": "Role",
                 "ThrowOnFailure": false
             },
@@ -291,7 +291,7 @@
                 "From": "con",
                 "To": "con",
                 "ItemName": null,
-                "RoleName": "target",
+                "RoleName": null,
                 "MappingType": "Role",
                 "ThrowOnFailure": false
             },
@@ -299,7 +299,7 @@
                 "From": "hp",
                 "To": "old_hp",
                 "ItemName": null,
-                "RoleName": "target",
+                "RoleName": null,
                 "MappingType": "Role",
                 "ThrowOnFailure": false
             },
@@ -307,7 +307,7 @@
                 "From": "max_hp",
                 "To": "max_hp",
                 "ItemName": null,
-                "RoleName": "target",
+                "RoleName": null,
                 "MappingType": "Role",
                 "ThrowOnFailure": false
             }
@@ -317,13 +317,37 @@
                 "Name": "Potions",
                 "Category": "UpdateAttribute",
                 "Source": "new_potions",
-                "RoleName": "target"
+                "RoleName": null,
+                "FirstRole": true
             },
             {
                 "Name": "HP",
                 "Category": "UpdateAttribute",
                 "Source": "new_hp",
-                "RoleName": "target"
+                "RoleName": null,
+                "FirstRole": true
+            }
+        ]
+    },
+    {
+        "Name": "CheckIsDead",
+        "Conditions": [
+            {
+                "DependentOnItem": null,
+                "Equation": "hp <= 0",
+                "ItemNames": null,
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            }
+        ],
+        "Mappings": [
+            {
+                "From": "hp",
+                "To": "hp",
+                "ItemName": null,
+                "RoleName": null,
+                "MappingType": "Role",
+                "ThrowOnFailure": true
             }
         ]
     }

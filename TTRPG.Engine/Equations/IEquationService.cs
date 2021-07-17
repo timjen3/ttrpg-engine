@@ -9,6 +9,18 @@ namespace TTRPG.Engine.Equations
 	public interface IEquationService
 	{
 		/// <summary>
+		///		Check if a sequence can be resolved with the given arguments for the specified role.
+		/// </summary>
+		/// <remarks>
+		///		Sequence Conditions are used for validation.
+		/// </remarks>
+		/// <param name="sequence"></param>
+		/// <param name="role"></param>
+		/// <param name="inputs"></param>
+		/// <returns></returns>
+		bool Check(Sequence sequence, Role role, IDictionary<string, string> inputs = null);
+
+		/// <summary>
 		///		Check if a Sequence can be processed with the given arguments.
 		/// </summary>
 		/// <remarks>

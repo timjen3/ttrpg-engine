@@ -14,6 +14,7 @@ namespace TTRPG.Engine.Demo.Engine
 		private readonly Action<string> _writeMessage;
 		private readonly IEquationService _equationService;
 		private readonly CombatSequenceDataLoader _loader;
+		GameObject Repo;
 
 		/// output any messages found in results
 		private void HandleResultItems(SequenceResult result)
@@ -38,14 +39,8 @@ namespace TTRPG.Engine.Demo.Engine
 
 		private void UsePotion(Role target)
 		{
-			var sequence = Repo.UsePotionSequence;
-			var roles = new List<Role>
-			{
-				target.CloneAs("target")
-			};
-
-			var result = _equationService.Process(sequence, null, roles);
-			HandleResultItems(result);
+			var results = _equationService.Process(Repo.UsePotionSequence, null, new Role[] { target });
+			HandleResultItems(results);
 		}
 
 		private void Attack(Role attacker, Role defender, Role weapon)
@@ -65,11 +60,11 @@ namespace TTRPG.Engine.Demo.Engine
 		/// occassionally heal when wounded, otherwise attack
 		private void AiDecision()
 		{
-			var liveTargets = Repo.Targets.Where(x => int.Parse(x.Attributes["HP"]) > 0);
+			var liveTargets = Repo.Targets.Where(x => !_equationService.Check(Repo.CheckIsDead, x));
 			foreach (var target in liveTargets)
 			{
 				bool missingHalfHp = int.Parse(target.Attributes["HP"]) < int.Parse(target.Attributes["MAX_HP"]) / 2;
-				if (missingHalfHp && int.Parse(target.Attributes["Potions"]) > 0 && Gen.Next(3) == 1)
+				if (missingHalfHp && _equationService.Check(Repo.UsePotionSequence, target) && Gen.Next(3) == 1)
 				{
 					UsePotion(target);
 				}
@@ -79,8 +74,6 @@ namespace TTRPG.Engine.Demo.Engine
 				}
 			}
 		}
-
-		GameObject Repo;
 
 		public CombatDemoService(Action<string> writeMessage, IEquationService equationService, CombatSequenceDataLoader loader)
 		{
@@ -116,16 +109,8 @@ namespace TTRPG.Engine.Demo.Engine
 			return _equationService.Check(sequence, null, roles);
 		}
 
-		public bool CheckPlayerUsePotion()
-		{
-			var sequence = Repo.UsePotionSequence;
-			var roles = new List<Role>
-			{
-				Repo.Player.CloneAs("target")
-			};
-
-			return _equationService.Check(sequence, null, roles);
-		}
+		public bool CheckPlayerUsePotion() =>
+			_equationService.Check(Repo.UsePotionSequence, Repo.Player);
 
 		public void SetTarget(string name)
 		{
@@ -149,8 +134,7 @@ namespace TTRPG.Engine.Demo.Engine
 			AiDecision();
 		}
 
-		public bool IsGameOver()
-			=> int.Parse(Repo.Player.Attributes["HP"]) <= 0
-				|| Repo.Targets.All(x => int.Parse(x.Attributes["HP"]) <= 0);
+		public bool IsGameOver() => _equationService.Check(Repo.CheckIsDead, Repo.Player)
+										|| Repo.Targets.All(x => _equationService.Check(Repo.CheckIsDead, x));
 	}
 }

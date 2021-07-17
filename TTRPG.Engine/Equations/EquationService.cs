@@ -16,21 +16,34 @@ namespace TTRPG.Engine.Equations
 		/// Returns source data depending on MappingType
 		IDictionary<string, string> GetSourceMappingData(Mapping mapping, Dictionary<string, string> inputs, IEnumerable<Role> roles)
 		{
+			IDictionary<string, string> source;
 			switch (mapping.MappingType)
 			{
 				case MappingType.Role:
 					{
-						var role = roles.SingleOrDefault(x => x.Alias.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
-						if (mapping.ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to missing role: '{mapping.RoleName}'.");
+						Role role = null;
+						if (mapping.RoleName == null)
+						{
+							role = roles.FirstOrDefault();
+							if (mapping.ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to no roles being passed.");
+						}
+						else
+						{
+							role = roles.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
+							if (mapping.ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to missing role: '{mapping.RoleName}'.");
+						}
 
-						return role.Attributes;
+						source = role?.Attributes;
+						break;
 					}
 				case MappingType.Input:
 				default:
 					{
-						return inputs;
+						source = inputs;
+						break;
 					}
 			}
+			return source ?? new Dictionary<string, string>();
 		}
 
 		/// EquationService Constructor
@@ -122,13 +135,23 @@ namespace TTRPG.Engine.Equations
 					result.Result = value;
 					if (!string.IsNullOrWhiteSpace(item.RoleName))
 					{
-						result.Role = roles.SingleOrDefault(x => x.Alias.Equals(item.RoleName, StringComparison.OrdinalIgnoreCase));
+						result.Role = roles.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(item.RoleName, StringComparison.OrdinalIgnoreCase));
+					}
+					else if (item.FirstRole)
+					{
+						result.Role = roles.FirstOrDefault();
 					}
 					results.Add(result);
 				}
 			}
 
 			return results;
+		}
+
+		/// 
+		public bool Check(Sequence sequence, Role role, IDictionary<string, string> inputs = null)
+		{
+			return Check(sequence, inputs, new Role[] { role });
 		}
 
 		/// <summary>
