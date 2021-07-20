@@ -19,6 +19,7 @@ namespace TTRPG.Engine.Equations
 			IDictionary<string, string> source;
 			switch (mapping.MappingType)
 			{
+				case MappingType.InventoryItem:
 				case MappingType.Role:
 					{
 						Role role = null;
@@ -31,6 +32,15 @@ namespace TTRPG.Engine.Equations
 						{
 							role = roles.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
 							if (mapping.ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to missing role: '{mapping.RoleName}'.");
+						}
+						if (mapping.InventoryItemName != null)
+						{
+							Role item = null;
+							if (role != null && role.InventoryItems.ContainsKey(mapping.InventoryItemName))
+								item = role.InventoryItems[mapping.InventoryItemName];
+							if (mapping.ThrowOnFailure && item == null) throw new MissingRoleException($"Mapping failed due to role not having item: '{mapping.InventoryItemName}'.");
+							source = item?.Attributes;
+							break;
 						}
 
 						source = role?.Attributes;

@@ -43,14 +43,13 @@ namespace TTRPG.Engine.Demo.Engine
 			HandleResultItems(results);
 		}
 
-		private void Attack(Role attacker, Role defender, Role weapon)
+		private void Attack(Role attacker, Role defender)
 		{
 			var sequence = Repo.AttackSequence;
 			var roles = new List<Role>
 			{
 				attacker.CloneAs("attacker"),
-				defender.CloneAs("defender"),
-				weapon.CloneAs("weapon")
+				defender.CloneAs("defender")
 			};
 
 			var result = _equationService.Process(sequence, null, roles);
@@ -70,7 +69,7 @@ namespace TTRPG.Engine.Demo.Engine
 				}
 				else
 				{
-					Attack(target, Repo.Player, Repo.ComputerWeapon);
+					Attack(target, Repo.Player);
 				}
 			}
 		}
@@ -102,8 +101,7 @@ namespace TTRPG.Engine.Demo.Engine
 			var roles = new List<Role>
 			{
 				Repo.Player.CloneAs("attacker"),
-				Repo.Target.CloneAs("defender"),
-				Repo.PlayerWeapon.CloneAs("weapon")
+				Repo.Target.CloneAs("defender")
 			};
 
 			return _equationService.Check(sequence, null, roles);
@@ -124,7 +122,7 @@ namespace TTRPG.Engine.Demo.Engine
 
 		public void PlayerAttack()
 		{
-			Attack(Repo.Player, Repo.Target, Repo.PlayerWeapon);
+			Attack(Repo.Player, Repo.Target);
 			AiDecision();
 		}
 

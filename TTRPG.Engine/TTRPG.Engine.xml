@@ -168,6 +168,9 @@
         <member name="M:TTRPG.Engine.Mapping.#ctor(System.String,System.String,System.String,System.Boolean)">
             Constructor for an Input Mapping
         </member>
+        <member name="M:TTRPG.Engine.Mapping.#ctor(System.String,System.String,System.String,System.String,System.String,System.Boolean)">
+            Constructor for an InventoryItem Mapping
+        </member>
         <member name="P:TTRPG.Engine.Mapping.From">
             source property key
         </member>
@@ -179,6 +182,9 @@
         </member>
         <member name="P:TTRPG.Engine.Mapping.RoleName">
             role to pull properties from
+        </member>
+        <member name="P:TTRPG.Engine.Mapping.InventoryItemName">
+            inventory item to pull properties from
         </member>
         <member name="P:TTRPG.Engine.Mapping.MappingType">
             type of mapping
@@ -195,13 +201,16 @@
         <member name="F:TTRPG.Engine.MappingType.Role">
             item is mapped from a role
         </member>
+        <member name="F:TTRPG.Engine.MappingType.InventoryItem">
+            item is mapped from an inventory item
+        </member>
         <member name="T:TTRPG.Engine.Role">
             a role carries a set of attributes into equations
         </member>
         <member name="M:TTRPG.Engine.Role.#ctor">
             role parameterless constructor
         </member>
-        <member name="M:TTRPG.Engine.Role.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String})">
+        <member name="M:TTRPG.Engine.Role.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,TTRPG.Engine.Role})">
             role constructor
         </member>
         <member name="P:TTRPG.Engine.Role.Name">
@@ -212,6 +221,9 @@
         </member>
         <member name="P:TTRPG.Engine.Role.Categories">
             categories that role belongs to
+        </member>
+        <member name="P:TTRPG.Engine.Role.InventoryItems">
+            inventory items
         </member>
         <member name="P:TTRPG.Engine.Role.Alias">
             on originals matches Name, on clones it differs

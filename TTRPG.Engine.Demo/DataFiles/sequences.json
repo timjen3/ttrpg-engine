@@ -150,8 +150,9 @@
                 "From": "hits",
                 "To": "wHits",
                 "ItemName": "Report Damage",
-                "RoleName": "weapon",
-                "MappingType": "Role",
+                "RoleName": "attacker",
+                "InventoryItemName": "weapon",
+                "MappingType": "InventoryItem",
                 "ThrowOnFailure": false
             },
             {
@@ -174,32 +175,36 @@
                 "From": "hits",
                 "To": "wHits",
                 "ItemName": "Damage",
-                "RoleName": "weapon",
-                "MappingType": "Role",
+                "RoleName": "attacker",
+                "InventoryItemName": "weapon",
+                "MappingType": "InventoryItem",
                 "ThrowOnFailure": false
             },
             {
                 "From": "min",
                 "To": "wMin",
                 "ItemName": "Damage",
-                "RoleName": "weapon",
-                "MappingType": "Role",
+                "RoleName": "attacker",
+                "InventoryItemName": "weapon",
+                "MappingType": "InventoryItem",
                 "ThrowOnFailure": false
             },
             {
                 "From": "max",
                 "To": "wMax",
                 "ItemName": "Damage",
-                "RoleName": "weapon",
-                "MappingType": "Role",
+                "RoleName": "attacker",
+                "InventoryItemName": "weapon",
+                "MappingType": "InventoryItem",
                 "ThrowOnFailure": false
             },
             {
                 "From": "action",
                 "To": "wAction",
                 "ItemName": "Intention",
-                "RoleName": "weapon",
-                "MappingType": "Role",
+                "RoleName": "attacker",
+                "InventoryItemName": "weapon",
+                "MappingType": "InventoryItem",
                 "ThrowOnFailure": false
             },
             {

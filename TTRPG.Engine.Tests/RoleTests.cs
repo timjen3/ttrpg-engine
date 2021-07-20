@@ -43,7 +43,7 @@ namespace TTRPG.Engine.Tests
 			{
 				{ "TEST", "1" },
 			};
-			var role = new Role("a", dictionary, null);
+			var role = new Role("a", dictionary, null, null);
 
 			Assert.That(role.Attributes, Contains.Key("test"));
 			Assert.That(role.Attributes["test"], Is.EqualTo("1"));
@@ -52,12 +52,48 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void AttributesAreCaseInsensitiveWhenPassedNullAttributes()
 		{
-			var role = new Role("a", null, new List<string>());
+			var role = new Role("a", null, null, null);
 
 			role.Attributes["TEST"] = "1";
 
 			Assert.That(role.Attributes, Contains.Key("test"));
 			Assert.That(role.Attributes["test"], Is.EqualTo("1"));
+		}
+
+		[Test]
+		public void InventoryItemsAreCaseInsensitive()
+		{
+			var role = new Role();
+
+			role.InventoryItems["TEST"] = new Role("a", null, null, null);
+
+			Assert.That(role.InventoryItems, Contains.Key("test"));
+			Assert.That(role.InventoryItems["test"].Name, Is.EqualTo("a"));
+		}
+
+		[Test]
+		public void InventoryItemsAreCaseInsensitiveWhenPassedWithout()
+		{
+			var dictionary = new Dictionary<string, Role>
+			{
+				{ "TEST", new Role("a", null, null, null) },
+			};
+
+			var role = new Role("a", null, null, dictionary);
+
+			Assert.That(role.InventoryItems, Contains.Key("test"));
+			Assert.That(role.InventoryItems["test"].Name, Is.EqualTo("a"));
+		}
+
+		[Test]
+		public void InventoryItemsAreCaseInsensitiveWhenPassedNullAttributes()
+		{
+			var role = new Role("a", null, null, null);
+
+			role.InventoryItems["TEST"] = new Role("a", null, null, null);
+
+			Assert.That(role.InventoryItems, Contains.Key("test"));
+			Assert.That(role.InventoryItems["test"].Name, Is.EqualTo("a"));
 		}
 	}
 }
