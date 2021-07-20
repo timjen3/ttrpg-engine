@@ -1,4 +1,5 @@
 ﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
@@ -7,11 +8,12 @@ namespace TTRPG.Engine.Tests
 {
 	[TestFixture(Category = "Unit")]
 	[TestOf(typeof(Mapping))]
-	internal class RoleMappingTests
+	internal class InventoryItemMappingTests
 	{
 		Mapping mapping;
 		List<Role> roles;
 		Role role;
+		Role item;
 		Dictionary<string, string> inputs;
 		EquationService service;
 
@@ -19,11 +21,14 @@ namespace TTRPG.Engine.Tests
 		public void SetupTests()
 		{
 			mapping = new Mapping();
-			mapping.MappingType = MappingType.Role;
+			mapping.MappingType = MappingType.InventoryItem;
 			mapping.RoleName = "r1";
+			mapping.InventoryItemName = "i1";
 			inputs = new Dictionary<string, string>();
 			roles = new List<Role>();
 			role = new Role("r1");
+			item = new Role("i1");
+			role.InventoryItems["i1"] = item;
 			roles.Add(role);
 			service = new EquationService(null);
 		}
@@ -33,7 +38,7 @@ namespace TTRPG.Engine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			role.Attributes["a"] = "1";
+			item.Attributes["a"] = "1";
 
 			service.Apply(mapping, "a", ref inputs, roles);
 
@@ -42,12 +47,12 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void Apply_MappingIsPerformedWhenMatch()
+		public void Apply_ItemNameSetKeyIsMappedTest()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "a";
-			role.Attributes["a"] = "1";
+			item.Attributes["a"] = "1";
 
 			service.Apply(mapping, "a", ref inputs, roles);
 
@@ -61,7 +66,7 @@ namespace TTRPG.Engine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "b";
-			role.Attributes["a"] = "1";
+			item.Attributes["a"] = "1";
 
 			service.Apply(mapping, "a", ref inputs, roles);
 
@@ -74,7 +79,7 @@ namespace TTRPG.Engine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "a";
-			role.Attributes["a"] = "1";
+			item.Attributes["a"] = "1";
 			mapping.ThrowOnFailure = true;
 
 			service.Apply(mapping, "a", ref inputs, roles);
@@ -93,28 +98,29 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void Apply_MissingRoleThrow()
+		public void Apply_MissingItemThrow()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
-			roles.Clear();
+			role.InventoryItems.Clear();
 
 			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
-			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing role: '{mapping.RoleName}'."));
+			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to role not having item: '{mapping.InventoryItemName}'."));
 		}
 
 		[Test]
-		public void Apply_MultipleRolesChoosesCorrectOne()
+		public void Apply_MultipleItemsChoosesCorrectOne()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
-			role.Attributes["a"] = "1";
-			var role2 = new Role("r2", new Dictionary<string, string>(), new List<string>());
-			role2.Attributes["a"] = "2";
+			item.Attributes["a"] = "1";
+			var role2 = new Role("r2");
+			role2.InventoryItems["i1"] = new Role("i1");
+			role2.InventoryItems["i1"].Attributes["a"] = "2";
 			roles.Add(role2);
 
 			service.Apply(mapping, "a", ref inputs, roles);
@@ -124,33 +130,9 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void Apply_RoleNameNotSetChooseFirst()
+		public void Ctor_ItemNameNullThrowsArgumentNullException()
 		{
-			mapping.From = "a";
-			mapping.To = "b";
-			mapping.RoleName = null;
-			mapping.ItemName = "a";
-			role.Attributes["a"] = "1";
-			mapping.ThrowOnFailure = true;
-
-			service.Apply(mapping, "a", ref inputs, roles);
-
-			Assert.That(inputs, Contains.Key("b"));
-			Assert.That(inputs["b"], Is.EqualTo("1"));
-		}
-
-		[Test]
-		public void Apply_RoleNameNotSetNoRolesPassedThrow()
-		{
-			mapping.From = "a";
-			mapping.To = "b";
-			mapping.RoleName = null;
-			mapping.ItemName = "a";
-			mapping.ThrowOnFailure = true;
-			roles.Clear();
-
-			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
-			Assert.That(ex.Message, Is.EqualTo("Mapping failed due to no roles being passed."));
+			Assert.Throws<ArgumentNullException>(() => new Mapping("a", "b", null, null, null));
 		}
 	}
 }

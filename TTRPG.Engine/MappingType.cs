@@ -6,6 +6,8 @@
 		/// item is mapped from the input collection
 		Input = 0,
 		/// item is mapped from a role
-		Role = 2
+		Role = 2,
+		/// item is mapped from an inventory item
+		InventoryItem = 3
 	}
 }

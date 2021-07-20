@@ -34,6 +34,19 @@ namespace TTRPG.Engine
 			MappingType = MappingType.Input;
 		}
 
+		/// Constructor for an InventoryItem Mapping
+		public Mapping(string from, string to, string roleName, string inventoryItemName, string itemName = null, bool throwOnFailure = false)
+		{
+			if (inventoryItemName == null) throw new ArgumentNullException($"nameof{inventoryItemName} cannot be null for an inventory item mapping.");
+			From = from;
+			To = to;
+			RoleName = roleName;
+			ThrowOnFailure = throwOnFailure;
+			ItemName = itemName;
+			InventoryItemName = inventoryItemName;
+			MappingType = MappingType.InventoryItem;
+		}
+
 		/// source property key
 		public string From { get; set; }
 
@@ -45,6 +58,9 @@ namespace TTRPG.Engine
 
 		/// role to pull properties from
 		public string RoleName { get; set; }
+
+		/// inventory item to pull properties from
+		public string InventoryItemName { get; set; }
 
 		/// type of mapping
 		public MappingType MappingType

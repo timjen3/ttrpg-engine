@@ -58,7 +58,7 @@ namespace TTRPG.Engine.Tests
 			item.Source = "c";
 			Inputs["c"] = "1";
 			item.RoleName = "d";
-			Roles.Add(new Role("d", null, null));
+			Roles.Add(new Role("d"));
 
 			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
 
