@@ -46,7 +46,7 @@ namespace TTRPG.Engine
 			var clonedInventoryItems = new Dictionary<string, Role>(StringComparer.OrdinalIgnoreCase);
 			foreach (var item in InventoryItems)
 				clonedInventoryItems.Add(item.Key, item.Value.CloneAs());
-			var clone = new Role(Name, clonedAttributes, clonedCategories, null);
+			var clone = new Role(Name, clonedAttributes, clonedCategories, clonedInventoryItems);
 			if (alias != null) clone.Alias = alias;
 
 			return clone;

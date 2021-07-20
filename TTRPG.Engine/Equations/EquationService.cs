@@ -37,7 +37,7 @@ namespace TTRPG.Engine.Equations
 						{
 							Role item = null;
 							if (role != null && role.InventoryItems.ContainsKey(mapping.InventoryItemName))
-								item = role.InventoryItems.First(x => x.Key.Equals(mapping.InventoryItemName)).Value;
+								item = role.InventoryItems[mapping.InventoryItemName];
 							if (mapping.ThrowOnFailure && item == null) throw new MissingRoleException($"Mapping failed due to role not having item: '{mapping.InventoryItemName}'.");
 							source = item?.Attributes;
 							break;
