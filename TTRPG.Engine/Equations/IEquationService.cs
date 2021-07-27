@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Equations
@@ -31,6 +32,15 @@ namespace TTRPG.Engine.Equations
 		/// <param name="roles"></param>
 		/// <returns></returns>
 		bool Check(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null);
+
+		/// <summary>
+		///		Process a single sequence item and get the result
+		/// </summary>
+		/// <param name="item">item to be processed</param>
+		/// <param name="role">(optional) inject role's attributes</param>
+		/// <param name="inputs">(optional) inject</param>
+		/// <returns></returns>
+		SequenceItemResult Process(SequenceItem item, Role role = null, IDictionary<string, string> inputs = null);
 
 		/// <summary>
 		///		Process a Sequence and get a SequenceResult.

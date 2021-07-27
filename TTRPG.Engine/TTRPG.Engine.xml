@@ -69,26 +69,17 @@
         <member name="M:TTRPG.Engine.Equations.EquationService.ProcessResults(System.Collections.Generic.IEnumerable{TTRPG.Engine.SequenceItems.ResultItem},System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
             Process a sequence item and get the result
         </member>
+        <member name="M:TTRPG.Engine.Equations.EquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <see cref="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})"/>
+        </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
-            
+            <see cref="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})"/>
         </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            <summary>
-            	Check if sequence can be executed with the provided parameters
-            </summary>
-            <param name="sequence"></param>
-            <param name="inputs"></param>
-            <param name="roles"></param>
-            <returns></returns>
+            <see cref="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})"/>
         </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            <summary>
-            	Process sequence items and get result
-            </summary>
-            <param name="sequence"></param>
-            <param name="inputs"></param>
-            <param name="roles"></param>
-            <returns></returns>
+            <see cref="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})"/>
         </member>
         <member name="T:TTRPG.Engine.Equations.IEquationResolver">
             <summary>
@@ -130,6 +121,15 @@
             <param name="sequence"></param>
             <param name="inputs"></param>
             <param name="roles"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <summary>
+            	Process a single sequence item and get the result
+            </summary>
+            <param name="item">item to be processed</param>
+            <param name="role">(optional) inject role's attributes</param>
+            <param name="inputs">(optional) inject</param>
             <returns></returns>
         </member>
         <member name="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">

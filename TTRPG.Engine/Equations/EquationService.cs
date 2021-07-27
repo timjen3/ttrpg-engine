@@ -158,19 +158,37 @@ namespace TTRPG.Engine.Equations
 			return results;
 		}
 
-		/// 
+		/// <see cref="IEquationService.Process(SequenceItem, Role, IDictionary{string, string})"/>
+		public SequenceItemResult Process(SequenceItem item, Role role = null, IDictionary<string, string> inputs = null)
+		{
+			var sArgs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
+			var result = new SequenceItemResult();
+			result.Order = 0;
+			result.Inputs = sArgs;
+			result.ResolvedItem = item;
+			var mappedInputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);
+			if (role != null)
+			{
+				foreach (var kvp in role.Attributes) mappedInputs[kvp.Key] = kvp.Value;
+			}
+			if (item.SequenceItemEquationType == SequenceItemEquationType.Algorithm)
+			{
+				result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
+			}
+			else if (item.SequenceItemEquationType == SequenceItemEquationType.Message)
+			{
+				result.Result = item.Equation.FormatWith(mappedInputs);
+			}
+			return result;
+		}
+
+		/// <see cref="IEquationService.Check(Sequence, Role, IDictionary{string, string})"/>
 		public bool Check(Sequence sequence, Role role, IDictionary<string, string> inputs = null)
 		{
 			return Check(sequence, inputs, new Role[] { role });
 		}
 
-		/// <summary>
-		///		Check if sequence can be executed with the provided parameters
-		/// </summary>
-		/// <param name="sequence"></param>
-		/// <param name="inputs"></param>
-		/// <param name="roles"></param>
-		/// <returns></returns>
+		/// <see cref="IEquationService.Check(Sequence, IDictionary{string, string}, IEnumerable{Role})"/>
 		public bool Check(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
@@ -180,13 +198,7 @@ namespace TTRPG.Engine.Equations
 			return sequence.Conditions.All(x => Check(x, mappedInputs));
 		}
 
-		/// <summary>
-		///		Process sequence items and get result
-		/// </summary>
-		/// <param name="sequence"></param>
-		/// <param name="inputs"></param>
-		/// <param name="roles"></param>
-		/// <returns></returns>
+		/// <see cref="IEquationService.Process(Sequence, IDictionary{string, string}, IEnumerable{Role})"/>
 		public SequenceResult Process(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
 			var sArgs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
