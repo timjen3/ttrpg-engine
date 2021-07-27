@@ -1,0 +1,14 @@
+[
+    {
+        "Name": "Potions",
+        "Equation": "{potions}",
+        "ResultName": "potions",
+        "SequenceItemEquationType": "Message"
+    },
+    {
+        "Name": "HitPoints",
+        "Equation": "{HP} / {MAX_HP}",
+        "ResultName": "hit_points",
+        "SequenceItemEquationType": "Message"
+    }
+]

@@ -27,6 +27,8 @@ Equations work in different ways depending on the value of SequenceItemEquationT
 
 2. Message: The Equation property contains a format string to be populated with variables. For instance `{damage} damage was dealt to the target.`
 
+A single sequence item can be processed with the equation service without being part of a sequence along with 0 or 1 Role, and 0 or 1 input collection. Since there is no mapping, all of the role's attributes will be available for equations.
+
 #### Custom Functions
 
 When using the AddTTRPGEngineServices ServiceCollection extension method, several custom functions will be available to equations for ease of use. This is a list of available custom functions:

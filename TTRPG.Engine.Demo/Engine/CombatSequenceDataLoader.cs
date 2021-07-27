@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Demo.Engine
@@ -33,14 +34,18 @@ namespace TTRPG.Engine.Demo.Engine
 		{
 			var gameObject = new GameObject();
 			var sequences = ReadFromJsonFile<IEnumerable<Sequence>>("DataFiles/sequences.json");
-			gameObject.UsePotionSequence = sequences.FirstOrDefault(x => x.Name == "UsePotion");
-			gameObject.AttackSequence = sequences.FirstOrDefault(x => x.Name == "Attack");
-			gameObject.CheckIsDead = sequences.FirstOrDefault(x => x.Name == "CheckIsDead");
+			gameObject.UsePotionSequence = sequences.Single(x => x.Name == "UsePotion");
+			gameObject.AttackSequence = sequences.Single(x => x.Name == "Attack");
+			gameObject.CheckIsDead = sequences.Single(x => x.Name == "CheckIsDead");
+			gameObject.MissingHalfHP = sequences.Single(x => x.Name == "MissingHalfHP");
 			var roles = ReadFromJsonFile<IEnumerable<Role>>("DataFiles/roles.json");
 			gameObject.Roles = roles.ToList();
-			gameObject.Player = roles.FirstOrDefault(x => x.Name == "Player");
+			gameObject.Player = roles.Single(x => x.Name == "Player");
 			gameObject.Targets = roles.Where(x => x.Categories.Contains("Entity") && x.Categories.Contains("Enemy")).ToList();
-			gameObject.Target = gameObject.Targets?.FirstOrDefault();
+			gameObject.Target = gameObject.Targets.FirstOrDefault();
+			var sequenceItems = ReadFromJsonFile<IEnumerable<SequenceItem>>("DataFiles/sequence_items.json");
+			gameObject.HitPoints = sequenceItems.Single(x => x.Name == "HitPoints");
+			gameObject.Potions = sequenceItems.Single(x => x.Name == "Potions");
 
 			return gameObject;
 		}
@@ -54,6 +59,8 @@ namespace TTRPG.Engine.Demo.Engine
 
 		public Sequence CheckIsDead { get; set; }
 
+		public Sequence MissingHalfHP { get; set; }
+
 		public Role Player { get; set; }
 
 		public List<Role> Roles { get; set; }
@@ -61,6 +68,10 @@ namespace TTRPG.Engine.Demo.Engine
 		public List<Role> Targets { get; set; }
 
 		public Role Target { get; set; }
+
+		public SequenceItem HitPoints { get; set; }
+
+		public SequenceItem Potions { get; set; }
 
 		public void SetTarget(string name)
 		{

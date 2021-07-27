@@ -62,8 +62,8 @@ namespace TTRPG.Engine.Demo.Engine
 			var liveTargets = Repo.Targets.Where(x => !_equationService.Check(Repo.CheckIsDead, x));
 			foreach (var target in liveTargets)
 			{
-				bool missingHalfHp = int.Parse(target.Attributes["HP"]) < int.Parse(target.Attributes["MAX_HP"]) / 2;
-				if (missingHalfHp && _equationService.Check(Repo.UsePotionSequence, target) && Gen.Next(3) == 1)
+				if (_equationService.Check(Repo.MissingHalfHP, target)
+					&& _equationService.Check(Repo.UsePotionSequence, target) && Gen.Next(3) == 1)
 				{
 					UsePotion(target);
 				}
@@ -82,13 +82,13 @@ namespace TTRPG.Engine.Demo.Engine
 			Repo = _loader.Load();
 		}
 
-		public string PlayerPotions => Repo.Player.Attributes["Potions"];
+		public string PlayerPotions => _equationService.Process(Repo.Potions, Repo.Player).Result;
 
-		public string PlayerHPStatus => $"{Repo.Player.Attributes["HP"]} / {Repo.Player.Attributes["MAX_HP"]}";
+		public string PlayerHPStatus => _equationService.Process(Repo.HitPoints, Repo.Player).Result;
 
-		public string ComputerPotions => Repo.Target.Attributes["Potions"];
+		public string ComputerPotions => _equationService.Process(Repo.Potions, Repo.Target).Result;
 
-		public string ComputerHPStatus => $"{Repo.Target.Attributes["HP"]} / {Repo.Target.Attributes["MAX_HP"]}";
+		public string ComputerHPStatus => _equationService.Process(Repo.HitPoints, Repo.Target).Result;
 
 		public void NewGame()
 		{
@@ -107,18 +107,14 @@ namespace TTRPG.Engine.Demo.Engine
 			return _equationService.Check(sequence, null, roles);
 		}
 
-		public bool CheckPlayerUsePotion() =>
-			_equationService.Check(Repo.UsePotionSequence, Repo.Player);
+		public bool CheckPlayerUsePotion() => _equationService.Check(Repo.UsePotionSequence, Repo.Player);
 
 		public void SetTarget(string name)
 		{
 			Repo.SetTarget(name);
 		}
 
-		public IEnumerable<string> ListTargetNames()
-		{
-			return Repo.Targets.Select(x => x.Name);
-		}
+		public IEnumerable<string> ListTargetNames() => Repo.Targets.Select(x => x.Name);
 
 		public void PlayerAttack()
 		{

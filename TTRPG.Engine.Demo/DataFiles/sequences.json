@@ -221,7 +221,7 @@
                 "Name": "HP",
                 "Category": "UpdateAttribute",
                 "Source": "new_hp",
-                "RoleName":  "defender"
+                "RoleName": "defender"
             }
         ]
     },
@@ -349,6 +349,36 @@
             {
                 "From": "hp",
                 "To": "hp",
+                "ItemName": null,
+                "RoleName": null,
+                "MappingType": "Role",
+                "ThrowOnFailure": true
+            }
+        ]
+    },
+    {
+        "Name": "MissingHalfHP",
+        "Conditions": [
+            {
+                "DependentOnItem": null,
+                "Equation": "hp <= max_hp / 2",
+                "ItemNames": null,
+                "ThrowOnFail": false,
+                "FailureMessage": null
+            }
+        ],
+        "Mappings": [
+            {
+                "From": "hp",
+                "To": "hp",
+                "ItemName": null,
+                "RoleName": null,
+                "MappingType": "Role",
+                "ThrowOnFailure": true
+            },
+            {
+                "From": "max_hp",
+                "To": "max_hp",
                 "ItemName": null,
                 "RoleName": null,
                 "MappingType": "Role",
