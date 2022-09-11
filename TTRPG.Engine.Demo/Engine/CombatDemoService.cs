@@ -13,8 +13,7 @@ namespace TTRPG.Engine.Demo.Engine
 
 		private readonly Action<string> _writeMessage;
 		private readonly IEquationService _equationService;
-		private readonly CombatSequenceDataLoader _loader;
-		GameObject Repo;
+		public GameObject Data { get; }
 
 		/// output any messages found in results
 		private void HandleResultItems(SequenceResult result)
@@ -31,7 +30,7 @@ namespace TTRPG.Engine.Demo.Engine
 			{
 				if (itemResult.Category == "UpdateAttribute")
 				{
-					var role = Repo.Roles.Single(x => x.Name == itemResult.Role.Name);
+					var role = Data.Roles.Single(x => x.Name == itemResult.Role.Name);
 					role.Attributes[itemResult.Name] = itemResult.Result;
 				}
 			}
@@ -39,13 +38,13 @@ namespace TTRPG.Engine.Demo.Engine
 
 		private void UsePotion(Role target)
 		{
-			var results = _equationService.Process(Repo.UsePotionSequence, null, new Role[] { target });
+			var results = _equationService.Process(Data.UsePotionSequence, null, new Role[] { target });
 			HandleResultItems(results);
 		}
 
 		private void Attack(Role attacker, Role defender)
 		{
-			var sequence = Repo.AttackSequence;
+			var sequence = Data.AttackSequence;
 			var roles = new List<Role>
 			{
 				attacker.CloneAs("attacker"),
@@ -59,76 +58,70 @@ namespace TTRPG.Engine.Demo.Engine
 		/// occassionally heal when wounded, otherwise attack
 		private void AiDecision()
 		{
-			var liveTargets = Repo.Targets.Where(x => !_equationService.Check(Repo.CheckIsDead, x));
+			var liveTargets = Data.Targets.Where(x => !_equationService.Check(Data.CheckIsDead, x));
 			foreach (var target in liveTargets)
 			{
-				if (_equationService.Check(Repo.MissingHalfHP, target)
-					&& _equationService.Check(Repo.UsePotionSequence, target) && Gen.Next(3) == 1)
+				if (_equationService.Check(Data.MissingHalfHP, target)
+					&& _equationService.Check(Data.UsePotionSequence, target) && Gen.Next(3) == 1)
 				{
 					UsePotion(target);
 				}
 				else
 				{
-					Attack(target, Repo.Player);
+					Attack(target, Data.Player);
 				}
 			}
 		}
 
-		public CombatDemoService(Action<string> writeMessage, IEquationService equationService, CombatSequenceDataLoader loader)
+		public CombatDemoService(Action<string> writeMessage, IEquationService equationService, GameObject gameObject)
 		{
 			_writeMessage = writeMessage;
 			_equationService = equationService;
-			_loader = loader;
-			Repo = _loader.Load();
+			Data = gameObject;
 		}
 
-		public string PlayerPotions => _equationService.Process(Repo.Potions, Repo.Player).Result;
+		public string PlayerPotions => _equationService.Process(Data.Potions, Data.Player).Result;
 
-		public string PlayerHPStatus => _equationService.Process(Repo.HitPoints, Repo.Player).Result;
+		public string PlayerHPStatus => _equationService.Process(Data.HitPoints, Data.Player).Result;
 
-		public string ComputerPotions => _equationService.Process(Repo.Potions, Repo.Target).Result;
+		public string ComputerPotions => _equationService.Process(Data.Potions, Data.Target).Result;
 
-		public string ComputerHPStatus => _equationService.Process(Repo.HitPoints, Repo.Target).Result;
-
-		public void NewGame()
-		{
-			Repo = _loader.Load();
-		}
+		public string ComputerHPStatus => _equationService.Process(Data.HitPoints, Data.Target).Result;
 
 		public bool CheckPlayerAttack()
 		{
-			var sequence = Repo.AttackSequence;
+			var sequence = Data.AttackSequence;
 			var roles = new List<Role>
 			{
-				Repo.Player.CloneAs("attacker"),
-				Repo.Target.CloneAs("defender")
+				Data.Player.CloneAs("attacker"),
+				Data.Target.CloneAs("defender")
 			};
 
 			return _equationService.Check(sequence, null, roles);
 		}
 
-		public bool CheckPlayerUsePotion() => _equationService.Check(Repo.UsePotionSequence, Repo.Player);
+		public bool CheckPlayerUsePotion() => _equationService.Check(Data.UsePotionSequence, Data.Player);
 
 		public void SetTarget(string name)
 		{
-			Repo.SetTarget(name);
+			Data.SetTarget(name);
 		}
 
-		public IEnumerable<string> ListTargetNames() => Repo.Targets.Select(x => x.Name);
+		public IEnumerable<string> ListTargetNames() => Data.Targets.Select(x => x.Name);
 
 		public void PlayerAttack()
 		{
-			Attack(Repo.Player, Repo.Target);
+			Attack(Data.Player, Data.Target);
 			AiDecision();
 		}
 
 		public void PlayerUsePotion()
 		{
-			UsePotion(Repo.Player);
+			UsePotion(Data.Player);
 			AiDecision();
 		}
 
-		public bool IsGameOver() => _equationService.Check(Repo.CheckIsDead, Repo.Player)
-										|| Repo.Targets.All(x => _equationService.Check(Repo.CheckIsDead, x));
+		public bool IsGameOver() => _equationService.Check(Data.CheckIsDead, Data.Player)
+										|| Data.Targets.All(x => _equationService.Check(Data.CheckIsDead, x));
 	}
 }

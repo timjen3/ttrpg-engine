@@ -19,9 +19,9 @@ namespace TTRPG.Engine.Demo2
 			btn_NewGame.Visible = true;
 		}
 
-		public CombatDemoForm(IEquationService equationService, CombatSequenceDataLoader loader)
+		public CombatDemoForm(IEquationService equationService, GameObject gameObject)
 		{
-			_demo = new CombatDemoService(WriteMessage, equationService, loader);
+			_demo = new CombatDemoService(WriteMessage, equationService, gameObject);
 			InitializeComponent();
 			foreach (var target in _demo.ListTargetNames())
 			{
@@ -59,7 +59,7 @@ namespace TTRPG.Engine.Demo2
 		private void btn_NewGame_Click(object sender, EventArgs e)
 		{
 			txtBox_MessageLog.Clear();
-			_demo.NewGame();
+			_demo.Data.NewGame();
 			btn_NewGame.Visible = false;
 			UpdateState();
 		}
