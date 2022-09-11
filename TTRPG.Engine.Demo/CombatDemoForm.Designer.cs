@@ -206,6 +206,7 @@ namespace TTRPG.Engine.Demo2
 			this.list_Targets.Size = new System.Drawing.Size(414, 124);
 			this.list_Targets.TabIndex = 6;
 			this.list_Targets.SelectedIndexChanged += new System.EventHandler(this.list_Targets_SelectedIndexChanged);
+			this.list_Targets.DoubleClick += new System.EventHandler(this.list_Targets_DoubleClick);
 			// 
 			// label1
 			// 

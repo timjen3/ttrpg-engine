@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
+using TTRPG.Engine.Demo;
 using TTRPG.Engine.Demo.Engine;
 using TTRPG.Engine.Equations;
 
@@ -71,6 +73,16 @@ namespace TTRPG.Engine.Demo2
 			{
 				_demo.SetTarget(targetName);
 				UpdateState();
+			}
+		}
+
+		private void list_Targets_DoubleClick(object sender, EventArgs e)
+		{
+			var targetName = list_Targets.SelectedItem?.ToString();
+			if (!string.IsNullOrWhiteSpace(targetName))
+			{
+				var target = _demo.Data.Targets.FirstOrDefault(x => x.Name == targetName);
+				new AttributesForm(target).Show();
 			}
 		}
 	}
