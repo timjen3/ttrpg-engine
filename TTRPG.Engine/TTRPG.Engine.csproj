@@ -5,7 +5,7 @@
 
     <IsPackable>true</IsPackable>
 
-    <Version>0.5.7</Version>
+    <Version>0.5.8</Version>
 
     <Authors>Timothy Jannace</Authors>
 
@@ -34,8 +34,9 @@ https://github.com/timjen3/ttrpg-engine/blob/main/Readme.md</Description>
 
   <ItemGroup>
     <PackageReference Include="FormatWith" Version="3.0.1" />
-    <PackageReference Include="MathParser.org-mXparser" Version="4.4.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+    <PackageReference Include="MathParser.org-mXparser" Version="5.0.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.28" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
     <ItemGroup>

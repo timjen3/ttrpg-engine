@@ -26,18 +26,16 @@ namespace TTRPG.Engine.Demo2
 		{
 			var collection = new ServiceCollection();
 			collection.AddTTRPGEngineServices();
-			collection.AddSingleton(p =>
-				new TtrpgEngineDataOptions
+			collection.AddTTRPGEngineDataLayer(new TTRPGEngineDataOptions
+			{
+				StorageType = DataStorageType.JsonFile,
+				JsonFileStorageOptions = new JsonFileStorageOptions
 				{
-					StorageType = DataStorageType.JsonFile,
-					JsonFileStorageOptions = new JsonFileStorageOptions
-					{
-						RolesFileName = "DataFiles/roles.json",
-						SequencesFileName = "DataFiles/sequences.json",
-						SequenceItemsFileName = "DataFiles/sequence_items.json"
-					}
-				});
-			collection.AddScoped<ITTRPGDataRepository, JsonTTRPGDataRepository>();
+					RolesFileName = "DataFiles/roles.json",
+					SequencesFileName = "DataFiles/sequences.json",
+					SequenceItemsFileName = "DataFiles/sequence_items.json"
+				}
+			});
 			collection.AddScoped<GameObject>();
 			var provider = collection.BuildServiceProvider();
 			var equationService = provider.GetRequiredService<IEquationService>();
