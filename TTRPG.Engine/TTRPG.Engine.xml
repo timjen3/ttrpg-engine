@@ -153,6 +153,14 @@
             <param name="services"></param>
             <returns></returns>
         </member>
+        <member name="M:TTRPG.Engine.IServiceCollectionExtensions.AddTTRPGEngineDataLayer(Microsoft.Extensions.DependencyInjection.IServiceCollection,TTRPG.Engine.Data.TTRPGEngineDataOptions)">
+            <summary>
+            	Adds data layer to services
+            </summary>
+            <param name="services"></param>
+            <param name="options"></param>
+            <returns></returns>
+        </member>
         <member name="T:TTRPG.Engine.Mapping">
             <summary>
             	Renames input variables according to mappings before using them in conditions or sequence item equations.

@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTRPG.Engine.Demo", "TTRPG.Engine.Demo\TTRPG.Engine.Demo.csproj", "{9AB253A3-F7DA-4DAD-8F8E-8CB4D0F62C3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TTRPG.Engine.Data", "TTRPG.Engine.Data\TTRPG.Engine.Data.csproj", "{3519B473-4E44-475E-B434-61FA6E68C93E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,10 +36,6 @@ Global
 		{9AB253A3-F7DA-4DAD-8F8E-8CB4D0F62C3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AB253A3-F7DA-4DAD-8F8E-8CB4D0F62C3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AB253A3-F7DA-4DAD-8F8E-8CB4D0F62C3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3519B473-4E44-475E-B434-61FA6E68C93E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3519B473-4E44-475E-B434-61FA6E68C93E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3519B473-4E44-475E-B434-61FA6E68C93E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3519B473-4E44-475E-B434-61FA6E68C93E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -49,7 +43,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{59D7B771-EA35-4E41-9366-022E594456D3} = {80669FDE-ADF5-44BC-9D45-43D4355C203B}
 		{8A975BCD-79C3-4004-81F5-88DE7AA1D073} = {80669FDE-ADF5-44BC-9D45-43D4355C203B}
-		{3519B473-4E44-475E-B434-61FA6E68C93E} = {80669FDE-ADF5-44BC-9D45-43D4355C203B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CB8530F0-4631-460F-84A4-D9F70FF2A67C}
