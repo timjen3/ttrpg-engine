@@ -49,6 +49,9 @@
         <member name="M:TTRPG.Engine.Equations.EquationService.GetSourceMappingData(TTRPG.Engine.Mapping,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
             Returns source data depending on MappingType
         </member>
+        <member name="M:TTRPG.Engine.Equations.EquationService.CheckRoleConditions(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+            Checks role conditions against provided roles
+        </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.#ctor(TTRPG.Engine.Equations.IEquationResolver)">
             EquationService Constructor
         </member>
