@@ -56,6 +56,20 @@ namespace TTRPG.Engine.Equations
 			return source ?? new Dictionary<string, string>();
 		}
 
+		/// Checks role conditions against provided roles
+		bool CheckRoleConditions(Sequence sequence, IEnumerable<Role> roles)
+		{
+			var roleConditionsMet = sequence.RoleConditions == null || sequence.RoleConditions.All(condition =>
+			{
+				var target = roles?.FirstOrDefault(role => role?.Name.Equals(condition.RoleName) ?? false);
+				if (target == null) return false;
+
+				return condition.RequiredCategories.All(x => target.Categories.Contains(x, StringComparer.OrdinalIgnoreCase));
+			});
+
+			return roleConditionsMet;
+		}
+
 		/// EquationService Constructor
 		public EquationService(IEquationResolver equationResolver)
 		{
@@ -191,6 +205,8 @@ namespace TTRPG.Engine.Equations
 		/// <see cref="IEquationService.Check(Sequence, IDictionary{string, string}, IEnumerable{Role})"/>
 		public bool Check(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
+			if (!CheckRoleConditions(sequence, roles)) return false;
+
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var mappedInputs = new Dictionary<string, string>(inputs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
 			sequence.Mappings.ForEach(x => Apply(x, null, ref mappedInputs, roles));
@@ -204,6 +220,10 @@ namespace TTRPG.Engine.Equations
 			var sArgs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var result = new SequenceResult();
 			result.Sequence = sequence;
+			if (!CheckRoleConditions(sequence, roles))
+			{
+				throw new RoleConditionFailedException("Role conditions not met for this sequence!");
+			}
 			for (int order = 0; order < sequence.Items.Count; order++)
 			{
 				var item = sequence.Items[order];

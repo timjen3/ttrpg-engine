@@ -13,6 +13,8 @@ namespace TTRPG.Engine.Sequences
 
 		public List<Condition> Conditions { get; set; } = new List<Condition>();
 
+		public List<RoleCondition> RoleConditions { get; set; } = new List<RoleCondition>();
+
 		public List<Mapping> Mappings { get; set; } = new List<Mapping>();
 	}
 }

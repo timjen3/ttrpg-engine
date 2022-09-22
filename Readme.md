@@ -54,6 +54,10 @@ If a sequence item relies on the results from a previous sequence item it should
 
 When a condition does not specify sequence items to apply to it will be considered a Sequence-level condition. When a Sequence is checked these conditions will be evaluated to determine if the sequence is suitable to be processed with the provided parameters.
 
+### Role Conditions
+
+Sequences may define 0+ requirements for roles. These are always applied to the sequence as a whole. Trying to process a sequence with invalid roles will result in a RoleConditionFailedException being thrown.
+
 ### Mappings
 
 Mappings can be added for items in the sequence. Mappings add aliases to input variable names (or result names from previous SequenceItems) for a specified item.
