@@ -110,6 +110,58 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
+		public void Check_MultipleRolesWithValidOne_ReturnsTrue()
+		{
+			int resolverResult = 1;
+			var resolver = MockEquationService(resolverResult);
+			var role1 = new Role();
+			role1.Name = "a";
+			role1.Categories.Add("c1");
+			var role2 = new Role();
+			role2.Name = "b";
+			role2.Categories.Add("c2");
+			var sequence = new Sequence();
+			sequence.RoleConditions.Add(new RoleCondition
+			{
+				RoleName = "a",
+				RequiredCategories = new List<string>
+				{
+					"c1"
+				}
+			});
+
+			bool result = resolver.Check(sequence, null, new List<Role> { role1, role2 });
+
+			Assert.IsTrue(result);
+		}
+
+		[Test]
+		public void Check_MultipleRolesNoneValid_ReturnsFalse()
+		{
+			int resolverResult = 1;
+			var resolver = MockEquationService(resolverResult);
+			var role1 = new Role();
+			role1.Name = "b";
+			role1.Categories.Add("c1");
+			var role2 = new Role();
+			role2.Name = "c";
+			role2.Categories.Add("c2");
+			var sequence = new Sequence();
+			sequence.RoleConditions.Add(new RoleCondition
+			{
+				RoleName = "a",
+				RequiredCategories = new List<string>
+				{
+					"c1"
+				}
+			});
+
+			bool result = resolver.Check(sequence, null, new List<Role> { role1, role2 });
+
+			Assert.IsFalse(result);
+		}
+
+		[Test]
 		public void Process_MissingRoleRequirement_ThrowsException()
 		{
 			int resolverResult = 1;
