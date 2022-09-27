@@ -154,6 +154,10 @@ namespace TTRPG.Engine.Equations
 				var result = new SequenceResultItem();
 				result.Name = item.Name;
 				result.Category = item.Category;
+				if (!string.IsNullOrWhiteSpace(item.FormatMessage))
+				{
+					result.FormatMessage = item.FormatMessage.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
+				}
 				if (inputs.TryGetValue(item.Source, out string value))
 				{
 					result.Result = value;
