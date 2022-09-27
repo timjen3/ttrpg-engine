@@ -1,0 +1,68 @@
+[
+	{
+		"Name": "Bandit 1",
+		"Attributes": {
+			"Name": "Bandit 1",
+			"MAX_HP": "25",
+			"HP": "25",
+			"Str": "18",
+			"Dex": "13",
+			"Ac": "2",
+			"Con": "20",
+			"Potions": "2"
+		},
+		"Categories": [
+			"Entity",
+			"Enemy"
+		],
+		"InventoryItems": {
+			"Weapon": {
+				"Name": "Crude Sword",
+				"Attributes": {
+					"Name": "Crude Sword",
+					"Action": "swings sword wildly",
+					"Hits": "1",
+					"Min": "1",
+					"Max": "8"
+				},
+				"Categories": [
+					"Inventory",
+					"Weapon"
+				]
+			}
+		}
+	},
+	{
+		"Name": "Bandit 2",
+		"Attributes": {
+			"Name": "Bandit 2",
+			"MAX_HP": "25",
+			"HP": "25",
+			"Str": "18",
+			"Dex": "13",
+			"Ac": "2",
+			"Con": "20",
+			"Potions": "2"
+		},
+		"Categories": [
+			"Entity",
+			"Enemy"
+		],
+		"InventoryItems": {
+			"Weapon": {
+				"Name": "Crude Sword",
+				"Attributes": {
+					"Name": "Crude Sword",
+					"Action": "swings sword wildly",
+					"Hits": "1",
+					"Min": "1",
+					"Max": "8"
+				},
+				"Categories": [
+					"Inventory",
+					"Weapon"
+				]
+			}
+		}
+	}
+]

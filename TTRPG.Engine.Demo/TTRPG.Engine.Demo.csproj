@@ -9,16 +9,16 @@
 
   <ItemGroup>
     <None Remove="DataFiles\roles.json" />
-    <None Remove="DataFiles\Roles\player.json" />
+    <None Remove="DataFiles\Roles\enemies.json" />
     <None Remove="DataFiles\sequences.json" />
     <None Remove="DataFiles\sequence_items.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="DataFiles\Roles\player.json">
+    <EmbeddedResource Include="DataFiles\Roles\enemies.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataFiles\Roles\friends.json">
+    <EmbeddedResource Include="DataFiles\Roles\player.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="DataFiles\Sequences\sequences.json">
