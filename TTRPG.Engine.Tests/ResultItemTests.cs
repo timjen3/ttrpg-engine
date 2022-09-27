@@ -100,5 +100,63 @@ namespace TTRPG.Engine.Tests
 			Assert.That(resultItems, Has.Count.EqualTo(1));
 			Assert.AreSame(Roles[0], resultItems[0].Role);
 		}
+
+		// Format Messages
+		[Test]
+		public void ProcessResults_ValidFormatMessage_FormatMessageIsSet()
+		{
+			var testValue = "something";
+			var item = new ResultItem();
+			item.Name = "a";
+			item.Category = "b";
+			item.Source = "c";
+			item.FirstRole = true;
+			item.FormatMessage = "{d}";
+			Inputs["c"] = "1";
+			Inputs["d"] = testValue;
+			item.RoleName = null;
+			Roles.Add(new Role("e", null, null));
+
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+
+			Assert.That(resultItems, Has.Count.EqualTo(1));
+			Assert.AreEqual(testValue, resultItems[0].FormatMessage);
+		}
+
+		[Test]
+		public void ProcessResults_UnknownFormatMessageKey_FormatMessageIsSet()
+		{
+			var testValue = "something";
+			var item = new ResultItem();
+			item.Name = "a";
+			item.Category = "b";
+			item.Source = "c";
+			item.FirstRole = true;
+			item.FormatMessage = "{d}";
+			item.RoleName = null;
+			Roles.Add(new Role("e", null, null));
+
+			Assert.Throws<KeyNotFoundException>(() => EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles));
+		}
+
+		[Test]
+		public void ProcessResults_PlainFormatMessage_FormatMessageIsSet()
+		{
+			var testValue = "something";
+			var item = new ResultItem();
+			item.Name = "a";
+			item.Category = "b";
+			item.Source = "c";
+			item.FirstRole = true;
+			item.FormatMessage = testValue;
+			Inputs["c"] = "1";
+			item.RoleName = null;
+			Roles.Add(new Role("e", null, null));
+
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+
+			Assert.That(resultItems, Has.Count.EqualTo(1));
+			Assert.AreEqual(testValue, resultItems[0].FormatMessage);
+		}
 	}
 }

@@ -5,6 +5,7 @@
 		public string Name { get; set; }
 		public string Category { get; set; }
 		public string Result { get; set; }
+		public string FormatMessage { get; set; }
 		public Role Role { get; set; }
 	}
 }

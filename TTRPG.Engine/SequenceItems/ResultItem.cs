@@ -12,5 +12,7 @@
 		public string RoleName { get; set; }
 
 		public bool FirstRole { get; set; }
+
+		public string FormatMessage { get; set; }
 	}
 }
