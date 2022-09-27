@@ -82,6 +82,8 @@ If a RoleName is set the passed role with that Alias will be attached.
 
 If FirstRole is true, then the first role passed will be attached.
 
+A FormatMessage can be set which can be a plain string (ex: `"something"`) or a format string (ex: `"{propa}"`). Format strings will have access to all inputs, all results, and any mappings that do not have ItemNames specified.
+
 ## Exceptions
 
     ConditionFailedException
