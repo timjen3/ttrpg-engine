@@ -222,6 +222,7 @@ namespace TTRPG.Engine.Equations
 		public SequenceResult Process(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
 			var sArgs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
+			sequence.Mappings.Where(x => string.IsNullOrWhiteSpace(x.ItemName)).ToList().ForEach(x => Apply(x, null, ref sArgs, roles));  // apply global mappings to all inputs
 			var result = new SequenceResult();
 			result.Sequence = sequence;
 			if (!CheckRoleConditions(sequence, roles))
@@ -232,7 +233,7 @@ namespace TTRPG.Engine.Equations
 			{
 				var item = sequence.Items[order];
 				var mappedInputs = new Dictionary<string, string>(sArgs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
-				sequence.Mappings.ForEach(x => Apply(x, item.Name, ref mappedInputs, roles));
+				sequence.Mappings.Where(x => !string.IsNullOrWhiteSpace(x.ItemName)).ToList().ForEach(x => Apply(x, item.Name, ref mappedInputs, roles));
 				if (!sequence.Conditions.All(x => Check(x, item.Name, mappedInputs, result))) continue;
 				var itemResult = GetResult(item, order, ref sArgs, mappedInputs);
 				result.Results.Add(itemResult);
