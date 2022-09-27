@@ -31,9 +31,9 @@ namespace TTRPG.Engine.Demo2
 				StorageType = DataStorageType.JsonFile,
 				JsonFileStorageOptions = new JsonFileStorageOptions
 				{
-					RolesFileName = "DataFiles/roles.json",
-					SequencesFileName = "DataFiles/sequences.json",
-					SequenceItemsFileName = "DataFiles/sequence_items.json"
+					RolesFileDirectory = "DataFiles/Roles",
+					SequencesFileDirectory = "DataFiles/Sequences",
+					SequenceItemsFileDirectory = "DataFiles/SequenceItems"
 				}
 			});
 			collection.AddScoped<GameObject>();
