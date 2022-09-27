@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
@@ -21,8 +23,9 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 		{
 			if (_roles == null)
 			{
-				var filename = _options.JsonFileStorageOptions.RolesFileName;
-				_roles = JsonFileReader.ReadFile<List<Role>>(filename);
+				_roles = Directory.GetFiles(_options.JsonFileStorageOptions.RolesFileDirectory)
+					.SelectMany(filename => JsonFileReader.ReadFile<List<Role>>(filename))
+					.ToList();
 			}
 
 			return Task.FromResult(_roles);
@@ -32,8 +35,9 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 		{
 			if (_sequenceItems == null)
 			{
-				var filename = _options.JsonFileStorageOptions.SequenceItemsFileName;
-				_sequenceItems = JsonFileReader.ReadFile<List<SequenceItem>>(filename);
+				_sequenceItems = Directory.GetFiles(_options.JsonFileStorageOptions.SequenceItemsFileDirectory)
+					.SelectMany(filename => JsonFileReader.ReadFile<List<SequenceItem>>(filename))
+					.ToList();
 			}
 
 			return Task.FromResult(_sequenceItems);
@@ -43,8 +47,9 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 		{
 			if (_sequences == null)
 			{
-				var filename = _options.JsonFileStorageOptions.SequencesFileName;
-				_sequences = JsonFileReader.ReadFile<List<Sequence>>(filename);
+				_sequences = Directory.GetFiles(_options.JsonFileStorageOptions.SequencesFileDirectory)
+					.SelectMany(filename => JsonFileReader.ReadFile<List<Sequence>>(filename))
+					.ToList();
 			}
 
 			return Task.FromResult(_sequences);

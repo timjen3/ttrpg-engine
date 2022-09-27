@@ -11,11 +11,11 @@ namespace TTRPG.Engine.Data
 
 	public class JsonFileStorageOptions
 	{
-		public string SequencesFileName { get; set; }
+		public string SequencesFileDirectory { get; set; }
 
-		public string SequenceItemsFileName { get; set; }
+		public string SequenceItemsFileDirectory { get; set; }
 
-		public string RolesFileName { get; set; }
+		public string RolesFileDirectory { get; set; }
 	}
 
 	public class TTRPGEngineDataOptions
