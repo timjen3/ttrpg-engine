@@ -1,0 +1,36 @@
+[
+	{
+		"Name": "Miner",
+		"Attributes": {
+			"Name": "Player",
+			"max_stamina": "20",
+			"stamina": "20",
+			"str": "18",
+			"dirt": "0",
+			"stone": "0",
+			"obsidian": "0",
+			"meat": "0"
+		},
+		"Categories": [
+			"Entity",
+			"PlayerControlled"
+		],
+		"InventoryItems": {
+			"Pick": {
+				"Name": "Shovel",
+				"Attributes": {
+					"Name": "Shovel",
+					"Action": "digs",
+					"Hits": "1",
+					"Min": "1",
+					"Max": "6",
+					"Pierce": "1"
+				},
+				"Categories": [
+					"Inventory",
+					"Tool"
+				]
+			}
+		}
+	}
+]

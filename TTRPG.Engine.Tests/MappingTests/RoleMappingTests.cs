@@ -152,5 +152,37 @@ namespace TTRPG.Engine.Tests
 			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
 			Assert.That(ex.Message, Is.EqualTo("Mapping failed due to no roles being passed."));
 		}
+
+		[Test]
+		public void Apply_FromFormatStringFromRole()
+		{
+			mapping.From = "{rename}";
+			mapping.To = "b";
+			mapping.ItemName = null;
+			mapping.ThrowOnFailure = true;
+			role.Attributes["rename"] = "a";
+			role.Attributes["a"] = "1";
+
+			service.Apply(mapping, "anything", ref inputs, roles);
+
+			Assert.That(inputs, Contains.Key("b"));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
+		}
+
+		[Test]
+		public void Apply_ToFormatStringFromRole()
+		{
+			mapping.From = "a";
+			mapping.To = "{rename}";
+			mapping.ItemName = null;
+			mapping.ThrowOnFailure = true;
+			role.Attributes["rename"] = "b";
+			role.Attributes["a"] = "1";
+
+			service.Apply(mapping, "anything", ref inputs, roles);
+
+			Assert.That(inputs, Contains.Key("b"));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
+		}
 	}
 }

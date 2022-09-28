@@ -114,8 +114,9 @@ namespace TTRPG.Engine.Equations
 			if (string.IsNullOrWhiteSpace(mapping.ItemName) || string.Equals(itemName, mapping.ItemName, StringComparison.OrdinalIgnoreCase))
 			{
 				var source = GetSourceMappingData(mapping, inputs, roles);
-				var mapTo = mapping.To.FormatWith(source);
-				var mapFrom = mapping.From.FormatWith(source);
+				var mapFormatSource = source.Union(inputs).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);  // always use inputs for the formatter
+				var mapTo = mapping.To.FormatWith(mapFormatSource);
+				var mapFrom = mapping.From.FormatWith(mapFormatSource);
 				inputs[mapTo] = "0";
 				if (source.ContainsKey(mapFrom))
 				{

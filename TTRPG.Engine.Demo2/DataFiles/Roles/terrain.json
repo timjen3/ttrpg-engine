@@ -1,0 +1,171 @@
+[
+	{
+		"Name": "DirtBlock1",
+		"Attributes": {
+			"MAX_HP": "20",
+			"HP": "20",
+			"AC": "0",
+			"Name": "DirtBlock1",
+			"Resource": "dirt"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "DirtBlock2",
+		"Attributes": {
+			"MAX_HP": "30",
+			"HP": "30",
+			"AC": "0",
+			"Name": "DirtBlock2",
+			"Resource": "dirt"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "DirtBlock3",
+		"Attributes": {
+			"MAX_HP": "12",
+			"HP": "12",
+			"AC": "0",
+			"Name": "DirtBlock3",
+			"Resource": "dirt"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "DirtBlock4",
+		"Attributes": {
+			"MAX_HP": "20",
+			"HP": "20",
+			"AC": "0",
+			"Name": "DirtBlock4",
+			"Resource": "dirt"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "DirtBlock5",
+		"Attributes": {
+			"MAX_HP": "20",
+			"HP": "20",
+			"AC": "0",
+			"Name": "DirtBlock5",
+			"Resource": "dirt"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "StoneBlock1",
+		"Attributes": {
+			"MAX_HP": "20",
+			"HP": "20",
+			"AC": "1",
+			"Name": "StoneBlock1",
+			"Resource": "stone"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "StoneBlock2",
+		"Attributes": {
+			"MAX_HP": "20",
+			"HP": "20",
+			"AC": "1",
+			"Name": "StoneBlock2",
+			"Resource": "stone"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "StoneBlock3",
+		"Attributes": {
+			"MAX_HP": "10",
+			"HP": "10",
+			"AC": "1",
+			"Name": "StoneBlock3",
+			"Resource": "stone"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "StoneBlock4",
+		"Attributes": {
+			"MAX_HP": "20",
+			"HP": "20",
+			"AC": "1",
+			"Name": "StoneBlock4",
+			"Resource": "stone"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "StoneBlock5",
+		"Attributes": {
+			"MAX_HP": "20",
+			"HP": "20",
+			"AC": "1",
+			"Name": "StoneBlock5",
+			"Resource": "stone"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "StoneBlock6",
+		"Attributes": {
+			"MAX_HP": "500",
+			"HP": "500",
+			"AC": "1",
+			"Name": "StoneBlock6",
+			"Resource": "stone"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "ObsidianBlock1",
+		"Attributes": {
+			"MAX_HP": "10",
+			"HP": "10",
+			"AC": "2",
+			"Name": "ObsidianBlock1",
+			"Resource": "obsidian"
+		},
+		"Categories": [
+			"Terrain"
+		]
+	},
+	{
+		"Name": "Deer1",
+		"Attributes": {
+			"MAX_HP": "10",
+			"HP": "10",
+			"AC": "0",
+			"Name": "Deer1",
+			"Resource": "meat"
+		},
+		"Categories": [
+			"Animal"
+		]
+	}
+]
