@@ -113,10 +113,10 @@ namespace TTRPG.Engine.Equations
 		{
 			if (string.IsNullOrWhiteSpace(mapping.ItemName) || string.Equals(itemName, mapping.ItemName, StringComparison.OrdinalIgnoreCase))
 			{
-				var mapTo = mapping.To.FormatWith(inputs);
-				var mapFrom = mapping.From.FormatWith(inputs);
-				inputs[mapTo] = "0";
 				var source = GetSourceMappingData(mapping, inputs, roles);
+				var mapTo = mapping.To.FormatWith(source);
+				var mapFrom = mapping.From.FormatWith(source);
+				inputs[mapTo] = "0";
 				if (source.ContainsKey(mapFrom))
 				{
 					inputs[mapTo] = source[mapFrom];
