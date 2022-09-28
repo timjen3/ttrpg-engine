@@ -1,0 +1,55 @@
+[
+	{
+		"Name": "Status",
+		"Items": [
+			{
+				"Name": "Report Status",
+				"Equation": "Stamina: {stamina} | Dirt: {dirt} | Stone: {stone} | Obsidian: {obsidian} | Meat: {meat}",
+				"ResultName": "status_message",
+				"SequenceItemEquationType": "Message"
+			}
+		],
+		"Mappings": [
+			{
+				"From": "stamina",
+				"To": "stamina",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "dirt",
+				"To": "dirt",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "stone",
+				"To": "stone",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "obsidian",
+				"To": "obsidian",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "meat",
+				"To": "meat",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			}
+		]
+	}
+]
