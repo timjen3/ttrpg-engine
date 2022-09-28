@@ -113,11 +113,13 @@ namespace TTRPG.Engine.Equations
 		{
 			if (string.IsNullOrWhiteSpace(mapping.ItemName) || string.Equals(itemName, mapping.ItemName, StringComparison.OrdinalIgnoreCase))
 			{
-				inputs[mapping.To] = "0";
+				var mapTo = mapping.To.FormatWith(inputs);
+				var mapFrom = mapping.From.FormatWith(inputs);
+				inputs[mapTo] = "0";
 				var source = GetSourceMappingData(mapping, inputs, roles);
-				if (source.ContainsKey(mapping.From))
+				if (source.ContainsKey(mapFrom))
 				{
-					inputs[mapping.To] = source[mapping.From];
+					inputs[mapTo] = source[mapFrom];
 				}
 				else if (mapping.ThrowOnFailure) throw new MappingFailedException($"Mapping failed due to missing key: '{mapping.From}'.");
 			}

@@ -99,5 +99,35 @@ namespace TTRPG.Engine.Tests
 
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing key: '{mapping.From}'."));
 		}
+
+		[Test]
+		public void Apply_MappingFromSupportsFormatString()
+		{
+			mapping.From = "{rename}";
+			mapping.To = "b";
+			mapping.ItemName = "a";
+			inputs["rename"] = "a";
+			inputs["a"] = "1";
+
+			equationService.Apply(mapping, "a", ref inputs, null);
+
+			Assert.That(inputs, Contains.Key("b"));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
+		}
+
+		[Test]
+		public void Apply_MappingToSupportsFormatString()
+		{
+			mapping.From = "a";
+			mapping.To = "{rename}";
+			mapping.ItemName = "a";
+			inputs["rename"] = "b";
+			inputs["a"] = "1";
+
+			equationService.Apply(mapping, "a", ref inputs, null);
+
+			Assert.That(inputs, Contains.Key("b"));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
+		}
 	}
 }
