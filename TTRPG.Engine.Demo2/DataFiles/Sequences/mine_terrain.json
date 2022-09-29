@@ -52,7 +52,7 @@
 			},
 			{
 				"Name": "Report Resources Taken",
-				"Equation": "Got resources : {new_quantity}",
+				"Equation": "Got resources : {current_quantity} => {new_quantity}",
 				"ResultName": "ResourcesTakenMsg",
 				"SequenceItemEquationType": "Message"
 			},
@@ -303,6 +303,20 @@
 				"Category": "UpdateAttribute",
 				"Source": "new_stamina",
 				"RoleName": "miner"
+			}
+		],
+		"RoleConditions": [
+			{
+				"RoleName": "Terrain",
+				"RequiredCategories": [
+					"Terrain"
+				]
+			},
+			{
+				"RoleName": "Miner",
+				"RequiredCategories": [
+					"PlayerControlled"
+				]
 			}
 		]
 	}
