@@ -77,13 +77,13 @@ namespace TTRPG.Engine.Equations
 		}
 
 		/// Determine if the condition passes for the sequence
-		internal bool Check(Condition condition, IDictionary<string, string> inputs)
+		internal bool Check(Condition condition, IDictionary<string, string> inputs, ref HashSet<string> failureMessages)
 		{
-			return Check(condition, null, inputs, null);
+			return Check(condition, null, inputs, null, ref failureMessages);
 		}
 
 		/// Determine if the condition passes for a sequence item
-		internal bool Check(Condition condition, string itemName, IDictionary<string, string> inputs, SequenceResult results)
+		internal bool Check(Condition condition, string itemName, IDictionary<string, string> inputs, SequenceResult results, ref HashSet<string> failureMessages)
 		{
 			var valid = true;
 			if (condition.ItemNames == null || condition.ItemNames.Contains(itemName))
@@ -102,6 +102,10 @@ namespace TTRPG.Engine.Equations
 			if (!valid && condition.ThrowOnFail)
 			{
 				throw new ConditionFailedException(condition.FailureMessage ?? Condition.DEFAULT_FAILURE_MESSAGE);
+			}
+			if (!valid && !condition.ThrowOnFail && !string.IsNullOrWhiteSpace(condition.FailureMessage))
+			{
+				failureMessages.Add(condition.FailureMessage);
 			}
 			return valid;
 		}
@@ -149,7 +153,7 @@ namespace TTRPG.Engine.Equations
 		}
 
 		/// Process a sequence item and get the result
-		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Role> roles)
+		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Role> roles, HashSet<string> errorMessages)
 		{
 			var results = new List<SequenceResultItem>();
 			foreach (var item in items)
@@ -217,8 +221,9 @@ namespace TTRPG.Engine.Equations
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var mappedInputs = new Dictionary<string, string>(inputs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
 			sequence.Mappings.ForEach(x => Apply(x, null, ref mappedInputs, roles));
+			var errorMessages = new HashSet<string>();
 
-			return sequence.Conditions.All(x => Check(x, mappedInputs));
+			return sequence.Conditions.All(x => Check(x, mappedInputs, ref errorMessages));
 		}
 
 		/// <see cref="IEquationService.Process(Sequence, IDictionary{string, string}, IEnumerable{Role})"/>
@@ -232,16 +237,24 @@ namespace TTRPG.Engine.Equations
 			{
 				throw new RoleConditionFailedException("Role conditions not met for this sequence!");
 			}
+			var errorMessages = new HashSet<string>();
 			for (int order = 0; order < sequence.Items.Count; order++)
 			{
 				var item = sequence.Items[order];
 				var mappedInputs = new Dictionary<string, string>(sArgs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
 				sequence.Mappings.Where(x => !string.IsNullOrWhiteSpace(x.ItemName)).ToList().ForEach(x => Apply(x, item.Name, ref mappedInputs, roles));
-				if (!sequence.Conditions.All(x => Check(x, item.Name, mappedInputs, result))) continue;
+				if (!sequence.Conditions.All(x => Check(x, item.Name, mappedInputs, result, ref errorMessages))) continue;
 				var itemResult = GetResult(item, order, ref sArgs, mappedInputs);
 				result.Results.Add(itemResult);
 			}
-			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, roles);
+			// generate error messages
+			foreach (var errorMessage in errorMessages)
+			{
+				var errorItem = new SequenceItem(Guid.NewGuid().ToString(), errorMessage, Guid.NewGuid().ToString(), SequenceItemEquationType.Message);
+				var itemResult = GetResult(errorItem, -1, ref sArgs, sArgs);
+				result.Results.Add(itemResult);
+			}
+			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, roles, errorMessages);
 
 			return result;
 		}

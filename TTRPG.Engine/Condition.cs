@@ -49,7 +49,7 @@ namespace TTRPG.Engine
 		/// Whether exception should be thrown when Check fails
 		public bool ThrowOnFail { get; set; }
 
-		/// Custom message for failure if ThrowOnFail is true
+		/// Custom message for failure if ThrowOnFail is true; if ThrowOnFail is false it will be added as a result
 		public string FailureMessage { get; set; }
 	}
 }
