@@ -1,10 +1,11 @@
 [
 	{
 		"Name": "Status",
+		"Example": "Status [miner:miner]",
 		"Items": [
 			{
 				"Name": "Report Status",
-				"Equation": "Stamina: {stamina} | Dirt: {dirt} | Stone: {stone} | Obsidian: {obsidian} | Meat: {meat}",
+				"Equation": "Stamina: {stamina} | Dirt: {dirt} | Stone: {stone} | Obsidian: {obsidian} | Meat: {meat} | Money: {money}",
 				"ResultName": "status_message",
 				"SequenceItemEquationType": "Message"
 			}
@@ -49,6 +50,22 @@
 				"RoleName": "miner",
 				"MappingType": "Role",
 				"ThrowOnFailure": false
+			},
+			{
+				"From": "money",
+				"To": "money",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			}
+		],
+		"RoleConditions": [
+			{
+				"RoleName": "Miner",
+				"RequiredCategories": [
+					"PlayerControlled"
+				]
 			}
 		]
 	}

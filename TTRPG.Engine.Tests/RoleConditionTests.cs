@@ -67,6 +67,30 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
+		public void Check_RoleWithAliasHasRequiredCondition_ReturnsTrue()
+		{
+			int resolverResult = 1;
+			var resolver = MockEquationService(resolverResult);
+			var sequence = new Sequence();
+			var role = new Role();
+			role.Name = "a";
+			role.Alias = "b";
+			role.Categories.Add("c1");
+			sequence.RoleConditions.Add(new RoleCondition
+			{
+				RoleName = "b",
+				RequiredCategories = new List<string>
+				{
+					"c1"
+				}
+			});
+
+			bool result = resolver.Check(sequence, role);
+
+			Assert.IsTrue(result);
+		}
+
+		[Test]
 		public void Check_RoleDoesNotHaveRequiredCondition_ReturnsFalse()
 		{
 			int resolverResult = 1;
