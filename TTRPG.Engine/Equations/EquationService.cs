@@ -61,7 +61,7 @@ namespace TTRPG.Engine.Equations
 		{
 			var roleConditionsMet = sequence.RoleConditions == null || sequence.RoleConditions.All(condition =>
 			{
-				var target = roles?.FirstOrDefault(role => role?.Name.Equals(condition.RoleName) ?? false);
+				var target = roles?.FirstOrDefault(role => role?.Alias.Equals(condition.RoleName, StringComparison.OrdinalIgnoreCase) ?? false);
 				if (target == null) return false;
 
 				return condition.RequiredCategories.All(x => target.Categories.Contains(x, StringComparer.OrdinalIgnoreCase));
