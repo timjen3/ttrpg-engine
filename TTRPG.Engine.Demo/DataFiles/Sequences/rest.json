@@ -1,6 +1,7 @@
 [
 	{
 		"Name": "Rest",
+		"Example": "Rest [miner:miner]",
 		"Items": [
 			{
 				"Name": "Refreshed Stamina",

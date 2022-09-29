@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.SequenceItems;
@@ -23,38 +24,17 @@ namespace TTRPG.Engine.Demo.Engine
 		public List<SequenceItem> SequenceItems => _loader.GetSequenceItemsAsync().GetAwaiter().GetResult();
 
 
-		public Sequence UsePotionSequence => Sequences.Single(x => x.Name == "UsePotion");
-
-		public Sequence AttackSequence => Sequences.Single(x => x.Name == "Attack");
-
-		public Sequence CheckIsDead => Sequences.Single(x => x.Name == "CheckIsDead");
-
-		public Sequence MissingHalfHP => Sequences.Single(x => x.Name == "MissingHalfHP");
+		public Sequence MineTerrain => Sequences.Single(x => x.Name == "MineTerrain");
 
 
-		public Role Player => Roles.Single(x => x.Name == "Player");
+		public List<Role> GetLiveTargets(string category) => Roles.Where(x => x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase))
+			.Where(x => int.Parse(x.Attributes["hp"]) > 0)
+			.ToList();
 
-
-		public List<Role> Targets => Roles.Where(x => x.Categories.Contains("Entity") && x.Categories.Contains("Enemy")).ToList();
-
-
-		public SequenceItem HitPoints => SequenceItems.Single(x => x.Name == "HitPoints");
-
-		public SequenceItem Potions => SequenceItems.Single(x => x.Name == "Potions");
-
-
-		public Role Target { get; set; }
-
-
-		public void SetTarget(string name)
-		{
-			Target = Targets?.FirstOrDefault(x => x.Name == name);
-		}
 
 		public void NewGame()
 		{
 			_loader.ReloadAsync().GetAwaiter().GetResult();
-			Target = Targets.First();
 		}
 	}
 }

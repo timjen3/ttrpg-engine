@@ -1,6 +1,7 @@
 [
 	{
 		"Name": "MineTerrain",
+		"Example": "MineTerrain [miner:miner,dirtblock1:terrain]",
 		"Items": [
 			{
 				"Name": "Intention",

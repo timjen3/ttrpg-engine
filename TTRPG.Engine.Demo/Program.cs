@@ -6,7 +6,7 @@ using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.Demo.Engine;
 using TTRPG.Engine.Equations;
 
-namespace TTRPG.Engine.Demo2
+namespace TTRPG.Engine.Demo
 {
 	static class Program
 	{

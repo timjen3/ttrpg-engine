@@ -6,6 +6,8 @@ namespace TTRPG.Engine.Sequences
 	public class Sequence
 	{
 		public string Name { get; set; }
+		
+		public string Example { get; set; }
 
 		public List<SequenceItem> Items { get; set; } = new List<SequenceItem>();
 

@@ -5,6 +5,7 @@
 			"Name": "Player",
 			"max_stamina": "20",
 			"stamina": "20",
+			"money": "0",
 			"str": "18",
 			"dirt": "0",
 			"stone": "0",
