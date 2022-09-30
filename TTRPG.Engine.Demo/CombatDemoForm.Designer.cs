@@ -45,7 +45,7 @@ namespace TTRPG.Engine.Demo
 			this.txtBox_MessageLog.Name = "txtBox_MessageLog";
 			this.txtBox_MessageLog.ReadOnly = true;
 			this.txtBox_MessageLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txtBox_MessageLog.Size = new System.Drawing.Size(720, 148);
+			this.txtBox_MessageLog.Size = new System.Drawing.Size(798, 148);
 			this.txtBox_MessageLog.TabIndex = 0;
 			// 
 			// list_Targets
@@ -61,13 +61,13 @@ namespace TTRPG.Engine.Demo
 			// 
 			this.txt_Command.Location = new System.Drawing.Point(31, 449);
 			this.txt_Command.Name = "txt_Command";
-			this.txt_Command.Size = new System.Drawing.Size(619, 27);
+			this.txt_Command.Size = new System.Drawing.Size(698, 27);
 			this.txt_Command.TabIndex = 8;
 			this.txt_Command.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_Command_KeyPress);
 			// 
 			// btn_Perform
 			// 
-			this.btn_Perform.Location = new System.Drawing.Point(657, 447);
+			this.btn_Perform.Location = new System.Drawing.Point(735, 449);
 			this.btn_Perform.Name = "btn_Perform";
 			this.btn_Perform.Size = new System.Drawing.Size(94, 29);
 			this.btn_Perform.TabIndex = 9;
@@ -82,7 +82,7 @@ namespace TTRPG.Engine.Demo
 			this.txt_Status.Name = "txt_Status";
 			this.txt_Status.ReadOnly = true;
 			this.txt_Status.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.txt_Status.Size = new System.Drawing.Size(344, 204);
+			this.txt_Status.Size = new System.Drawing.Size(422, 204);
 			this.txt_Status.TabIndex = 10;
 			// 
 			// btn_Help
@@ -113,7 +113,7 @@ namespace TTRPG.Engine.Demo
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(776, 497);
+			this.ClientSize = new System.Drawing.Size(862, 497);
 			this.Controls.Add(this.cmb_TargetFilter);
 			this.Controls.Add(this.btn_Help);
 			this.Controls.Add(this.txt_Status);

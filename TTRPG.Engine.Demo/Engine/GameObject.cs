@@ -23,7 +23,7 @@ namespace TTRPG.Engine.Demo.Engine
 
 		public List<SequenceItem> SequenceItems => _loader.GetSequenceItemsAsync().GetAwaiter().GetResult();
 
-
+		
 		public Sequence MineTerrain => Sequences.Single(x => x.Name == "MineTerrain");
 
 

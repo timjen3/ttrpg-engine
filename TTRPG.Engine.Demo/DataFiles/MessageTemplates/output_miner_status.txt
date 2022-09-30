@@ -1,0 +1,6 @@
+﻿Stamina: {stamina}
+Dirt: {dirt}
+Stone: {stone}
+Obsidian: {obsidian}
+Meat: {meat}
+Money: {money}
