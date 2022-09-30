@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
 
@@ -11,6 +12,14 @@ namespace TTRPG.Engine.Tests
 	[TestOf(typeof(Condition))]
 	public class ConditionTests
 	{
+		HashSet<string> _failureMessages;
+
+		[SetUp]
+		public void SetupTest()
+		{
+			_failureMessages = new HashSet<string>();
+		}
+
 		private EquationService MockEquationService(int processResult)
 		{
 			var mockResolver = new Mock<IEquationResolver>();
@@ -30,7 +39,7 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
 
-			bool result = resolver.Check(condition, itemName, null, null);
+			bool result = resolver.Check(condition, itemName, null, null, ref _failureMessages);
 
 			Assert.IsTrue(result);
 		}
@@ -45,7 +54,7 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
 			
-			bool result = resolver.Check(condition, itemName, null, null);
+			bool result = resolver.Check(condition, itemName, null, null, ref _failureMessages);
 
 			Assert.IsFalse(result);
 		}
@@ -60,7 +69,7 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
 
-			bool result = resolver.Check(condition, itemName, null, null);
+			bool result = resolver.Check(condition, itemName, null, null, ref _failureMessages);
 
 			Assert.IsTrue(result);
 		}
@@ -75,7 +84,7 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
 
-			bool result = resolver.Check(condition, itemName, null, null);
+			bool result = resolver.Check(condition, itemName, null, null, ref _failureMessages);
 
 			Assert.IsTrue(result);
 		}
@@ -90,7 +99,7 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation, throwOnFail: true);
 
-			var ex = Assert.Throws<ConditionFailedException>(() => resolver.Check(condition, itemName, null, null));
+			var ex = Assert.Throws<ConditionFailedException>(() => resolver.Check(condition, itemName, null, null, ref _failureMessages));
 
 			Assert.That(ex.Message, Is.EqualTo(Condition.DEFAULT_FAILURE_MESSAGE));
 		}
@@ -106,7 +115,7 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation, throwOnFail: true, failureMessage: customMessage);
 
-			var ex = Assert.Throws<ConditionFailedException>(() => resolver.Check(condition, itemName, null, null));
+			var ex = Assert.Throws<ConditionFailedException>(() => resolver.Check(condition, itemName, null, null, ref _failureMessages));
 
 			Assert.That(ex.Message, Is.EqualTo(customMessage));
 		}
@@ -131,7 +140,7 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemNames, equation);
 
-			bool result = resolver.Check(condition, itemName, null, null);
+			bool result = resolver.Check(condition, itemName, null, null, ref _failureMessages);
 
 			Assert.IsFalse(result);
 		}
@@ -146,9 +155,26 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemNames, equation);
 
-			bool result = resolver.Check(condition, itemName, null, null);
+			bool result = resolver.Check(condition, itemName, null, null, ref _failureMessages);
 
 			Assert.IsTrue(result);
+		}
+
+		[Test]
+		public void Check_ItemConditionHasErrors_WriteErrors()
+		{
+			var itemName = "c";
+			var equation = "anything";
+			var conditionItemName = "c";
+			var failureMessage = "error";
+			int resolverResult = 0;
+			var resolver = MockEquationService(resolverResult);
+			var condition = new Condition(conditionItemName, equation, failureMessage: failureMessage);
+
+			bool result = resolver.Check(condition, itemName, null, null, ref _failureMessages);
+
+			Assert.IsFalse(result);
+			Assert.Contains(failureMessage, _failureMessages.ToArray());
 		}
 	}
 }

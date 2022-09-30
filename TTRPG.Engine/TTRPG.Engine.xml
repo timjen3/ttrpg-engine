@@ -32,7 +32,7 @@
             Whether exception should be thrown when Check fails
         </member>
         <member name="P:TTRPG.Engine.Condition.FailureMessage">
-            Custom message for failure if ThrowOnFail is true
+            Custom message for failure if ThrowOnFail is true; if ThrowOnFail is false it will be added as a result
         </member>
         <member name="T:TTRPG.Engine.Equations.EquationResolver">
             Resolves an equation using mxParser
@@ -55,10 +55,10 @@
         <member name="M:TTRPG.Engine.Equations.EquationService.#ctor(TTRPG.Engine.Equations.IEquationResolver)">
             EquationService Constructor
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Condition,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Condition,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.HashSet{System.String}@)">
             Determine if the condition passes for the sequence
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Condition,System.String,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult)">
+        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Condition,System.String,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult,System.Collections.Generic.HashSet{System.String}@)">
             Determine if the condition passes for a sequence item
         </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.Apply(TTRPG.Engine.Mapping,System.String,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">

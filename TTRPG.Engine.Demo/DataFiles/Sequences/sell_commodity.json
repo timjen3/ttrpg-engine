@@ -34,7 +34,7 @@
 				"Equation": "quantity_to_sell <= quantity_on_hand",
 				"ItemNames": null,
 				"ThrowOnFail": false,
-				"FailureMessage": null
+				"FailureMessage": "{seller_name} doesn't have enough quantity to make that sale."
 			}
 		],
 		"Mappings": [

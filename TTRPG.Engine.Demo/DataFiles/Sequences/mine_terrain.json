@@ -10,18 +10,6 @@
 				"SequenceItemEquationType": "Message"
 			},
 			{
-				"Name": "Tired",
-				"Equation": "Too tired! You should rest.",
-				"ResultName": "tired",
-				"SequenceItemEquationType": "Message"
-			},
-			{
-				"Name": "Inneffective",
-				"Equation": "Tool is inneffective!",
-				"ResultName": "inneffective",
-				"SequenceItemEquationType": "Message"
-			},
-			{
 				"Name": "Damage",
 				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
 				"ResultName": "damage",
@@ -67,48 +55,21 @@
 		"Conditions": [
 			{
 				"DependentOnItem": null,
-				"Equation": "miner_stamina <= 0",
-				"ItemNames": [
-					"Tired"
-				],
+				"Equation": "miner_stamina > 0",
 				"ThrowOnFail": false,
-				"FailureMessage": null
+				"FailureMessage": "You're too tired! You should rest."
 			},
 			{
 				"DependentOnItem": null,
 				"Equation": "hp > 0",
-				"ItemNames": null,
 				"ThrowOnFail": false,
-				"FailureMessage": null
-			},
-			{
-				"DependentOnItem": null,
-				"Equation": "pierce < ac",
-				"ItemNames": [
-					"Inneffective"
-				],
-				"ThrowOnFail": false,
-				"FailureMessage": null
-			},
-			{
-				"DependentOnItem": null,
-				"Equation": "miner_stamina > 0",
-				"ItemNames": [
-					"Intention",
-					"Damage"
-				],
-				"ThrowOnFail": false,
-				"FailureMessage": null
+				"FailureMessage": "Target is already destroyed."
 			},
 			{
 				"DependentOnItem": null,
 				"Equation": "pierce >= ac",
-				"ItemNames": [
-					"Intention",
-					"Damage"
-				],
 				"ThrowOnFail": false,
-				"FailureMessage": null
+				"FailureMessage": "Your tool is inneffective."
 			},
 			{
 				"DependentOnItem": "Damage",
