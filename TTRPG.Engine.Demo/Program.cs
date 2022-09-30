@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
 using TTRPG.Engine.Data;
-using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.Demo.Engine;
 using TTRPG.Engine.Equations;
 
@@ -33,7 +32,8 @@ namespace TTRPG.Engine.Demo
 				{
 					RolesFileDirectory = "DataFiles/Roles",
 					SequencesFileDirectory = "DataFiles/Sequences",
-					SequenceItemsFileDirectory = "DataFiles/SequenceItems"
+					SequenceItemsFileDirectory = "DataFiles/SequenceItems",
+					MessageTemplatesDirectory = "DataFiles/MessageTemplates"
 				}
 			});
 			collection.AddScoped<GameObject>();

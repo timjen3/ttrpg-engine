@@ -5,7 +5,7 @@
 		"Items": [
 			{
 				"Name": "Report Status",
-				"Equation": "Stamina: {stamina} | Dirt: {dirt} | Stone: {stone} | Obsidian: {obsidian} | Meat: {meat} | Money: {money}",
+				"Equation": "[[output_miner_status]]",
 				"ResultName": "status_message",
 				"SequenceItemEquationType": "Message"
 			}
