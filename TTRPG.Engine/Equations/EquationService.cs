@@ -153,7 +153,7 @@ namespace TTRPG.Engine.Equations
 		}
 
 		/// Process a sequence item and get the result
-		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Role> roles, HashSet<string> errorMessages)
+		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Role> roles)
 		{
 			var results = new List<SequenceResultItem>();
 			foreach (var item in items)
@@ -254,7 +254,7 @@ namespace TTRPG.Engine.Equations
 				var itemResult = GetResult(errorItem, -1, ref sArgs, sArgs);
 				result.Results.Add(itemResult);
 			}
-			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, roles, errorMessages);
+			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, roles);
 
 			return result;
 		}
