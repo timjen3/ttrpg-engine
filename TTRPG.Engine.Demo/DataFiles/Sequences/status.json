@@ -20,6 +20,14 @@
 				"ThrowOnFailure": false
 			},
 			{
+				"From": "max_stamina",
+				"To": "max_stamina",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
 				"From": "dirt",
 				"To": "dirt",
 				"ItemName": null,

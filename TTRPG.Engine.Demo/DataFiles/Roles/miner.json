@@ -31,6 +31,21 @@
 					"Inventory",
 					"Tool"
 				]
+			},
+			"Weapon": {
+				"Name": "Knife",
+				"Attributes": {
+					"Name": "Knife",
+					"Action": "dices and slices",
+					"Hits": "1",
+					"Min": "1",
+					"Max": "6",
+					"Pierce": "1"
+				},
+				"Categories": [
+					"Inventory",
+					"Weapon"
+				]
 			}
 		}
 	}

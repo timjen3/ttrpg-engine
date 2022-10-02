@@ -154,18 +154,5 @@
 		"Categories": [
 			"Terrain"
 		]
-	},
-	{
-		"Name": "Deer1",
-		"Attributes": {
-			"MAX_HP": "10",
-			"HP": "10",
-			"AC": "0",
-			"Name": "Deer1",
-			"Resource": "meat"
-		},
-		"Categories": [
-			"Animal"
-		]
 	}
 ]
