@@ -1,4 +1,4 @@
-﻿Stamina: {stamina}
+﻿Stamina: {stamina} / {max_stamina}
 Dirt: {dirt}
 Stone: {stone}
 Obsidian: {obsidian}

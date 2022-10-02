@@ -5,7 +5,7 @@
 			"Name": "Player",
 			"max_stamina": "20",
 			"stamina": "20",
-			"money": "0",
+			"money": "50",
 			"str": "18",
 			"dirt": "0",
 			"stone": "0",
@@ -30,6 +30,21 @@
 				"Categories": [
 					"Inventory",
 					"Tool"
+				]
+			},
+			"Weapon": {
+				"Name": "Knife",
+				"Attributes": {
+					"Name": "Knife",
+					"Action": "dices and slices",
+					"Hits": "1",
+					"Min": "1",
+					"Max": "6",
+					"Pierce": "1"
+				},
+				"Categories": [
+					"Inventory",
+					"Weapon"
 				]
 			}
 		}

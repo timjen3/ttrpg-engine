@@ -1,0 +1,276 @@
+[
+	{
+		"Name": "Hunt",
+		"Example": "Hunt [miner:hunter,deer1:defender]",
+		"Items": [
+			{
+				"Name": "Intention",
+				"Equation": "{hunter_name} {wAction} at {defender_name}.",
+				"ResultName": "intention",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Damage",
+				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
+				"ResultName": "damage",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Damage",
+				"Equation": "{hunter_name} dealt {damage} damage to {defender_name} from {wHits} {wAction}.",
+				"ResultName": "DamageMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Take Damage",
+				"Equation": "max(hp - damage, 0)",
+				"ResultName": "new_hp",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Damage Taken",
+				"Equation": "{defender_name} HP : {old_hp} => {new_hp}",
+				"ResultName": "DamageTakenMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Claim Meat",
+				"Equation": "current_meat + max(ceil(defender_max_hp / 2), 1)",
+				"ResultName": "new_meat",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Meat Taken",
+				"Equation": "Got meat : {current_meat} => {new_meat}",
+				"ResultName": "MeatTakenMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Drain Stamina",
+				"Equation": "hunter_stamina - 1",
+				"ResultName": "new_stamina",
+				"SequenceItemEquationType": "Algorithm"
+			}
+		],
+		"Conditions": [
+			{
+				"DependentOnItem": null,
+				"Equation": "hunter_stamina > 0",
+				"ThrowOnFail": false,
+				"FailureMessage": "You're too tired! You should rest."
+			},
+			{
+				"DependentOnItem": null,
+				"Equation": "hp > 0",
+				"ThrowOnFail": false,
+				"FailureMessage": "Maybe in the next life."
+			},
+			{
+				"DependentOnItem": null,
+				"Equation": "pierce >= ac",
+				"ThrowOnFail": false,
+				"FailureMessage": "Your weapon is inneffective."
+			},
+			{
+				"DependentOnItem": "Damage",
+				"Equation": null,
+				"ItemNames": [
+					"Report Damage",
+					"Drain Stamina"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Damage",
+				"Equation": "damage > 0",
+				"ItemNames": [
+					"Take Damage",
+					"Report Damage Taken"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Take Damage",
+				"Equation": "new_hp <= 0",
+				"ItemNames": [
+					"Claim Meat"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Claim Meat",
+				"Equation": "new_meat > 0",
+				"ItemNames": [
+					"Report Meat Taken"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			}
+		],
+		"Mappings": [
+			{
+				"From": "name",
+				"To": "hunter_name",
+				"ItemName": null,
+				"RoleName": "hunter",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "meat",
+				"To": "current_meat",
+				"ItemName": null,
+				"RoleName": "hunter",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "name",
+				"To": "defender_name",
+				"ItemName": null,
+				"RoleName": "defender",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hp",
+				"To": "hp",
+				"ItemName": null,
+				"RoleName": "defender",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "stamina",
+				"To": "hunter_stamina",
+				"ItemName": null,
+				"RoleName": "hunter",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "pierce",
+				"To": "pierce",
+				"ItemName": null,
+				"RoleName": "hunter",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hits",
+				"To": "wHits",
+				"ItemName": "Report Damage",
+				"RoleName": "hunter",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "ac",
+				"To": "ac",
+				"ItemName": null,
+				"RoleName": "defender",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "str",
+				"To": "str",
+				"ItemName": "Damage",
+				"RoleName": "hunter",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hits",
+				"To": "wHits",
+				"ItemName": "Damage",
+				"RoleName": "hunter",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "min",
+				"To": "wMin",
+				"ItemName": "Damage",
+				"RoleName": "hunter",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "max",
+				"To": "wMax",
+				"ItemName": "Damage",
+				"RoleName": "hunter",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "action",
+				"To": "wAction",
+				"ItemName": null,
+				"RoleName": "hunter",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hp",
+				"To": "old_hp",
+				"ItemName": "Report Damage Taken",
+				"RoleName": "defender",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "MAX_HP",
+				"To": "defender_max_hp",
+				"ItemName": null,
+				"RoleName": "defender",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			}
+		],
+		"ResultItems": [
+			{
+				"Name": "HP",
+				"Category": "UpdateAttribute",
+				"Source": "new_hp",
+				"RoleName": "defender"
+			},
+			{
+				"Name": "Meat",
+				"Category": "UpdateAttribute",
+				"Source": "new_meat",
+				"RoleName": "hunter"
+			},
+			{
+				"Name": "Stamina",
+				"Category": "UpdateAttribute",
+				"Source": "new_stamina",
+				"RoleName": "hunter"
+			}
+		],
+		"RoleConditions": [
+			{
+				"RoleName": "Hunter",
+				"RequiredCategories": [
+					"Entity"
+				]
+			},
+			{
+				"RoleName": "Defender",
+				"RequiredCategories": [
+					"Animal"
+				]
+			}
+		]
+	}
+]
