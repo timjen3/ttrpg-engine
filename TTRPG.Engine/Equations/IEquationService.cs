@@ -32,7 +32,7 @@ namespace TTRPG.Engine.Equations
 		/// <param name="roles"></param>
 		/// <returns></returns>
 		bool Check(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null);
-
+		
 		/// <summary>
 		///		Process a single sequence item and get the result
 		/// </summary>

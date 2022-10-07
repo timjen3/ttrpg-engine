@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="DataFiles\MessageTemplates\output_miner_status.txt" />
+    <None Remove="DataFiles\MessageTemplates\output_target_status.txt" />
     <None Remove="DataFiles\roles.json" />
     <None Remove="DataFiles\Roles\animals.json" />
     <None Remove="DataFiles\Roles\commodities.json" />
@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="DataFiles\MessageTemplates\output_miner_status.txt">
+    <Content Include="DataFiles\MessageTemplates\output_target_status.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\Roles\commodities.json">
