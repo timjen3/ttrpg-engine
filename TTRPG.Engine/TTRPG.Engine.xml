@@ -144,6 +144,11 @@
             <param name="roles"></param>
             <returns></returns>
         </member>
+        <member name="T:TTRPG.Engine.IInventoryService">
+            <summary>
+            	Manages inventory for roles
+            </summary>
+        </member>
         <member name="M:TTRPG.Engine.IInventoryService.DropItem(TTRPG.Engine.Role,System.String)">
             <summary>
             	Remove item from bag
@@ -162,7 +167,7 @@
             <summary>
             	Equip inventory item from bag
             </summary>
-            <param name="role"></param>
+            <param name="entity"></param>
             <param name="itemName"></param>
             <param name="equipAs"></param>
         </member>
