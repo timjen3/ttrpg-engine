@@ -1,5 +1,8 @@
 ﻿namespace TTRPG.Engine
 {
+	/// <summary>
+	///		Manages inventory for roles
+	/// </summary>
 	public interface IInventoryService
 	{
 		/// <summary>
@@ -19,10 +22,10 @@
 		/// <summary>
 		///		Equip inventory item from bag
 		/// </summary>
-		/// <param name="role"></param>
+		/// <param name="entity"></param>
 		/// <param name="itemName"></param>
 		/// <param name="equipAs"></param>
-		void Equip(Role role, string itemName, string equipAs);
+		void Equip(Role entity, string itemName, string equipAs);
 
 		/// <summary>
 		///		Unequip inventory item and put in bag
