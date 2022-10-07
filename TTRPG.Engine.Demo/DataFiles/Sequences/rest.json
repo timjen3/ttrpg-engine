@@ -1,7 +1,7 @@
 [
 	{
 		"Name": "Rest",
-		"Example": "Rest [miner:miner]",
+		"Example": "Rest [miner:sleeper]",
 		"Items": [
 			{
 				"Name": "Refreshed Stamina",
@@ -11,7 +11,7 @@
 			},
 			{
 				"Name": "Report Rest",
-				"Equation": "Miner took a nap and feels well rested. Stamina recovered: {max_stamina} / {max_stamina}",
+				"Equation": "{sleeper_name} took a nap and feels well rested. Stamina recovered: {max_stamina} / {max_stamina}",
 				"ResultName": "rest_message",
 				"SequenceItemEquationType": "Message"
 			}
@@ -21,7 +21,15 @@
 				"From": "max_stamina",
 				"To": "max_stamina",
 				"ItemName": null,
-				"RoleName": "miner",
+				"RoleName": "sleeper",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "name",
+				"To": "sleeper_name",
+				"ItemName": null,
+				"RoleName": "sleeper",
 				"MappingType": "Role",
 				"ThrowOnFailure": true
 			}
@@ -31,7 +39,7 @@
 				"Name": "Stamina",
 				"Category": "UpdateAttribute",
 				"Source": "new_stamina",
-				"RoleName": "miner"
+				"RoleName": "sleeper"
 			}
 		]
 	}

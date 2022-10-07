@@ -14,10 +14,11 @@ namespace TTRPG.Engine
 			Attributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 			Categories = new List<string>();
 			InventoryItems = new Dictionary<string, Role>(StringComparer.OrdinalIgnoreCase);
+			Bag = new List<Role>();
 		}
 
 		/// role constructor
-		public Role(string name, Dictionary<string, string> attributes = null, List<string> categories = null, Dictionary<string, Role> inventoryItems = null)
+		public Role(string name, Dictionary<string, string> attributes = null, List<string> categories = null, Dictionary<string, Role> inventoryItems = null, List<Role> bag = null)
 		{
 			Name = name;
 			if (attributes != null) Attributes = new Dictionary<string, string>(attributes, StringComparer.OrdinalIgnoreCase);
@@ -25,6 +26,8 @@ namespace TTRPG.Engine
 			Categories = categories ?? new List<string>();
 			if (inventoryItems != null) InventoryItems = new Dictionary<string, Role>(inventoryItems, StringComparer.OrdinalIgnoreCase);
 			else InventoryItems = new Dictionary<string, Role>(StringComparer.OrdinalIgnoreCase);
+			Bag = bag ?? new List<Role>();
+
 		}
 
 		/// role's name
@@ -35,6 +38,8 @@ namespace TTRPG.Engine
 		public List<string> Categories { get; }
 		/// inventory items
 		public Dictionary<string, Role> InventoryItems { get; }
+		/// loose inventory items
+		public List<Role> Bag { get; }
 		/// on originals matches Name, on clones it differs
 		public string Alias { get => _alias ?? Name; set { _alias = value; } }
 

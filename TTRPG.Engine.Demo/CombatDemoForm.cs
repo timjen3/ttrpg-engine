@@ -50,7 +50,7 @@ namespace TTRPG.Engine.Demo
 				var result = _equationService.Process(equationParts.Sequence, equationParts.Inputs, equationParts.Roles);
 				_demo.HandleResultItems(result);
 				UpdateTargets();
-				var statusParts = _demo.GetEquationPartsFromCommand("Status [miner:miner]");
+				var statusParts = _demo.GetEquationPartsFromCommand("Status [miner:target]");
 				var status = _equationService.Process(statusParts.Sequence, statusParts.Inputs, statusParts.Roles);
 				txt_Status.Text = status.Results[0].Result;
 			}

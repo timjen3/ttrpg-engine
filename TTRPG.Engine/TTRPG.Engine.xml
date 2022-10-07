@@ -144,6 +144,47 @@
             <param name="roles"></param>
             <returns></returns>
         </member>
+        <member name="M:TTRPG.Engine.IInventoryService.DropItem(TTRPG.Engine.Role,System.String)">
+            <summary>
+            	Remove item from bag
+            </summary>
+            <param name="entity"></param>
+            <param name="itemName"></param>
+        </member>
+        <member name="M:TTRPG.Engine.IInventoryService.PickupItem(TTRPG.Engine.Role,TTRPG.Engine.Role)">
+            <summary>
+            	Adds item to bag
+            </summary>
+            <param name="entity"></param>
+            <param name="item"></param>
+        </member>
+        <member name="M:TTRPG.Engine.IInventoryService.Equip(TTRPG.Engine.Role,System.String,System.String)">
+            <summary>
+            	Equip inventory item from bag
+            </summary>
+            <param name="role"></param>
+            <param name="itemName"></param>
+            <param name="equipAs"></param>
+        </member>
+        <member name="M:TTRPG.Engine.IInventoryService.Unequip(TTRPG.Engine.Role,System.String)">
+            <summary>
+            	Unequip inventory item and put in bag
+            </summary>
+            <param name="entity"></param>
+            <param name="itemName"></param>
+        </member>
+        <member name="M:TTRPG.Engine.InventoryService.Equip(TTRPG.Engine.Role,System.String,System.String)">
+            <see cref="M:TTRPG.Engine.IInventoryService.Equip(TTRPG.Engine.Role,System.String,System.String)"/>
+        </member>
+        <member name="M:TTRPG.Engine.InventoryService.Unequip(TTRPG.Engine.Role,System.String)">
+            <see cref="M:TTRPG.Engine.IInventoryService.Unequip(TTRPG.Engine.Role,System.String)"/>
+        </member>
+        <member name="M:TTRPG.Engine.InventoryService.DropItem(TTRPG.Engine.Role,System.String)">
+            <see cref="M:TTRPG.Engine.IInventoryService.DropItem(TTRPG.Engine.Role,System.String)"/>
+        </member>
+        <member name="M:TTRPG.Engine.InventoryService.PickupItem(TTRPG.Engine.Role,TTRPG.Engine.Role)">
+            <see cref="M:TTRPG.Engine.IInventoryService.PickupItem(TTRPG.Engine.Role,TTRPG.Engine.Role)"/>
+        </member>
         <member name="T:TTRPG.Engine.IServiceCollectionExtensions">
             <summary>
             	Add TTRPG.Engine services to an IServiceCollection.
@@ -221,7 +262,7 @@
         <member name="M:TTRPG.Engine.Role.#ctor">
             role parameterless constructor
         </member>
-        <member name="M:TTRPG.Engine.Role.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,TTRPG.Engine.Role})">
+        <member name="M:TTRPG.Engine.Role.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,TTRPG.Engine.Role},System.Collections.Generic.List{TTRPG.Engine.Role})">
             role constructor
         </member>
         <member name="P:TTRPG.Engine.Role.Name">
@@ -235,6 +276,9 @@
         </member>
         <member name="P:TTRPG.Engine.Role.InventoryItems">
             inventory items
+        </member>
+        <member name="P:TTRPG.Engine.Role.Bag">
+            loose inventory items
         </member>
         <member name="P:TTRPG.Engine.Role.Alias">
             on originals matches Name, on clones it differs
