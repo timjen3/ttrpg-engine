@@ -1,16 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using TTRPG.Engine.Demo.Engine;
+using TTRPG.Engine.Demo.Engine.CommandParsing;
 using TTRPG.Engine.Equations;
 
 namespace TTRPG.Engine.Demo
 {
 	public partial class CombatDemoForm : Form
 	{
-		CombatDemoService _demo;
+		private readonly GameObject _data;
 		private readonly IEquationService _equationService;
+		private readonly IInventoryService _inventoryService;
 		private string _targetFilter;
+
+		private IEnumerable<string> ListTargetNames(string category) => _data.GetLiveTargets(category).Select(x => x.Name);
 
 		private void WriteMessage(string message) => txtBox_MessageLog.Text += $"{message}\r\n";
 
@@ -18,16 +24,25 @@ namespace TTRPG.Engine.Demo
 		{
 			var targetFilter = cmb_TargetFilter.Text.Trim();
 			list_Targets.Items.Clear();
-			foreach (var target in _demo.ListTargetNames(targetFilter))
+			foreach (var target in ListTargetNames(targetFilter))
 			{
 				list_Targets.Items.Add(target);
 			}
 		}
 
-		public CombatDemoForm(IEquationService equationService, GameObject gameObject)
+		private void DisplayStatus()
+		{
+			var miner = _data.Roles.Single(r => r.Name.Equals("Miner", StringComparison.OrdinalIgnoreCase));
+			var statusSequence = _data.Sequences.Single(s => s.Name.Equals("Status", StringComparison.OrdinalIgnoreCase));
+			var result = _equationService.Process(statusSequence, null, new Role[] { miner.CloneAs("target") });
+			txt_Status.Text = result.Results[0].Result;
+		}
+
+		public CombatDemoForm(IEquationService equationService, IInventoryService inventoryService, GameObject gameObject)
 		{
 			_equationService = equationService;
-			_demo = new CombatDemoService(WriteMessage, gameObject);
+			_inventoryService = inventoryService;
+			_data = gameObject;
 			InitializeComponent();
 			UpdateTargets();
 			SetHelpText();
@@ -37,29 +52,17 @@ namespace TTRPG.Engine.Demo
 		{
 			txtBox_MessageLog.Clear();
 			var command = txt_Command.Text;
-			var equationParts = _demo.GetEquationPartsFromCommand(command);
-			if (!equationParts.IsValid())
+			var commandParser = new CommandParser(command, _data);
+			var parsedCommand = commandParser.Build(_equationService, _inventoryService);
+			if (!parsedCommand.IsValid())
 			{
 				WriteMessage("Invalid Command.");
 				txt_Command.Clear();
 				return;
 			}
-
-			try
-			{
-				var result = _equationService.Process(equationParts.Sequence, equationParts.Inputs, equationParts.Roles);
-				_demo.HandleResultItems(result);
-				UpdateTargets();
-				var statusParts = _demo.GetEquationPartsFromCommand("Status [miner:target]");
-				var status = _equationService.Process(statusParts.Sequence, statusParts.Inputs, statusParts.Roles);
-				txt_Status.Text = status.Results[0].Result;
-			}
-			catch (Exception ex)
-			{
-				WriteMessage($"Failed to process command: '{command}'\n");
-				WriteMessage(ex.Message);
-				WriteMessage(ex.StackTrace);
-			}
+			parsedCommand.Process(WriteMessage, _data);
+			UpdateTargets();
+			DisplayStatus();
 		}
 
 		private void btn_Perform_Click(object sender, EventArgs e)
@@ -77,9 +80,10 @@ namespace TTRPG.Engine.Demo
 
 		private void SetHelpText()
 		{
-			var examples = _demo.Data.Sequences.Select(s => s.Example);
+			var examples = _data.Sequences.Select(s => s.Example);
 			txt_Status.Lines = new string[] { "Help:" }
 				.Union(examples)
+				.Union(InventoryProcessor.GetInventoryCommandExamples())
 				.ToArray();
 		}
 

@@ -3,6 +3,8 @@
 		"Name": "Miner",
 		"Attributes": {
 			"Name": "Player",
+			"hp": "20",
+			"max_hp": "20",
 			"max_stamina": "20",
 			"stamina": "20",
 			"money": "50",
@@ -47,6 +49,38 @@
 					"Weapon"
 				]
 			}
-		}
+		},
+		"Bag": [
+			{
+				"Name": "Stone Pickaxe",
+				"Attributes": {
+					"Name": "Stone Pickaxe",
+					"Action": "picks",
+					"Hits": "1",
+					"Min": "2",
+					"Max": "8",
+					"Pierce": "2"
+				},
+				"Categories": [
+					"Inventory",
+					"Tool"
+				]
+			},
+			{
+				"Name": "Shortbow",
+				"Attributes": {
+					"Name": "Shortbow",
+					"Action": "shoots",
+					"Hits": "1",
+					"Min": "2",
+					"Max": "8",
+					"Pierce": "3"
+				},
+				"Categories": [
+					"Inventory",
+					"Weapon"
+				]
+			}
+		]
 	}
 ]

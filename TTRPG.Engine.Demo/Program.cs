@@ -39,9 +39,10 @@ namespace TTRPG.Engine.Demo
 			collection.AddScoped<GameObject>();
 			var provider = collection.BuildServiceProvider();
 			var equationService = provider.GetRequiredService<IEquationService>();
+			var inventoryService = provider.GetRequiredService<IInventoryService>();
 			var gameObject = provider.GetRequiredService<GameObject>();
 
-			return new CombatDemoForm(equationService, gameObject);
+			return new CombatDemoForm(equationService, inventoryService, gameObject);
 		}
 	}
 }

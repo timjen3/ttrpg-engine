@@ -118,7 +118,12 @@ namespace TTRPG.Engine.Equations
 			if (string.IsNullOrWhiteSpace(mapping.ItemName) || string.Equals(itemName, mapping.ItemName, StringComparison.OrdinalIgnoreCase))
 			{
 				var source = GetSourceMappingData(mapping, inputs, roles);
-				var mapFormatSource = source.Union(inputs).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);  // always use inputs for the formatter
+				// always use inputs for the formatter
+				// ensure the mapped inputs take precedence
+				var mapFormatSource = source.Union(inputs)
+					.GroupBy(x => x.Key)
+					.Select(g => new KeyValuePair<string, string>(g.Key, g.First().Value))
+					.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 				var mapTo = mapping.To.FormatWith(mapFormatSource);
 				var mapFrom = mapping.From.FormatWith(mapFormatSource);
 				inputs[mapTo] = "0";
@@ -230,7 +235,8 @@ namespace TTRPG.Engine.Equations
 		public SequenceResult Process(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
 			var sArgs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
-			sequence.Mappings.Where(x => string.IsNullOrWhiteSpace(x.ItemName)).ToList().ForEach(x => Apply(x, null, ref sArgs, roles));  // apply global mappings to all inputs
+			var globalMappings = sequence.Mappings.Where(x => string.IsNullOrWhiteSpace(x.ItemName)).ToList();
+			globalMappings.ForEach(x => Apply(x, null, ref sArgs, roles));  // apply global mappings to all inputs
 			var result = new SequenceResult();
 			result.Sequence = sequence;
 			if (!CheckRoleConditions(sequence, roles))

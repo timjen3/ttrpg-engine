@@ -47,7 +47,5 @@ namespace TTRPG.Engine
 		{
 			entity.Bag.Add(item);
 		}
-
-
 	}
 }
