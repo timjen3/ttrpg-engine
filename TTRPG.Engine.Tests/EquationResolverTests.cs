@@ -107,7 +107,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		[Repeat(1000)]
+		[Repeat(10000)]
 		public void Process_RandomFunctionWithVars_InsertsRandomValue()
 		{
 			var equation = "random(count,minRange,maxRange)";
@@ -120,8 +120,23 @@ namespace TTRPG.Engine.Tests
 
 			var result = EquationResolver.Process(equation, inputs);
 
-			TestContext.WriteLine(result);
 			Assert.That(result, Is.GreaterThanOrEqualTo(1).And.LessThanOrEqualTo(6));
+		}
+
+		[Test]
+		[Repeat(1000)]
+		public void Process_UseExpressionString_SucceedsAndFast()
+		{
+			var equation = "a + b";
+			var inputs = new Dictionary<string, string>()
+			{
+				{ "a", "1" },
+				{ "b", "floor(1.5)" }
+			};
+
+			var result = EquationResolver.Process(equation, inputs);
+
+			Assert.That(result, Is.EqualTo(2));
 		}
 	}
 }
