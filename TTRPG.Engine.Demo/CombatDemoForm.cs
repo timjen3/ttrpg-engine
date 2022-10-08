@@ -30,6 +30,14 @@ namespace TTRPG.Engine.Demo
 			}
 		}
 
+		private void DisplayStatus()
+		{
+			var miner = _data.Roles.Single(r => r.Name.Equals("Miner", StringComparison.OrdinalIgnoreCase));
+			var statusSequence = _data.Sequences.Single(s => s.Name.Equals("Status", StringComparison.OrdinalIgnoreCase));
+			var result = _equationService.Process(statusSequence, null, new Role[] { miner.CloneAs("target") });
+			txt_Status.Text = result.Results[0].Result;
+		}
+
 		public CombatDemoForm(IEquationService equationService, IInventoryService inventoryService, GameObject gameObject)
 		{
 			_equationService = equationService;
@@ -54,6 +62,7 @@ namespace TTRPG.Engine.Demo
 			}
 			parsedCommand.Process(WriteMessage, _data);
 			UpdateTargets();
+			DisplayStatus();
 		}
 
 		private void btn_Perform_Click(object sender, EventArgs e)

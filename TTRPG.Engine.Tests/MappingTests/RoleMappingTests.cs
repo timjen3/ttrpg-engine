@@ -184,5 +184,22 @@ namespace TTRPG.Engine.Tests
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
+
+		[Test(Description = "Results are available to the mapping formatter. If a value is mapped from a role and exists in the results then the value mapped from the role should take priority.")]
+		public void Apply_EnsureSourceTakesPriorityOverInputs()
+		{
+			mapping.From = "a";
+			mapping.To = "{rename}";
+			mapping.ItemName = null;
+			mapping.ThrowOnFailure = true;
+			role.Attributes["rename"] = "b";
+			role.Attributes["a"] = "1";
+			inputs["rename"] = "c";
+
+			service.Apply(mapping, null, ref inputs, roles);
+
+			Assert.That(inputs, Contains.Key("b"));
+			Assert.That(inputs["b"], Is.EqualTo("1"));
+		}
 	}
 }
