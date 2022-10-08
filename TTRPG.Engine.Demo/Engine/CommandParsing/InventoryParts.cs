@@ -1,47 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace TTRPG.Engine.Demo.Engine.CommandParsing
 {
-	public class InventoryParts
+	public class InventoryProcessor : ITTRPGCommandProcessor
 	{
 		public string Command { get; }
 		public Role Entity { get; }
 		public Dictionary<string, string> Inputs { get; }
+		IInventoryService Service { get; }
 
-		public InventoryParts(CommandParser parser)
+		public InventoryProcessor(string command, Role entity, Dictionary<string, string> inputs, IInventoryService service)
 		{
-			Command = parser.MainCommand;
-			Entity = parser.Roles.FirstOrDefault();
-			Inputs = parser.Inputs;
+			Command = command;
+			Entity = entity;
+			Inputs = inputs;
+			Service = service;
 		}
 
 		public bool IsValid() => !string.IsNullOrWhiteSpace(Command) && Entity != null;
 
-		public string Process(IInventoryService service)
+		public void Process(Action<string> writeMessage, GameObject data)
 		{
-			switch (Command.ToLower().Trim())
+			try
 			{
-				case "equip":
+				switch (Command.ToLower().Trim())
 				{
-					service.Equip(Entity, itemName: Inputs["itemname"], equipAs: Inputs["equipas"]);
-					return $"Equipped {Inputs["itemname"]} as {Inputs["equipas"]}";
-				}
-				case "unequip":
-				{
-					service.Unequip(Entity, itemName: Inputs["itemName"]);
-					return $"Unequipped {Inputs["itemname"]}.";
+					case "equip":
+					{
+						Service.Equip(Entity, itemName: Inputs["itemname"], equipAs: Inputs["equipas"]);
+						writeMessage($"Equipped {Inputs["itemname"]} as {Inputs["equipas"]}");
+						break;
 					}
-				case "drop":
-				{
-					service.DropItem(Entity, itemName: Inputs["itemName"]);
-					return $"Dropped {Inputs["itemname"]}.";
+					case "unequip":
+					{
+						Service.Unequip(Entity, itemName: Inputs["itemName"]);
+						writeMessage($"Unequipped {Inputs["itemname"]}.");
+						break;
 					}
-				default:
-				{
-					throw new NotImplementedException($"Unknown inventory command {Command}.");
+					case "drop":
+					{
+						Service.DropItem(Entity, itemName: Inputs["itemName"]);
+						writeMessage($"Dropped {Inputs["itemname"]}.");
+						break;
+					}
+					default:
+					{
+						throw new NotImplementedException($"Unknown inventory command {Command}.");
+					}
 				}
+			}
+			catch
+			{
+				writeMessage("Invalid command.");
 			}
 		}
 
@@ -50,7 +61,7 @@ namespace TTRPG.Engine.Demo.Engine.CommandParsing
 			return new string[]
 			{
 				"Equip [miner] {itemName:stone pickaxe,equipAs:pick}",
-				"Unequip [miner] {itemName:stone pickaxe}",
+				"Unequip [miner] {itemName:pick}",
 				"Drop [miner] {itemName:stone pickaxe}"
 			};
 		}

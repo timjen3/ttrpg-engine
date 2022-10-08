@@ -3,6 +3,8 @@
 		"Name": "Miner",
 		"Attributes": {
 			"Name": "Player",
+			"hp": "20",
+			"max_hp": "20",
 			"max_stamina": "20",
 			"stamina": "20",
 			"money": "50",

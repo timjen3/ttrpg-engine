@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using TTRPG.Engine.Equations;
 
 namespace TTRPG.Engine.Demo.Engine.CommandParsing
 {
@@ -19,10 +20,12 @@ namespace TTRPG.Engine.Demo.Engine.CommandParsing
 		public string MainCommand { get; }
 		public List<Role> Roles { get; set; }
 		public Dictionary<string, string> Inputs { get; set; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+		public GameObject Data { get; }
 
 		// try to parse command
 		public CommandParser(string command, GameObject data)
 		{
+			Data = data;
 			// get sequence
 			var mainCommand = Regex.Match(command, @"^.*?(?=\s)");
 			if (mainCommand.Success)
@@ -75,6 +78,33 @@ namespace TTRPG.Engine.Demo.Engine.CommandParsing
 						Inputs[from] = to;
 					}
 				}
+			}
+		}
+
+		public ITTRPGCommandProcessor Build(IEquationService equationService, IInventoryService inventoryService)
+		{
+			if (CommandType == TTRPGCommandType.Equation)
+			{
+				return new EquationProcessor(
+					equationService,
+					MainCommand,
+					Roles,
+					Inputs,
+					Data
+				);
+			}
+			else if (CommandType == TTRPGCommandType.Inventory)
+			{
+				return new InventoryProcessor(
+					MainCommand,
+					Roles.FirstOrDefault(),
+					Inputs,
+					inventoryService
+				);
+			}
+			else
+			{
+				throw new NotImplementedException("Unknown command.");
 			}
 		}
 	}
