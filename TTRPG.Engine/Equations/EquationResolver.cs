@@ -22,6 +22,22 @@ namespace TTRPG.Engine.Equations
 			return _compiledFunctions[equation];
 		}
 
+		private void SetArgument(Argument arg, string input)
+		{
+			if (double.TryParse(input, out double parsedDouble))
+			{
+				arg.setArgumentValue(parsedDouble);
+			}
+			else
+			{
+				// unlike the setArgumentValue method this causes recompilation so avoid when unchanged
+				if (arg.getArgumentExpressionString() != input)
+				{
+					arg.setArgumentExpressionString(input);
+				}
+			}
+		}
+
 		private void SetArguments(Expression exp, IDictionary<string, string> inputs)
 		{
 			if (inputs != null)
@@ -31,18 +47,10 @@ namespace TTRPG.Engine.Equations
 					Argument arg = exp.getArgument(kvp.Key.Trim());
 					if (arg == null)
 					{
-						arg = new Argument(kvp.Key.Trim(), kvp.Value);
+						arg = new Argument(kvp.Key.Trim());
 						exp.addArguments(arg);
 					}
-					if (double.TryParse(kvp.Value, out double parsedDouble))
-					{
-						arg.setArgumentValue(parsedDouble);
-					}
-					else
-					{
-						// unlike the setArgumentValue method this causes recompilation
-						arg.setArgumentExpressionString(kvp.Value);
-					}
+					SetArgument(arg, kvp.Value);
 				}
 			}
 		}
