@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using TTRPG.Engine.Demo.Engine.CommandParsing;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
@@ -20,49 +20,20 @@ namespace TTRPG.Engine.Demo.Engine
 		}
 
 		public IEnumerable<string> ListTargetNames(string category) => Data.GetLiveTargets(category).Select(x => x.Name);
-
-		public EquationParts GetEquationPartsFromCommand(string command)
+		
+		public EquationParts GetEquationPartsFromCommand(CommandParser parser)
 		{
-			var parts = new EquationParts();
-			// get sequence
-			var sequenceName = Regex.Match(command, @"^.*?(?=\s)");
-			if (sequenceName.Success)
-			{
-				parts.Sequence = Data.Sequences.FirstOrDefault(x => x.Name.Equals(sequenceName.Value, StringComparison.OrdinalIgnoreCase));
-			}
-			// get roles
-			var rolesText = Regex.Match(command, @"\[.+?\]");
-			if (rolesText.Success)
-			{
-				parts.Roles = new List<Role>();
-				var rolesTextParts = rolesText.Value.Replace("[", "").Replace("]", "").Split(",");
-				foreach (var nextRolePart in rolesTextParts)
-				{
-					var from = nextRolePart.Split(":")[0];
-					var to = nextRolePart.Split(":")[1];
-					var role = Data.Roles.FirstOrDefault(x => x.Name.Equals(from, StringComparison.OrdinalIgnoreCase));
-					if (role != null)
-					{
-						parts.Roles.Add(role.CloneAs(to));
-					}
-				}
-			}
-			// get inputs
-			var inputsText = Regex.Match(command, @"\{.+?\}");
-			if (inputsText.Success)
-			{
-				var inputsTextParts = inputsText.Value.Replace("{", "").Replace("}", "").Split(",");
-				foreach (var nextInputPart in inputsTextParts)
-				{
-					var from = nextInputPart.Split(":")[0];
-					var to = nextInputPart.Split(":")[1];
-					if (from != null)
-					{
-						parts.Inputs[from] = to;
-					}
-				}
-			}
-			return parts;
+			return new EquationParts(parser, Data);
+		}
+
+		public InventoryParts GetInventoryPartsFromCommand(CommandParser parser)
+		{
+			return new InventoryParts(parser);
+		}
+
+		public CommandParser ParseMainCommand(string command)
+		{
+			return new CommandParser(command, Data);
 		}
 
 		public void HandleResultItems(SequenceResult result)

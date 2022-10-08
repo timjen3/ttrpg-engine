@@ -23,6 +23,7 @@ namespace TTRPG.Engine
 			services.AddSingleton(new Function("toss", new CoinTossFunctionExtension()));
 			services.AddSingleton<IEquationResolver, EquationResolver>();
 			services.AddSingleton<IEquationService, EquationService>();
+			services.AddSingleton<IInventoryService, InventoryService>();
 
 			return services;
 		}

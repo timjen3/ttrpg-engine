@@ -47,6 +47,38 @@
 					"Weapon"
 				]
 			}
-		}
+		},
+		"Bag": [
+			{
+				"Name": "Stone Pickaxe",
+				"Attributes": {
+					"Name": "Stone Pickaxe",
+					"Action": "picks",
+					"Hits": "1",
+					"Min": "2",
+					"Max": "8",
+					"Pierce": "2"
+				},
+				"Categories": [
+					"Inventory",
+					"Tool"
+				]
+			},
+			{
+				"Name": "Shortbow",
+				"Attributes": {
+					"Name": "Shortbow",
+					"Action": "shoots",
+					"Hits": "1",
+					"Min": "2",
+					"Max": "8",
+					"Pierce": "3"
+				},
+				"Categories": [
+					"Inventory",
+					"Weapon"
+				]
+			}
+		]
 	}
 ]
