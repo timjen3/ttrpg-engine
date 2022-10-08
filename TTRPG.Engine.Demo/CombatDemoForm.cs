@@ -20,22 +20,44 @@ namespace TTRPG.Engine.Demo
 
 		private void WriteMessage(string message) => txtBox_MessageLog.Text += $"{message}\r\n";
 
+		private bool TargetsChanged()
+		{
+			var currentItems = list_Targets.Items.Cast<string>().ToArray();
+			var updatedItems = ListTargetNames(cmb_TargetFilter.Text.Trim()).ToArray();
+			if (currentItems.Length != updatedItems.Length)
+				return true;
+
+			for (int i = 0; i < updatedItems.Length; i++)
+			{
+				if (updatedItems[i] != currentItems[i])
+					return true;
+			}
+
+			return false;
+		}
+
 		private void UpdateTargets()
 		{
+			if (!TargetsChanged()) return;
+
+			list_Targets.BeginUpdate();
 			var targetFilter = cmb_TargetFilter.Text.Trim();
 			list_Targets.Items.Clear();
 			foreach (var target in ListTargetNames(targetFilter))
 			{
 				list_Targets.Items.Add(target);
 			}
+			list_Targets.EndUpdate();
 		}
 
 		private void DisplayStatus()
 		{
+			txt_Status.SuspendLayout();
 			var miner = _data.Roles.Single(r => r.Name.Equals("Miner", StringComparison.OrdinalIgnoreCase));
 			var statusSequence = _data.Sequences.Single(s => s.Name.Equals("Status", StringComparison.OrdinalIgnoreCase));
 			var result = _equationService.Process(statusSequence, null, new Role[] { miner.CloneAs("target") });
 			txt_Status.Text = result.Results[0].Result;
+			txt_Status.PerformLayout();
 		}
 
 		public CombatDemoForm(IEquationService equationService, IInventoryService inventoryService, GameObject gameObject)
@@ -50,6 +72,7 @@ namespace TTRPG.Engine.Demo
 
 		private void ProcessCommand()
 		{
+			txtBox_MessageLog.SuspendLayout();
 			txtBox_MessageLog.Clear();
 			var command = txt_Command.Text;
 			var commandParser = new CommandParser(command, _data);
@@ -63,6 +86,7 @@ namespace TTRPG.Engine.Demo
 			parsedCommand.Process(WriteMessage, _data);
 			UpdateTargets();
 			DisplayStatus();
+			txtBox_MessageLog.PerformLayout();
 		}
 
 		private void btn_Perform_Click(object sender, EventArgs e)
@@ -81,10 +105,12 @@ namespace TTRPG.Engine.Demo
 		private void SetHelpText()
 		{
 			var examples = _data.Sequences.Select(s => s.Example);
+			txt_Status.SuspendLayout();
 			txt_Status.Lines = new string[] { "Help:" }
 				.Union(examples)
 				.Union(InventoryProcessor.GetInventoryCommandExamples())
 				.ToArray();
+			txt_Status.ResumeLayout();
 		}
 
 		private void btn_Help_Click(object sender, EventArgs e)
