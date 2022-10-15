@@ -5,7 +5,7 @@ using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
-namespace TTRPG.Engine.Demo.Engine
+namespace TTRPG.Engine
 {
 	public class GameObject
 	{

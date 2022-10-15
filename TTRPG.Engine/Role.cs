@@ -56,5 +56,11 @@ namespace TTRPG.Engine
 
 			return clone;
 		}
+
+		/// Removes Alias
+		public void RemoveAlias()
+		{
+			Alias = Name;
+		}
 	}
 }

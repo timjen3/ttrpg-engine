@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine
 {
@@ -16,7 +17,7 @@ namespace TTRPG.Engine
 
 			var item = entity.Bag
 				.FirstOrDefault(x => x.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
-			if (item == null) throw new Exception("Tried to equip item that is not in bag.");
+			if (item == null) throw new InventoryServiceException("Tried to equip item that is not in bag.");
 
 			entity.Bag.Remove(item);
 			entity.InventoryItems[equipAs] = item;
@@ -25,7 +26,7 @@ namespace TTRPG.Engine
 		/// <see cref="IInventoryService.Unequip(Role, string)"/>
 		public void Unequip(Role entity, string itemName)
 		{
-			if (!entity.InventoryItems.ContainsKey(itemName)) throw new Exception("Tried to unequip item that is not equipped.");
+			if (!entity.InventoryItems.ContainsKey(itemName)) throw new InventoryServiceException("Tried to unequip item that is not equipped.");
 
 			var item = entity.InventoryItems[itemName];
 			entity.InventoryItems.Remove(itemName);
@@ -37,7 +38,7 @@ namespace TTRPG.Engine
 		{
 			var item = entity.Bag
 				.FirstOrDefault(x => x.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
-			if (item == null) throw new Exception("Tried to drop item that is not in bag.");
+			if (item == null) throw new InventoryServiceException("Tried to drop item that is not in bag.");
 
 			entity.Bag.Remove(item);
 		}

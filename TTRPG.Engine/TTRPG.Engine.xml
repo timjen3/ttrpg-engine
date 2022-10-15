@@ -4,6 +4,35 @@
         <name>TTRPG.Engine</name>
     </assembly>
     <members>
+        <member name="P:TTRPG.Engine.CommandParsing.Parsers.ICommandParser.IsDefault">
+            <summary>
+            	Returns true if this processor will be used when no other processors apply
+            	The result of CanProcess() method does not matter when this is true
+            </summary>
+        </member>
+        <member name="M:TTRPG.Engine.CommandParsing.Parsers.ICommandParser.CanProcess(System.String)">
+            <summary>
+            	Returns true if this parser handles the given type of command
+            </summary>
+            <param name="commandType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.CommandParsing.Parsers.ICommandParser.GetProcessor(TTRPG.Engine.CommandParsing.ParsedCommand)">
+            <summary>
+            	Returns a command processor for the command
+            </summary>
+            <param name="command"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.CommandParsing.Parsers.ICommandParser.GetExampleCommands">
+            <summary>
+            	Returns example commands for related command handlers.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.CommandParsing.Processors.ITTRPGCommandProcessor.Process">
+            processes command and returns messages
+        </member>
         <member name="T:TTRPG.Engine.Condition">
             Condition on Sequence or SequenceItem
         </member>
@@ -291,6 +320,9 @@
         <member name="M:TTRPG.Engine.Role.CloneAs(System.String)">
             creates a clone with a different name
         </member>
+        <member name="M:TTRPG.Engine.Role.RemoveAlias">
+            Removes Alias
+        </member>
         <member name="T:TTRPG.Engine.SequenceItems.ResultItem">
             Configures a result
         </member>
@@ -338,6 +370,21 @@
             <summary>
             	What item resolved to
             </summary>
+        </member>
+        <member name="T:TTRPG.Engine.TTRPGEngine">
+            <summary>
+            	Parses and processes commands
+            </summary>
+        </member>
+        <member name="M:TTRPG.Engine.TTRPGEngine.Process(System.String)">
+            <summary>
+            	Parse and process a command
+            	Handle results
+            </summary>
+            <param name="command"></param>
+        </member>
+        <member name="E:TTRPG.Engine.TTRPGEngine.MessageCreated">
+            add message handlers
         </member>
     </members>
 </doc>
