@@ -376,12 +376,18 @@
             	Parses and processes commands
             </summary>
         </member>
-        <member name="M:TTRPG.Engine.TTRPGEngine.Process(System.String)">
+        <member name="M:TTRPG.Engine.TTRPGEngine.GetExampleCommands">
+            <summary>
+            	Returns example commands from all parsers
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.TTRPGEngine.Process(System.String,System.Boolean)">
             <summary>
             	Parse and process a command
-            	Handle results
             </summary>
             <param name="command"></param>
+            <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
         </member>
         <member name="E:TTRPG.Engine.TTRPGEngine.MessageCreated">
             add message handlers
