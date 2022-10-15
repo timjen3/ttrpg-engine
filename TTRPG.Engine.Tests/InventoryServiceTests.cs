@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Tests
 {
@@ -34,7 +35,7 @@ namespace TTRPG.Engine.Tests
 		{
 			var entity = new Role();
 
-			Assert.Throws<Exception>(() => Service.Equip(entity, "a", "b"));
+			Assert.Throws<InventoryServiceException>(() => Service.Equip(entity, "a", "b"));
 		}
 
 		[Test(Description = "If there is already an item equipped in the slot, it should be unequipped and added to the bag before equipping the new item")]
@@ -71,7 +72,7 @@ namespace TTRPG.Engine.Tests
 		{
 			var entity = new Role();
 
-			Assert.Throws<Exception>(() => Service.Unequip(entity, "b"));
+			Assert.Throws<InventoryServiceException>(() => Service.Unequip(entity, "b"));
 		}
 
 		[Test]
@@ -91,7 +92,7 @@ namespace TTRPG.Engine.Tests
 		{
 			var entity = new Role();
 
-			Assert.Throws<Exception>(() => Service.DropItem(entity, "b"));
+			Assert.Throws<InventoryServiceException>(() => Service.DropItem(entity, "b"));
 		}
 
 		[Test]
