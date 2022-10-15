@@ -20,6 +20,10 @@ namespace TTRPG.Engine
 			_parsers = parsers;
 		}
 
+		/// <summary>
+		///		Returns example commands from all parsers
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<string> GetExampleCommands()
 		{
 			return _parsers
@@ -28,22 +32,26 @@ namespace TTRPG.Engine
 
 		/// <summary>
 		///		Parse and process a command
-		///		Handle results
 		/// </summary>
 		/// <param name="command"></param>
-		public void Process(string command)
+		/// <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
+		public IEnumerable<string> Process(string command, bool handleMessages)
 		{
 			var processor = _factory.Build(command);
 			if (!processor.IsValid())
 			{
 				MessageCreated(this, "Invalid command.");
-				return;
+				return new string[] { "Invalid command." };
 			}
 			var results = processor.Process();
-			foreach (var message in results)
+			if (handleMessages && MessageCreated != null)
 			{
-				MessageCreated(this, message);
+				foreach (var message in results)
+				{
+					MessageCreated(this, message);
+				}
 			}
+			return results;
 		}
 
 		/// add message handlers

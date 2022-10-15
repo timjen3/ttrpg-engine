@@ -36,11 +36,10 @@ namespace TTRPG.Engine.Demo
 				}
 			});
 			var provider = collection.BuildServiceProvider();
-			var equationService = provider.GetRequiredService<IEquationService>();
 			var gameObject = provider.GetRequiredService<GameObject>();
 			var engine = provider.GetRequiredService<TTRPGEngine>();
 
-			return new CombatDemoForm(equationService, gameObject, engine);
+			return new CombatDemoForm(gameObject, engine);
 		}
 	}
 }

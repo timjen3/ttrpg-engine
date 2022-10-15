@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using TTRPG.Engine.Equations;
 
 namespace TTRPG.Engine.Demo
 {
 	public partial class CombatDemoForm : Form
 	{
 		private readonly GameObject _data;
-		private readonly IEquationService _equationService;
 		private readonly TTRPGEngine _engine;
 		private string _targetFilter;
 
@@ -51,16 +49,13 @@ namespace TTRPG.Engine.Demo
 		private void DisplayStatus()
 		{
 			txt_Status.SuspendLayout();
-			var miner = _data.Roles.Single(r => r.Name.Equals("Miner", StringComparison.OrdinalIgnoreCase));
-			var statusSequence = _data.Sequences.Single(s => s.Name.Equals("Status", StringComparison.OrdinalIgnoreCase));
-			var result = _equationService.Process(statusSequence, null, new Role[] { miner.CloneAs("target") });
-			txt_Status.Text = result.Results[0].Result;
+			var statusUpdate = _engine.Process("Status [miner:target]", false);
+			txt_Status.Text = statusUpdate.FirstOrDefault();
 			txt_Status.PerformLayout();
 		}
 
-		public CombatDemoForm(IEquationService equationService, GameObject gameObject, TTRPGEngine engine)
+		public CombatDemoForm(GameObject gameObject, TTRPGEngine engine)
 		{
-			_equationService = equationService;
 			_data = gameObject;
 			_engine = engine;
 			engine.MessageCreated += new EventHandler<string>(WriteMessage);
@@ -74,7 +69,7 @@ namespace TTRPG.Engine.Demo
 			txtBox_MessageLog.SuspendLayout();
 			txtBox_MessageLog.Clear();
 			var command = txt_Command.Text;
-			_engine.Process(command);
+			_engine.Process(command, true);
 			UpdateTargets();
 			DisplayStatus();
 			txtBox_MessageLog.PerformLayout();
