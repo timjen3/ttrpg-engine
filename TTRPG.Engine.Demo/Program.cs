@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
 using TTRPG.Engine.Data;
-using TTRPG.Engine.Demo.Engine;
 using TTRPG.Engine.Equations;
 
 namespace TTRPG.Engine.Demo
@@ -36,13 +35,12 @@ namespace TTRPG.Engine.Demo
 					MessageTemplatesDirectory = "DataFiles/MessageTemplates"
 				}
 			});
-			collection.AddScoped<GameObject>();
 			var provider = collection.BuildServiceProvider();
 			var equationService = provider.GetRequiredService<IEquationService>();
-			var inventoryService = provider.GetRequiredService<IInventoryService>();
 			var gameObject = provider.GetRequiredService<GameObject>();
+			var engine = provider.GetRequiredService<TTRPGEngine>();
 
-			return new CombatDemoForm(equationService, inventoryService, gameObject);
+			return new CombatDemoForm(equationService, gameObject, engine);
 		}
 	}
 }

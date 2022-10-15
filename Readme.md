@@ -86,6 +86,22 @@ If FirstRole is true, then the first role passed will be attached.
 
 A FormatMessage can be set which can be a plain string (ex: `"something"`) or a format string (ex: `"{propa}"`). Format strings will have access to all inputs, all results, and any mappings that do not have ItemNames specified.
 
+## TTRPGEngine
+
+The engine has built in parsers for processing different kinds of commands.
+
+### Inventory Commands
+
+todo
+
+### Equation Commands
+
+todo
+
+### Registering Messages
+
+todo
+
 ## Exceptions
 
     ConditionFailedException

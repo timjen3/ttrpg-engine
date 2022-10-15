@@ -4,6 +4,9 @@ using org.mariuszgromada.math.mxparser;
 using TTRPG.Engine.Equations.Extensions;
 using TTRPG.Engine.Data;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
+using TTRPG.Engine.CommandParsing;
+using TTRPG.Engine.CommandParsing.Processors;
+using TTRPG.Engine.CommandParsing.Parsers;
 
 namespace TTRPG.Engine
 {
@@ -24,6 +27,13 @@ namespace TTRPG.Engine
 			services.AddSingleton<IEquationResolver, EquationResolver>();
 			services.AddSingleton<IEquationService, EquationService>();
 			services.AddSingleton<IInventoryService, InventoryService>();
+			services.AddSingleton<ICommandProcessorFactory, CommandProcessorFactory>();
+			services.AddSingleton<ITTRPGCommandProcessor, EquationProcessor>();
+			services.AddSingleton<ITTRPGCommandProcessor, InventoryProcessor>();
+			services.AddSingleton<ICommandParser, EquationCommandParser>();
+			services.AddSingleton<ICommandParser, InventoryCommandParser>();
+			services.AddSingleton<GameObject>();
+			services.AddSingleton<TTRPGEngine>();
 
 			return services;
 		}
@@ -39,7 +49,7 @@ namespace TTRPG.Engine
 			services.AddSingleton(options);
 			if (options.StorageType == DataStorageType.JsonFile)
 			{
-				services.AddScoped<ITTRPGDataRepository, JsonTTRPGDataRepository>();
+				services.AddSingleton<ITTRPGDataRepository, JsonTTRPGDataRepository>();
 			}
 
 			return services;
