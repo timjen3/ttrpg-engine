@@ -37,7 +37,8 @@ namespace TTRPG.Engine
 		/// <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
 		public IEnumerable<string> Process(string command, bool handleMessages)
 		{
-			var processor = _factory.Build(command);
+			var parsedCommand = _factory.ParseCommand(command);
+			var processor = _factory.Build(parsedCommand);
 			if (!processor.IsValid())
 			{
 				MessageCreated(this, "Invalid command.");
