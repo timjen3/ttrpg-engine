@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using TTRPG.Engine.CommandParsing.Processors;
+﻿using TTRPG.Engine.CommandParsing.Processors;
 
 namespace TTRPG.Engine.CommandParsing
 {
 	public interface ICommandProcessorFactory
 	{
-		ITTRPGCommandProcessor Build(string fullCommand);
+		ParsedCommand ParseCommand(string fullCommand);
+		ITTRPGCommandProcessor Build(ParsedCommand parsedCommand);
 	}
 }

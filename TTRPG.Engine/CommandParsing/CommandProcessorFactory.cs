@@ -18,22 +18,15 @@ namespace TTRPG.Engine.CommandParsing
 			_parsers = parsers;
 		}
 
-		public ITTRPGCommandProcessor Build(string fullCommand)
+		public ParsedCommand ParseCommand(string fullCommand)
 		{
 			var parsedCommand = new ParsedCommand();
 			// get sequence
-			var mainCommand = Regex.Match(fullCommand, @"^.*?(?=\s)");
+			var mainCommand = Regex.Match(fullCommand, @"^\w*");
 			if (mainCommand.Success)
 			{
 				parsedCommand.MainCommand = mainCommand.Value;
 			}
-			// find processor for sequence type
-			ICommandParser parser = null;
-			var matches = _parsers.Where(x => !x.IsDefault && x.CanProcess(parsedCommand.MainCommand));
-			if (matches.Count() > 1) throw new Exception("Found multiple parsers able to process this command.");
-			if (matches.Count() == 1) parser = matches.Single();
-			if (parser == null) parser = _parsers.FirstOrDefault(x => x.IsDefault);
-			if (parser == null) throw new Exception("Unknown command.");
 			// get roles
 			var rolesText = Regex.Match(fullCommand, @"\[.+?\]");
 			if (rolesText.Success)
@@ -77,7 +70,18 @@ namespace TTRPG.Engine.CommandParsing
 					}
 				}
 			}
-			// build parser
+			return parsedCommand;
+		}
+
+		public ITTRPGCommandProcessor Build(ParsedCommand parsedCommand)
+		{
+			ICommandParser parser = null;
+			var matches = _parsers.Where(x => !x.IsDefault && x.CanProcess(parsedCommand.MainCommand));
+			if (matches.Count() > 1) throw new Exception("Found multiple parsers able to process this command.");
+			if (matches.Count() == 1) parser = matches.Single();
+			if (parser == null) parser = _parsers.FirstOrDefault(x => x.IsDefault);
+			if (parser == null) throw new Exception("Unknown command.");
+
 			return parser.GetProcessor(parsedCommand);
 		}
 	}

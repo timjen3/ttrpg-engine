@@ -12,7 +12,10 @@ namespace TTRPG.Engine.Demo
 		private readonly TTRPGEngine _engine;
 		private string _targetFilter;
 
-		private IEnumerable<string> ListTargetNames(string category) => _data.GetLiveTargets(category).Select(x => x.Name);
+		private IEnumerable<string> ListTargetNames(string category) => _data
+			.Roles.Where(x => x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase))
+				.Where(x => int.Parse(x.Attributes["hp"]) > 0).
+				Select(x => x.Name);
 
 		private void WriteMessage(object sender, string message) => txtBox_MessageLog.Text += $"{message}\r\n";
 
