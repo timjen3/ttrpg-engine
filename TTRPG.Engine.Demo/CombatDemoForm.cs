@@ -10,7 +10,6 @@ namespace TTRPG.Engine.Demo
 	{
 		private readonly GameObject _data;
 		private readonly TTRPGEngine _engine;
-		private string _targetFilter;
 
 		private IEnumerable<string> ListTargetNames(string category) => _data
 			.Roles.Where(x => x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase))
@@ -72,7 +71,15 @@ namespace TTRPG.Engine.Demo
 			txtBox_MessageLog.SuspendLayout();
 			txtBox_MessageLog.Clear();
 			var command = txt_Command.Text;
-			_engine.Process(command, true);
+			try
+			{
+				_engine.Process(command, true);
+			}
+			catch (Exception ex)
+			{
+				WriteMessage(null, ex.Message);
+				WriteMessage(null, ex.StackTrace);
+			}
 			UpdateTargets();
 			DisplayStatus();
 			txtBox_MessageLog.PerformLayout();
@@ -107,12 +114,7 @@ namespace TTRPG.Engine.Demo
 
 		private void cmb_TargetFilter_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			var target = cmb_TargetFilter.Text.Trim();
-			if (_targetFilter != target)
-			{
-				target = _targetFilter;
-				UpdateTargets();
-			}
+			UpdateTargets();
 		}
 	}
 }

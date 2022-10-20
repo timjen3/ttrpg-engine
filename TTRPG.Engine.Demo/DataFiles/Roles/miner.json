@@ -70,7 +70,7 @@
 				"Name": "Shortbow",
 				"Attributes": {
 					"Name": "Shortbow",
-					"Action": "shoots",
+					"Action": "shot",
 					"Hits": "1",
 					"Min": "10",
 					"Max": "30",
