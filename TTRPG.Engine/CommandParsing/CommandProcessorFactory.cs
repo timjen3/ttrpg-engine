@@ -23,7 +23,7 @@ namespace TTRPG.Engine.CommandParsing
 			var parsedCommand = new ParsedCommand();
 			// get sequence
 			var mainCommand = Regex.Match(fullCommand, @"^\w*");
-			if (mainCommand.Success)
+			if (mainCommand.Success && !string.IsNullOrWhiteSpace(mainCommand.Value))
 			{
 				parsedCommand.MainCommand = mainCommand.Value;
 			}

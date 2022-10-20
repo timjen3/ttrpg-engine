@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using TTRPG.Engine.CommandParsing;
+using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
@@ -10,11 +11,12 @@ namespace TTRPG.Engine.Tests
 {
 	[TestFixture(Category = "Unit")]
 	[TestOf(typeof(CommandProcessorFactory))]
-	public class CommandProcessorFactoryTests
+	public class CommandProcessorFactoryParsingTests
 	{
 		List<Sequence> Sequences;
 		List<SequenceItem> SequenceItems;
 		List<Role> Roles;
+		List<ICommandParser> Parsers;
 
 		[SetUp]
 		public void SetupTest()
@@ -22,9 +24,10 @@ namespace TTRPG.Engine.Tests
 			Sequences = new List<Sequence>();
 			SequenceItems = new List<SequenceItem>();
 			Roles = new List<Role>();
+			Parsers = new List<ICommandParser>();
 		}
 
-		public ICommandProcessorFactory BuildCommandProcessorFactory()
+		ICommandProcessorFactory BuildCommandProcessorFactory()
 		{
 			var mockLoader = new Mock<ITTRPGDataRepository>();
 			mockLoader.Setup(x => x.GetSequencesAsync()).ReturnsAsync(Sequences);
@@ -32,7 +35,19 @@ namespace TTRPG.Engine.Tests
 			mockLoader.Setup(x => x.GetRolesAsync()).ReturnsAsync(Roles);
 			var gameObject = new GameObject(mockLoader.Object);
 
-			return new CommandProcessorFactory(gameObject, null);
+			return new CommandProcessorFactory(gameObject, Parsers);
+		}
+
+		[Test]
+		public void ParseCommand_WithEmptyCommand_AllNull()
+		{
+			var processor = BuildCommandProcessorFactory();
+
+			var parsed = processor.ParseCommand("");
+
+			Assert.That(parsed.MainCommand, Is.Null);
+			Assert.That(parsed.Inputs, Is.Empty);
+			Assert.That(parsed.Roles, Is.Empty);
 		}
 
 		[Test]
