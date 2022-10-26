@@ -1,0 +1,94 @@
+[
+	{
+		"Name": "Status",
+		"Example": "Status [miner:target]",
+		"Items": [
+			{
+				"Name": "Report Status",
+				"Equation": "[[output_target_status]]",
+				"ResultName": "status_message",
+				"SequenceItemEquationType": "Message"
+			}
+		],
+		"Mappings": [
+			{
+				"From": "stamina",
+				"To": "stamina",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "max_stamina",
+				"To": "max_stamina",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "dirt",
+				"To": "dirt",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "stone",
+				"To": "stone",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "obsidian",
+				"To": "obsidian",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "meat",
+				"To": "meat",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "money",
+				"To": "money",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "hp",
+				"To": "hp",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			},
+			{
+				"From": "max_hp",
+				"To": "max_hp",
+				"ItemName": null,
+				"RoleName": "target",
+				"MappingType": "Role",
+				"ThrowOnFailure": false
+			}
+		],
+		"RoleConditions": [
+			{
+				"RoleName": "target",
+				"RequiredCategories": []
+			}
+		]
+	}
+]

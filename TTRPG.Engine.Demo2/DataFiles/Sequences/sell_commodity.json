@@ -1,0 +1,120 @@
+[
+	{
+		"Name": "SellCommodity",
+		"Example": "SellCommodity [dirt:commodity,miner:seller] {quantity:6}",
+		"Items": [
+			{
+				"Name": "TotalSaleAmount",
+				"Equation": "sale_price * quantity_to_sell",
+				"ResultName": "total_sale_amount",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Intention",
+				"Equation": "{seller_name} is selling {quantity_to_sell} {resource} at {sale_price}/unit for a total of {total_sale_amount} moneys.",
+				"ResultName": "intention",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "NewQuantityOnHand",
+				"Equation": "quantity_on_hand - quantity_to_sell",
+				"ResultName": "new_quantity_on_hand",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "NewMoney",
+				"Equation": "current_money + total_sale_amount",
+				"ResultName": "new_money",
+				"SequenceItemEquationType": "Algorithm"
+			}
+		],
+		"Conditions": [
+			{
+				"DependentOnItem": null,
+				"Equation": "quantity_to_sell <= quantity_on_hand",
+				"ItemNames": null,
+				"ThrowOnFail": false,
+				"FailureMessage": "{seller_name} doesn't have enough quantity to make that sale."
+			}
+		],
+		"Mappings": [
+			{
+				"From": "name",
+				"To": "seller_name",
+				"ItemName": null,
+				"RoleName": "seller",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "quantity",
+				"To": "quantity_to_sell",
+				"ItemName": null,
+				"RoleName": null,
+				"MappingType": "Input",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "resource",
+				"To": "resource",
+				"ItemName": null,
+				"RoleName": "commodity",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "{resource}",
+				"To": "quantity_on_hand",
+				"ItemName": null,
+				"RoleName": "seller",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "sell",
+				"To": "sale_price",
+				"ItemName": null,
+				"RoleName": "commodity",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "money",
+				"To": "current_money",
+				"ItemName": null,
+				"RoleName": "seller",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			}
+		],
+		"ResultItems": [
+			{
+				"Name": "Money",
+				"Category": "UpdateAttribute",
+				"Source": "new_money",
+				"RoleName": "seller"
+			},
+			{
+				"Name": "Quantity",
+				"Category": "UpdateAttribute",
+				"FormatMessage": "{resource}",
+				"Source": "new_quantity_on_hand",
+				"RoleName": "seller"
+			}
+		],
+		"RoleConditions": [
+			{
+				"RoleName": "Seller",
+				"RequiredCategories": [
+					"Entity"
+				]
+			},
+			{
+				"RoleName": "Commodity",
+				"RequiredCategories": [
+					"Commodity"
+				]
+			}
+		]
+	}
+]

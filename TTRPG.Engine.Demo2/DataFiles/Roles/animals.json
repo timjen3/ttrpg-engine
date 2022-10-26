@@ -1,0 +1,80 @@
+[
+	{
+		"Name": "Deer1",
+		"Attributes": {
+			"MAX_HP": "35",
+			"HP": "35",
+			"AC": "1",
+			"Name": "Deer1",
+			"Resource": "meat"
+		},
+		"Categories": [
+			"Animal"
+		]
+	},
+	{
+		"Name": "Rabbit",
+		"Attributes": {
+			"MAX_HP": "5",
+			"HP": "5",
+			"AC": "1",
+			"Name": "Rabbit",
+			"Resource": "meat"
+		},
+		"Categories": [
+			"Animal"
+		]
+	},
+	{
+		"Name": "Squirrel",
+		"Attributes": {
+			"MAX_HP": "10",
+			"HP": "10",
+			"AC": "1",
+			"Name": "Squirrel",
+			"Resource": "meat"
+		},
+		"Categories": [
+			"Animal"
+		]
+	},
+	{
+		"Name": "Chipmunk",
+		"Attributes": {
+			"MAX_HP": "4",
+			"HP": "4",
+			"AC": "1",
+			"Name": "Chipmunk",
+			"Resource": "meat"
+		},
+		"Categories": [
+			"Animal"
+		]
+	},
+	{
+		"Name": "Deer2",
+		"Attributes": {
+			"MAX_HP": "45",
+			"HP": "45",
+			"AC": "1",
+			"Name": "Deer2",
+			"Resource": "meat"
+		},
+		"Categories": [
+			"Animal"
+		]
+	},
+	{
+		"Name": "Bear",
+		"Attributes": {
+			"MAX_HP": "200",
+			"HP": "200",
+			"AC": "2",
+			"Name": "Bear",
+			"Resource": "meat"
+		},
+		"Categories": [
+			"Animal"
+		]
+	}
+]

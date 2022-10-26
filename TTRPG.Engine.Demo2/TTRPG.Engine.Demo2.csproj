@@ -1,0 +1,92 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="DataFiles\MessageTemplates\output_target_status.txt" />
+    <None Remove="DataFiles\Roles\animals.json" />
+    <None Remove="DataFiles\Roles\commodities.json" />
+    <None Remove="DataFiles\Roles\miner.json" />
+    <None Remove="DataFiles\Roles\terrain.json" />
+    <None Remove="DataFiles\SequenceItems\sequence_items.json" />
+    <None Remove="DataFiles\Sequences\buy_commodity.json" />
+    <None Remove="DataFiles\Sequences\hunt.json" />
+    <None Remove="DataFiles\Sequences\mine_terrain.json" />
+    <None Remove="DataFiles\Sequences\rest.json" />
+    <None Remove="DataFiles\Sequences\sell_commodity.json" />
+    <None Remove="DataFiles\Sequences\status.json" />
+    <None Remove="Icon.ico" />
+    <None Remove="Icon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataFiles\MessageTemplates\output_target_status.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Roles\animals.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Roles\commodities.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Roles\miner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Roles\terrain.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\SequenceItems\sequence_items.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\buy_commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\hunt.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\mine_terrain.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\rest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\sell_commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\status.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Icon.ico" />
+    <EmbeddedResource Include="Icon.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EmptyKeysUI_MonoGame" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.28" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TTRPG.Engine\TTRPG.Engine.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Views\Dictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Views\MainScreenViewPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
+  <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
+    <Message Text="Restoring dotnet tools" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>

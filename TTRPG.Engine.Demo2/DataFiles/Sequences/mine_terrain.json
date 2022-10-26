@@ -1,0 +1,285 @@
+[
+	{
+		"Name": "MineTerrain",
+		"Example": "MineTerrain [miner:miner,dirtblock1:terrain]",
+		"Items": [
+			{
+				"Name": "Intention",
+				"Equation": "{miner_name} {wAction} at {terrain_name}.",
+				"ResultName": "intention",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Damage",
+				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
+				"ResultName": "damage",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Damage",
+				"Equation": "{miner_name} dealt {damage} damage to {terrain_name} from {wHits} {wAction}.",
+				"ResultName": "DamageMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Take Damage",
+				"Equation": "max(hp - damage, 0)",
+				"ResultName": "new_hp",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Damage Taken",
+				"Equation": "{terrain_name} HP : {old_hp} => {new_hp}",
+				"ResultName": "DamageTakenMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Claim Resources",
+				"Equation": "current_quantity + max(floor(terrain_max_hp / 3), 1)",
+				"ResultName": "new_quantity",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Resources Taken",
+				"Equation": "Got resources : {current_quantity} => {new_quantity}",
+				"ResultName": "ResourcesTakenMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Drain Stamina",
+				"Equation": "miner_stamina - 1",
+				"ResultName": "new_stamina",
+				"SequenceItemEquationType": "Algorithm"
+			}
+		],
+		"Conditions": [
+			{
+				"DependentOnItem": null,
+				"Equation": "miner_stamina > 0",
+				"ThrowOnFail": false,
+				"FailureMessage": "You're too tired! You should rest."
+			},
+			{
+				"DependentOnItem": null,
+				"Equation": "hp > 0",
+				"ThrowOnFail": false,
+				"FailureMessage": "Target is already destroyed."
+			},
+			{
+				"DependentOnItem": null,
+				"Equation": "pierce >= ac",
+				"ThrowOnFail": false,
+				"FailureMessage": "Your tool is inneffective."
+			},
+			{
+				"DependentOnItem": "Damage",
+				"Equation": null,
+				"ItemNames": [
+					"Report Damage",
+					"Drain Stamina"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Damage",
+				"Equation": "damage > 0",
+				"ItemNames": [
+					"Take Damage",
+					"Report Damage Taken"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Take Damage",
+				"Equation": "new_hp <= 0",
+				"ItemNames": [
+					"Claim Resources"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Claim Resources",
+				"Equation": "new_quantity > 0",
+				"ItemNames": [
+					"Report Resources Taken"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			}
+		],
+		"Mappings": [
+			{
+				"From": "name",
+				"To": "miner_name",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "Resource",
+				"To": "resource",
+				"ItemName": null,
+				"RoleName": "terrain",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "{resource}",
+				"To": "current_quantity",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "name",
+				"To": "terrain_name",
+				"ItemName": null,
+				"RoleName": "terrain",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hp",
+				"To": "hp",
+				"ItemName": null,
+				"RoleName": "terrain",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "stamina",
+				"To": "miner_stamina",
+				"ItemName": null,
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "pierce",
+				"To": "pierce",
+				"ItemName": null,
+				"RoleName": "miner",
+				"InventoryItemName": "pick",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hits",
+				"To": "wHits",
+				"ItemName": "Report Damage",
+				"RoleName": "miner",
+				"InventoryItemName": "pick",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "ac",
+				"To": "ac",
+				"ItemName": null,
+				"RoleName": "terrain",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "str",
+				"To": "str",
+				"ItemName": "Damage",
+				"RoleName": "miner",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hits",
+				"To": "wHits",
+				"ItemName": "Damage",
+				"RoleName": "miner",
+				"InventoryItemName": "pick",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "min",
+				"To": "wMin",
+				"ItemName": "Damage",
+				"RoleName": "miner",
+				"InventoryItemName": "pick",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "max",
+				"To": "wMax",
+				"ItemName": "Damage",
+				"RoleName": "miner",
+				"InventoryItemName": "pick",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "action",
+				"To": "wAction",
+				"ItemName": null,
+				"RoleName": "miner",
+				"InventoryItemName": "pick",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hp",
+				"To": "old_hp",
+				"ItemName": "Report Damage Taken",
+				"RoleName": "terrain",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "MAX_HP",
+				"To": "terrain_max_hp",
+				"ItemName": null,
+				"RoleName": "terrain",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			}
+		],
+		"ResultItems": [
+			{
+				"Name": "HP",
+				"Category": "UpdateAttribute",
+				"Source": "new_hp",
+				"RoleName": "terrain"
+			},
+			{
+				"Name": "Quantity",
+				"Category": "UpdateAttribute",
+				"FormatMessage": "{resource}",
+				"Source": "new_quantity",
+				"RoleName": "miner"
+			},
+			{
+				"Name": "Stamina",
+				"Category": "UpdateAttribute",
+				"Source": "new_stamina",
+				"RoleName": "miner"
+			}
+		],
+		"RoleConditions": [
+			{
+				"RoleName": "Terrain",
+				"RequiredCategories": [
+					"Terrain"
+				]
+			},
+			{
+				"RoleName": "Miner",
+				"RequiredCategories": [
+					"PlayerControlled"
+				]
+			}
+		]
+	}
+]
