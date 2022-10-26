@@ -1,0 +1,99 @@
+<ek:UIRoot xmlns:UserInterface="clr-namespace:UserInterface"    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ek="clr-namespace:EmptyKeys.UserInterface.Designer;assembly=EmptyKeys.UserInterface.Designer"
+             xmlns:ef="clr-namespace:EmptyKeys.UserInterface.Designer.Effects;assembly=EmptyKeys.UserInterface.Designer"
+             xmlns:c="clr-namespace:EmptyKeys.UserInterface.Designer.Charts;assembly=EmptyKeys.UserInterface.Designer"
+             xmlns:ctl="clr-namespace:EmptyKeys.UserInterface.Controls;assembly=EmptyKeys.UserInterface"
+             xmlns:local="clr-namespace:UserInterface"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="900" >
+
+    <ek:UIRoot.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Dictionary.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </ek:UIRoot.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="30" />
+			<RowDefinition MinHeight="350" MaxHeight="350" />
+			<RowDefinition MinHeight="50" MaxHeight="50" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Background="Black" Grid.Row="0" Grid.ColumnSpan="4">
+			<TextBlock TextWrapping="Wrap" Text="{DynamicResource TitleResource}" HorizontalAlignment="Center" VerticalAlignment="Center" 
+                   FontSize="20pt" FontWeight="Bold" FontFamily="Segoe UI" Foreground="LightGray" />
+		</StackPanel>
+
+		<TabControl Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" Margin="10" Name="TabControl" VerticalAlignment="stretch" >
+			<TabItem Header="Area" HorizontalContentAlignment="Stretch" VerticalAlignment="stretch">
+				<Grid>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition />
+					</Grid.ColumnDefinitions>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="50"/>
+						<RowDefinition />
+					</Grid.RowDefinitions>
+
+					<ComboBox Name="comboTargets" Grid.Row="0" Width="300" Margin="5" SelectedIndex="2" TabIndex="1" SelectedItem="{Binding SelectedTarget}">
+						<ComboBoxItem IsSelected="true" Name="terrain" Content="Terrain" />
+						<ComboBoxItem Name="animal" Content="Animals" />
+						<ComboBoxItem Name="commodity" Content="Commodities" />
+					</ComboBox>
+					<ListBox Grid.Row ="1" TabIndex="2" ItemsSource="{Binding Targets}" VerticalAlignment="stretch"
+						ek:DragDrop.IsDropTarget="True" ek:DragDrop.IsDragSource="True"
+						SelectedItem="{Binding SelectedTargetItem}"/>
+				</Grid>
+			</TabItem>
+
+			<TabItem Header="Player" HorizontalContentAlignment="Stretch">
+				<DataGrid ItemsSource="{Binding Attributes}" AutoGenerateColumns="False" VerticalAlignment="stretch">
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="Attribute" Binding="{Binding Attribute}" />
+						<DataGridTextColumn Header="Value" Binding="{Binding Value}" >
+							<DataGridTextColumn.ElementStyle>
+								<Style TargetType="DataGridCell">
+									<Setter Property="Background" Value="Gray" />
+									<Setter Property="HorizontalAlignment" Value="Center" />
+									<Setter Property="VerticalAlignment" Value="Center" />
+								</Style>
+							</DataGridTextColumn.ElementStyle>
+						</DataGridTextColumn>
+					</DataGrid.Columns>
+				</DataGrid>
+			</TabItem>
+		</TabControl>
+
+		<TextBox Name="textBox" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding TextBoxCommand}" 
+                        HorizontalAlignment="Stretch" Margin="5" TabIndex="3" UndoLimit="20" SelectionBrush="Red" />
+		<Button Name="buttonExecuteCommand" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch"
+                    Content="Execute Command" Margin="5" TabIndex="4"
+                    Command="{Binding ButtonExecuteCommand}" CommandParameter="{Binding TextBoxCommand}" />
+
+		<Grid Grid.Row="3" Grid.ColumnSpan="4">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<TextBlock Text="{Binding CommandResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="0" Margin="5" Background="Gray" />
+			<TextBlock Text="{Binding StatusResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="1" Margin="5" Background="Gray" />
+		</Grid>
+	</Grid>
+</ek:UIRoot>
