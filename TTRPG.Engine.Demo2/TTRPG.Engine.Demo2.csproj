@@ -77,16 +77,5 @@
   <ItemGroup>
     <ProjectReference Include="..\TTRPG.Engine\TTRPG.Engine.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Update="Views\Dictionary.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Views\MainScreenViewPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-  </ItemGroup>
-  <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
-    <Message Text="Restoring dotnet tools" Importance="High" />
-    <Exec Command="dotnet tool restore" />
-  </Target>
+
 </Project>
