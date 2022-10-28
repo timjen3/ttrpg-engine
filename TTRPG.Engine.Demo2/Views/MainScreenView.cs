@@ -1,9 +1,6 @@
-﻿using EmptyKeys.UserInterface;
-using EmptyKeys.UserInterface.Controls;
+﻿using EmptyKeys.UserInterface.Controls;
 using EmptyKeys.UserInterface.Input;
-using EmptyKeys.UserInterface.Media;
 using EmptyKeys.UserInterface.Mvvm;
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,6 +19,7 @@ namespace TTRPG.Engine.Demo2.Views
 		private string _textBoxCommand;
 		private string _selectedTarget;
 		private string _selectedTargetItem;
+		private StatDataGridItem _selectedAttribute;
 		private string _commandResult;
 		private string _statusResult;
 		private List<StatDataGridItem> _attributes;
@@ -54,10 +52,10 @@ namespace TTRPG.Engine.Demo2.Views
 				.Select(x => x.Name)
 				.ToArray();
 
-		private string[] GetCommodities() => _data.Roles
+		private HashSet<string> GetCommodities() => _data.Roles
 			.Where(x => x.Categories.Contains("Commodity", StringComparer.OrdinalIgnoreCase))
 			.Select(x => x.Attributes["resource"])
-			.ToArray();
+			.ToHashSet(StringComparer.OrdinalIgnoreCase);
 
 		private bool TargetsChanged()
 		{
@@ -89,7 +87,7 @@ namespace TTRPG.Engine.Demo2.Views
 			}
 		}
 
-		private void UpdateTextBoxCommandFromSelection()
+		private void UpdateTextBoxCommandFromTargetItem()
 		{
 			if (string.IsNullOrWhiteSpace(_selectedTargetItem))
 			{
@@ -106,18 +104,33 @@ namespace TTRPG.Engine.Demo2.Views
 			}
 			else if (_selectedTarget == "commodity")
 			{
-				TextBoxCommand = $"SellCommodity [miner:seller,{_selectedTargetItem}:commodity] {{quantity:1}}";
+				TextBoxCommand = $"BuyCommodity [miner:buyer,{_selectedTargetItem}:commodity] {{quantity:1}}";
+			}
+		}
+
+		private void UpdateTextBoxCommandFromAttribute()
+		{
+			if (_selectedAttribute == null)
+			{
+				TextBoxCommand = "";
+				return;
+			}
+			if (GetCommodities().Contains(_selectedAttribute.Attribute))
+			{
+				TextBoxCommand = $"SellCommodity [miner:seller,{_selectedAttribute.Attribute}:commodity] {{quantity:{_selectedAttribute.Value}}}";
 			}
 		}
 
 		private void UpdatePlayerAttributes()
 		{
 			var player = _data.Roles.FirstOrDefault(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase));
-			var updatedAttributes = player.Attributes.Select(x => new StatDataGridItem
-			{
-				Attribute = x.Key,
-				Value = x.Value
-			});
+			var updatedAttributes = player.Attributes
+				.Where(x => GetCommodities().Contains(x.Key))
+				.Select(x => new StatDataGridItem
+				{
+					Attribute = x.Key,
+					Value = x.Value
+				});
 			Attributes = updatedAttributes.ToList();
 		}
 
@@ -169,7 +182,17 @@ namespace TTRPG.Engine.Demo2.Views
 			set
 			{
 				SetProperty(ref _selectedTargetItem, value?.Name);
-				UpdateTextBoxCommandFromSelection();
+				UpdateTextBoxCommandFromTargetItem();
+			}
+		}
+
+		public StatDataGridItem SelectedAttribute
+		{
+			get => null;
+			set
+			{
+				SetProperty(ref _selectedAttribute, value);
+				UpdateTextBoxCommandFromAttribute();
 			}
 		}
 

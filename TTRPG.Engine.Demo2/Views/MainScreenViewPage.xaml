@@ -59,8 +59,8 @@
 				</Grid>
 			</TabItem>
 
-			<TabItem Header="Player" HorizontalContentAlignment="Stretch">
-				<DataGrid ItemsSource="{Binding Attributes}" AutoGenerateColumns="False" VerticalAlignment="stretch">
+			<TabItem Header="Goods" HorizontalContentAlignment="Stretch">
+				<DataGrid ItemsSource="{Binding Attributes}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedAttribute}">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="Attribute" Binding="{Binding Attribute}" />
 						<DataGridTextColumn Header="Value" Binding="{Binding Value}" >
