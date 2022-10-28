@@ -236,7 +236,7 @@ namespace EmptyKeys.UserInterface.Generated {
             TabItem e_6 = new TabItem();
             e_6.Name = "e_6";
             e_6.HorizontalContentAlignment = HorizontalAlignment.Stretch;
-            e_6.Header = "Player";
+            e_6.Header = "Goods";
             // e_7 element
             DataGrid e_7 = new DataGrid();
             e_6.Content = e_7;
@@ -263,6 +263,8 @@ namespace EmptyKeys.UserInterface.Generated {
             e_7.Columns.Add(e_7_Col1);
             Binding binding_e_7_ItemsSource = new Binding("Attributes");
             e_7.SetBinding(DataGrid.ItemsSourceProperty, binding_e_7_ItemsSource);
+            Binding binding_e_7_SelectedItem = new Binding("SelectedAttribute");
+            e_7.SetBinding(DataGrid.SelectedItemProperty, binding_e_7_SelectedItem);
             items.Add(e_6);
             return items;
         }
