@@ -170,12 +170,15 @@ namespace TTRPG.Engine.Demo2.Views
 		{
 			BagItems = _data.Roles.Single(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase))
 				.Bag
+				.Where(x => x.Attributes.ContainsKey("equipAs"))
 				.Select(x => new InventoryDataGridItem
 				{
 					Name = x.Name,
 					EquipAs = x.Attributes["EquipAs"],
 					Value = x.Attributes["Value"]
 				})
+				.OrderBy(x => x.Value)
+				.OrderBy(x => x.EquipAs)
 				.ToList();
 		}
 
@@ -183,12 +186,15 @@ namespace TTRPG.Engine.Demo2.Views
 		{
 			InventoryItems = _data.Roles.Single(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase))
 				.InventoryItems
+				.Where(x => x.Value.Attributes.ContainsKey("equipAs"))
 				.Select(x => new InventoryDataGridItem
 				{
 					Name = x.Value.Name,
 					EquipAs = x.Value.Attributes["EquipAs"],
 					Value = x.Value.Attributes["Value"]
 				})
+				.OrderBy(x => x.Value)
+				.OrderBy(x => x.EquipAs)
 				.ToList();
 		}
 		#endregion
