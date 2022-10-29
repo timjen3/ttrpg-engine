@@ -27,7 +27,9 @@
 					"Hits": "1",
 					"Min": "1",
 					"Max": "6",
-					"Pierce": "1"
+					"Pierce": "1",
+					"EquipAs": "pick",
+					"Value": "50"
 				},
 				"Categories": [
 					"Inventory",
@@ -42,7 +44,9 @@
 					"Hits": "1",
 					"Min": "1",
 					"Max": "6",
-					"Pierce": "1"
+					"Pierce": "1",
+					"EquipAs": "weapon",
+					"Value": "50"
 				},
 				"Categories": [
 					"Inventory",
@@ -59,7 +63,9 @@
 					"Hits": "1",
 					"Min": "10",
 					"Max": "30",
-					"Pierce": "2"
+					"Pierce": "2",
+					"EquipAs": "pick",
+					"Value": "200"
 				},
 				"Categories": [
 					"Inventory",
@@ -74,7 +80,9 @@
 					"Hits": "1",
 					"Min": "10",
 					"Max": "30",
-					"Pierce": "2"
+					"Pierce": "2",
+					"equipAs": "weapon",
+					"Value": "200"
 				},
 				"Categories": [
 					"Inventory",

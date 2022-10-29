@@ -23,6 +23,10 @@ namespace TTRPG.Engine.Demo2.Views
 		private string _commandResult;
 		private string _statusResult;
 		private List<StatDataGridItem> _attributes;
+		private InventoryDataGridItem _selectedBagItem;
+		private List<InventoryDataGridItem> _bagItems;
+		private InventoryDataGridItem _selectedInventoryItem;
+		private List<InventoryDataGridItem> _inventoryItems;
 
 		public void OnButtonExecuteCommandClick(object command)
 		{
@@ -38,6 +42,8 @@ namespace TTRPG.Engine.Demo2.Views
 					UpdateTargets();
 					UpdatePlayerAttributes();
 					UpdateStatusResult();
+					UpdateInventoryItems();
+					UpdateBagItems();
 				}
 				catch (Exception ex)
 				{
@@ -121,6 +127,26 @@ namespace TTRPG.Engine.Demo2.Views
 			}
 		}
 
+		private void UpdateTextCommandFromInventoryItem()
+		{
+			if (_selectedInventoryItem == null)
+			{
+				TextBoxCommand = "";
+				return;
+			}
+			TextBoxCommand = $"Unequip [miner] {{itemName:{_selectedInventoryItem.EquipAs}}}";
+		}
+
+		private void UpdateTextBoxCommandFromBagItem()
+		{
+			if (_selectedBagItem == null)
+			{
+				TextBoxCommand = "";
+				return;
+			}
+			TextBoxCommand = $"Equip [miner] {{itemName:{_selectedBagItem.Name},equipAs:{_selectedBagItem.EquipAs}}}";
+		}
+
 		private void UpdatePlayerAttributes()
 		{
 			var player = _data.Roles.FirstOrDefault(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase));
@@ -139,6 +165,38 @@ namespace TTRPG.Engine.Demo2.Views
 			var statusResult = _engine.Process("Status [miner:target]", false);
 			StatusResult = statusResult.First();
 		}
+
+		private void UpdateBagItems()
+		{
+			BagItems = _data.Roles.Single(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase))
+				.Bag
+				.Where(x => x.Attributes.ContainsKey("equipAs"))
+				.Select(x => new InventoryDataGridItem
+				{
+					Name = x.Name,
+					EquipAs = x.Attributes["EquipAs"],
+					Value = x.Attributes["Value"]
+				})
+				.OrderBy(x => x.Value)
+				.OrderBy(x => x.EquipAs)
+				.ToList();
+		}
+
+		private void UpdateInventoryItems()
+		{
+			InventoryItems = _data.Roles.Single(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase))
+				.InventoryItems
+				.Where(x => x.Value.Attributes.ContainsKey("equipAs"))
+				.Select(x => new InventoryDataGridItem
+				{
+					Name = x.Value.Name,
+					EquipAs = x.Value.Attributes["EquipAs"],
+					Value = x.Value.Attributes["Value"]
+				})
+				.OrderBy(x => x.Value)
+				.OrderBy(x => x.EquipAs)
+				.ToList();
+		}
 		#endregion
 
 		public MainScreenView(GameObject data, TTRPGEngine engine)
@@ -149,6 +207,8 @@ namespace TTRPG.Engine.Demo2.Views
 			UpdatePlayerAttributes();
 			SelectedTarget = new ComboBoxItem { Name = "terrain" };
 			UpdateStatusResult();
+			UpdateInventoryItems();
+			UpdateBagItems();
 		}
 
 		public ObservableCollection<DragDropItem> Targets
@@ -214,6 +274,38 @@ namespace TTRPG.Engine.Demo2.Views
 		{
 			get { return _attributes; }
 			set { SetProperty(ref _attributes, value); }
+		}
+
+		public List<InventoryDataGridItem> BagItems
+		{
+			get { return _bagItems; }
+			set { SetProperty(ref _bagItems, value); }
+		}
+
+		public InventoryDataGridItem SelectedBagItem
+		{
+			get => null;
+			set
+			{
+				SetProperty(ref _selectedBagItem, value);
+				UpdateTextBoxCommandFromBagItem();
+			}
+		}
+
+		public List<InventoryDataGridItem> InventoryItems
+		{
+			get { return _inventoryItems; }
+			set { SetProperty(ref _inventoryItems, value); }
+		}
+
+		public InventoryDataGridItem SelectedInventoryItem
+		{
+			get => null;
+			set
+			{
+				SetProperty(ref _selectedInventoryItem, value);
+				UpdateTextCommandFromInventoryItem();
+			}
 		}
 	}
 }
