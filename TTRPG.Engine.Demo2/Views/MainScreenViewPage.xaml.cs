@@ -39,11 +39,11 @@ namespace EmptyKeys.UserInterface.Generated {
         
         private Button buttonExecuteCommand;
         
-        private Grid e_8;
+        private Grid e_12;
         
-        private TextBlock e_9;
+        private TextBlock e_13;
         
-        private TextBlock e_10;
+        private TextBlock e_14;
         
         public MainScreenViewPage() : 
                 base() {
@@ -146,40 +146,40 @@ namespace EmptyKeys.UserInterface.Generated {
             this.buttonExecuteCommand.SetBinding(Button.CommandProperty, binding_buttonExecuteCommand_Command);
             Binding binding_buttonExecuteCommand_CommandParameter = new Binding("TextBoxCommand");
             this.buttonExecuteCommand.SetBinding(Button.CommandParameterProperty, binding_buttonExecuteCommand_CommandParameter);
-            // e_8 element
-            this.e_8 = new Grid();
-            this.e_0.Children.Add(this.e_8);
-            this.e_8.Name = "e_8";
-            RowDefinition row_e_8_0 = new RowDefinition();
-            this.e_8.RowDefinitions.Add(row_e_8_0);
-            ColumnDefinition col_e_8_0 = new ColumnDefinition();
-            this.e_8.ColumnDefinitions.Add(col_e_8_0);
-            ColumnDefinition col_e_8_1 = new ColumnDefinition();
-            this.e_8.ColumnDefinitions.Add(col_e_8_1);
-            Grid.SetRow(this.e_8, 3);
-            Grid.SetColumnSpan(this.e_8, 4);
-            // e_9 element
-            this.e_9 = new TextBlock();
-            this.e_8.Children.Add(this.e_9);
-            this.e_9.Name = "e_9";
-            this.e_9.Margin = new Thickness(5F, 5F, 5F, 5F);
-            this.e_9.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.e_9.VerticalAlignment = VerticalAlignment.Stretch;
-            this.e_9.Background = new SolidColorBrush(new ColorW(128, 128, 128, 255));
-            Grid.SetColumn(this.e_9, 0);
-            Binding binding_e_9_Text = new Binding("CommandResult");
-            this.e_9.SetBinding(TextBlock.TextProperty, binding_e_9_Text);
-            // e_10 element
-            this.e_10 = new TextBlock();
-            this.e_8.Children.Add(this.e_10);
-            this.e_10.Name = "e_10";
-            this.e_10.Margin = new Thickness(5F, 5F, 5F, 5F);
-            this.e_10.HorizontalAlignment = HorizontalAlignment.Stretch;
-            this.e_10.VerticalAlignment = VerticalAlignment.Stretch;
-            this.e_10.Background = new SolidColorBrush(new ColorW(128, 128, 128, 255));
-            Grid.SetColumn(this.e_10, 1);
-            Binding binding_e_10_Text = new Binding("StatusResult");
-            this.e_10.SetBinding(TextBlock.TextProperty, binding_e_10_Text);
+            // e_12 element
+            this.e_12 = new Grid();
+            this.e_0.Children.Add(this.e_12);
+            this.e_12.Name = "e_12";
+            RowDefinition row_e_12_0 = new RowDefinition();
+            this.e_12.RowDefinitions.Add(row_e_12_0);
+            ColumnDefinition col_e_12_0 = new ColumnDefinition();
+            this.e_12.ColumnDefinitions.Add(col_e_12_0);
+            ColumnDefinition col_e_12_1 = new ColumnDefinition();
+            this.e_12.ColumnDefinitions.Add(col_e_12_1);
+            Grid.SetRow(this.e_12, 3);
+            Grid.SetColumnSpan(this.e_12, 4);
+            // e_13 element
+            this.e_13 = new TextBlock();
+            this.e_12.Children.Add(this.e_13);
+            this.e_13.Name = "e_13";
+            this.e_13.Margin = new Thickness(5F, 5F, 5F, 5F);
+            this.e_13.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.e_13.VerticalAlignment = VerticalAlignment.Stretch;
+            this.e_13.Background = new SolidColorBrush(new ColorW(128, 128, 128, 255));
+            Grid.SetColumn(this.e_13, 0);
+            Binding binding_e_13_Text = new Binding("CommandResult");
+            this.e_13.SetBinding(TextBlock.TextProperty, binding_e_13_Text);
+            // e_14 element
+            this.e_14 = new TextBlock();
+            this.e_12.Children.Add(this.e_14);
+            this.e_14.Name = "e_14";
+            this.e_14.Margin = new Thickness(5F, 5F, 5F, 5F);
+            this.e_14.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.e_14.VerticalAlignment = VerticalAlignment.Stretch;
+            this.e_14.Background = new SolidColorBrush(new ColorW(128, 128, 128, 255));
+            Grid.SetColumn(this.e_14, 1);
+            Binding binding_e_14_Text = new Binding("StatusResult");
+            this.e_14.SetBinding(TextBlock.TextProperty, binding_e_14_Text);
             FontManager.Instance.AddFont("Segoe UI", 26.66667F, FontStyle.Bold, "Segoe_UI_20_Bold");
         }
         
@@ -266,6 +266,79 @@ namespace EmptyKeys.UserInterface.Generated {
             Binding binding_e_7_SelectedItem = new Binding("SelectedAttribute");
             e_7.SetBinding(DataGrid.SelectedItemProperty, binding_e_7_SelectedItem);
             items.Add(e_6);
+            // e_8 element
+            TabItem e_8 = new TabItem();
+            e_8.Name = "e_8";
+            e_8.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            e_8.Header = "Loadout";
+            // e_9 element
+            DataGrid e_9 = new DataGrid();
+            e_8.Content = e_9;
+            e_9.Name = "e_9";
+            e_9.VerticalAlignment = VerticalAlignment.Stretch;
+            e_9.AutoGenerateColumns = false;
+            DataGridTextColumn e_9_Col0 = new DataGridTextColumn();
+            e_9_Col0.Header = "Name";
+            Binding e_9_Col0_b = new Binding("Name");
+            e_9_Col0.Binding = e_9_Col0_b;
+            e_9.Columns.Add(e_9_Col0);
+            DataGridTextColumn e_9_Col1 = new DataGridTextColumn();
+            e_9_Col1.Header = "Equipped As";
+            Style e_9_Col1_e_s = new Style(typeof(DataGridCell));
+            Setter e_9_Col1_e_s_S_0 = new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(new ColorW(128, 128, 128, 255)));
+            e_9_Col1_e_s.Setters.Add(e_9_Col1_e_s_S_0);
+            Setter e_9_Col1_e_s_S_1 = new Setter(DataGridCell.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+            e_9_Col1_e_s.Setters.Add(e_9_Col1_e_s_S_1);
+            Setter e_9_Col1_e_s_S_2 = new Setter(DataGridCell.VerticalAlignmentProperty, VerticalAlignment.Center);
+            e_9_Col1_e_s.Setters.Add(e_9_Col1_e_s_S_2);
+            e_9_Col1.ElementStyle = e_9_Col1_e_s;
+            Binding e_9_Col1_b = new Binding("EquipAs");
+            e_9_Col1.Binding = e_9_Col1_b;
+            e_9.Columns.Add(e_9_Col1);
+            Binding binding_e_9_ItemsSource = new Binding("InventoryItems");
+            e_9.SetBinding(DataGrid.ItemsSourceProperty, binding_e_9_ItemsSource);
+            Binding binding_e_9_SelectedItem = new Binding("SelectedInventoryItem");
+            e_9.SetBinding(DataGrid.SelectedItemProperty, binding_e_9_SelectedItem);
+            items.Add(e_8);
+            // e_10 element
+            TabItem e_10 = new TabItem();
+            e_10.Name = "e_10";
+            e_10.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+            e_10.Header = "BagItems";
+            // e_11 element
+            DataGrid e_11 = new DataGrid();
+            e_10.Content = e_11;
+            e_11.Name = "e_11";
+            e_11.VerticalAlignment = VerticalAlignment.Stretch;
+            e_11.AutoGenerateColumns = false;
+            DataGridTextColumn e_11_Col0 = new DataGridTextColumn();
+            e_11_Col0.Header = "Name";
+            Binding e_11_Col0_b = new Binding("Name");
+            e_11_Col0.Binding = e_11_Col0_b;
+            e_11.Columns.Add(e_11_Col0);
+            DataGridTextColumn e_11_Col1 = new DataGridTextColumn();
+            e_11_Col1.Header = "Equip As";
+            Style e_11_Col1_e_s = new Style(typeof(DataGridCell));
+            Setter e_11_Col1_e_s_S_0 = new Setter(DataGridCell.BackgroundProperty, new SolidColorBrush(new ColorW(128, 128, 128, 255)));
+            e_11_Col1_e_s.Setters.Add(e_11_Col1_e_s_S_0);
+            Setter e_11_Col1_e_s_S_1 = new Setter(DataGridCell.HorizontalAlignmentProperty, HorizontalAlignment.Center);
+            e_11_Col1_e_s.Setters.Add(e_11_Col1_e_s_S_1);
+            Setter e_11_Col1_e_s_S_2 = new Setter(DataGridCell.VerticalAlignmentProperty, VerticalAlignment.Center);
+            e_11_Col1_e_s.Setters.Add(e_11_Col1_e_s_S_2);
+            e_11_Col1.ElementStyle = e_11_Col1_e_s;
+            Binding e_11_Col1_b = new Binding("EquipAs");
+            e_11_Col1.Binding = e_11_Col1_b;
+            e_11.Columns.Add(e_11_Col1);
+            DataGridTextColumn e_11_Col2 = new DataGridTextColumn();
+            e_11_Col2.Header = "Value";
+            Binding e_11_Col2_b = new Binding("Value");
+            e_11_Col2.Binding = e_11_Col2_b;
+            e_11.Columns.Add(e_11_Col2);
+            Binding binding_e_11_ItemsSource = new Binding("BagItems");
+            e_11.SetBinding(DataGrid.ItemsSourceProperty, binding_e_11_ItemsSource);
+            Binding binding_e_11_SelectedItem = new Binding("SelectedBagItem");
+            e_11.SetBinding(DataGrid.SelectedItemProperty, binding_e_11_SelectedItem);
+            items.Add(e_10);
             return items;
         }
         

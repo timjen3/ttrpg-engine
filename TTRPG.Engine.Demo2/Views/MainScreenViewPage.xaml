@@ -75,6 +75,42 @@
 					</DataGrid.Columns>
 				</DataGrid>
 			</TabItem>
+
+			<TabItem Header="Loadout" HorizontalContentAlignment="Stretch">
+				<DataGrid ItemsSource="{Binding InventoryItems}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedInventoryItem}">
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+						<DataGridTextColumn Header="Equipped As" Binding="{Binding EquipAs}" >
+							<DataGridTextColumn.ElementStyle>
+								<Style TargetType="DataGridCell">
+									<Setter Property="Background" Value="Gray" />
+									<Setter Property="HorizontalAlignment" Value="Center" />
+									<Setter Property="VerticalAlignment" Value="Center" />
+								</Style>
+							</DataGridTextColumn.ElementStyle>
+						</DataGridTextColumn>
+					</DataGrid.Columns>
+				</DataGrid>
+			</TabItem>
+
+			<TabItem Header="BagItems" HorizontalContentAlignment="Stretch">
+				<DataGrid ItemsSource="{Binding BagItems}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedBagItem}">
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="Name" Binding="{Binding Name}" />
+						<DataGridTextColumn Header="Equip As" Binding="{Binding EquipAs}" >
+							<DataGridTextColumn.ElementStyle>
+								<Style TargetType="DataGridCell">
+									<Setter Property="Background" Value="Gray" />
+									<Setter Property="HorizontalAlignment" Value="Center" />
+									<Setter Property="VerticalAlignment" Value="Center" />
+								</Style>
+							</DataGridTextColumn.ElementStyle>
+						</DataGridTextColumn>
+						<DataGridTextColumn Header="Value" Binding="{Binding Value}" />
+					</DataGrid.Columns>
+				</DataGrid>
+			</TabItem>
+
 		</TabControl>
 
 		<TextBox Name="textBox" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding TextBoxCommand}" 
