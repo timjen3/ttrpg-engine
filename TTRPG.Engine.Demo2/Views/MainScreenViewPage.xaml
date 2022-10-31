@@ -8,7 +8,7 @@
              xmlns:ctl="clr-namespace:EmptyKeys.UserInterface.Controls;assembly=EmptyKeys.UserInterface"
              xmlns:local="clr-namespace:UserInterface"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="900" >
+             d:DesignHeight="850" d:DesignWidth="900" >
 
     <ek:UIRoot.Resources>
         <ResourceDictionary>
@@ -24,6 +24,7 @@
 			<RowDefinition MinHeight="350" MaxHeight="350" />
 			<RowDefinition MinHeight="50" MaxHeight="50" />
 			<RowDefinition />
+			<RowDefinition MinHeight="50" MaxHeight="50" />
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition />
@@ -137,6 +138,19 @@
 
 			<TextBlock Text="{Binding CommandResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="0" Margin="5" Background="Gray" />
 			<TextBlock Text="{Binding StatusResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="1" Margin="5" Background="Gray" />
+		</Grid>
+
+		<Grid Grid.Row="4" Grid.ColumnSpan="4">
+			<Grid.RowDefinitions>
+				<RowDefinition />
+			</Grid.RowDefinitions>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition />
+				<ColumnDefinition />
+			</Grid.ColumnDefinitions>
+
+			<TextBlock Grid.Column="0" Text="{Binding TimeResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Margin="5" />
+			<TextBlock Grid.Column="1" Text="{Binding TurnResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Margin="5" />
 		</Grid>
 	</Grid>
 </ek:UIRoot>

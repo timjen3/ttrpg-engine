@@ -45,6 +45,12 @@ namespace EmptyKeys.UserInterface.Generated {
         
         private TextBlock e_14;
         
+        private Grid e_15;
+        
+        private TextBlock e_16;
+        
+        private TextBlock e_17;
+        
         public MainScreenViewPage() : 
                 base() {
             this.Initialize();
@@ -81,6 +87,10 @@ namespace EmptyKeys.UserInterface.Generated {
             this.e_0.RowDefinitions.Add(row_e_0_2);
             RowDefinition row_e_0_3 = new RowDefinition();
             this.e_0.RowDefinitions.Add(row_e_0_3);
+            RowDefinition row_e_0_4 = new RowDefinition();
+            row_e_0_4.MinHeight = 50F;
+            row_e_0_4.MaxHeight = 50F;
+            this.e_0.RowDefinitions.Add(row_e_0_4);
             ColumnDefinition col_e_0_0 = new ColumnDefinition();
             this.e_0.ColumnDefinitions.Add(col_e_0_0);
             ColumnDefinition col_e_0_1 = new ColumnDefinition();
@@ -180,6 +190,38 @@ namespace EmptyKeys.UserInterface.Generated {
             Grid.SetColumn(this.e_14, 1);
             Binding binding_e_14_Text = new Binding("StatusResult");
             this.e_14.SetBinding(TextBlock.TextProperty, binding_e_14_Text);
+            // e_15 element
+            this.e_15 = new Grid();
+            this.e_0.Children.Add(this.e_15);
+            this.e_15.Name = "e_15";
+            RowDefinition row_e_15_0 = new RowDefinition();
+            this.e_15.RowDefinitions.Add(row_e_15_0);
+            ColumnDefinition col_e_15_0 = new ColumnDefinition();
+            this.e_15.ColumnDefinitions.Add(col_e_15_0);
+            ColumnDefinition col_e_15_1 = new ColumnDefinition();
+            this.e_15.ColumnDefinitions.Add(col_e_15_1);
+            Grid.SetRow(this.e_15, 4);
+            Grid.SetColumnSpan(this.e_15, 4);
+            // e_16 element
+            this.e_16 = new TextBlock();
+            this.e_15.Children.Add(this.e_16);
+            this.e_16.Name = "e_16";
+            this.e_16.Margin = new Thickness(5F, 5F, 5F, 5F);
+            this.e_16.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.e_16.VerticalAlignment = VerticalAlignment.Stretch;
+            Grid.SetColumn(this.e_16, 0);
+            Binding binding_e_16_Text = new Binding("TimeResult");
+            this.e_16.SetBinding(TextBlock.TextProperty, binding_e_16_Text);
+            // e_17 element
+            this.e_17 = new TextBlock();
+            this.e_15.Children.Add(this.e_17);
+            this.e_17.Name = "e_17";
+            this.e_17.Margin = new Thickness(5F, 5F, 5F, 5F);
+            this.e_17.HorizontalAlignment = HorizontalAlignment.Stretch;
+            this.e_17.VerticalAlignment = VerticalAlignment.Stretch;
+            Grid.SetColumn(this.e_17, 1);
+            Binding binding_e_17_Text = new Binding("TurnResult");
+            this.e_17.SetBinding(TextBlock.TextProperty, binding_e_17_Text);
             FontManager.Instance.AddFont("Segoe UI", 26.66667F, FontStyle.Bold, "Segoe_UI_20_Bold");
         }
         

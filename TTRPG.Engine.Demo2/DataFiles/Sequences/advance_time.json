@@ -1,0 +1,76 @@
+[
+	{
+		"Name": "AdvanceTime",
+		"Example": "AdvanceTime [time:time]",
+		"Items": [
+			{
+				"Name": "Updated Turn",
+				"Equation": "current_turn + 1",
+				"ResultName": "new_turn",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Updated Time",
+				"Equation": "current_time + 1",
+				"ResultName": "new_time",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Display Day",
+				"Equation": "floor(new_time / 24)",
+				"ResultName": "display_day",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Display Time",
+				"Equation": "new_time # 24",
+				"ResultName": "display_time",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Advance Turn",
+				"Equation": "Turn: {new_turn}",
+				"ResultName": "turn_message",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Display Day Time",
+				"Equation": "Day {display_day} Time: {display_time}",
+				"ResultName": "display_day_time",
+				"SequenceItemEquationType": "Message"
+			}
+		],
+		"Mappings": [
+			{
+				"From": "time",
+				"To": "current_time",
+				"ItemName": null,
+				"RoleName": "time",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "turn",
+				"To": "current_turn",
+				"ItemName": null,
+				"RoleName": "time",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			}
+		],
+		"ResultItems": [
+			{
+				"Name": "Time",
+				"Category": "UpdateAttribute",
+				"Source": "new_time",
+				"RoleName": "time"
+			},
+			{
+				"Name": "Turn",
+				"Category": "UpdateAttribute",
+				"Source": "new_turn",
+				"RoleName": "time"
+			}
+		]
+	}
+]
