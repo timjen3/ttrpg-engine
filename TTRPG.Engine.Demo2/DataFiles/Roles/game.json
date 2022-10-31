@@ -1,0 +1,12 @@
+[
+	{
+		"Name": "Time",
+		"Attributes": {
+			"time": "0",
+			"turn": "0"
+		},
+		"Categories": [
+			"Game"
+		]
+	}
+]
