@@ -151,7 +151,7 @@ namespace TTRPG.Engine.Tests
 				}
 			});
 
-			bool result = resolver.Check(sequence, (Role) null);
+			bool result = resolver.Check(sequence, (Role)null);
 
 			Assert.IsFalse(result);
 		}

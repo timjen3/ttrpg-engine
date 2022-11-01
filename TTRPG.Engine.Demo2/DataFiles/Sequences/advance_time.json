@@ -35,7 +35,7 @@
 			},
 			{
 				"Name": "Display Day Time",
-				"Equation": "Day {display_day} Time: {display_time}",
+				"Equation": "Day: {display_day} Time: {display_time}",
 				"ResultName": "display_day_time",
 				"SequenceItemEquationType": "Message"
 			}

@@ -52,7 +52,7 @@ namespace TTRPG.Engine.Demo
 		{
 			txt_Status.SuspendLayout();
 			var statusUpdate = _engine.Process("Status [miner:target]", false);
-			txt_Status.Text = statusUpdate.FirstOrDefault();
+			txt_Status.Text = statusUpdate.First().Messages.FirstOrDefault();
 			txt_Status.PerformLayout();
 		}
 

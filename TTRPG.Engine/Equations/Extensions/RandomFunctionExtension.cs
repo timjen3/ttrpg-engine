@@ -17,8 +17,8 @@ namespace TTRPG.Engine.Equations.Extensions
 
 		public double calculate()
 		{
-			int roll = Enumerable.Range(1, (int) Math.Floor(Count))
-				.Select(i => Gen.Next((int) Math.Floor(MinRange), (int) Math.Floor(MaxRange) + 1))
+			int roll = Enumerable.Range(1, (int)Math.Floor(Count))
+				.Select(i => Gen.Next((int)Math.Floor(MinRange), (int)Math.Floor(MaxRange) + 1))
 				.Sum();
 
 			return roll;

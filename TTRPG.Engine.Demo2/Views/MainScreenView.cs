@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.Demo2.Controls;
 
 namespace TTRPG.Engine.Demo2.Views
@@ -40,13 +41,13 @@ namespace TTRPG.Engine.Demo2.Views
 				try
 				{
 					var result = _engine.Process(commandText, false);
-					CommandResult = string.Join("\n", result);
+					AdvanceTimeMessage(result);
+					CommandResult = string.Join("\n", result.First().Messages);
 					UpdateTargets();
 					UpdatePlayerAttributes();
 					UpdateStatusResult();
 					UpdateInventoryItems();
 					UpdateBagItems();
-					AdvanceTimeMessage();
 				}
 				catch (Exception ex)
 				{
@@ -166,7 +167,7 @@ namespace TTRPG.Engine.Demo2.Views
 		private void UpdateStatusResult()
 		{
 			var statusResult = _engine.Process("Status [miner:target]", false);
-			StatusResult = statusResult.First();
+			StatusResult = statusResult.First().Messages.First();
 		}
 
 		private void UpdateBagItems()
@@ -201,11 +202,16 @@ namespace TTRPG.Engine.Demo2.Views
 				.ToList();
 		}
 
-		private void AdvanceTimeMessage()
+		private void AdvanceTimeMessage(IEnumerable<ProcessedCommand> processed)
 		{
-			var results = _engine.Process("AdvanceTime [time:time]", false);
-			TurnResult = results.First();
-			TimeResult = results.Skip(1).First();
+			foreach (var command in processed)
+			{
+				if (command.Source.MainCommand == "AdvanceTime")
+				{
+					TurnResult = command.Messages.First();
+					TimeResult = command.Messages.Last();
+				}
+			}
 		}
 		#endregion
 
@@ -219,7 +225,8 @@ namespace TTRPG.Engine.Demo2.Views
 			UpdateStatusResult();
 			UpdateInventoryItems();
 			UpdateBagItems();
-			AdvanceTimeMessage();
+			TimeResult = "Day: 0 Time: 0";
+			TurnResult = "Turn 0";
 		}
 
 		public ObservableCollection<DragDropItem> Targets

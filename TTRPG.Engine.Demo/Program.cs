@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
 using TTRPG.Engine.Data;
-using TTRPG.Engine.Equations;
 
 namespace TTRPG.Engine.Demo
 {

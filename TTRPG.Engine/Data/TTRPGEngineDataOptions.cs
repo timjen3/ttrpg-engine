@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TTRPG.Engine.Data
+﻿namespace TTRPG.Engine.Data
 {
 	public enum DataStorageType
 	{

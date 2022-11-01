@@ -1,12 +1,13 @@
-﻿using TTRPG.Engine.Equations;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using org.mariuszgromada.math.mxparser;
-using TTRPG.Engine.Equations.Extensions;
+using TTRPG.Engine.CommandParsing;
+using TTRPG.Engine.CommandParsing.Parsers;
+using TTRPG.Engine.CommandParsing.Processors;
 using TTRPG.Engine.Data;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
-using TTRPG.Engine.CommandParsing;
-using TTRPG.Engine.CommandParsing.Processors;
-using TTRPG.Engine.CommandParsing.Parsers;
+using TTRPG.Engine.Equations;
+using TTRPG.Engine.Equations.Extensions;
 
 namespace TTRPG.Engine
 {
@@ -22,6 +23,7 @@ namespace TTRPG.Engine
 		/// <returns></returns>
 		public static IServiceCollection AddTTRPGEngineServices(this IServiceCollection services)
 		{
+			services.TryAddSingleton(new TTRPGEngineOptions());
 			services.AddSingleton(new Function("random", new RandomFunctionExtension()));
 			services.AddSingleton(new Function("toss", new CoinTossFunctionExtension()));
 			services.AddSingleton<IEquationResolver, EquationResolver>();

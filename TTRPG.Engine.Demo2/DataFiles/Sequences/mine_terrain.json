@@ -2,6 +2,7 @@
 	{
 		"Name": "MineTerrain",
 		"Example": "MineTerrain [miner:miner,dirtblock1:terrain]",
+		"Categories": [ "Temporal" ],
 		"Items": [
 			{
 				"Name": "Intention",

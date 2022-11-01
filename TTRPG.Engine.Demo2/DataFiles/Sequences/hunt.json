@@ -2,6 +2,7 @@
 	{
 		"Name": "Hunt",
 		"Example": "Hunt [miner:hunter,deer1:defender]",
+		"Categories": ["Temporal"],
 		"Items": [
 			{
 				"Name": "Intention",

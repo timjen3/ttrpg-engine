@@ -42,43 +42,53 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			return _command != null && _entity != null;
 		}
 
-		public IEnumerable<string> Process()
+		public ProcessedCommand Process()
 		{
+			var processed = new ProcessedCommand();
+			processed.Source = _command;
+			processed.CommandCategories = new List<string> { "Inventory" };
 			try
 			{
 				switch (_command.MainCommand.ToLower().Trim())
 				{
 					case "equip":
-					{
-						_service.Equip(_entity, itemName: _command.Inputs["itemname"], equipAs: _command.Inputs["equipas"]);
-						return new string[] { $"Equipped {_command.Inputs["itemname"]}." };
-					}
+						{
+							_service.Equip(_entity, itemName: _command.Inputs["itemname"], equipAs: _command.Inputs["equipas"]);
+							processed.Messages = new string[] { $"Equipped {_command.Inputs["itemname"]}." }.ToList();
+							break;
+						}
 					case "unequip":
-					{
-						_service.Unequip(_entity, itemName: _command.Inputs["itemName"]);
-						return new string[] { $"Unequipped {_command.Inputs["itemname"]}." };
-					}
+						{
+							_service.Unequip(_entity, itemName: _command.Inputs["itemName"]);
+							processed.Messages = new string[] { $"Unequipped {_command.Inputs["itemname"]}." }.ToList();
+							break;
+						}
 					case "drop":
-					{
-						_service.DropItem(_entity, itemName: _command.Inputs["itemName"]);
-						return new string[] { $"Dropped {_command.Inputs["itemname"]}." };
-					}
+						{
+							_service.DropItem(_entity, itemName: _command.Inputs["itemName"]);
+							processed.Messages = new string[] { $"Dropped {_command.Inputs["itemname"]}." }.ToList();
+							break;
+						}
 					case "pickup":
-					{
-						var item = GetClonedInventoryItemByName(_command.Inputs["itemname"]);
-						_service.PickupItem(_entity, item: item);
-						return new string[] { $"Picked up {_command.Inputs["itemname"]}." };
-					}
+						{
+							var item = GetClonedInventoryItemByName(_command.Inputs["itemname"]);
+							_service.PickupItem(_entity, item: item);
+							processed.Messages = new string[] { $"Picked up {_command.Inputs["itemname"]}." }.ToList();
+							break;
+						}
 					default:
-					{
-						throw new NotImplementedException($"Unknown inventory command {_command.MainCommand}.");
-					}
+						{
+							throw new NotImplementedException($"Unknown inventory command {_command.MainCommand}.");
+						}
 				}
 			}
 			catch (InventoryServiceException ex)
 			{
-				return new string[] { ex.Message };
+				processed.Messages = new List<string> { ex.Message };
+				processed.Failed = true;
 			}
+
+			return processed;
 		}
 	}
 }

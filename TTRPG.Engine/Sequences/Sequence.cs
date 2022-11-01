@@ -6,7 +6,7 @@ namespace TTRPG.Engine.Sequences
 	public class Sequence
 	{
 		public string Name { get; set; }
-		
+
 		public string Example { get; set; }
 
 		public List<SequenceItem> Items { get; set; } = new List<SequenceItem>();
@@ -18,5 +18,7 @@ namespace TTRPG.Engine.Sequences
 		public List<RoleCondition> RoleConditions { get; set; } = new List<RoleCondition>();
 
 		public List<Mapping> Mappings { get; set; } = new List<Mapping>();
+
+		public List<string> Categories { get; set; } = new List<string>();
 	}
 }
