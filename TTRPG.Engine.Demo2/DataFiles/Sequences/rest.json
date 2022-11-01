@@ -2,6 +2,7 @@
 	{
 		"Name": "Rest",
 		"Example": "Rest [miner:sleeper]",
+		"Categories": [ "Temporal" ],
 		"Items": [
 			{
 				"Name": "Refreshed Stamina",

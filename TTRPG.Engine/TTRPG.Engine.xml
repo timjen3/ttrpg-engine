@@ -392,5 +392,10 @@
         <member name="E:TTRPG.Engine.TTRPGEngine.MessageCreated">
             add message handlers
         </member>
+        <member name="P:TTRPG.Engine.TTRPGEngineOptions.AutomaticCommands">
+            <summary>
+            	Commands to be ran automatically when a command is processed with the specified category
+            </summary>
+        </member>
     </members>
 </doc>

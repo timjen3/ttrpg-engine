@@ -22,7 +22,8 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			{
 				_messageTemplates = Directory.GetFiles(_options.JsonFileStorageOptions.MessageTemplatesDirectory)
 					.Select(filename => new FileInfo(filename))
-					.Select(fileInfo => {
+					.Select(fileInfo =>
+					{
 						var templateName = fileInfo.Name.Remove(fileInfo.Name.LastIndexOf('.'));
 						var template = File.ReadAllText(fileInfo.FullName);
 

@@ -24,7 +24,7 @@ namespace TTRPG.Engine.CommandParsing.Parsers
 		/// <param name="command"></param>
 		/// <returns></returns>
 		ITTRPGCommandProcessor GetProcessor(ParsedCommand command);
-		
+
 		/// <summary>
 		///		Returns example commands for related command handlers.
 		/// </summary>

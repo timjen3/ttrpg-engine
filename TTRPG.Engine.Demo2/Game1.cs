@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using TTRPG.Engine.Data;
 using TTRPG.Engine.Demo2.Views;
 
@@ -61,6 +62,13 @@ namespace TTRPG.Engine.Demo2
 		{
 			// load TTRPG Engine Services
 			var collection = new ServiceCollection();
+			collection.AddSingleton(new TTRPGEngineOptions
+			{
+				AutomaticCommands = new Dictionary<string, string>
+				{
+					{ "Temporal", "AdvanceTime [time:time]" }
+				}
+			});
 			collection.AddTTRPGEngineServices();
 			collection.AddTTRPGEngineDataLayer(new TTRPGEngineDataOptions
 			{

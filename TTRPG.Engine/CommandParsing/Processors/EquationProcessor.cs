@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Sequences;
@@ -24,7 +23,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 
 		public bool IsValid() => _sequence != null && _command.Roles != null && _command.Roles.Count > 0;
 
-		public IEnumerable<string> Process()
+		public ProcessedCommand Process()
 		{
 			var result = _service.Process(_sequence, _command.Inputs, _command.Roles);
 
@@ -38,9 +37,16 @@ namespace TTRPG.Engine.CommandParsing.Processors
 					role.Attributes[attributeToUpdate] = itemResult.Result;
 				}
 			}
-			return result.Results
+			var messages = result.Results
 				.Where(x => x.ResolvedItem.SequenceItemEquationType == SequenceItems.SequenceItemEquationType.Message)
 				.Select(x => x.Result);
+
+			return new ProcessedCommand
+			{
+				Source = _command,
+				CommandCategories = _sequence.Categories,
+				Messages = messages.ToList()
+			};
 		}
 	}
 }

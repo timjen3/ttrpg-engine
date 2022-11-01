@@ -11,7 +11,7 @@ namespace TTRPG.Engine
 		private MappingType _mappingType;
 
 		/// Parameterless constructor
-		public Mapping(){}
+		public Mapping() { }
 
 		/// Constructor for a Role Mapping
 		public Mapping(string from, string to, string roleName, string itemName = null, bool throwOnFailure = false)

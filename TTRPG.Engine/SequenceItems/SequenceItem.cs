@@ -9,7 +9,7 @@ namespace TTRPG.Engine.SequenceItems
 	{
 		private SequenceItemEquationType _sequenceItemEquationType;
 
-		public SequenceItem(){}
+		public SequenceItem() { }
 
 		public SequenceItem(string name, string equation, string resultName, SequenceItemEquationType sequenceItemType)
 		{

@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace TTRPG.Engine.CommandParsing.Processors
+﻿namespace TTRPG.Engine.CommandParsing.Processors
 {
 	public interface ITTRPGCommandProcessor
 	{
 		/// processes command and returns messages
-		IEnumerable<string> Process();
+		ProcessedCommand Process();
 
 		bool IsValid();
 	}

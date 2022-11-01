@@ -1,8 +1,8 @@
-using TTRPG.Engine.Equations;
-using TTRPG.Engine.SequenceItems;
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;
+using TTRPG.Engine.Equations;
+using TTRPG.Engine.SequenceItems;
 
 namespace TTRPG.Engine.Tests
 {

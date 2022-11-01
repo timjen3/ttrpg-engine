@@ -53,7 +53,7 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 0;
 			var resolver = MockEquationService(resolverResult);
 			var condition = new Condition(conditionItemName, equation);
-			
+
 			bool result = resolver.Check(condition, itemName, null, null, ref _failureMessages);
 
 			Assert.IsFalse(result);

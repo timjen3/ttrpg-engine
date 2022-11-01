@@ -8,7 +8,7 @@ using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Tests
 {
-	[TestFixture(Category="Integration")]
+	[TestFixture(Category = "Integration")]
 	[TestOf(typeof(Sequence))]
 	public class SequenceTests
 	{
@@ -20,7 +20,7 @@ namespace TTRPG.Engine.Tests
 			var services = new ServiceCollection();
 			services.AddTTRPGEngineServices();
 			var provider = services.BuildServiceProvider();
-			EquationService = (EquationService) provider.GetRequiredService<IEquationService>();
+			EquationService = (EquationService)provider.GetRequiredService<IEquationService>();
 		}
 
 		/// Test a single die roll
