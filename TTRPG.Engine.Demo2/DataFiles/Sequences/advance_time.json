@@ -17,7 +17,7 @@
 			},
 			{
 				"Name": "Display Day",
-				"Equation": "floor(new_time / 24)",
+				"Equation": "floor(new_time / 24) + 1",
 				"ResultName": "display_day",
 				"SequenceItemEquationType": "Algorithm"
 			},

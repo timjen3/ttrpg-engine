@@ -234,7 +234,7 @@ namespace TTRPG.Engine.Demo2.Views
             UpdateStatusResult();
             UpdateInventoryItems();
             UpdateBagItems();
-            TimeResult = "Day 0    0:0";
+            TimeResult = "Day 1    0:0";
             TurnResult = "Turn 0";
         }
 
