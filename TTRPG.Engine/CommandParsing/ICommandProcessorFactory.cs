@@ -1,4 +1,4 @@
-﻿using TTRPG.Engine.CommandParsing.Processors;
+using TTRPG.Engine.CommandParsing.Processors;
 
 namespace TTRPG.Engine.CommandParsing
 {

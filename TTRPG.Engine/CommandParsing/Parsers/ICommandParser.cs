@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TTRPG.Engine.CommandParsing.Processors;
 
 namespace TTRPG.Engine.CommandParsing.Parsers

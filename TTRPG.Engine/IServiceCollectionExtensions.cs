@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using org.mariuszgromada.math.mxparser;
 using TTRPG.Engine.CommandParsing;
@@ -6,6 +6,7 @@ using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.CommandParsing.Processors;
 using TTRPG.Engine.Data;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
+using TTRPG.Engine.Engine;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Equations.Extensions;
 

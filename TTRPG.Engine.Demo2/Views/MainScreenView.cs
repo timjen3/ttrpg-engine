@@ -1,10 +1,10 @@
-﻿using EmptyKeys.UserInterface.Controls;
-using EmptyKeys.UserInterface.Input;
-using EmptyKeys.UserInterface.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using EmptyKeys.UserInterface.Controls;
+using EmptyKeys.UserInterface.Input;
+using EmptyKeys.UserInterface.Mvvm;
 using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.Demo2.Controls;
 
@@ -71,9 +71,12 @@ namespace TTRPG.Engine.Demo2.Views
 		{
 			var currentItems = Targets?.Select(x => x.Name).ToArray();
 			var updatedItems = GetLiveTargets();
-			if (currentItems == null && updatedItems == null) return false;
-			if (currentItems == null && updatedItems != null || currentItems != null && updatedItems == null) return true;
-			if (currentItems.Length != updatedItems.Length) return true;
+			if (currentItems == null && updatedItems == null)
+				return false;
+			if (currentItems == null && updatedItems != null || currentItems != null && updatedItems == null)
+				return true;
+			if (currentItems.Length != updatedItems.Length)
+				return true;
 
 			for (int i = 0; i < updatedItems.Length; i++)
 			{
@@ -86,8 +89,10 @@ namespace TTRPG.Engine.Demo2.Views
 
 		private void UpdateTargets()
 		{
-			if (string.IsNullOrWhiteSpace(_selectedTarget)) return;
-			if (!TargetsChanged()) return;
+			if (string.IsNullOrWhiteSpace(_selectedTarget))
+				return;
+			if (!TargetsChanged())
+				return;
 
 			Targets = new ObservableCollection<DragDropItem>();
 			var liveTarget = GetLiveTargets();
@@ -115,6 +120,10 @@ namespace TTRPG.Engine.Demo2.Views
 			else if (_selectedTarget == "commodity")
 			{
 				TextBoxCommand = $"BuyCommodity [miner:buyer,{_selectedTargetItem}:commodity] {{quantity:1}}";
+			}
+			else if (_selectedTarget == "crop")
+			{
+				TextBoxCommand = $"Harvest [miner:farmer,{_selectedTargetItem}:crop]";
 			}
 		}
 
@@ -225,7 +234,7 @@ namespace TTRPG.Engine.Demo2.Views
 			UpdateStatusResult();
 			UpdateInventoryItems();
 			UpdateBagItems();
-			TimeResult = "Day: 0 Time: 0";
+			TimeResult = "Day 1    0:0";
 			TurnResult = "Turn 0";
 		}
 

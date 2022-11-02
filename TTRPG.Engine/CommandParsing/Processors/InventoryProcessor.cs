@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TTRPG.Engine.Exceptions;
@@ -37,7 +37,8 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			}
 			if (_command.MainCommand.ToLower().Trim() == "equip")
 			{
-				if (!_command.Inputs.ContainsKey("equipas")) return false;
+				if (!_command.Inputs.ContainsKey("equipas"))
+					return false;
 			}
 			return _command != null && _entity != null;
 		}
@@ -52,34 +53,34 @@ namespace TTRPG.Engine.CommandParsing.Processors
 				switch (_command.MainCommand.ToLower().Trim())
 				{
 					case "equip":
-						{
-							_service.Equip(_entity, itemName: _command.Inputs["itemname"], equipAs: _command.Inputs["equipas"]);
-							processed.Messages = new string[] { $"Equipped {_command.Inputs["itemname"]}." }.ToList();
-							break;
-						}
+					{
+						_service.Equip(_entity, itemName: _command.Inputs["itemname"], equipAs: _command.Inputs["equipas"]);
+						processed.Messages = new string[] { $"Equipped {_command.Inputs["itemname"]}." }.ToList();
+						break;
+					}
 					case "unequip":
-						{
-							_service.Unequip(_entity, itemName: _command.Inputs["itemName"]);
-							processed.Messages = new string[] { $"Unequipped {_command.Inputs["itemname"]}." }.ToList();
-							break;
-						}
+					{
+						_service.Unequip(_entity, itemName: _command.Inputs["itemName"]);
+						processed.Messages = new string[] { $"Unequipped {_command.Inputs["itemname"]}." }.ToList();
+						break;
+					}
 					case "drop":
-						{
-							_service.DropItem(_entity, itemName: _command.Inputs["itemName"]);
-							processed.Messages = new string[] { $"Dropped {_command.Inputs["itemname"]}." }.ToList();
-							break;
-						}
+					{
+						_service.DropItem(_entity, itemName: _command.Inputs["itemName"]);
+						processed.Messages = new string[] { $"Dropped {_command.Inputs["itemname"]}." }.ToList();
+						break;
+					}
 					case "pickup":
-						{
-							var item = GetClonedInventoryItemByName(_command.Inputs["itemname"]);
-							_service.PickupItem(_entity, item: item);
-							processed.Messages = new string[] { $"Picked up {_command.Inputs["itemname"]}." }.ToList();
-							break;
-						}
+					{
+						var item = GetClonedInventoryItemByName(_command.Inputs["itemname"]);
+						_service.PickupItem(_entity, item: item);
+						processed.Messages = new string[] { $"Picked up {_command.Inputs["itemname"]}." }.ToList();
+						break;
+					}
 					default:
-						{
-							throw new NotImplementedException($"Unknown inventory command {_command.MainCommand}.");
-						}
+					{
+						throw new NotImplementedException($"Unknown inventory command {_command.MainCommand}.");
+					}
 				}
 			}
 			catch (InventoryServiceException ex)

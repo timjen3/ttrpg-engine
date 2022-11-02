@@ -1,7 +1,7 @@
-﻿using Moq;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Moq;
+using NUnit.Framework;
 using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.CommandParsing.Processors;
@@ -25,8 +25,10 @@ namespace TTRPG.Engine.Tests
 		ICommandProcessorFactory BuildCommandProcessorFactory()
 		{
 			var parsers = new List<ICommandParser>();
-			if (MatchParser != null) parsers.Add(MatchParser.Object);
-			if (DefaultParser != null) parsers.Add(DefaultParser.Object);
+			if (MatchParser != null)
+				parsers.Add(MatchParser.Object);
+			if (DefaultParser != null)
+				parsers.Add(DefaultParser.Object);
 			return new CommandProcessorFactory(null, parsers);
 		}
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -36,7 +36,8 @@ namespace TTRPG.Engine.Demo
 
 		private void UpdateTargets()
 		{
-			if (!TargetsChanged()) return;
+			if (!TargetsChanged())
+				return;
 
 			list_Targets.BeginUpdate();
 			var targetFilter = cmb_TargetFilter.Text.Trim();

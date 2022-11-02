@@ -1,4 +1,4 @@
-﻿namespace TTRPG.Engine.CommandParsing.Processors
+namespace TTRPG.Engine.CommandParsing.Processors
 {
 	public interface ITTRPGCommandProcessor
 	{

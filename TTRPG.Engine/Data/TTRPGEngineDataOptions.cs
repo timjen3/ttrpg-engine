@@ -1,4 +1,4 @@
-﻿namespace TTRPG.Engine.Data
+namespace TTRPG.Engine.Data
 {
 	public enum DataStorageType
 	{

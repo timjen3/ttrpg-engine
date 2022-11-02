@@ -1,6 +1,6 @@
-﻿using org.mariuszgromada.math.mxparser;
 using System.Collections.Generic;
 using System.Linq;
+using org.mariuszgromada.math.mxparser;
 using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Equations

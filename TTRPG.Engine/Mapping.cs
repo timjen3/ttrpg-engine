@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TTRPG.Engine
 {
@@ -37,7 +37,8 @@ namespace TTRPG.Engine
 		/// Constructor for an InventoryItem Mapping
 		public Mapping(string from, string to, string roleName, string inventoryItemName, string itemName = null, bool throwOnFailure = false)
 		{
-			if (inventoryItemName == null) throw new ArgumentNullException($"nameof{inventoryItemName} cannot be null for an inventory item mapping.");
+			if (inventoryItemName == null)
+				throw new ArgumentNullException($"nameof{inventoryItemName} cannot be null for an inventory item mapping.");
 			From = from;
 			To = to;
 			RoleName = roleName;
@@ -68,7 +69,8 @@ namespace TTRPG.Engine
 			get => _mappingType;
 			set
 			{
-				if (!Enum.IsDefined(typeof(MappingType), value)) throw new ArgumentException($"{value} is an invalid value for Mapping property '{nameof(MappingType)}'.");
+				if (!Enum.IsDefined(typeof(MappingType), value))
+					throw new ArgumentException($"{value} is an invalid value for Mapping property '{nameof(MappingType)}'.");
 				_mappingType = value;
 			}
 		}

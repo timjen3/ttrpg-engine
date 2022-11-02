@@ -1,6 +1,6 @@
-﻿using Moq;
-using NUnit.Framework;
 using System.Collections.Generic;
+using Moq;
+using NUnit.Framework;
 using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.Data.TtrpgDataLoaders;

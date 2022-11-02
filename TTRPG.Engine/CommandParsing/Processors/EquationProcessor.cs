@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Sequences;

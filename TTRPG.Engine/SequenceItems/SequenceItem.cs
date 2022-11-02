@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace TTRPG.Engine.SequenceItems
 {
@@ -30,7 +30,8 @@ namespace TTRPG.Engine.SequenceItems
 			get => _sequenceItemEquationType;
 			set
 			{
-				if (!Enum.IsDefined(typeof(SequenceItemEquationType), value)) throw new ArgumentException($"{value} is an invalid value for Mapping property '{nameof(SequenceItemEquationType)}'.");
+				if (!Enum.IsDefined(typeof(SequenceItemEquationType), value))
+					throw new ArgumentException($"{value} is an invalid value for Mapping property '{nameof(SequenceItemEquationType)}'.");
 				_sequenceItemEquationType = value;
 			}
 		}

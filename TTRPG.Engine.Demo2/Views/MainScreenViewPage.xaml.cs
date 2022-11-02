@@ -403,6 +403,11 @@ namespace EmptyKeys.UserInterface.Generated {
             animal.Name = "animal";
             animal.Content = "Animals";
             items.Add(animal);
+            // crop element
+            ComboBoxItem crop = new ComboBoxItem();
+            crop.Name = "crop";
+            crop.Content = "Crop";
+            items.Add(crop);
             // commodity element
             ComboBoxItem commodity = new ComboBoxItem();
             commodity.Name = "commodity";

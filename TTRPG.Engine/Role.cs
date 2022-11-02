@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace TTRPG.Engine
@@ -21,11 +21,15 @@ namespace TTRPG.Engine
 		public Role(string name, Dictionary<string, string> attributes = null, List<string> categories = null, Dictionary<string, Role> inventoryItems = null, List<Role> bag = null)
 		{
 			Name = name;
-			if (attributes != null) Attributes = new Dictionary<string, string>(attributes, StringComparer.OrdinalIgnoreCase);
-			else Attributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+			if (attributes != null)
+				Attributes = new Dictionary<string, string>(attributes, StringComparer.OrdinalIgnoreCase);
+			else
+				Attributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 			Categories = categories ?? new List<string>();
-			if (inventoryItems != null) InventoryItems = new Dictionary<string, Role>(inventoryItems, StringComparer.OrdinalIgnoreCase);
-			else InventoryItems = new Dictionary<string, Role>(StringComparer.OrdinalIgnoreCase);
+			if (inventoryItems != null)
+				InventoryItems = new Dictionary<string, Role>(inventoryItems, StringComparer.OrdinalIgnoreCase);
+			else
+				InventoryItems = new Dictionary<string, Role>(StringComparer.OrdinalIgnoreCase);
 			Bag = bag ?? new List<Role>();
 
 		}
@@ -52,7 +56,8 @@ namespace TTRPG.Engine
 			foreach (var item in InventoryItems)
 				clonedInventoryItems.Add(item.Key, item.Value.CloneAs());
 			var clone = new Role(Name, clonedAttributes, clonedCategories, clonedInventoryItems);
-			if (alias != null) clone.Alias = alias;
+			if (alias != null)
+				clone.Alias = alias;
 
 			return clone;
 		}

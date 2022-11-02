@@ -1,4 +1,4 @@
-﻿using EmptyKeys.UserInterface.Mvvm;
+using EmptyKeys.UserInterface.Mvvm;
 
 namespace TTRPG.Engine.Demo2.Controls
 {

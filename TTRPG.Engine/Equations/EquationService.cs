@@ -1,7 +1,7 @@
-﻿using FormatWith;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FormatWith;
 using TTRPG.Engine.Exceptions;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
@@ -21,37 +21,40 @@ namespace TTRPG.Engine.Equations
 			{
 				case MappingType.InventoryItem:
 				case MappingType.Role:
+				{
+					Role role = null;
+					if (mapping.RoleName == null)
 					{
-						Role role = null;
-						if (mapping.RoleName == null)
-						{
-							role = roles.FirstOrDefault();
-							if (mapping.ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to no roles being passed.");
-						}
-						else
-						{
-							role = roles.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
-							if (mapping.ThrowOnFailure && role == null) throw new MissingRoleException($"Mapping failed due to missing role: '{mapping.RoleName}'.");
-						}
-						if (mapping.InventoryItemName != null)
-						{
-							Role item = null;
-							if (role != null && role.InventoryItems.ContainsKey(mapping.InventoryItemName))
-								item = role.InventoryItems[mapping.InventoryItemName];
-							if (mapping.ThrowOnFailure && item == null) throw new MissingRoleException($"Mapping failed due to role not having item: '{mapping.InventoryItemName}'.");
-							source = item?.Attributes;
-							break;
-						}
-
-						source = role?.Attributes;
+						role = roles.FirstOrDefault();
+						if (mapping.ThrowOnFailure && role == null)
+							throw new MissingRoleException($"Mapping failed due to no roles being passed.");
+					}
+					else
+					{
+						role = roles.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
+						if (mapping.ThrowOnFailure && role == null)
+							throw new MissingRoleException($"Mapping failed due to missing role: '{mapping.RoleName}'.");
+					}
+					if (mapping.InventoryItemName != null)
+					{
+						Role item = null;
+						if (role != null && role.InventoryItems.ContainsKey(mapping.InventoryItemName))
+							item = role.InventoryItems[mapping.InventoryItemName];
+						if (mapping.ThrowOnFailure && item == null)
+							throw new MissingRoleException($"Mapping failed due to role not having item: '{mapping.InventoryItemName}'.");
+						source = item?.Attributes;
 						break;
 					}
+
+					source = role?.Attributes;
+					break;
+				}
 				case MappingType.Input:
 				default:
-					{
-						source = inputs;
-						break;
-					}
+				{
+					source = inputs;
+					break;
+				}
 			}
 			return source ?? new Dictionary<string, string>();
 		}
@@ -62,7 +65,8 @@ namespace TTRPG.Engine.Equations
 			var roleConditionsMet = sequence.RoleConditions == null || sequence.RoleConditions.All(condition =>
 			{
 				var target = roles?.FirstOrDefault(role => role?.Alias.Equals(condition.RoleName, StringComparison.OrdinalIgnoreCase) ?? false);
-				if (target == null) return false;
+				if (target == null)
+					return false;
 
 				return condition.RequiredCategories.All(x => target.Categories.Contains(x, StringComparer.OrdinalIgnoreCase));
 			});
@@ -126,12 +130,14 @@ namespace TTRPG.Engine.Equations
 					.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 				var mapTo = mapping.To.FormatWith(mapFormatSource);
 				var mapFrom = mapping.From.FormatWith(mapFormatSource);
-				inputs[mapTo] = "0";
 				if (source.ContainsKey(mapFrom))
 				{
 					inputs[mapTo] = source[mapFrom];
 				}
-				else if (mapping.ThrowOnFailure) throw new MappingFailedException($"Mapping failed due to missing key: '{mapping.From}'.");
+				else if (mapping.ThrowOnFailure)
+					throw new MappingFailedException($"Mapping failed due to missing key: '{mapping.From}'.");
+				else
+					inputs[mapTo] = "0";
 			}
 		}
 
@@ -199,7 +205,8 @@ namespace TTRPG.Engine.Equations
 			var mappedInputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);
 			if (role != null)
 			{
-				foreach (var kvp in role.Attributes) mappedInputs[kvp.Key] = kvp.Value;
+				foreach (var kvp in role.Attributes)
+					mappedInputs[kvp.Key] = kvp.Value;
 			}
 			if (item.SequenceItemEquationType == SequenceItemEquationType.Algorithm)
 			{
@@ -221,7 +228,8 @@ namespace TTRPG.Engine.Equations
 		/// <see cref="IEquationService.Check(Sequence, IDictionary{string, string}, IEnumerable{Role})"/>
 		public bool Check(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
 		{
-			if (!CheckRoleConditions(sequence, roles)) return false;
+			if (!CheckRoleConditions(sequence, roles))
+				return false;
 
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var mappedInputs = new Dictionary<string, string>(inputs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
@@ -249,7 +257,8 @@ namespace TTRPG.Engine.Equations
 				var item = sequence.Items[order];
 				var mappedInputs = new Dictionary<string, string>(sArgs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
 				sequence.Mappings.Where(x => !string.IsNullOrWhiteSpace(x.ItemName)).ToList().ForEach(x => Apply(x, item.Name, ref mappedInputs, roles));
-				if (!sequence.Conditions.All(x => Check(x, item.Name, mappedInputs, result, ref errorMessages))) continue;
+				if (!sequence.Conditions.All(x => Check(x, item.Name, mappedInputs, result, ref errorMessages)))
+					continue;
 				var itemResult = GetResult(item, order, ref sArgs, mappedInputs);
 				result.Results.Add(itemResult);
 			}

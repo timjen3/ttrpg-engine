@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using NUnit.Framework;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
 

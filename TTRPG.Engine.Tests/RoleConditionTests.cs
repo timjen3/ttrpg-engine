@@ -1,6 +1,6 @@
-﻿using Moq;
-using NUnit.Framework;
 using System.Collections.Generic;
+using Moq;
+using NUnit.Framework;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
 using TTRPG.Engine.Sequences;

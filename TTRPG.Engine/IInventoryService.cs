@@ -1,4 +1,4 @@
-﻿namespace TTRPG.Engine
+namespace TTRPG.Engine
 {
 	/// <summary>
 	///		Manages inventory for roles

@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
-using System.Collections.Generic;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.SequenceItems;
 

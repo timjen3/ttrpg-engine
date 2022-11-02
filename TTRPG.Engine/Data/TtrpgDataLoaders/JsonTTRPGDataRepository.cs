@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -31,7 +31,8 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 					})
 					.ToDictionary(kvp => $"[[{kvp.Key}]]", kvp => kvp.Value, StringComparer.OrdinalIgnoreCase);
 			}
-			else if (_messageTemplates == null) _messageTemplates = new Dictionary<string, string>();
+			else if (_messageTemplates == null)
+				_messageTemplates = new Dictionary<string, string>();
 
 			return Task.FromResult(_messageTemplates);
 		}
@@ -49,7 +50,8 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 					.SelectMany(filename => JsonFileReader.ReadFile<List<Role>>(filename))
 					.ToList();
 			}
-			else if (_roles == null) _roles = new List<Role>();
+			else if (_roles == null)
+				_roles = new List<Role>();
 
 			return Task.FromResult(_roles);
 		}
@@ -62,7 +64,8 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 					.SelectMany(filename => JsonFileReader.ReadFile<List<SequenceItem>>(filename))
 					.ToList();
 			}
-			else if (_sequenceItems == null) _sequenceItems = new List<SequenceItem>();
+			else if (_sequenceItems == null)
+				_sequenceItems = new List<SequenceItem>();
 
 			return Task.FromResult(_sequenceItems);
 		}
@@ -75,7 +78,8 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 					.SelectMany(filename => JsonFileReader.ReadFile<List<Sequence>>(filename))
 					.ToList();
 			}
-			else if (_sequences == null) _sequences = new List<Sequence>();
+			else if (_sequences == null)
+				_sequences = new List<Sequence>();
 			// replace message with template if match is found
 			var templates = await GetMessageTemplatesAsync();
 			foreach (var sequence in _sequences)

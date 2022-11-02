@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Tests

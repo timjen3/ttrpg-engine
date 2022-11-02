@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TTRPG.Engine.SequenceItems;
 
 namespace TTRPG.Engine.Sequences

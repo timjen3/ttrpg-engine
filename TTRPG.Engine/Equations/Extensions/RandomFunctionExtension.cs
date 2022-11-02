@@ -1,6 +1,6 @@
-﻿using org.mariuszgromada.math.mxparser;
 using System;
 using System.Linq;
+using org.mariuszgromada.math.mxparser;
 
 namespace TTRPG.Engine.Equations.Extensions
 {

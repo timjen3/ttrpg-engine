@@ -1,4 +1,4 @@
-﻿namespace TTRPG.Engine.SequenceItems
+namespace TTRPG.Engine.SequenceItems
 {
 	public class SequenceResultItem
 	{

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;

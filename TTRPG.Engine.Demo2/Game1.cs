@@ -1,4 +1,6 @@
-﻿using EmptyKeys.UserInterface;
+using System;
+using System.Collections.Generic;
+using EmptyKeys.UserInterface;
 using EmptyKeys.UserInterface.Generated;
 using EmptyKeys.UserInterface.Input;
 using EmptyKeys.UserInterface.Media;
@@ -7,10 +9,9 @@ using EmptyKeys.UserInterface.Mvvm;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 using TTRPG.Engine.Data;
 using TTRPG.Engine.Demo2.Views;
+using TTRPG.Engine.Engine;
 
 namespace TTRPG.Engine.Demo2
 {
@@ -64,9 +65,24 @@ namespace TTRPG.Engine.Demo2
 			var collection = new ServiceCollection();
 			collection.AddSingleton(new TTRPGEngineOptions
 			{
-				AutomaticCommands = new Dictionary<string, string>
+				AutomaticCommands = new List<AutomaticCommand>
 				{
-					{ "Temporal", "AdvanceTime [time:time]" }
+					new AutomaticCommand
+					{
+						SequenceCategory = "Temporal",
+						Command = "AdvanceTime",
+						Filter = r => r.Name == "Time",
+						AliasRolesAs = "time",
+						Inputs = new Dictionary<string, string>{ { "elapsed", "15"} }
+					},
+					new AutomaticCommand
+					{
+						SequenceCategory = "Temporal",
+						Command = "Grow",
+						Filter = r => r.Categories.Contains("Grows"),
+						AliasRolesAs = "grower",
+						Inputs = new Dictionary<string, string>{ { "elapsed", "1"} }
+					}
 				}
 			});
 			collection.AddTTRPGEngineServices();

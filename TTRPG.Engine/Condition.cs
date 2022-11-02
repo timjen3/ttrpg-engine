@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,7 +15,8 @@ namespace TTRPG.Engine
 		/// constructor for sequence-level condition
 		public Condition(string equation)
 		{
-			if (string.IsNullOrWhiteSpace(equation)) throw new ArgumentNullException($"Argument {nameof(equation)} is required.");
+			if (string.IsNullOrWhiteSpace(equation))
+				throw new ArgumentNullException($"Argument {nameof(equation)} is required.");
 			Equation = equation;
 		}
 
@@ -28,8 +29,10 @@ namespace TTRPG.Engine
 		/// condition for 1+ items
 		public Condition(IEnumerable<string> itemNames, string equation = null, string dependentOnItem = null, bool throwOnFail = false, string failureMessage = null)
 		{
-			if (string.IsNullOrWhiteSpace(equation) && string.IsNullOrWhiteSpace(dependentOnItem)) throw new ArgumentNullException($"Either of arguments: {nameof(equation)} or {nameof(dependentOnItem)} are required.");
-			if (itemNames == null || !itemNames.Any()) throw new ArgumentNullException($"Argument: {nameof(itemNames)} cannot be null for a sequence item condition.");
+			if (string.IsNullOrWhiteSpace(equation) && string.IsNullOrWhiteSpace(dependentOnItem))
+				throw new ArgumentNullException($"Either of arguments: {nameof(equation)} or {nameof(dependentOnItem)} are required.");
+			if (itemNames == null || !itemNames.Any())
+				throw new ArgumentNullException($"Argument: {nameof(itemNames)} cannot be null for a sequence item condition.");
 			ItemNames = itemNames;
 			Equation = equation;
 			DependentOnItem = dependentOnItem;

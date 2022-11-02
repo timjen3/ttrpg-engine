@@ -1,6 +1,6 @@
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using TTRPG.Engine.Data;
 
 namespace TTRPG.Engine.Demo

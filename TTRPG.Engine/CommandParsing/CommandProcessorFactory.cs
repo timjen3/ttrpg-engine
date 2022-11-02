@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -77,10 +77,14 @@ namespace TTRPG.Engine.CommandParsing
 		{
 			ICommandParser parser = null;
 			var matches = _parsers.Where(x => !x.IsDefault && x.CanProcess(parsedCommand.MainCommand));
-			if (matches.Count() > 1) throw new Exception("Found multiple parsers able to process this command.");
-			if (matches.Count() == 1) parser = matches.Single();
-			if (parser == null) parser = _parsers.FirstOrDefault(x => x.IsDefault);
-			if (parser == null) throw new Exception("Unknown command.");
+			if (matches.Count() > 1)
+				throw new Exception("Found multiple parsers able to process this command.");
+			if (matches.Count() == 1)
+				parser = matches.Single();
+			if (parser == null)
+				parser = _parsers.FirstOrDefault(x => x.IsDefault);
+			if (parser == null)
+				throw new Exception("Unknown command.");
 
 			return parser.GetProcessor(parsedCommand);
 		}

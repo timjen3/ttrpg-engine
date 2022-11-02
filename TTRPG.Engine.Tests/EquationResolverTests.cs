@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using NUnit.Framework;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using NUnit.Framework;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
 

@@ -1,4 +1,4 @@
-﻿namespace TTRPG.Engine.SequenceItems
+namespace TTRPG.Engine.SequenceItems
 {
 	/// <summary>
 	///		Identifies the equation type of the sequence item

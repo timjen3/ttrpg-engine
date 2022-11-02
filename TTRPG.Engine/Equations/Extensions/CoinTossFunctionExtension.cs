@@ -1,5 +1,5 @@
-﻿using org.mariuszgromada.math.mxparser;
 using System;
+using org.mariuszgromada.math.mxparser;
 
 namespace TTRPG.Engine.Equations.Extensions
 {
@@ -14,12 +14,7 @@ namespace TTRPG.Engine.Equations.Extensions
 			return toss;
 		}
 
-		public FunctionExtension clone()
-		{
-			return new RandomFunctionExtension()
-			{
-			};
-		}
+		public FunctionExtension clone() => new RandomFunctionExtension();
 
 		public string getParameterName(int parameterIndex)
 		{
@@ -32,10 +27,7 @@ namespace TTRPG.Engine.Equations.Extensions
 			}
 		}
 
-		public int getParametersNumber()
-		{
-			return 1;
-		}
+		public int getParametersNumber() => 1;
 
 		public void setParameterValue(int parameterIndex, double parameterValue)
 		{

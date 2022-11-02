@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace TTRPG.Engine.Data
 {
