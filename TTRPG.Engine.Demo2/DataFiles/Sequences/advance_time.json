@@ -11,7 +11,7 @@
 			},
 			{
 				"Name": "Updated Time",
-				"Equation": "current_time + 1",
+				"Equation": "current_time + (elapsed * 5/300)",
 				"ResultName": "new_time",
 				"SequenceItemEquationType": "Algorithm"
 			},
@@ -22,9 +22,21 @@
 				"SequenceItemEquationType": "Algorithm"
 			},
 			{
-				"Name": "Display Time",
-				"Equation": "new_time # 24",
-				"ResultName": "display_time",
+				"Name": "Decimal Only",
+				"Equation": "new_time - floor(new_time)",
+				"ResultName": "time_decimal",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Display Hours",
+				"Equation": "(new_time # 24) - time_decimal",
+				"ResultName": "display_hours",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Display Minutes",
+				"Equation": "floor(time_decimal * 3/5 * 100)",
+				"ResultName": "display_minutes",
 				"SequenceItemEquationType": "Algorithm"
 			},
 			{
@@ -35,7 +47,7 @@
 			},
 			{
 				"Name": "Display Day Time",
-				"Equation": "Day: {display_day} Time: {display_time}",
+				"Equation": "Day {display_day}    {display_hours}:{display_minutes}",
 				"ResultName": "display_day_time",
 				"SequenceItemEquationType": "Message"
 			}
@@ -55,6 +67,14 @@
 				"ItemName": null,
 				"RoleName": "time",
 				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "elapsed",
+				"To": "elapsed",
+				"ItemName": null,
+				"RoleName": null,
+				"MappingType": "Input",
 				"ThrowOnFailure": true
 			}
 		],

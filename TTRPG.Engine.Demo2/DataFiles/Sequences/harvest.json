@@ -1,0 +1,299 @@
+[
+	{
+		"Name": "Harvest",
+		"Example": "Harvest [miner:farmer,corn1:crop]",
+		"Categories": ["Temporal"],
+		"Items": [
+			{
+				"Name": "Intention",
+				"Equation": "{farmer_name} {wAction} at {crop_name}.",
+				"ResultName": "intention",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Damage",
+				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
+				"ResultName": "damage",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Damage",
+				"Equation": "{farmer_name} dealt {damage} damage to {crop_name} from {wHits} {wAction}.",
+				"ResultName": "DamageMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Take Damage",
+				"Equation": "max(hp - damage, 0)",
+				"ResultName": "new_hp",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Damage Taken",
+				"Equation": "{crop_name} HP : {old_hp} => {new_hp}",
+				"ResultName": "DamageTakenMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Claim Meat",
+				"Equation": "current_meat + max(ceil(crop_max_hp / 4), 1)",
+				"ResultName": "new_meat",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Meat Taken",
+				"Equation": "Got meat : {current_meat} => {new_meat}",
+				"ResultName": "MeatTakenMsg",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Drain Stamina",
+				"Equation": "farmer_stamina - 1",
+				"ResultName": "new_stamina",
+				"SequenceItemEquationType": "Algorithm"
+			}
+		],
+		"Conditions": [
+			{
+				"DependentOnItem": null,
+				"Equation": "crop_age >= crop_maturity",
+				"ThrowOnFail": false,
+				"FailureMessage": "Crop is not ready to be harvested yet."
+			},
+			{
+				"DependentOnItem": null,
+				"Equation": "farmer_stamina > 0",
+				"ThrowOnFail": false,
+				"FailureMessage": "You're too tired! You should rest."
+			},
+			{
+				"DependentOnItem": null,
+				"Equation": "hp > 0",
+				"ThrowOnFail": false,
+				"FailureMessage": "Already harvested."
+			},
+			{
+				"DependentOnItem": null,
+				"Equation": "pierce >= ac",
+				"ThrowOnFail": false,
+				"FailureMessage": "Your weapon is inneffective."
+			},
+			{
+				"DependentOnItem": "Damage",
+				"Equation": null,
+				"ItemNames": [
+					"Report Damage",
+					"Drain Stamina"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Damage",
+				"Equation": "damage > 0",
+				"ItemNames": [
+					"Take Damage",
+					"Report Damage Taken"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Take Damage",
+				"Equation": "new_hp <= 0",
+				"ItemNames": [
+					"Claim Meat"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Claim Meat",
+				"Equation": "new_meat > 0",
+				"ItemNames": [
+					"Report Meat Taken"
+				],
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			}
+		],
+		"Mappings": [
+			{
+				"From": "name",
+				"To": "farmer_name",
+				"ItemName": null,
+				"RoleName": "farmer",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "meat",
+				"To": "current_meat",
+				"ItemName": null,
+				"RoleName": "farmer",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "name",
+				"To": "crop_name",
+				"ItemName": null,
+				"RoleName": "crop",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hp",
+				"To": "hp",
+				"ItemName": null,
+				"RoleName": "crop",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "stamina",
+				"To": "farmer_stamina",
+				"ItemName": null,
+				"RoleName": "farmer",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "pierce",
+				"To": "pierce",
+				"ItemName": null,
+				"RoleName": "farmer",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hits",
+				"To": "wHits",
+				"ItemName": "Report Damage",
+				"RoleName": "farmer",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "ac",
+				"To": "ac",
+				"ItemName": null,
+				"RoleName": "crop",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "str",
+				"To": "str",
+				"ItemName": "Damage",
+				"RoleName": "farmer",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hits",
+				"To": "wHits",
+				"ItemName": "Damage",
+				"RoleName": "farmer",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "min",
+				"To": "wMin",
+				"ItemName": "Damage",
+				"RoleName": "farmer",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "max",
+				"To": "wMax",
+				"ItemName": "Damage",
+				"RoleName": "farmer",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "action",
+				"To": "wAction",
+				"ItemName": null,
+				"RoleName": "farmer",
+				"InventoryItemName": "weapon",
+				"MappingType": "InventoryItem",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "hp",
+				"To": "old_hp",
+				"ItemName": "Report Damage Taken",
+				"RoleName": "crop",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "MAX_HP",
+				"To": "crop_max_hp",
+				"ItemName": null,
+				"RoleName": "crop",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "Maturity",
+				"To": "crop_maturity",
+				"ItemName": null,
+				"RoleName": "crop",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "Age",
+				"To": "crop_age",
+				"ItemName": null,
+				"RoleName": "crop",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			}
+		],
+		"ResultItems": [
+			{
+				"Name": "HP",
+				"Category": "UpdateAttribute",
+				"Source": "new_hp",
+				"RoleName": "crop"
+			},
+			{
+				"Name": "Meat",
+				"Category": "UpdateAttribute",
+				"Source": "new_meat",
+				"RoleName": "farmer"
+			},
+			{
+				"Name": "Stamina",
+				"Category": "UpdateAttribute",
+				"Source": "new_stamina",
+				"RoleName": "farmer"
+			}
+		],
+		"RoleConditions": [
+			{
+				"RoleName": "Farmer",
+				"RequiredCategories": [
+					"Entity"
+				]
+			},
+			{
+				"RoleName": "Crop",
+				"RequiredCategories": [
+					"Crop"
+				]
+			}
+		]
+	}
+]

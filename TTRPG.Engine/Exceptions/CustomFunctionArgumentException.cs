@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 
 namespace TTRPG.Engine.Exceptions
 {
-	public class CustomFunctionArgumentException : Exception
-	{
-		public CustomFunctionArgumentException(string message) : base(message)
-		{
-		}
-	}
+    public class CustomFunctionArgumentException : Exception
+    {
+        public CustomFunctionArgumentException(string message) : base(message)
+        {
+        }
+    }
 }

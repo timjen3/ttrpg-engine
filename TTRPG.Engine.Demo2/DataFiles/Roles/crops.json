@@ -1,0 +1,63 @@
+﻿[
+	{
+		"Name": "Corn1",
+		"Attributes": {
+			"Maturity": "100",
+			"Age": "100",
+			"Name": "Corn1",
+			"HP": "60",
+			"MAX_HP": "60",
+			"AC": "0"
+		},
+		"Categories": [
+			"Grows",
+			"Crop"
+		]
+	},
+	{
+		"Name": "Corn2",
+		"Attributes": {
+			"Maturity": "100",
+			"Age": "90",
+			"Name": "Corn2",
+			"HP": "60",
+			"MAX_HP": "60",
+			"AC": "0"
+		},
+		"Categories": [
+			"Grows",
+			"Crop"
+		]
+	},
+	{
+		"Name": "Tomato1",
+		"Attributes": {
+			"Maturity": "50",
+			"Age": "0",
+			"Name": "Tomato1",
+			"HP": "40",
+			"MAX_HP": "40",
+			"AC": "0"
+		},
+		"Categories": [
+			"Grows",
+			"Crop"
+		]
+	},
+	{
+		"Name": "PeaPlant1",
+		"Attributes": {
+			"Maturity": "50",
+			"Age": "0",
+			"Step": ".05",
+			"Name": "PeaPlant1",
+			"HP": "40",
+			"MAX_HP": "40",
+			"AC": "0"
+		},
+		"Categories": [
+			"Grows",
+			"Crop"
+		]
+	}
+]

@@ -52,6 +52,7 @@
 					<ComboBox Name="comboTargets" Grid.Row="0" Width="300" Margin="5" SelectedIndex="2" TabIndex="1" SelectedItem="{Binding SelectedTarget}">
 						<ComboBoxItem IsSelected="true" Name="terrain" Content="Terrain" />
 						<ComboBoxItem Name="animal" Content="Animals" />
+						<ComboBoxItem Name="crop" Content="Crop" />
 						<ComboBoxItem Name="commodity" Content="Commodities" />
 					</ComboBox>
 					<ListBox Grid.Row ="1" TabIndex="2" ItemsSource="{Binding Targets}" VerticalAlignment="stretch"

@@ -63,6 +63,36 @@
         <member name="P:TTRPG.Engine.Condition.FailureMessage">
             Custom message for failure if ThrowOnFail is true; if ThrowOnFail is false it will be added as a result
         </member>
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.SequenceCategory">
+            <summary>
+            	Fire this command after any sequences matching the specified category
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.Command">
+            <summary>
+            	Command to be executed
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.Filter">
+            <summary>
+            	Delegate for roles to be included
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.AliasRolesAs">
+            <summary>
+            	How to alias included roles
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.Inputs">
+            <summary>
+            	Additional inputs to include
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.Engine.TTRPGEngineOptions.AutomaticCommands">
+            <summary>
+            	Commands to be ran automatically
+            </summary>
+        </member>
         <member name="T:TTRPG.Engine.Equations.EquationResolver">
             Resolves an equation using mxParser
         </member>
@@ -389,13 +419,15 @@
             <param name="command"></param>
             <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
         </member>
+        <member name="M:TTRPG.Engine.TTRPGEngine.Process(TTRPG.Engine.CommandParsing.ParsedCommand,System.Boolean)">
+            <summary>
+            	Parse and process a command
+            </summary>
+            <param name="command"></param>
+            <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
+        </member>
         <member name="E:TTRPG.Engine.TTRPGEngine.MessageCreated">
             add message handlers
-        </member>
-        <member name="P:TTRPG.Engine.TTRPGEngineOptions.AutomaticCommands">
-            <summary>
-            	Commands to be ran automatically when a command is processed with the specified category
-            </summary>
         </member>
     </members>
 </doc>

@@ -1,74 +1,63 @@
-// -----------------------------------------------------------
-//  
-//  This file was generated, please do not modify.
-//  
-// -----------------------------------------------------------
-namespace EmptyKeys.UserInterface.Generated {
-    using System;
+namespace EmptyKeys.UserInterface.Generated
+{
     using System.CodeDom.Compiler;
-    using System.Collections.ObjectModel;
     using EmptyKeys.UserInterface;
-    using EmptyKeys.UserInterface.Charts;
-    using EmptyKeys.UserInterface.Data;
     using EmptyKeys.UserInterface.Controls;
-    using EmptyKeys.UserInterface.Controls.Primitives;
-    using EmptyKeys.UserInterface.Input;
-    using EmptyKeys.UserInterface.Interactions.Core;
-    using EmptyKeys.UserInterface.Interactivity;
+    using EmptyKeys.UserInterface.Data;
     using EmptyKeys.UserInterface.Media;
-    using EmptyKeys.UserInterface.Media.Effects;
-    using EmptyKeys.UserInterface.Media.Animation;
-    using EmptyKeys.UserInterface.Media.Imaging;
-    using EmptyKeys.UserInterface.Shapes;
-    using EmptyKeys.UserInterface.Renderers;
     using EmptyKeys.UserInterface.Themes;
-    
-    
+
+
     [GeneratedCodeAttribute("Empty Keys UI Generator", "3.2.0.0")]
-    public partial class MainScreenViewPage : UIRoot {
-        
+    public partial class MainScreenViewPage : UIRoot
+    {
+
         private Grid e_0;
-        
+
         private StackPanel e_1;
-        
+
         private TextBlock e_2;
-        
+
         private TabControl TabControl;
-        
+
         private TextBox textBox;
-        
+
         private Button buttonExecuteCommand;
-        
+
         private Grid e_12;
-        
+
         private TextBlock e_13;
-        
+
         private TextBlock e_14;
-        
+
         private Grid e_15;
-        
+
         private TextBlock e_16;
-        
+
         private TextBlock e_17;
-        
-        public MainScreenViewPage() : 
-                base() {
+
+        public MainScreenViewPage() :
+                base()
+        {
             this.Initialize();
         }
-        
-        public MainScreenViewPage(int width, int height) : 
-                base(width, height) {
+
+        public MainScreenViewPage(int width, int height) :
+                base(width, height)
+        {
             this.Initialize();
         }
-        
-        private void Initialize() {
+
+        private void Initialize()
+        {
             Style style = RootStyle.CreateRootStyle();
             style.TargetType = this.GetType();
             this.Style = style;
             this.InitializeComponent();
         }
-        
-        private void InitializeComponent() {
+
+        private void InitializeComponent()
+        {
             InitializeElementResources(this);
             // e_0 element
             this.e_0 = new Grid();
@@ -224,12 +213,14 @@ namespace EmptyKeys.UserInterface.Generated {
             this.e_17.SetBinding(TextBlock.TextProperty, binding_e_17_Text);
             FontManager.Instance.AddFont("Segoe UI", 26.66667F, FontStyle.Bold, "Segoe_UI_20_Bold");
         }
-        
-        private static void InitializeElementResources(UIElement elem) {
+
+        private static void InitializeElementResources(UIElement elem)
+        {
             elem.Resources.MergedDictionaries.Add(Dictionary.Instance);
         }
-        
-        private static System.Collections.ObjectModel.ObservableCollection<object> Get_TabControl_Items() {
+
+        private static System.Collections.ObjectModel.ObservableCollection<object> Get_TabControl_Items()
+        {
             System.Collections.ObjectModel.ObservableCollection<object> items = new System.Collections.ObjectModel.ObservableCollection<object>();
             // e_3 element
             TabItem e_3 = new TabItem();
@@ -389,8 +380,9 @@ namespace EmptyKeys.UserInterface.Generated {
             items.Add(e_8);
             return items;
         }
-        
-        private static System.Collections.ObjectModel.ObservableCollection<object> Get_comboTargets_Items() {
+
+        private static System.Collections.ObjectModel.ObservableCollection<object> Get_comboTargets_Items()
+        {
             System.Collections.ObjectModel.ObservableCollection<object> items = new System.Collections.ObjectModel.ObservableCollection<object>();
             // terrain element
             ComboBoxItem terrain = new ComboBoxItem();
@@ -403,6 +395,11 @@ namespace EmptyKeys.UserInterface.Generated {
             animal.Name = "animal";
             animal.Content = "Animals";
             items.Add(animal);
+            // crop element
+            ComboBoxItem crop = new ComboBoxItem();
+            crop.Name = "crop";
+            crop.Content = "Crop";
+            items.Add(crop);
             // commodity element
             ComboBoxItem commodity = new ComboBoxItem();
             commodity.Name = "commodity";

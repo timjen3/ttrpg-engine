@@ -1,0 +1,48 @@
+[
+	{
+		"Name": "Grow",
+		"Example": "Grow [corn1:grower] {elapsed:1}",
+		"Items": [
+			{
+				"Name": "Updated Age",
+				"Equation": "min(current_age + elapsed, maturity)",
+				"ResultName": "new_age",
+				"SequenceItemEquationType": "Algorithm"
+			}
+		],
+		"Mappings": [
+			{
+				"From": "age",
+				"To": "current_age",
+				"ItemName": null,
+				"RoleName": "grower",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "maturity",
+				"To": "maturity",
+				"ItemName": null,
+				"RoleName": "grower",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "elapsed",
+				"To": "elapsed",
+				"ItemName": null,
+				"RoleName": null,
+				"MappingType": "Input",
+				"ThrowOnFailure": true
+			}
+		],
+		"ResultItems": [
+			{
+				"Name": "Age",
+				"Category": "UpdateAttribute",
+				"Source": "new_age",
+				"RoleName": "grower"
+			}
+		]
+	}
+]
