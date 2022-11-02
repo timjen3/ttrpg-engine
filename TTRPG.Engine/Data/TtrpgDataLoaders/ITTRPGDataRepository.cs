@@ -5,14 +5,14 @@ using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Data.TtrpgDataLoaders
 {
-    public interface ITTRPGDataRepository
-    {
-        Task<List<Sequence>> GetSequencesAsync();
+	public interface ITTRPGDataRepository
+	{
+		Task<List<Sequence>> GetSequencesAsync();
 
-        Task<List<SequenceItem>> GetSequenceItemsAsync();
+		Task<List<SequenceItem>> GetSequenceItemsAsync();
 
-        Task<List<Role>> GetRolesAsync();
+		Task<List<Role>> GetRolesAsync();
 
-        Task ReloadAsync();
-    }
+		Task ReloadAsync();
+	}
 }
