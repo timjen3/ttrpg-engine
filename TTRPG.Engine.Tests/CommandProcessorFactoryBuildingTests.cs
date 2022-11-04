@@ -38,7 +38,7 @@ namespace TTRPG.Engine.Tests
 			mockParser.Setup(x => x.IsDefault).Returns(isDefault);
 			mockParser.Setup(x => x.CanProcess(It.Is<string>(s => supportedCommands.Contains(s)))).Returns(true);
 			var mockProcessor = new Mock<ITTRPGCommandProcessor>();
-			mockParser.Setup(x => x.GetProcessor(It.IsAny<ParsedCommand>())).Returns(mockProcessor.Object);
+			mockParser.Setup(x => x.GetProcessor(It.IsAny<EngineCommand>())).Returns(mockProcessor.Object);
 
 			return mockParser;
 		}
@@ -48,14 +48,14 @@ namespace TTRPG.Engine.Tests
 		{
 			MatchParser = GetMockParser(false, new HashSet<string> { "action1" });
 			var processor = BuildCommandProcessorFactory();
-			var parsedCommand = new ParsedCommand();
+			var parsedCommand = new EngineCommand();
 			parsedCommand.MainCommand = "action1";
 
 			var built = processor.Build(parsedCommand);
 
 			Assert.That(built, Is.Not.Null);
 			// command processor's GetProcessor command is called
-			MatchParser.Verify(x => x.GetProcessor(It.Is<ParsedCommand>(parsedCommand => true)), Times.Once);
+			MatchParser.Verify(x => x.GetProcessor(It.Is<EngineCommand>(parsedCommand => true)), Times.Once);
 		}
 
 		[Test]
@@ -63,14 +63,14 @@ namespace TTRPG.Engine.Tests
 		{
 			DefaultParser = GetMockParser(true, new HashSet<string>());
 			var processor = BuildCommandProcessorFactory();
-			var parsedCommand = new ParsedCommand();
+			var parsedCommand = new EngineCommand();
 			parsedCommand.MainCommand = "action1";
 
 			var built = processor.Build(parsedCommand);
 
 			Assert.That(built, Is.Not.Null);
 			// command processor's GetProcessor command is called
-			DefaultParser.Verify(x => x.GetProcessor(It.Is<ParsedCommand>(parsedCommand => true)), Times.Once);
+			DefaultParser.Verify(x => x.GetProcessor(It.Is<EngineCommand>(parsedCommand => true)), Times.Once);
 		}
 
 		[Test]
@@ -79,15 +79,15 @@ namespace TTRPG.Engine.Tests
 			MatchParser = GetMockParser(false, new HashSet<string> { "action1" });
 			DefaultParser = GetMockParser(true, new HashSet<string> { });
 			var processor = BuildCommandProcessorFactory();
-			var parsedCommand = new ParsedCommand();
+			var parsedCommand = new EngineCommand();
 			parsedCommand.MainCommand = "action1";
 
 			var built = processor.Build(parsedCommand);
 
 			Assert.That(built, Is.Not.Null);
 			// ensure correct processor's GetProcessor command is called
-			MatchParser.Verify(x => x.GetProcessor(It.Is<ParsedCommand>(parsedCommand => true)), Times.Once);
-			DefaultParser.Verify(x => x.GetProcessor(It.Is<ParsedCommand>(parsedCommand => true)), Times.Never);
+			MatchParser.Verify(x => x.GetProcessor(It.Is<EngineCommand>(parsedCommand => true)), Times.Once);
+			DefaultParser.Verify(x => x.GetProcessor(It.Is<EngineCommand>(parsedCommand => true)), Times.Never);
 		}
 
 		[Test]
@@ -95,7 +95,7 @@ namespace TTRPG.Engine.Tests
 		{
 			MatchParser = GetMockParser(false, new HashSet<string> { "action1" });
 			var processor = BuildCommandProcessorFactory();
-			var parsedCommand = new ParsedCommand();
+			var parsedCommand = new EngineCommand();
 			parsedCommand.MainCommand = "action2";
 
 			Assert.Throws<Exception>(() => processor.Build(parsedCommand), "Unknown command.");

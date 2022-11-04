@@ -17,7 +17,7 @@
             <param name="commandType"></param>
             <returns></returns>
         </member>
-        <member name="M:TTRPG.Engine.CommandParsing.Parsers.ICommandParser.GetProcessor(TTRPG.Engine.CommandParsing.ParsedCommand)">
+        <member name="M:TTRPG.Engine.CommandParsing.Parsers.ICommandParser.GetProcessor(TTRPG.Engine.EngineCommand)">
             <summary>
             	Returns a command processor for the command
             </summary>
@@ -88,7 +88,7 @@
             	Additional inputs to include
             </summary>
         </member>
-        <member name="P:TTRPG.Engine.Engine.TTRPGEngineOptions.AutomaticCommands">
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommandFactoryOptions.AutomaticCommands">
             <summary>
             	Commands to be ran automatically
             </summary>
@@ -419,7 +419,7 @@
             <param name="command"></param>
             <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
         </member>
-        <member name="M:TTRPG.Engine.TTRPGEngine.Process(TTRPG.Engine.CommandParsing.ParsedCommand,System.Boolean)">
+        <member name="M:TTRPG.Engine.TTRPGEngine.Process(TTRPG.Engine.EngineCommand,System.Boolean)">
             <summary>
             	Parse and process a command
             </summary>

@@ -135,10 +135,12 @@
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition />
 				<ColumnDefinition />
+				<ColumnDefinition />
+				<ColumnDefinition />
 			</Grid.ColumnDefinitions>
 
-			<TextBlock Text="{Binding CommandResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="0" Margin="5" Background="Gray" />
-			<TextBlock Text="{Binding StatusResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="1" Margin="5" Background="Gray" />
+			<TextBlock Text="{Binding CommandResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Background="Gray" />
+			<TextBlock Text="{Binding StatusResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="3" Margin="5" Background="Gray" />
 		</Grid>
 
 		<Grid Grid.Row="4" Grid.ColumnSpan="4">

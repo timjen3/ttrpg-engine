@@ -3,6 +3,11 @@
 		"Name": "Rest",
 		"Example": "Rest [miner:sleeper]",
 		"Categories": [ "Temporal" ],
+		"CategoryParams": {
+			"Temporal": {
+				"elapsed": "480"
+			}
+		},
 		"Items": [
 			{
 				"Name": "Refreshed Stamina",

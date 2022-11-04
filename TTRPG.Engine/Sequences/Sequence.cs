@@ -20,5 +20,7 @@ namespace TTRPG.Engine.Sequences
 		public List<Mapping> Mappings { get; set; } = new List<Mapping>();
 
 		public List<string> Categories { get; set; } = new List<string>();
+
+		public Dictionary<string, Dictionary<string, string>> CategoryParams { get; set; } = new Dictionary<string, Dictionary<string, string>>();
 	}
 }

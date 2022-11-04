@@ -24,7 +24,6 @@ namespace TTRPG.Engine
 		/// <returns></returns>
 		public static IServiceCollection AddTTRPGEngineServices(this IServiceCollection services)
 		{
-			services.TryAddSingleton(new TTRPGEngineOptions());
 			services.AddSingleton(new Function("random", new RandomFunctionExtension()));
 			services.AddSingleton(new Function("toss", new CoinTossFunctionExtension()));
 			services.AddSingleton<IEquationResolver, EquationResolver>();
@@ -35,6 +34,8 @@ namespace TTRPG.Engine
 			services.AddSingleton<ITTRPGCommandProcessor, InventoryProcessor>();
 			services.AddSingleton<ICommandParser, EquationCommandParser>();
 			services.AddSingleton<ICommandParser, InventoryCommandParser>();
+			services.TryAddSingleton(new AutomaticCommandFactoryOptions());
+			services.AddSingleton<IAutomaticCommandFactory, AutomaticCommandFactory>();
 			services.AddSingleton<GameObject>();
 			services.AddSingleton<TTRPGEngine>();
 

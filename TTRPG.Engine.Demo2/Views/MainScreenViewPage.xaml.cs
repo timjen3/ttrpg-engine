@@ -166,6 +166,10 @@ namespace EmptyKeys.UserInterface.Generated {
             this.e_12.ColumnDefinitions.Add(col_e_12_0);
             ColumnDefinition col_e_12_1 = new ColumnDefinition();
             this.e_12.ColumnDefinitions.Add(col_e_12_1);
+            ColumnDefinition col_e_12_2 = new ColumnDefinition();
+            this.e_12.ColumnDefinitions.Add(col_e_12_2);
+            ColumnDefinition col_e_12_3 = new ColumnDefinition();
+            this.e_12.ColumnDefinitions.Add(col_e_12_3);
             Grid.SetRow(this.e_12, 3);
             Grid.SetColumnSpan(this.e_12, 4);
             // e_13 element
@@ -177,6 +181,7 @@ namespace EmptyKeys.UserInterface.Generated {
             this.e_13.VerticalAlignment = VerticalAlignment.Stretch;
             this.e_13.Background = new SolidColorBrush(new ColorW(128, 128, 128, 255));
             Grid.SetColumn(this.e_13, 0);
+            Grid.SetColumnSpan(this.e_13, 3);
             Binding binding_e_13_Text = new Binding("CommandResult");
             this.e_13.SetBinding(TextBlock.TextProperty, binding_e_13_Text);
             // e_14 element
@@ -187,7 +192,7 @@ namespace EmptyKeys.UserInterface.Generated {
             this.e_14.HorizontalAlignment = HorizontalAlignment.Stretch;
             this.e_14.VerticalAlignment = VerticalAlignment.Stretch;
             this.e_14.Background = new SolidColorBrush(new ColorW(128, 128, 128, 255));
-            Grid.SetColumn(this.e_14, 1);
+            Grid.SetColumn(this.e_14, 3);
             Binding binding_e_14_Text = new Binding("StatusResult");
             this.e_14.SetBinding(TextBlock.TextProperty, binding_e_14_Text);
             // e_15 element

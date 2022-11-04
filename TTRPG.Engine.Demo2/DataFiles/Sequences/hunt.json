@@ -2,7 +2,12 @@
 	{
 		"Name": "Hunt",
 		"Example": "Hunt [miner:hunter,deer1:defender]",
-		"Categories": ["Temporal"],
+		"Categories": [ "Temporal" ],
+		"CategoryParams": {
+			"Temporal": {
+				"elapsed": "30"
+			}
+		},
 		"Items": [
 			{
 				"Name": "Intention",

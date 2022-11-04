@@ -4,7 +4,7 @@ namespace TTRPG.Engine.CommandParsing
 {
 	public interface ICommandProcessorFactory
 	{
-		ParsedCommand ParseCommand(string fullCommand);
-		ITTRPGCommandProcessor Build(ParsedCommand parsedCommand);
+		EngineCommand ParseCommand(string fullCommand);
+		ITTRPGCommandProcessor Build(EngineCommand parsedCommand);
 	}
 }

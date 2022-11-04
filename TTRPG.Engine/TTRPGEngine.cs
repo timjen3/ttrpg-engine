@@ -12,54 +12,23 @@ namespace TTRPG.Engine
 	/// </summary>
 	public class TTRPGEngine
 	{
-		private readonly TTRPGEngineOptions _options;
-		private readonly GameObject _data;
 		private readonly ICommandProcessorFactory _factory;
 		private readonly IEnumerable<ICommandParser> _parsers;
+		private readonly IAutomaticCommandFactory _autoCommandFactory;
 
-		private IEnumerable<ParsedCommand> GetAutoCommands(ProcessedCommand processed)
+		public TTRPGEngine(ICommandProcessorFactory factory, IEnumerable<ICommandParser> parsers, IAutomaticCommandFactory autoCommandFactory)
 		{
-			if (!processed.Valid || processed.Failed)
-				return new ParsedCommand[0];
-
-			var commands = new List<ParsedCommand>();
-			var matches = _options.AutomaticCommands
-				.Where(x => processed.CommandCategories.Contains(x.SequenceCategory));
-			foreach (var match in matches)
-			{
-				var rolesMatching = _data.Roles.Where(x => match.Filter(x));
-				foreach (var roleMatching in rolesMatching)
-				{
-					var command = new ParsedCommand();
-					command.MainCommand = match.Command;
-					command.Inputs = match.Inputs;
-					if (!string.IsNullOrWhiteSpace(match.AliasRolesAs))
-						command.Roles.Add(roleMatching.CloneAs(match.AliasRolesAs));
-					else
-						command.Roles.Add(roleMatching);
-					commands.Add(command);
-				}
-			}
-			return commands;
-		}
-
-		public TTRPGEngine(TTRPGEngineOptions options, GameObject data, ICommandProcessorFactory factory, IEnumerable<ICommandParser> parsers)
-		{
-			_options = options;
-			_data = data;
 			_factory = factory;
 			_parsers = parsers;
+			_autoCommandFactory = autoCommandFactory;
 		}
 
 		/// <summary>
 		///		Returns example commands from all parsers
 		/// </summary>
 		/// <returns></returns>
-		public IEnumerable<string> GetExampleCommands()
-		{
-			return _parsers
+		public IEnumerable<string> GetExampleCommands() => _parsers
 				.SelectMany(p => p.GetExampleCommands());
-		}
 
 		/// <summary>
 		///		Parse and process a command
@@ -78,7 +47,7 @@ namespace TTRPG.Engine
 		/// </summary>
 		/// <param name="command"></param>
 		/// <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
-		public List<ProcessedCommand> Process(ParsedCommand command, bool handleMessages)
+		public List<ProcessedCommand> Process(EngineCommand command, bool handleMessages)
 		{
 			var processed = new List<ProcessedCommand>();
 			var processor = _factory.Build(command);
@@ -99,7 +68,7 @@ namespace TTRPG.Engine
 					MessageCreated(this, message);
 				}
 			}
-			foreach (var autoCommand in GetAutoCommands(result))
+			foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
 			{
 				var results = Process(autoCommand, false);
 				processed.AddRange(results);
