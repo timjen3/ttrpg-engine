@@ -3,8 +3,8 @@
 		"Name": "Dirt",
 		"Attributes": {
 			"Resource": "dirt",
-			"Sell": 1,
-			"Buy": 4,
+			"Sell": 0.25,
+			"Buy": 2,
 			"Hp": 1
 		},
 		"Categories": [
@@ -15,8 +15,8 @@
 		"Name": "Stone",
 		"Attributes": {
 			"Resource": "stone",
-			"Sell": 2,
-			"Buy": 8,
+			"Sell": 1,
+			"Buy": 4,
 			"Hp": 1
 		},
 		"Categories": [
@@ -39,8 +39,8 @@
 		"Name": "Meat",
 		"Attributes": {
 			"Resource": "meat",
-			"Sell": 5,
-			"Buy": 20,
+			"Sell": 2.5,
+			"Buy": 10,
 			"Hp": 1
 		},
 		"Categories": [

@@ -5,9 +5,32 @@
 		"Items": [
 			{
 				"Name": "Updated Age",
-				"Equation": "min(current_age + elapsed, maturity)",
+				"Equation": "min(current_age + (elapsed / 15), maturity)",
 				"ResultName": "new_age",
 				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Report Maturity",
+				"Equation": "{crop_name} has matured!",
+				"ResultName": "maturity_message",
+				"SequenceItemEquationType": "Message"
+			}
+		],
+		"Conditions": [
+			{
+				"DependentOnItem": null,
+				"Equation": "current_age < maturity",
+				"ThrowOnFail": false,
+				"FailureMessage": null
+			},
+			{
+				"DependentOnItem": "Updated Age",
+				"Equation": "new_age >= maturity",
+				"ThrowOnFail": false,
+				"ItemNames": [
+					"Report Maturity"
+				],
+				"FailureMessage": null
 			}
 		],
 		"Mappings": [
@@ -22,6 +45,14 @@
 			{
 				"From": "maturity",
 				"To": "maturity",
+				"ItemName": null,
+				"RoleName": "grower",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "name",
+				"To": "crop_name",
 				"ItemName": null,
 				"RoleName": "grower",
 				"MappingType": "Role",

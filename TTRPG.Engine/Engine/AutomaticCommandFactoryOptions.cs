@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TTRPG.Engine.Engine
 {
-	public class TTRPGEngineOptions
+	public class AutomaticCommandFactoryOptions
 	{
 		private List<AutomaticCommand> _autoSequences = new List<AutomaticCommand>();
 
@@ -11,14 +11,8 @@ namespace TTRPG.Engine.Engine
 		/// </summary>
 		public IList<AutomaticCommand> AutomaticCommands
 		{
-			get
-			{
-				return _autoSequences;
-			}
-			set
-			{
-				_autoSequences = new List<AutomaticCommand>(value);
-			}
+			get => _autoSequences;
+			set => _autoSequences = new List<AutomaticCommand>(value);
 		}
 	}
 }

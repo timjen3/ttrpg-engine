@@ -41,7 +41,7 @@ namespace TTRPG.Engine.CommandParsing.Parsers
 			};
 		}
 
-		public ITTRPGCommandProcessor GetProcessor(ParsedCommand command)
+		public ITTRPGCommandProcessor GetProcessor(EngineCommand command)
 		{
 			return new InventoryProcessor(_service, _data, command);
 		}

@@ -31,7 +31,7 @@ namespace TTRPG.Engine.CommandParsing.Parsers
 				.Select(s => s.Example);
 		}
 
-		public ITTRPGCommandProcessor GetProcessor(ParsedCommand command)
+		public ITTRPGCommandProcessor GetProcessor(EngineCommand command)
 		{
 			var processor = new EquationProcessor(_service, _data, command);
 			if (!processor.IsValid())

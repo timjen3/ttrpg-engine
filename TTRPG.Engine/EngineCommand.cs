@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace TTRPG.Engine.CommandParsing
+namespace TTRPG.Engine
 {
-	public class ParsedCommand
+	public class EngineCommand
 	{
 		public string MainCommand { get; set; }
 		public List<Role> Roles { get; set; } = new List<Role>();

@@ -63,7 +63,7 @@ namespace TTRPG.Engine.Demo2
 		{
 			// load TTRPG Engine Services
 			var collection = new ServiceCollection();
-			collection.AddSingleton(new TTRPGEngineOptions
+			collection.AddSingleton(new AutomaticCommandFactoryOptions
 			{
 				AutomaticCommands = new List<AutomaticCommand>
 				{

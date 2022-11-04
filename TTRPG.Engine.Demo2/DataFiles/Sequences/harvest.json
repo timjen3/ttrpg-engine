@@ -2,7 +2,12 @@
 	{
 		"Name": "Harvest",
 		"Example": "Harvest [miner:farmer,corn1:crop]",
-		"Categories": ["Temporal"],
+		"Categories": [ "Temporal" ],
+		"CategoryParams": {
+			"Temporal": {
+				"elapsed": "30"
+			}
+		},
 		"Items": [
 			{
 				"Name": "Intention",

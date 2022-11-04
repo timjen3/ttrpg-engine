@@ -10,9 +10,9 @@ namespace TTRPG.Engine.CommandParsing.Processors
 		private readonly IEquationService _service;
 		private readonly Sequence _sequence;
 		private readonly GameObject _data;
-		private readonly ParsedCommand _command;
+		private readonly EngineCommand _command;
 
-		public EquationProcessor(IEquationService service, GameObject data, ParsedCommand command)
+		public EquationProcessor(IEquationService service, GameObject data, EngineCommand command)
 		{
 			_service = service;
 			_data = data;
@@ -45,6 +45,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			{
 				Source = _command,
 				CommandCategories = _sequence.Categories,
+				CategoryParams = _sequence.CategoryParams,
 				Messages = messages.ToList()
 			};
 		}

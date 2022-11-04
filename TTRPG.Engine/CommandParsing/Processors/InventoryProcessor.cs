@@ -8,7 +8,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 	public class InventoryProcessor : ITTRPGCommandProcessor
 	{
 		private readonly IInventoryService _service;
-		private readonly ParsedCommand _command;
+		private readonly EngineCommand _command;
 		private readonly GameObject _data;
 		private readonly Role _entity;
 
@@ -19,7 +19,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			return item.CloneAs("_");
 		}
 
-		public InventoryProcessor(IInventoryService service, GameObject data, ParsedCommand command)
+		public InventoryProcessor(IInventoryService service, GameObject data, EngineCommand command)
 		{
 			_service = service;
 			_data = data;

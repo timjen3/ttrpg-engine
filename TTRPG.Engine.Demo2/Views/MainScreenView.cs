@@ -42,7 +42,7 @@ namespace TTRPG.Engine.Demo2.Views
 				{
 					var result = _engine.Process(commandText, false);
 					AdvanceTimeMessage(result);
-					CommandResult = string.Join("\n", result.First().Messages);
+					CommandResult = string.Join("\n", result.SelectMany(x => x.Messages));
 					UpdateTargets();
 					UpdatePlayerAttributes();
 					UpdateStatusResult();

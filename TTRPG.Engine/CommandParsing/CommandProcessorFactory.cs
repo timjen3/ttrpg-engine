@@ -18,9 +18,9 @@ namespace TTRPG.Engine.CommandParsing
 			_parsers = parsers;
 		}
 
-		public ParsedCommand ParseCommand(string fullCommand)
+		public EngineCommand ParseCommand(string fullCommand)
 		{
-			var parsedCommand = new ParsedCommand();
+			var parsedCommand = new EngineCommand();
 			// get sequence
 			var mainCommand = Regex.Match(fullCommand, @"^\w*");
 			if (mainCommand.Success && !string.IsNullOrWhiteSpace(mainCommand.Value))
@@ -73,7 +73,7 @@ namespace TTRPG.Engine.CommandParsing
 			return parsedCommand;
 		}
 
-		public ITTRPGCommandProcessor Build(ParsedCommand parsedCommand)
+		public ITTRPGCommandProcessor Build(EngineCommand parsedCommand)
 		{
 			ICommandParser parser = null;
 			var matches = _parsers.Where(x => !x.IsDefault && x.CanProcess(parsedCommand.MainCommand));
