@@ -109,7 +109,8 @@ namespace TTRPG.Engine.Equations
 			}
 			if (!valid && !condition.ThrowOnFail && !string.IsNullOrWhiteSpace(condition.FailureMessage))
 			{
-				failureMessages.Add(condition.FailureMessage);
+				var formattedErrorMessage = condition.FailureMessage.FormatWith(inputs);
+				failureMessages.Add(formattedErrorMessage);
 			}
 			return valid;
 		}

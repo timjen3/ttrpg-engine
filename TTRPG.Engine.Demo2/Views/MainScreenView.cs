@@ -20,12 +20,12 @@ namespace TTRPG.Engine.Demo2.Views
 		private string _textBoxCommand;
 		private string _selectedTarget;
 		private string _selectedTargetItem;
-		private StatDataGridItem _selectedAttribute;
+		private GoodsDataGridItem _selectedAttribute;
 		private string _commandResult;
 		private string _statusResult;
 		private string _timeResult;
 		private string _turnResult;
-		private List<StatDataGridItem> _attributes;
+		private List<GoodsDataGridItem> _attributes;
 		private InventoryDataGridItem _selectedBagItem;
 		private List<InventoryDataGridItem> _bagItems;
 		private InventoryDataGridItem _selectedInventoryItem;
@@ -41,7 +41,7 @@ namespace TTRPG.Engine.Demo2.Views
 				try
 				{
 					var result = _engine.Process(commandText, false);
-					AdvanceTimeMessage(result);
+					UpdateTimeResult();
 					CommandResult = string.Join("\n", result.SelectMany(x => x.Messages));
 					UpdateTargets();
 					UpdatePlayerAttributes();
@@ -134,9 +134,9 @@ namespace TTRPG.Engine.Demo2.Views
 				TextBoxCommand = "";
 				return;
 			}
-			if (GetCommodities().Contains(_selectedAttribute.Attribute) && int.Parse(_selectedAttribute.Value) > 0)
+			if (GetCommodities().Contains(_selectedAttribute.Name) && int.Parse(_selectedAttribute.Amount) > 0)
 			{
-				TextBoxCommand = $"SellCommodity [miner:seller,{_selectedAttribute.Attribute}:commodity] {{quantity:{_selectedAttribute.Value}}}";
+				TextBoxCommand = $"SellCommodity [miner:seller,{_selectedAttribute.Name}:commodity] {{quantity:{_selectedAttribute.Amount}}}";
 			}
 		}
 
@@ -165,10 +165,10 @@ namespace TTRPG.Engine.Demo2.Views
 			var player = _data.Roles.FirstOrDefault(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase));
 			var updatedAttributes = player.Attributes
 				.Where(x => GetCommodities().Contains(x.Key))
-				.Select(x => new StatDataGridItem
+				.Select(x => new GoodsDataGridItem
 				{
-					Attribute = x.Key,
-					Value = x.Value
+					Name = x.Key,
+					Amount = x.Value
 				});
 			Attributes = updatedAttributes.ToList();
 		}
@@ -211,16 +211,12 @@ namespace TTRPG.Engine.Demo2.Views
 				.ToList();
 		}
 
-		private void AdvanceTimeMessage(IEnumerable<ProcessedCommand> processed)
+		private void UpdateTimeResult()
 		{
-			foreach (var command in processed)
-			{
-				if (command.Source.MainCommand == "AdvanceTime")
-				{
-					TurnResult = command.Messages.First();
-					TimeResult = command.Messages.Last();
-				}
-			}
+			var result = _engine.Process("DisplayTime [time:time]", false)
+				.First();
+			TurnResult = result.Messages.First();
+			TimeResult = result.Messages.Last();
 		}
 		#endregion
 
@@ -234,8 +230,7 @@ namespace TTRPG.Engine.Demo2.Views
 			UpdateStatusResult();
 			UpdateInventoryItems();
 			UpdateBagItems();
-			TimeResult = "Day 1    0:0";
-			TurnResult = "Turn 0";
+			UpdateTimeResult();
 		}
 
 		public ObservableCollection<DragDropItem> Targets
@@ -273,7 +268,7 @@ namespace TTRPG.Engine.Demo2.Views
 			}
 		}
 
-		public StatDataGridItem SelectedAttribute
+		public GoodsDataGridItem SelectedAttribute
 		{
 			get => null;
 			set
@@ -309,7 +304,7 @@ namespace TTRPG.Engine.Demo2.Views
 			set => SetProperty(ref _turnResult, value);
 		}
 
-		public List<StatDataGridItem> Attributes
+		public List<GoodsDataGridItem> Attributes
 		{
 			get { return _attributes; }
 			set { SetProperty(ref _attributes, value); }

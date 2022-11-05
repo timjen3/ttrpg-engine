@@ -1,9 +1,9 @@
-﻿[
+[
 	{
 		"Name": "Corn1",
 		"Attributes": {
-			"Maturity": "100",
-			"Age": "100",
+			"Maturity": "5760",
+			"Age": "5760",
 			"Name": "Corn1",
 			"HP": "60",
 			"MAX_HP": "60",
@@ -17,8 +17,8 @@
 	{
 		"Name": "Corn2",
 		"Attributes": {
-			"Maturity": "100",
-			"Age": "90",
+			"Maturity": "5760",
+			"Age": "5600",
 			"Name": "Corn2",
 			"HP": "60",
 			"MAX_HP": "60",
@@ -32,8 +32,8 @@
 	{
 		"Name": "Tomato1",
 		"Attributes": {
-			"Maturity": "50",
-			"Age": "0",
+			"Maturity": "5760",
+			"Age": "2300",
 			"Name": "Tomato1",
 			"HP": "40",
 			"MAX_HP": "40",
@@ -47,9 +47,8 @@
 	{
 		"Name": "PeaPlant1",
 		"Attributes": {
-			"Maturity": "50",
-			"Age": "0",
-			"Step": ".05",
+			"Maturity": "5760",
+			"Age": "100",
 			"Name": "PeaPlant1",
 			"HP": "40",
 			"MAX_HP": "40",

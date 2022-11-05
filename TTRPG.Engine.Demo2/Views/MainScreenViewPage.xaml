@@ -64,8 +64,8 @@
 			<TabItem Header="Goods" HorizontalContentAlignment="Stretch">
 				<DataGrid ItemsSource="{Binding Attributes}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedAttribute}">
 					<DataGrid.Columns>
-						<DataGridTextColumn Header="Attribute" Binding="{Binding Attribute}" />
-						<DataGridTextColumn Header="Value" Binding="{Binding Value}" >
+						<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" />
+						<DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="75" >
 							<DataGridTextColumn.ElementStyle>
 								<Style TargetType="DataGridCell">
 									<Setter Property="Background" Value="Gray" />
@@ -90,8 +90,8 @@
 
 					<DataGrid Grid.Row="0" ItemsSource="{Binding InventoryItems}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedInventoryItem}">
 						<DataGrid.Columns>
-							<DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-							<DataGridTextColumn Header="Equipped As" Binding="{Binding EquipAs}" >
+							<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" />
+							<DataGridTextColumn Header="Equipped As" Binding="{Binding EquipAs}" Width="150" >
 								<DataGridTextColumn.ElementStyle>
 									<Style TargetType="DataGridCell">
 										<Setter Property="Background" Value="Gray" />
@@ -104,8 +104,8 @@
 					</DataGrid>
 					<DataGrid Grid.Row="1" ItemsSource="{Binding BagItems}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedBagItem}">
 						<DataGrid.Columns>
-							<DataGridTextColumn Header="Name" Binding="{Binding Name}" />
-							<DataGridTextColumn Header="Equip As" Binding="{Binding EquipAs}" >
+							<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="200" />
+							<DataGridTextColumn Header="Equip As" Binding="{Binding EquipAs}" Width="150" >
 								<DataGridTextColumn.ElementStyle>
 									<Style TargetType="DataGridCell">
 										<Setter Property="Background" Value="Gray" />
