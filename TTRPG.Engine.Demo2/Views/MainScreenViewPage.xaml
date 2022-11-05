@@ -6,7 +6,8 @@
              xmlns:ef="clr-namespace:EmptyKeys.UserInterface.Designer.Effects;assembly=EmptyKeys.UserInterface.Designer"
              xmlns:c="clr-namespace:EmptyKeys.UserInterface.Designer.Charts;assembly=EmptyKeys.UserInterface.Designer"
              xmlns:ctl="clr-namespace:EmptyKeys.UserInterface.Controls;assembly=EmptyKeys.UserInterface"
-             xmlns:local="clr-namespace:UserInterface"
+             xmlns:eki="clr-namespace:EmptyKeys.UserInterface.Designer.Interactions;assembly=EmptyKeys.UserInterface.Designer"
+		     xmlns:local="clr-namespace:UserInterface"
              mc:Ignorable="d" 
              d:DesignHeight="850" d:DesignWidth="900" >
 
@@ -55,14 +56,22 @@
 						<ComboBoxItem Name="crop" Content="Crop" />
 						<ComboBoxItem Name="commodity" Content="Commodities" />
 					</ComboBox>
-					<ListBox Grid.Row ="1" TabIndex="2" ItemsSource="{Binding Targets}" VerticalAlignment="stretch"
+					<ListBox Name="AreaList" Grid.Row ="1" TabIndex="2" ItemsSource="{Binding Targets}" VerticalAlignment="stretch"
 						ek:DragDrop.IsDropTarget="True" ek:DragDrop.IsDragSource="True"
-						SelectedItem="{Binding SelectedTargetItem}"/>
+						SelectedItem="{Binding SelectedTargetItem}" >
+						<eki:Interaction.Behaviors>
+							<eki:EventTriggerBehavior EventName="GotFocus">
+								<eki:EventTriggerBehavior.Actions>
+									<eki:InvokeCommandAction Command="{Binding TargetItemFocusCommand}" />
+								</eki:EventTriggerBehavior.Actions>
+							</eki:EventTriggerBehavior>
+						</eki:Interaction.Behaviors>
+					</ListBox>
 				</Grid>
 			</TabItem>
 
 			<TabItem Header="Goods" HorizontalContentAlignment="Stretch">
-				<DataGrid ItemsSource="{Binding Attributes}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedAttribute}">
+				<DataGrid ItemsSource="{Binding Goods}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedGood}">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" />
 						<DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="75" >
@@ -75,6 +84,13 @@
 							</DataGridTextColumn.ElementStyle>
 						</DataGridTextColumn>
 					</DataGrid.Columns>
+					<eki:Interaction.Behaviors>
+						<eki:EventTriggerBehavior EventName="GotFocus">
+							<eki:EventTriggerBehavior.Actions>
+								<eki:InvokeCommandAction Command="{Binding GoodFocusCommand}" />
+							</eki:EventTriggerBehavior.Actions>
+						</eki:EventTriggerBehavior>
+					</eki:Interaction.Behaviors>
 				</DataGrid>
 			</TabItem>
 
@@ -101,6 +117,13 @@
 								</DataGridTextColumn.ElementStyle>
 							</DataGridTextColumn>
 						</DataGrid.Columns>
+						<eki:Interaction.Behaviors>
+							<eki:EventTriggerBehavior EventName="GotFocus">
+								<eki:EventTriggerBehavior.Actions>
+									<eki:InvokeCommandAction Command="{Binding InventoryItemFocusCommand}" />
+								</eki:EventTriggerBehavior.Actions>
+							</eki:EventTriggerBehavior>
+						</eki:Interaction.Behaviors>
 					</DataGrid>
 					<DataGrid Grid.Row="1" ItemsSource="{Binding BagItems}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedBagItem}">
 						<DataGrid.Columns>
@@ -116,6 +139,13 @@
 							</DataGridTextColumn>
 							<DataGridTextColumn Header="Value" Binding="{Binding Value}" />
 						</DataGrid.Columns>
+						<eki:Interaction.Behaviors>
+							<eki:EventTriggerBehavior EventName="GotFocus">
+								<eki:EventTriggerBehavior.Actions>
+									<eki:InvokeCommandAction Command="{Binding BagItemFocusCommand}" />
+								</eki:EventTriggerBehavior.Actions>
+							</eki:EventTriggerBehavior>
+						</eki:Interaction.Behaviors>
 					</DataGrid>
 				</Grid>
 			</TabItem>
