@@ -21,6 +21,7 @@
     <None Remove="DataFiles\SequenceItems\sequence_items.json" />
     <None Remove="DataFiles\Sequences\advance_time.json" />
     <None Remove="DataFiles\Sequences\buy_commodity.json" />
+    <None Remove="DataFiles\Sequences\display_time.json" />
     <None Remove="DataFiles\Sequences\grow.json" />
     <None Remove="DataFiles\Sequences\harvest.json" />
     <None Remove="DataFiles\Sequences\hunt.json" />
@@ -54,6 +55,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\SequenceItems\sequence_items.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\display_time.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\Sequences\grow.json">

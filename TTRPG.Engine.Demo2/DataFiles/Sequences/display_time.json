@@ -1,0 +1,62 @@
+[
+	{
+		"Name": "DisplayTime",
+		"Example": "DisplayTime [time:time]",
+		"Items": [
+			{
+				"Name": "Display Day",
+				"Equation": "floor(current_time / 24) + 1",
+				"ResultName": "display_day",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Decimal Only",
+				"Equation": "current_time - floor(current_time)",
+				"ResultName": "time_decimal",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Display Hours",
+				"Equation": "(current_time # 24) - time_decimal",
+				"ResultName": "display_hours",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Display Minutes",
+				"Equation": "floor(time_decimal * 3/5 * 100)",
+				"ResultName": "display_minutes",
+				"SequenceItemEquationType": "Algorithm"
+			},
+			{
+				"Name": "Display Turn",
+				"Equation": "Turn: {current_turn}",
+				"ResultName": "turn_message",
+				"SequenceItemEquationType": "Message"
+			},
+			{
+				"Name": "Display Day Time",
+				"Equation": "Day {display_day}    {display_hours}:{display_minutes}",
+				"ResultName": "display_day_time",
+				"SequenceItemEquationType": "Message"
+			}
+		],
+		"Mappings": [
+			{
+				"From": "time",
+				"To": "current_time",
+				"ItemName": null,
+				"RoleName": "time",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "turn",
+				"To": "current_turn",
+				"ItemName": null,
+				"RoleName": "time",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			}
+		]
+	}
+]

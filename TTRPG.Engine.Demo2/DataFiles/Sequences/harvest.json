@@ -63,7 +63,7 @@
 				"DependentOnItem": null,
 				"Equation": "crop_age >= crop_maturity",
 				"ThrowOnFail": false,
-				"FailureMessage": "Crop is not ready to be harvested yet."
+				"FailureMessage": "Crop is not ready to be harvested yet. ({crop_age} / {crop_maturity})"
 			},
 			{
 				"DependentOnItem": null,
