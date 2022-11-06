@@ -55,10 +55,27 @@ namespace TTRPG.Engine.Demo2.Views
 			}
 		}
 
-		private string[] GetLiveTargets() => _data.Roles
+		private DragDropItem MakeDragDropItem(Role liveTarget)
+		{
+			if (liveTarget.Categories.Contains("Crop")
+				&& liveTarget.Attributes["Age"] == liveTarget.Attributes["Maturity"])
+			{
+				return new DragDropItem
+				{
+					Name = $"{liveTarget.Name} (Mature)",
+					Code = liveTarget.Name
+				};
+			}
+			return new DragDropItem{
+				Name = liveTarget.Name,
+				Code = liveTarget.Name
+			};
+		}
+
+		private DragDropItem[] GetLiveTargets() => _data.Roles
 				.Where(x => x.Categories.Contains(_selectedTarget, StringComparer.OrdinalIgnoreCase)
 					&& int.Parse(x.Attributes["hp"]) > 0)
-				.Select(x => x.Name)
+				.Select(x => MakeDragDropItem(x))
 				.ToArray();
 
 		private HashSet<string> GetCommodities() => _data.Roles
@@ -68,7 +85,7 @@ namespace TTRPG.Engine.Demo2.Views
 
 		private bool TargetsChanged()
 		{
-			var currentItems = Targets?.Select(x => x.Name).ToArray();
+			var currentItems = Targets?.ToArray();
 			var updatedItems = GetLiveTargets();
 			if (currentItems == null && updatedItems == null)
 				return false;
@@ -97,7 +114,7 @@ namespace TTRPG.Engine.Demo2.Views
 			var liveTarget = GetLiveTargets();
 			foreach (var target in liveTarget)
 			{
-				Targets.Add(new DragDropItem { Name = target });
+				Targets.Add(target);
 			}
 		}
 
@@ -262,7 +279,7 @@ namespace TTRPG.Engine.Demo2.Views
 			get => new() { Name = _selectedTargetItem };
 			set
 			{
-				SetProperty(ref _selectedTargetItem, value?.Name);
+				SetProperty(ref _selectedTargetItem, value?.Code);
 				UpdateTextBoxCommandFromTargetItem();
 			}
 		}
