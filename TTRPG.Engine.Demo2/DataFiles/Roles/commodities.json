@@ -4,7 +4,7 @@
 		"Attributes": {
 			"Resource": "dirt",
 			"Sell": 0.01,
-			"Buy": 1,
+			"Buy": 0.1,
 			"Hp": 1
 		},
 		"Categories": [
@@ -15,8 +15,8 @@
 		"Name": "Stone",
 		"Attributes": {
 			"Resource": "stone",
-			"Sell": 1,
-			"Buy": 4,
+			"Sell": 0.25,
+			"Buy": 1,
 			"Hp": 1
 		},
 		"Categories": [
@@ -27,8 +27,8 @@
 		"Name": "Obsidian",
 		"Attributes": {
 			"Resource": "obsidian",
-			"Sell": 10,
-			"Buy": 50,
+			"Sell": 4,
+			"Buy": 16,
 			"Hp": 1
 		},
 		"Categories": [
@@ -39,8 +39,8 @@
 		"Name": "Meat",
 		"Attributes": {
 			"Resource": "meat",
-			"Sell": 2.5,
-			"Buy": 10,
+			"Sell": 1,
+			"Buy": 4,
 			"Hp": 1
 		},
 		"Categories": [

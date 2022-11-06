@@ -1,47 +1,41 @@
 [
 	{
 		"Name": "Hunt",
-		"Example": "Hunt [miner:hunter,deer1:defender]",
+		"Example": "Hunt [miner:hunter,deer:defender]",
 		"Categories": [ "Temporal" ],
 		"CategoryParams": {
 			"Temporal": {
-				"elapsed": "30"
+				"elapsed": "240"
 			}
 		},
 		"Items": [
 			{
 				"Name": "Intention",
-				"Equation": "{hunter_name} {wAction} at {defender_name}.",
+				"Equation": "{hunter_name} is hunting for {defender_name} with a {wName}.",
 				"ResultName": "intention",
 				"SequenceItemEquationType": "Message"
 			},
 			{
-				"Name": "Damage",
-				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
-				"ResultName": "damage",
+				"Name": "CheckLuck",
+				"Equation": "random(1,1,100) > difficulty",
+				"ResultName": "luck_check",
 				"SequenceItemEquationType": "Algorithm"
 			},
 			{
-				"Name": "Report Damage",
-				"Equation": "{hunter_name} dealt {damage} damage to {defender_name} from {wHits} {wAction}.",
-				"ResultName": "DamageMsg",
+				"Name": "Report Successful Hunt",
+				"Equation": "The {defender_name} hunt was successful!",
+				"ResultName": "SuccessMsg",
 				"SequenceItemEquationType": "Message"
 			},
 			{
-				"Name": "Take Damage",
-				"Equation": "max(hp - damage, 0)",
-				"ResultName": "new_hp",
+				"Name": "Drain Stamina",
+				"Equation": "hunter_stamina - 1",
+				"ResultName": "new_stamina",
 				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Report Damage Taken",
-				"Equation": "{defender_name} HP : {old_hp} => {new_hp}",
-				"ResultName": "DamageTakenMsg",
-				"SequenceItemEquationType": "Message"
 			},
 			{
 				"Name": "Claim Meat",
-				"Equation": "current_meat + max(ceil(defender_max_hp / 2), 1)",
+				"Equation": "current_meat + defender_meat",
 				"ResultName": "new_meat",
 				"SequenceItemEquationType": "Algorithm"
 			},
@@ -50,12 +44,6 @@
 				"Equation": "Got meat : {current_meat} => {new_meat}",
 				"ResultName": "MeatTakenMsg",
 				"SequenceItemEquationType": "Message"
-			},
-			{
-				"Name": "Drain Stamina",
-				"Equation": "hunter_stamina - 1",
-				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm"
 			}
 		],
 		"Conditions": [
@@ -67,53 +55,27 @@
 			},
 			{
 				"DependentOnItem": null,
-				"Equation": "hp > 0",
-				"ThrowOnFail": false,
-				"FailureMessage": "Maybe in the next life."
-			},
-			{
-				"DependentOnItem": null,
 				"Equation": "pierce >= ac",
 				"ThrowOnFail": false,
-				"FailureMessage": "Your weapon is inneffective."
+				"FailureMessage": "Your weapon is inneffective against this kind of creature."
 			},
 			{
-				"DependentOnItem": "Damage",
-				"Equation": null,
+				"DependentOnItem": "CheckLuck",
+				"Equation": "luck_check",
 				"ItemNames": [
-					"Report Damage",
-					"Drain Stamina"
-				],
-				"ThrowOnFail": false,
-				"FailureMessage": null
-			},
-			{
-				"DependentOnItem": "Damage",
-				"Equation": "damage > 0",
-				"ItemNames": [
-					"Take Damage",
-					"Report Damage Taken"
-				],
-				"ThrowOnFail": false,
-				"FailureMessage": null
-			},
-			{
-				"DependentOnItem": "Take Damage",
-				"Equation": "new_hp <= 0",
-				"ItemNames": [
-					"Claim Meat"
-				],
-				"ThrowOnFail": false,
-				"FailureMessage": null
-			},
-			{
-				"DependentOnItem": "Claim Meat",
-				"Equation": "new_meat > 0",
-				"ItemNames": [
+					"Report Successful Hunt",
+					"Claim Meat",
 					"Report Meat Taken"
 				],
-				"ThrowOnFail": false,
-				"FailureMessage": null
+				"ThrowOnFail": false
+			},
+			{
+				"DependentOnItem": "CheckLuck",
+				"Equation": null,
+				"ItemNames": [
+					"Drain Stamina"
+				],
+				"ThrowOnFail": false
 			}
 		],
 		"Mappings": [
@@ -150,6 +112,22 @@
 				"ThrowOnFailure": true
 			},
 			{
+				"From": "meat",
+				"To": "defender_meat",
+				"ItemName": null,
+				"RoleName": "defender",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "difficulty",
+				"To": "difficulty",
+				"ItemName": null,
+				"RoleName": "defender",
+				"MappingType": "Role",
+				"ThrowOnFailure": true
+			},
+			{
 				"From": "stamina",
 				"To": "hunter_stamina",
 				"ItemName": null,
@@ -167,9 +145,9 @@
 				"ThrowOnFailure": true
 			},
 			{
-				"From": "hits",
-				"To": "wHits",
-				"ItemName": "Report Damage",
+				"From": "name",
+				"To": "wName",
+				"ItemName": null,
 				"RoleName": "hunter",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
@@ -182,75 +160,9 @@
 				"RoleName": "defender",
 				"MappingType": "Role",
 				"ThrowOnFailure": true
-			},
-			{
-				"From": "str",
-				"To": "str",
-				"ItemName": "Damage",
-				"RoleName": "hunter",
-				"MappingType": "Role",
-				"ThrowOnFailure": true
-			},
-			{
-				"From": "hits",
-				"To": "wHits",
-				"ItemName": "Damage",
-				"RoleName": "hunter",
-				"InventoryItemName": "weapon",
-				"MappingType": "InventoryItem",
-				"ThrowOnFailure": true
-			},
-			{
-				"From": "min",
-				"To": "wMin",
-				"ItemName": "Damage",
-				"RoleName": "hunter",
-				"InventoryItemName": "weapon",
-				"MappingType": "InventoryItem",
-				"ThrowOnFailure": true
-			},
-			{
-				"From": "max",
-				"To": "wMax",
-				"ItemName": "Damage",
-				"RoleName": "hunter",
-				"InventoryItemName": "weapon",
-				"MappingType": "InventoryItem",
-				"ThrowOnFailure": true
-			},
-			{
-				"From": "action",
-				"To": "wAction",
-				"ItemName": null,
-				"RoleName": "hunter",
-				"InventoryItemName": "weapon",
-				"MappingType": "InventoryItem",
-				"ThrowOnFailure": true
-			},
-			{
-				"From": "hp",
-				"To": "old_hp",
-				"ItemName": "Report Damage Taken",
-				"RoleName": "defender",
-				"MappingType": "Role",
-				"ThrowOnFailure": true
-			},
-			{
-				"From": "MAX_HP",
-				"To": "defender_max_hp",
-				"ItemName": null,
-				"RoleName": "defender",
-				"MappingType": "Role",
-				"ThrowOnFailure": true
 			}
 		],
 		"ResultItems": [
-			{
-				"Name": "HP",
-				"Category": "UpdateAttribute",
-				"Source": "new_hp",
-				"RoleName": "defender"
-			},
 			{
 				"Name": "Meat",
 				"Category": "UpdateAttribute",
