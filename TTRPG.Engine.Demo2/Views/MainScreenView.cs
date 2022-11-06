@@ -5,7 +5,6 @@ using System.Linq;
 using EmptyKeys.UserInterface.Controls;
 using EmptyKeys.UserInterface.Input;
 using EmptyKeys.UserInterface.Mvvm;
-using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.Demo2.Controls;
 
 namespace TTRPG.Engine.Demo2.Views
@@ -20,12 +19,12 @@ namespace TTRPG.Engine.Demo2.Views
 		private string _textBoxCommand;
 		private string _selectedTarget;
 		private string _selectedTargetItem;
-		private GoodsDataGridItem _selectedAttribute;
+		private GoodsDataGridItem _selectedGood;
 		private string _commandResult;
 		private string _statusResult;
 		private string _timeResult;
 		private string _turnResult;
-		private List<GoodsDataGridItem> _attributes;
+		private List<GoodsDataGridItem> _goods;
 		private InventoryDataGridItem _selectedBagItem;
 		private List<InventoryDataGridItem> _bagItems;
 		private InventoryDataGridItem _selectedInventoryItem;
@@ -44,7 +43,7 @@ namespace TTRPG.Engine.Demo2.Views
 					UpdateTimeResult();
 					CommandResult = string.Join("\n", result.SelectMany(x => x.Messages));
 					UpdateTargets();
-					UpdatePlayerAttributes();
+					UpdateGoods();
 					UpdateStatusResult();
 					UpdateInventoryItems();
 					UpdateBagItems();
@@ -127,16 +126,21 @@ namespace TTRPG.Engine.Demo2.Views
 			}
 		}
 
-		private void UpdateTextBoxCommandFromAttribute()
+		private void UpdateTextBoxCommandFromGood()
 		{
-			if (_selectedAttribute == null)
+			if (_selectedGood == null)
 			{
 				TextBoxCommand = "";
 				return;
 			}
-			if (GetCommodities().Contains(_selectedAttribute.Name) && int.Parse(_selectedAttribute.Amount) > 0)
+			if (GetCommodities().Contains(_selectedGood.Name))
 			{
-				TextBoxCommand = $"SellCommodity [miner:seller,{_selectedAttribute.Name}:commodity] {{quantity:{_selectedAttribute.Amount}}}";
+				if (int.Parse(_selectedGood.Amount) > 0)
+				{
+					TextBoxCommand = $"SellCommodity [miner:seller,{_selectedGood.Name}:commodity] {{quantity:{_selectedGood.Amount}}}";
+				}
+				else
+					TextBoxCommand = "";
 			}
 		}
 
@@ -160,17 +164,17 @@ namespace TTRPG.Engine.Demo2.Views
 			TextBoxCommand = $"Equip [miner] {{itemName:{_selectedBagItem.Name},equipAs:{_selectedBagItem.EquipAs}}}";
 		}
 
-		private void UpdatePlayerAttributes()
+		private void UpdateGoods()
 		{
 			var player = _data.Roles.FirstOrDefault(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase));
-			var updatedAttributes = player.Attributes
+			var updatedGoods = player.Attributes
 				.Where(x => GetCommodities().Contains(x.Key))
 				.Select(x => new GoodsDataGridItem
 				{
 					Name = x.Key,
 					Amount = x.Value
 				});
-			Attributes = updatedAttributes.ToList();
+			Goods = updatedGoods.ToList();
 		}
 
 		private void UpdateStatusResult()
@@ -179,9 +183,7 @@ namespace TTRPG.Engine.Demo2.Views
 			StatusResult = statusResult.First().Messages.First();
 		}
 
-		private void UpdateBagItems()
-		{
-			BagItems = _data.Roles.Single(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase))
+		private void UpdateBagItems() => BagItems = _data.Roles.Single(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase))
 				.Bag
 				.Where(x => x.Attributes.ContainsKey("equipAs"))
 				.Select(x => new InventoryDataGridItem
@@ -193,10 +195,8 @@ namespace TTRPG.Engine.Demo2.Views
 				.OrderBy(x => x.Value)
 				.OrderBy(x => x.EquipAs)
 				.ToList();
-		}
 
-		private void UpdateInventoryItems()
-		{
+		private void UpdateInventoryItems() => 
 			InventoryItems = _data.Roles.Single(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase))
 				.InventoryItems
 				.Where(x => x.Value.Attributes.ContainsKey("equipAs"))
@@ -209,7 +209,6 @@ namespace TTRPG.Engine.Demo2.Views
 				.OrderBy(x => x.Value)
 				.OrderBy(x => x.EquipAs)
 				.ToList();
-		}
 
 		private void UpdateTimeResult()
 		{
@@ -225,8 +224,13 @@ namespace TTRPG.Engine.Demo2.Views
 			_data = data;
 			_engine = engine;
 			ButtonExecuteCommand = new RelayCommand(new Action<object>(OnButtonExecuteCommandClick));
-			UpdatePlayerAttributes();
+			TargetItemFocusCommand = new RelayCommand(new Action<object>(TargetItemFocus));
+			BagItemFocusCommand = new RelayCommand(new Action<object>(BagItemFocused));
+			InventoryItemFocusCommand = new RelayCommand(new Action<object>(InventoryItemFocus));
+			GoodFocusCommand = new RelayCommand(new Action<object>(GoodFocus));
+			RestCommand = new RelayCommand(new Action<object>(SetRestCommand));
 			SelectedTarget = new ComboBoxItem { Name = "terrain" };
+			UpdateGoods();
 			UpdateStatusResult();
 			UpdateInventoryItems();
 			UpdateBagItems();
@@ -247,7 +251,7 @@ namespace TTRPG.Engine.Demo2.Views
 
 		public ComboBoxItem SelectedTarget
 		{
-			get => new ComboBoxItem() { Name = _selectedTarget };
+			get => new() { Name = _selectedTarget };
 			set
 			{
 				if (_selectedTarget != value?.Name)
@@ -260,7 +264,7 @@ namespace TTRPG.Engine.Demo2.Views
 
 		public DragDropItem SelectedTargetItem
 		{
-			get => null;
+			get => new() { Name = _selectedTargetItem };
 			set
 			{
 				SetProperty(ref _selectedTargetItem, value?.Name);
@@ -268,15 +272,23 @@ namespace TTRPG.Engine.Demo2.Views
 			}
 		}
 
-		public GoodsDataGridItem SelectedAttribute
+		public ICommand TargetItemFocusCommand { get; set; }
+
+		public void TargetItemFocus(object value) => UpdateTextBoxCommandFromTargetItem();
+
+		public GoodsDataGridItem SelectedGood
 		{
-			get => null;
+			get => new() { Name = _selectedGood?.Name, Amount = _selectedGood?.Amount };
 			set
 			{
-				SetProperty(ref _selectedAttribute, value);
-				UpdateTextBoxCommandFromAttribute();
+				SetProperty(ref _selectedGood, value);
+				UpdateTextBoxCommandFromGood();
 			}
 		}
+
+		public ICommand GoodFocusCommand { get; set; }
+
+		public void GoodFocus(object args) => UpdateTextBoxCommandFromGood();
 
 		public ICommand ButtonExecuteCommand { get; set; }
 
@@ -304,21 +316,21 @@ namespace TTRPG.Engine.Demo2.Views
 			set => SetProperty(ref _turnResult, value);
 		}
 
-		public List<GoodsDataGridItem> Attributes
+		public List<GoodsDataGridItem> Goods
 		{
-			get { return _attributes; }
-			set { SetProperty(ref _attributes, value); }
+			get => _goods;
+			set => SetProperty(ref _goods, value);
 		}
 
 		public List<InventoryDataGridItem> BagItems
 		{
-			get { return _bagItems; }
-			set { SetProperty(ref _bagItems, value); }
+			get => _bagItems;
+			set => SetProperty(ref _bagItems, value);
 		}
 
 		public InventoryDataGridItem SelectedBagItem
 		{
-			get => null;
+			get => new() { Name = _selectedBagItem?.Name, EquipAs = _selectedBagItem?.EquipAs, Value = _selectedBagItem?.Value };
 			set
 			{
 				SetProperty(ref _selectedBagItem, value);
@@ -326,20 +338,32 @@ namespace TTRPG.Engine.Demo2.Views
 			}
 		}
 
+		public ICommand BagItemFocusCommand { get; set; }
+
+		public void BagItemFocused(object args) => UpdateTextBoxCommandFromBagItem();
+
 		public List<InventoryDataGridItem> InventoryItems
 		{
-			get { return _inventoryItems; }
-			set { SetProperty(ref _inventoryItems, value); }
+			get => _inventoryItems;
+			set => SetProperty(ref _inventoryItems, value);
 		}
 
 		public InventoryDataGridItem SelectedInventoryItem
 		{
-			get => null;
+			get => new() { Name = _selectedInventoryItem?.Name, EquipAs = _selectedInventoryItem?.EquipAs, Value = _selectedInventoryItem?.Value };
 			set
 			{
 				SetProperty(ref _selectedInventoryItem, value);
 				UpdateTextCommandFromInventoryItem();
 			}
 		}
+
+		public ICommand InventoryItemFocusCommand { get; set; }
+
+		public void InventoryItemFocus(object args) => UpdateTextCommandFromInventoryItem();
+
+		public ICommand RestCommand { get; set; }
+
+		public void SetRestCommand(object args) => TextBoxCommand = "Rest [miner:sleeper]";
 	}
 }
