@@ -52,7 +52,7 @@ namespace TTRPG.Engine.Demo
 		private void DisplayStatus()
 		{
 			txt_Status.SuspendLayout();
-			var statusUpdate = _engine.Process("Status [miner:target]", false);
+			var statusUpdate = _engine.Process("Status [miner:target]");
 			txt_Status.Text = statusUpdate.First().Messages.FirstOrDefault();
 			txt_Status.PerformLayout();
 		}
@@ -61,7 +61,6 @@ namespace TTRPG.Engine.Demo
 		{
 			_data = gameObject;
 			_engine = engine;
-			engine.MessageCreated += new EventHandler<string>(WriteMessage);
 			InitializeComponent();
 			UpdateTargets();
 			SetHelpText();
@@ -74,7 +73,11 @@ namespace TTRPG.Engine.Demo
 			var command = txt_Command.Text;
 			try
 			{
-				_engine.Process(command, true);
+				var results = _engine.Process(command);
+				foreach (var message in results.SelectMany(r => r.Messages))
+				{
+					WriteMessage(this, message);
+				}
 			}
 			catch (Exception ex)
 			{

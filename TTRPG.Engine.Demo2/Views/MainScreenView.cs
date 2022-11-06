@@ -39,7 +39,7 @@ namespace TTRPG.Engine.Demo2.Views
 			{
 				try
 				{
-					var result = _engine.Process(commandText, false);
+					var result = _engine.Process(commandText);
 					UpdateTimeResult();
 					CommandResult = string.Join("\n", result.SelectMany(x => x.Messages));
 					UpdateTargets();
@@ -179,7 +179,7 @@ namespace TTRPG.Engine.Demo2.Views
 
 		private void UpdateStatusResult()
 		{
-			var statusResult = _engine.Process("Status [miner:target]", false);
+			var statusResult = _engine.Process("Status [miner:target]");
 			StatusResult = statusResult.First().Messages.First();
 		}
 
@@ -212,7 +212,7 @@ namespace TTRPG.Engine.Demo2.Views
 
 		private void UpdateTimeResult()
 		{
-			var result = _engine.Process("DisplayTime [time:time]", false)
+			var result = _engine.Process("DisplayTime [time:time]")
 				.First();
 			TurnResult = result.Messages.First();
 			TimeResult = result.Messages.Last();

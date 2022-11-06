@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using TTRPG.Engine.CommandParsing;
@@ -16,6 +15,25 @@ namespace TTRPG.Engine
 		private readonly IEnumerable<ICommandParser> _parsers;
 		private readonly IAutomaticCommandFactory _autoCommandFactory;
 
+		private List<ProcessedCommand> ProcessResult(ProcessedCommand result)
+		{
+			var results = new List<ProcessedCommand> { result };
+
+			foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
+			{
+				var moreResults = Process(autoCommand);
+				results.AddRange(moreResults);
+			}
+
+			return results;
+		}
+
+		/// <summary>
+		///		Create new instance of the TTRPGEngine
+		/// </summary>
+		/// <param name="factory"></param>
+		/// <param name="parsers"></param>
+		/// <param name="autoCommandFactory"></param>
 		public TTRPGEngine(ICommandProcessorFactory factory, IEnumerable<ICommandParser> parsers, IAutomaticCommandFactory autoCommandFactory)
 		{
 			_factory = factory;
@@ -34,49 +52,30 @@ namespace TTRPG.Engine
 		///		Parse and process a command
 		/// </summary>
 		/// <param name="command"></param>
-		/// <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
-		public List<ProcessedCommand> Process(string command, bool handleMessages)
+		public List<ProcessedCommand> Process(string command)
 		{
 			var parsedCommand = _factory.ParseCommand(command);
 
-			return Process(parsedCommand, handleMessages);
+			return Process(parsedCommand);
 		}
 
 		/// <summary>
 		///		Parse and process a command
 		/// </summary>
 		/// <param name="command"></param>
-		/// <param name="handleMessages">if true, messages will go through MessageCreated event handler</param>
-		public List<ProcessedCommand> Process(EngineCommand command, bool handleMessages)
+		public List<ProcessedCommand> Process(EngineCommand command)
 		{
-			var processed = new List<ProcessedCommand>();
 			var processor = _factory.Build(command);
 			if (!processor.IsValid())
 			{
-				if (handleMessages && MessageCreated != null)
-					MessageCreated(this, "Invalid command.");
-				processed.Add(ProcessedCommand.InvalidCommand());
-
-				return processed;
+				return new List<ProcessedCommand>
+				{
+					ProcessedCommand.InvalidCommand()
+				};
 			}
 			var result = processor.Process();
-			processed.Add(result);
-			if (handleMessages && MessageCreated != null)
-			{
-				foreach (var message in result.Messages)
-				{
-					MessageCreated(this, message);
-				}
-			}
-			foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
-			{
-				var results = Process(autoCommand, false);
-				processed.AddRange(results);
-			}
-			return processed;
-		}
 
-		/// add message handlers
-		public event EventHandler<string> MessageCreated;
+			return ProcessResult(result);
+		}
 	}
 }
