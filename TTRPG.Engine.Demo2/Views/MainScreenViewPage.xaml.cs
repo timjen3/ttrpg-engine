@@ -134,6 +134,14 @@ namespace EmptyKeys.UserInterface.Generated {
             this.textBox.Name = "textBox";
             this.textBox.Margin = new Thickness(5F, 5F, 5F, 5F);
             this.textBox.HorizontalAlignment = HorizontalAlignment.Stretch;
+            KeyBinding textBox_IB_0 = new KeyBinding();
+            textBox_IB_0.Gesture = new KeyGesture(KeyCode.Return, ModifierKeys.None, "");
+            Binding binding_textBox_IB_0_Command = new Binding("ButtonExecuteCommand");
+            textBox_IB_0.SetBinding(KeyBinding.CommandProperty, binding_textBox_IB_0_Command);
+            Binding binding_textBox_IB_0_CommandParameter = new Binding("TextBoxCommand");
+            textBox_IB_0.SetBinding(KeyBinding.CommandParameterProperty, binding_textBox_IB_0_CommandParameter);
+            textBox.InputBindings.Add(textBox_IB_0);
+            textBox_IB_0.Parent = textBox;
             this.textBox.TabIndex = 3;
             this.textBox.SelectionBrush = new SolidColorBrush(new ColorW(255, 0, 0, 255));
             this.textBox.UndoLimit = 20;

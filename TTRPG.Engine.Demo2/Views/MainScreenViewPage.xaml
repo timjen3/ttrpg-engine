@@ -153,7 +153,11 @@
 		</TabControl>
 
 		<TextBox Name="textBox" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding TextBoxCommand}" 
-                        HorizontalAlignment="Stretch" Margin="5" TabIndex="3" UndoLimit="20" SelectionBrush="Red" />
+                        HorizontalAlignment="Stretch" Margin="5" TabIndex="3" UndoLimit="20" SelectionBrush="Red">
+			<TextBox.InputBindings>
+				<KeyBinding Key="Enter" Command="{Binding ButtonExecuteCommand}" CommandParameter="{Binding TextBoxCommand}" />
+			</TextBox.InputBindings>
+		</TextBox>
 		<Button Name="buttonExecuteCommand" Grid.Row="2" Grid.Column="3" HorizontalAlignment="Stretch"
                     Content="Execute Command" Margin="5" TabIndex="4"
                     Command="{Binding ButtonExecuteCommand}" CommandParameter="{Binding TextBoxCommand}" />
