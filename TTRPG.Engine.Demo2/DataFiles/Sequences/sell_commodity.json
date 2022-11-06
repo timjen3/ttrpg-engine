@@ -31,6 +31,13 @@
 		"Conditions": [
 			{
 				"DependentOnItem": null,
+				"Equation": "quantity_to_sell > 0",
+				"ItemNames": null,
+				"ThrowOnFail": false,
+				"FailureMessage": "Quantity to sell must be greater than 0."
+			},
+			{
+				"DependentOnItem": null,
 				"Equation": "quantity_to_sell <= quantity_on_hand",
 				"ItemNames": null,
 				"ThrowOnFail": false,

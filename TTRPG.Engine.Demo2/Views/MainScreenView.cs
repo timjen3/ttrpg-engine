@@ -116,31 +116,26 @@ namespace TTRPG.Engine.Demo2.Views
 			{
 				TextBoxCommand = $"Hunt [miner:hunter,{_selectedTargetItem}:defender]";
 			}
-			else if (_selectedTarget == "commodity")
-			{
-				TextBoxCommand = $"BuyCommodity [miner:buyer,{_selectedTargetItem}:commodity] {{quantity:1}}";
-			}
 			else if (_selectedTarget == "crop")
 			{
 				TextBoxCommand = $"Harvest [miner:farmer,{_selectedTargetItem}:crop]";
 			}
 		}
 
-		private void UpdateTextBoxCommandFromGood()
+		private void UpdateTextBoxCommandFromGood(object purpose)
 		{
 			if (_selectedGood == null)
 			{
 				TextBoxCommand = "";
 				return;
 			}
-			if (GetCommodities().Contains(_selectedGood.Name))
+			if (purpose.ToString() == "buy")
 			{
-				if (int.Parse(_selectedGood.Amount) > 0)
-				{
-					TextBoxCommand = $"SellCommodity [miner:seller,{_selectedGood.Name}:commodity] {{quantity:{_selectedGood.Amount}}}";
-				}
-				else
-					TextBoxCommand = "";
+				TextBoxCommand = $"BuyCommodity [miner:buyer,{_selectedGood.Name}:commodity] {{quantity:1}}";
+			}
+			else
+			{
+				TextBoxCommand = $"SellCommodity [miner:seller,{_selectedGood.Name}:commodity] {{quantity:{_selectedGood.Amount}}}";
 			}
 		}
 
@@ -227,7 +222,7 @@ namespace TTRPG.Engine.Demo2.Views
 			TargetItemFocusCommand = new RelayCommand(new Action<object>(TargetItemFocus));
 			BagItemFocusCommand = new RelayCommand(new Action<object>(BagItemFocused));
 			InventoryItemFocusCommand = new RelayCommand(new Action<object>(InventoryItemFocus));
-			GoodFocusCommand = new RelayCommand(new Action<object>(GoodFocus));
+			CommodityExchange = new RelayCommand(new Action<object>(UpdateTextBoxCommandFromGood));
 			RestCommand = new RelayCommand(new Action<object>(SetRestCommand));
 			SelectedTarget = new ComboBoxItem { Name = "terrain" };
 			UpdateGoods();
@@ -279,16 +274,8 @@ namespace TTRPG.Engine.Demo2.Views
 		public GoodsDataGridItem SelectedGood
 		{
 			get => new() { Name = _selectedGood?.Name, Amount = _selectedGood?.Amount };
-			set
-			{
-				SetProperty(ref _selectedGood, value);
-				UpdateTextBoxCommandFromGood();
-			}
+			set => SetProperty(ref _selectedGood, value);
 		}
-
-		public ICommand GoodFocusCommand { get; set; }
-
-		public void GoodFocus(object args) => UpdateTextBoxCommandFromGood();
 
 		public ICommand ButtonExecuteCommand { get; set; }
 
@@ -365,5 +352,7 @@ namespace TTRPG.Engine.Demo2.Views
 		public ICommand RestCommand { get; set; }
 
 		public void SetRestCommand(object args) => TextBoxCommand = "Rest [miner:sleeper]";
+
+		public ICommand CommodityExchange { get; set; }
 	}
 }
