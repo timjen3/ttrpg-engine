@@ -71,7 +71,7 @@
 			</TabItem>
 
 			<TabItem Header="Goods" HorizontalContentAlignment="Stretch">
-				<DataGrid ItemsSource="{Binding Goods}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedGood}">
+				<DataGrid Name="GoodsTable" ItemsSource="{Binding Goods}" AutoGenerateColumns="False" VerticalAlignment="stretch" SelectedItem="{Binding SelectedGood}">
 					<DataGrid.Columns>
 						<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="150" />
 						<DataGridTextColumn Header="Amount" Binding="{Binding Amount}" Width="75" >
@@ -170,7 +170,11 @@
 			</Grid.ColumnDefinitions>
 
 			<TextBlock Text="{Binding CommandResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" Background="Gray" />
-			<TextBlock Text="{Binding StatusResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="3" Margin="5" Background="Gray" />
+			<TextBlock Text="{Binding StatusResult}" HorizontalAlignment="stretch" VerticalAlignment="stretch" Grid.Column="3" Margin="5" Background="Gray">
+				<TextBlock.InputBindings>
+					<MouseBinding MouseAction="LeftClick" Command="{Binding RestCommand}" />
+				</TextBlock.InputBindings>
+			</TextBlock>
 		</Grid>
 
 		<Grid Grid.Row="4" Grid.ColumnSpan="4">

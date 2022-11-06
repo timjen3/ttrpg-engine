@@ -228,6 +228,7 @@ namespace TTRPG.Engine.Demo2.Views
 			BagItemFocusCommand = new RelayCommand(new Action<object>(BagItemFocused));
 			InventoryItemFocusCommand = new RelayCommand(new Action<object>(InventoryItemFocus));
 			GoodFocusCommand = new RelayCommand(new Action<object>(GoodFocus));
+			RestCommand = new RelayCommand(new Action<object>(SetRestCommand));
 			SelectedTarget = new ComboBoxItem { Name = "terrain" };
 			UpdateGoods();
 			UpdateStatusResult();
@@ -360,5 +361,9 @@ namespace TTRPG.Engine.Demo2.Views
 		public ICommand InventoryItemFocusCommand { get; set; }
 
 		public void InventoryItemFocus(object args) => UpdateTextCommandFromInventoryItem();
+
+		public ICommand RestCommand { get; set; }
+
+		public void SetRestCommand(object args) => TextBoxCommand = "Rest [miner:sleeper]";
 	}
 }
