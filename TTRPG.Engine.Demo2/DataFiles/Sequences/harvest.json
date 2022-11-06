@@ -41,7 +41,7 @@
 			},
 			{
 				"Name": "Claim Meat",
-				"Equation": "current_meat + max(ceil(crop_max_hp / 4), 1)",
+				"Equation": "current_meat + ceil((hp - new_hp) / 4)",
 				"ResultName": "new_meat",
 				"SequenceItemEquationType": "Algorithm"
 			},
@@ -105,7 +105,7 @@
 			},
 			{
 				"DependentOnItem": "Take Damage",
-				"Equation": "new_hp <= 0",
+				"Equation": "new_hp < hp",
 				"ItemNames": [
 					"Claim Meat"
 				],
