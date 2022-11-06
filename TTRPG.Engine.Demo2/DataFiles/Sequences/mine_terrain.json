@@ -41,7 +41,8 @@
 			},
 			{
 				"Name": "Claim Resources",
-				"Equation": "current_quantity + max(floor(terrain_max_hp / 3), 1)",
+				"old_Equation": "current_quantity + max(floor(terrain_max_hp / 3), 1)",
+				"Equation": "current_quantity + ceil((hp - new_hp) / 3)",
 				"ResultName": "new_quantity",
 				"SequenceItemEquationType": "Algorithm"
 			},
@@ -99,7 +100,7 @@
 			},
 			{
 				"DependentOnItem": "Take Damage",
-				"Equation": "new_hp <= 0",
+				"Equation": "new_hp < hp",
 				"ItemNames": [
 					"Claim Resources"
 				],

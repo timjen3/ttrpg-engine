@@ -3,8 +3,8 @@
 		"Name": "Dirt",
 		"Attributes": {
 			"Resource": "dirt",
-			"Sell": 0.25,
-			"Buy": 2,
+			"Sell": 0.01,
+			"Buy": 1,
 			"Hp": 1
 		},
 		"Categories": [

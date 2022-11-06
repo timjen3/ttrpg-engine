@@ -5,8 +5,8 @@
 			"Maturity": "5760",
 			"Age": "5760",
 			"Name": "Corn1",
-			"HP": "60",
-			"MAX_HP": "60",
+			"HP": "150",
+			"MAX_HP": "1000",
 			"AC": "0"
 		},
 		"Categories": [
@@ -20,8 +20,23 @@
 			"Maturity": "5760",
 			"Age": "5600",
 			"Name": "Corn2",
-			"HP": "60",
-			"MAX_HP": "60",
+			"HP": "1000",
+			"MAX_HP": "1000",
+			"AC": "0"
+		},
+		"Categories": [
+			"Grows",
+			"Crop"
+		]
+	},
+	{
+		"Name": "Potato1",
+		"Attributes": {
+			"Maturity": "5760",
+			"Age": "5760",
+			"Name": "Potato1",
+			"HP": "600",
+			"MAX_HP": "1000",
 			"AC": "0"
 		},
 		"Categories": [
@@ -35,8 +50,8 @@
 			"Maturity": "5760",
 			"Age": "2300",
 			"Name": "Tomato1",
-			"HP": "40",
-			"MAX_HP": "40",
+			"HP": "1000",
+			"MAX_HP": "1000",
 			"AC": "0"
 		},
 		"Categories": [
@@ -50,8 +65,8 @@
 			"Maturity": "5760",
 			"Age": "100",
 			"Name": "PeaPlant1",
-			"HP": "40",
-			"MAX_HP": "40",
+			"HP": "1000",
+			"MAX_HP": "1000",
 			"AC": "0"
 		},
 		"Categories": [
