@@ -42,7 +42,7 @@
 			{
 				"Name": "Claim Resources",
 				"old_Equation": "current_quantity + max(floor(terrain_max_hp / 3), 1)",
-				"Equation": "current_quantity + ceil((hp - new_hp) / 3)",
+				"Equation": "current_quantity + ceil((hp - new_hp) / 4)",
 				"ResultName": "new_quantity",
 				"SequenceItemEquationType": "Algorithm"
 			},
