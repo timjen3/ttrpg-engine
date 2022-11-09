@@ -67,4 +67,14 @@ internal static class RoleExtensions
 			.OrderBy(x => x.Value)
 			.OrderBy(x => x.EquipAs)
 			.ToList();
+
+	internal static List<GoodsDataGridItem> GetGoods(this Role player, HashSet<string> commodityNames) =>
+		player.Attributes
+			.Where(x => commodityNames.Contains(x.Key))
+			.Select(x => new GoodsDataGridItem
+			{
+				Name = x.Key,
+				Amount = x.Value
+			})
+			.ToList();
 }
