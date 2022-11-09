@@ -101,14 +101,11 @@ internal class MainScreenView : ViewModelBase
 
 	private void UpdateGoods()
 	{
-		var updatedGoods = Player.Attributes
-			.Where(x => _commodityNames.Contains(x.Key))
-			.Select(x => new GoodsDataGridItem
-			{
-				Name = x.Key,
-				Amount = x.Value
-			});
-		Goods = updatedGoods.ToList();
+		var updatedGoods = Player.GetGoods(_commodityNames);
+		if (Goods.ItemsChanged(updatedGoods))
+		{
+			Goods = updatedGoods.ToList();
+		}
 	}
 
 	private void UpdateStatusResult()
@@ -117,11 +114,23 @@ internal class MainScreenView : ViewModelBase
 		StatusResult = statusResult.First().Messages.First();
 	}
 
-	private void UpdateBagItems() =>
-		BagItems = Player.GetBagItems();
+	private void UpdateBagItems()
+	{
+		var updatedItems = Player.GetBagItems();
+		if (BagItems.ItemsChanged(updatedItems))
+		{
+			BagItems = Player.GetBagItems();
+		}
+	}
 
-	private void UpdateInventoryItems() =>
-		InventoryItems = Player.GetInventoryItems();
+	private void UpdateInventoryItems()
+	{
+		var updatedItems = Player.GetInventoryItems();
+		if (InventoryItems.ItemsChanged(updatedItems))
+		{
+			InventoryItems = Player.GetInventoryItems();
+		}
+	}
 
 	private void UpdateTimeResult()
 	{

@@ -1,28 +1,47 @@
 using EmptyKeys.UserInterface.Mvvm;
 
-namespace TTRPG.Engine.Demo2.Controls
+namespace TTRPG.Engine.Demo2.Controls;
+
+internal class DragDropItem : BindableBase
 {
-	internal class DragDropItem : BindableBase
+	private string name;
+	private string code;
+
+	public string Name
 	{
-		private string name;
-		private string code;
+		get => name;
+		set => SetProperty(ref name, value);
+	}
 
-		public string Name
+	public string Code
+	{
+		get => code;
+		set => SetProperty(ref code, value);
+	}
+
+	public static bool operator ==(DragDropItem lhs, DragDropItem rhs)
+		=> lhs?.Name == rhs?.Name && lhs?.Code == rhs?.Code;
+
+	public static bool operator !=(DragDropItem lhs, DragDropItem rhs)
+		=> lhs?.Name != rhs?.Name || lhs?.Code != rhs?.Code;
+
+	public override bool Equals(object obj)
+	{
+		if (ReferenceEquals(this, obj))
 		{
-			get => name;
-			set => SetProperty(ref name, value);
+			return true;
 		}
 
-		public string Code
+		if (ReferenceEquals(obj, null))
 		{
-			get => code;
-			set => SetProperty(ref code, value);
+			return false;
 		}
 
-		public static bool operator ==(DragDropItem lhs, DragDropItem rhs)
-			=> lhs?.Name == rhs?.Name && lhs?.Code == rhs?.Code;
+		if (obj is DragDropItem tObj)
+		{
+			return this == tObj;
+		}
 
-		public static bool operator !=(DragDropItem lhs, DragDropItem rhs)
-			=> lhs?.Name != rhs?.Name || lhs?.Code != rhs?.Code;
+		throw new System.NotImplementedException();
 	}
 }
