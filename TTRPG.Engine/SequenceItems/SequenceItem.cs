@@ -11,12 +11,13 @@ namespace TTRPG.Engine.SequenceItems
 
 		public SequenceItem() { }
 
-		public SequenceItem(string name, string equation, string resultName, SequenceItemEquationType sequenceItemType)
+		public SequenceItem(string name, string equation, string resultName, SequenceItemEquationType sequenceItemType, bool setComplete = false)
 		{
 			Name = name;
 			Equation = equation;
 			ResultName = resultName;
 			SequenceItemEquationType = sequenceItemType;
+			SetComplete = setComplete;
 		}
 
 		public string Name { get; set; }
@@ -35,5 +36,7 @@ namespace TTRPG.Engine.SequenceItems
 				_sequenceItemEquationType = value;
 			}
 		}
+
+		public bool SetComplete { get; set; }
 	}
 }

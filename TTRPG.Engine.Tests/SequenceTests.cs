@@ -593,5 +593,81 @@ namespace TTRPG.Engine.Tests
 
 			Assert.IsFalse(valid);
 		}
+
+		[Test]
+		public void Check_NoSetComplete_AutomaticallyComplete()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"0",
+						"r1",
+						SequenceItemEquationType.Algorithm,
+						false
+					)
+				}
+			};
+			var inputs = new Dictionary<string, string> { { "a", "0" } };
+
+			var result = EquationService.Process(sequence, inputs: inputs);
+
+			Assert.IsTrue(result.Completed);
+		}
+
+		[Test]
+		public void Check_SetCompleteProcessed_CompleteIsTrue()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"0",
+						"r1",
+						SequenceItemEquationType.Algorithm,
+						true
+					)
+				}
+			};
+			var inputs = new Dictionary<string, string> { { "a", "0" } };
+
+			var result = EquationService.Process(sequence, inputs: inputs);
+
+			Assert.IsTrue(result.Completed);
+		}
+
+		[Test]
+		public void Check_SetCompleteNotProcessed_CompleteIsFalse()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"0",
+						"r1",
+						SequenceItemEquationType.Algorithm,
+						true
+					)
+				},
+				Conditions = new List<Condition>
+				{
+					new Condition
+					{
+						Equation = "0",
+					}
+				}
+			};
+			var inputs = new Dictionary<string, string> { { "a", "0" } };
+
+			var result = EquationService.Process(sequence, inputs: inputs);
+
+			Assert.IsFalse(result.Completed);
+		}
 	}
 }

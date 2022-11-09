@@ -19,7 +19,8 @@
 				"Name": "Damage",
 				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
 				"ResultName": "damage",
-				"SequenceItemEquationType": "Algorithm"
+				"SequenceItemEquationType": "Algorithm",
+				"SetComplete": true
 			},
 			{
 				"Name": "Report Damage",

@@ -19,7 +19,8 @@
 				"Name": "CheckLuck",
 				"Equation": "random(1,1,100) > difficulty",
 				"ResultName": "luck_check",
-				"SequenceItemEquationType": "Algorithm"
+				"SequenceItemEquationType": "Algorithm",
+				"SetComplete": true
 			},
 			{
 				"Name": "Report Successful Hunt",

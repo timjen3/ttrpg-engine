@@ -30,5 +30,10 @@ namespace TTRPG.Engine.Engine
 		///		Additional inputs to include
 		/// </summary>
 		public Dictionary<string, string> Inputs { get; set; } = new Dictionary<string, string>();
+
+		/// <summary>
+		///		When true only fires for completed sequences
+		/// </summary>
+		public bool CompletedOnly { get; set; } = true;
 	}
 }

@@ -46,7 +46,8 @@ namespace TTRPG.Engine.CommandParsing.Processors
 				Source = _command,
 				CommandCategories = _sequence.Categories,
 				CategoryParams = _sequence.CategoryParams,
-				Messages = messages.ToList()
+				Messages = messages.ToList(),
+				Completed = result.Completed
 			};
 		}
 	}
