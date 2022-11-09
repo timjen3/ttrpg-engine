@@ -22,7 +22,8 @@ namespace TTRPG.Engine.Engine
 
 			var commands = new List<EngineCommand>();
 			var matches = _options.AutomaticCommands
-				.Where(x => processed.CommandCategories.Contains(x.SequenceCategory));
+				.Where(auto => processed.CommandCategories.Contains(auto.SequenceCategory)
+					&& (!auto.CompletedOnly || processed.Completed));
 			foreach (var match in matches)
 			{
 				var rolesMatching = _data.Roles.Where(x => match.Filter(x));

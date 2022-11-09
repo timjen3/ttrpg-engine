@@ -6,6 +6,7 @@ namespace TTRPG.Engine.Sequences
 	public class SequenceResult
 	{
 		public Sequence Sequence { get; set; }
+		public bool Completed { get; set; }
 		public List<SequenceItemResult> Results { get; set; } = new List<SequenceItemResult>();
 		public List<SequenceResultItem> ResultItems { get; set; } = new List<SequenceResultItem>();
 	}

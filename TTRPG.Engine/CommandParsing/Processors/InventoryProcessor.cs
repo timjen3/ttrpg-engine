@@ -56,18 +56,21 @@ namespace TTRPG.Engine.CommandParsing.Processors
 					{
 						_service.Equip(_entity, itemName: _command.Inputs["itemname"], equipAs: _command.Inputs["equipas"]);
 						processed.Messages = new string[] { $"Equipped {_command.Inputs["itemname"]}." }.ToList();
+						processed.Completed = true;
 						break;
 					}
 					case "unequip":
 					{
 						_service.Unequip(_entity, itemName: _command.Inputs["itemName"]);
 						processed.Messages = new string[] { $"Unequipped {_command.Inputs["itemname"]}." }.ToList();
+						processed.Completed = true;
 						break;
 					}
 					case "drop":
 					{
 						_service.DropItem(_entity, itemName: _command.Inputs["itemName"]);
 						processed.Messages = new string[] { $"Dropped {_command.Inputs["itemname"]}." }.ToList();
+						processed.Completed = true;
 						break;
 					}
 					case "pickup":
@@ -75,6 +78,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 						var item = GetClonedInventoryItemByName(_command.Inputs["itemname"]);
 						_service.PickupItem(_entity, item: item);
 						processed.Messages = new string[] { $"Picked up {_command.Inputs["itemname"]}." }.ToList();
+						processed.Completed = true;
 						break;
 					}
 					default:

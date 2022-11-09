@@ -248,6 +248,10 @@ namespace TTRPG.Engine.Equations
 			globalMappings.ForEach(x => Apply(x, null, ref sArgs, roles));  // apply global mappings to all inputs
 			var result = new SequenceResult();
 			result.Sequence = sequence;
+			if (sequence.Items.All(x => !x.SetComplete))
+			{
+				result.Completed = true;
+			}
 			if (!CheckRoleConditions(sequence, roles))
 			{
 				throw new RoleConditionFailedException("Role conditions not met for this sequence!");
@@ -262,6 +266,10 @@ namespace TTRPG.Engine.Equations
 					continue;
 				var itemResult = GetResult(item, order, ref sArgs, mappedInputs);
 				result.Results.Add(itemResult);
+				if (item.SetComplete)
+				{
+					result.Completed = true;
+				}
 			}
 			// generate error messages
 			foreach (var errorMessage in errorMessages)

@@ -88,6 +88,11 @@
             	Additional inputs to include
             </summary>
         </member>
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.CompletedOnly">
+            <summary>
+            	When true only fires for completed sequences
+            </summary>
+        </member>
         <member name="P:TTRPG.Engine.Engine.AutomaticCommandFactoryOptions.AutomaticCommands">
             <summary>
             	Commands to be ran automatically

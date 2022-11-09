@@ -16,6 +16,8 @@ namespace TTRPG.Engine.CommandParsing
 
 		public bool Failed { get; set; }
 
+		public bool Completed { get; set; }
+
 		public static ProcessedCommand InvalidCommand() => new ProcessedCommand
 		{
 			Valid = false,
