@@ -8,8 +8,8 @@ using TTRPG.Engine.Sequences;
 namespace TTRPG.Engine.Tests
 {
 	[TestFixture(Category = "Unit")]
-	[TestOf(typeof(RoleCondition))]
-	public class RoleConditionTests
+	[TestOf(typeof(EntityCondition))]
+	public class EntityConditionTests
 	{
 		private EquationService MockEquationService(int processResult)
 		{
@@ -21,209 +21,209 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void Check_RoleHasRequiredCondition_ReturnsTrue()
+		public void Check_EntityHasRequiredCondition_ReturnsTrue()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
-			role.Name = "a";
-			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			var entity = new Entity();
+			entity.Name = "a";
+			entity.Categories.Add("c1");
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_RoleWithDifferentCaseHasRequiredCondition_ReturnsTrue()
+		public void Check_EntityWithDifferentCaseHasRequiredCondition_ReturnsTrue()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
-			role.Name = "A";
-			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			var entity = new Entity();
+			entity.Name = "A";
+			entity.Categories.Add("c1");
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_RoleWithAliasHasRequiredCondition_ReturnsTrue()
+		public void Check_EntityWithAliasHasRequiredCondition_ReturnsTrue()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
-			role.Name = "a";
-			role.Alias = "b";
-			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			var entity = new Entity();
+			entity.Name = "a";
+			entity.Alias = "b";
+			entity.Categories.Add("c1");
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "b",
+				EntityName = "b",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_RoleDoesNotHaveRequiredCondition_ReturnsFalse()
+		public void Check_EntityDoesNotHaveRequiredCondition_ReturnsFalse()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
-			role.Name = "a";
-			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			var entity = new Entity();
+			entity.Name = "a";
+			entity.Categories.Add("c1");
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c2"
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsFalse(result);
 		}
 
 		[Test]
-		public void Check_RoleDoesNotMatch_ReturnsFalse()
+		public void Check_EntityDoesNotMatch_ReturnsFalse()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
-			role.Name = "b";
-			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			var entity = new Entity();
+			entity.Name = "b";
+			entity.Categories.Add("c1");
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsFalse(result);
 		}
 
 		[Test]
-		public void Check_NullRole_ReturnsFalse()
+		public void Check_NullEntity_ReturnsFalse()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, (Role)null);
+			bool result = resolver.Check(sequence, (Entity)null);
 
 			Assert.IsFalse(result);
 		}
 
 		[Test]
-		public void Check_MultipleRolesWithValidOne_ReturnsTrue()
+		public void Check_MultipleEntitiesWithValidOne_ReturnsTrue()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
-			var role1 = new Role();
-			role1.Name = "a";
-			role1.Categories.Add("c1");
-			var role2 = new Role();
-			role2.Name = "b";
-			role2.Categories.Add("c2");
+			var entity1 = new Entity();
+			entity1.Name = "a";
+			entity1.Categories.Add("c1");
+			var entity2 = new Entity();
+			entity2.Name = "b";
+			entity2.Categories.Add("c2");
 			var sequence = new Sequence();
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, null, new List<Role> { role1, role2 });
+			bool result = resolver.Check(sequence, null, new List<Entity> { entity1, entity2 });
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_MultipleRolesNoneValid_ReturnsFalse()
+		public void Check_MultipleEntitiesNoneValid_ReturnsFalse()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
-			var role1 = new Role();
-			role1.Name = "b";
-			role1.Categories.Add("c1");
-			var role2 = new Role();
-			role2.Name = "c";
-			role2.Categories.Add("c2");
+			var entity1 = new Entity();
+			entity1.Name = "b";
+			entity1.Categories.Add("c1");
+			var entity2 = new Entity();
+			entity2.Name = "c";
+			entity2.Categories.Add("c2");
 			var sequence = new Sequence();
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, null, new List<Role> { role1, role2 });
+			bool result = resolver.Check(sequence, null, new List<Entity> { entity1, entity2 });
 
 			Assert.IsFalse(result);
 		}
 
 		[Test]
-		public void Process_MissingRoleRequirement_ThrowsException()
+		public void Process_MissingEntityRequirement_ThrowsException()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			Assert.Throws<RoleConditionFailedException>(() => resolver.Process(sequence, inputs: null, roles: null));
+			Assert.Throws<EntityConditionFailedException>(() => resolver.Process(sequence, inputs: null, entities: null));
 		}
 	}
 }

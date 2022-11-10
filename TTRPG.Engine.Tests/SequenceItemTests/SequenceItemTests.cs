@@ -21,14 +21,14 @@ namespace TTRPG.Engine.Tests
 
 		Dictionary<string, string> GlobalInputs;
 		Dictionary<string, string> MappedInputs;
-		Role Role;
+		Entity Entity;
 
 		[SetUp]
 		public void SetupTest()
 		{
 			GlobalInputs = new Dictionary<string, string>();
 			MappedInputs = new Dictionary<string, string>();
-			Role = new Role("a");
+			Entity = new Entity("a");
 		}
 
 		/// Test that a sequence item resolves a basic algorithm
@@ -71,7 +71,7 @@ namespace TTRPG.Engine.Tests
 			var item = new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm);
 			var resolver = MockEquationService(equationResult);
 
-			var result = resolver.Process(item, Role, MappedInputs);
+			var result = resolver.Process(item, Entity, MappedInputs);
 
 			Assert.That(result.Result, Is.EqualTo(equationResult.ToString()));
 			Assert.That(result.Order, Is.EqualTo(order));
@@ -87,7 +87,7 @@ namespace TTRPG.Engine.Tests
 			var resolver = MockEquationService(0);
 			MappedInputs["name"] = "a";
 
-			var result = resolver.Process(item, Role, MappedInputs);
+			var result = resolver.Process(item, Entity, MappedInputs);
 
 			Assert.That(result.Result, Is.EqualTo(messageResult));
 			Assert.That(result.Order, Is.EqualTo(order));
@@ -95,15 +95,15 @@ namespace TTRPG.Engine.Tests
 
 		/// Test that a sequence item can be processed individually
 		[Test]
-		public void SequenceItemProcessMessageWithRoleTest()
+		public void SequenceItemProcessMessageWithEntityTest()
 		{
 			string messageResult = "Hello a.";
 			int order = 0;
 			var item = new SequenceItem("a", "Hello {name}.", "ar", SequenceItemEquationType.Message);
 			var resolver = MockEquationService(0);
-			Role.Attributes["name"] = "a";
+			Entity.Attributes["name"] = "a";
 
-			var result = resolver.Process(item, Role, MappedInputs);
+			var result = resolver.Process(item, Entity, MappedInputs);
 
 			Assert.That(result.Result, Is.EqualTo(messageResult));
 			Assert.That(result.Order, Is.EqualTo(order));

@@ -6,6 +6,6 @@ namespace TTRPG.Engine.SequenceItems
 		public string Category { get; set; }
 		public string Result { get; set; }
 		public string FormatMessage { get; set; }
-		public Role Role { get; set; }
+		public Entity Entity { get; set; }
 	}
 }

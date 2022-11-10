@@ -21,23 +21,23 @@
 				"From": "time",
 				"To": "current_time",
 				"ItemName": null,
-				"RoleName": "time",
-				"MappingType": "Role",
+				"EntityName": "time",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "turn",
 				"To": "current_turn",
 				"ItemName": null,
-				"RoleName": "time",
-				"MappingType": "Role",
+				"EntityName": "time",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "elapsed",
 				"To": "elapsed",
 				"ItemName": null,
-				"RoleName": null,
+				"EntityName": null,
 				"MappingType": "Input",
 				"ThrowOnFailure": true
 			}
@@ -47,13 +47,13 @@
 				"Name": "Time",
 				"Category": "UpdateAttribute",
 				"Source": "new_time",
-				"RoleName": "time"
+				"EntityName": "time"
 			},
 			{
 				"Name": "Turn",
 				"Category": "UpdateAttribute",
 				"Source": "new_turn",
-				"RoleName": "time"
+				"EntityName": "time"
 			}
 		]
 	}

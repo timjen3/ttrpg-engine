@@ -1,4 +1,4 @@
-﻿[![Build & Tests](https://github.com/timjen3/ttrpg-engine/actions/workflows/dotnet.yml/badge.svg)](https://github.com/timjen3/ttrpg-engine/actions/workflows/dotnet.yml)
+[![Build & Tests](https://github.com/timjen3/ttrpg-engine/actions/workflows/dotnet.yml/badge.svg)](https://github.com/timjen3/ttrpg-engine/actions/workflows/dotnet.yml)
 [![NuGet version (TTRPG.Engine)](https://img.shields.io/nuget/v/TTRPG.Engine.svg?style=flat)](https://www.nuget.org/packages/TTRPG.Engine/)
  
  # About
@@ -27,7 +27,7 @@ Equations work in different ways depending on the value of SequenceItemEquationT
 
 2. Message: The Equation property contains a format string to be populated with variables. For instance `{damage} damage was dealt to the target.`
 
-A single sequence item can be processed with the equation service without being part of a sequence along with 0 or 1 Role, and 0 or 1 input collection. Since there is no mapping, all of the role's attributes will be available for equations.
+A single sequence item can be processed with the equation service without being part of a sequence along with 0 or 1 Entity, and 0 or 1 input collection. Since there is no mapping, all of the entity's attributes will be available for equations.
 
 #### Custom Functions
 
@@ -36,7 +36,7 @@ When using the AddTTRPGEngineServices ServiceCollection extension method, severa
     random(n,minRange,maxRange) : get sum of n random numbers all having values between minRange and maxRange.
     toss(0) : returns 0 or 1 at random; parameter does nothing (mxParser requires >=1 param for user defined functions)
 
-Variables from inputs/roles can be injected into custom functions.
+Variables from inputs/entities can be injected into custom functions.
 
     random(1,minRange,maxRange)
 
@@ -54,9 +54,9 @@ If a sequence item relies on the results from a previous sequence item it should
 
 When a condition does not specify sequence items to apply to it will be considered a Sequence-level condition. When a Sequence is checked these conditions will be evaluated to determine if the sequence is suitable to be processed with the provided parameters.
 
-### Role Conditions
+### Entity Conditions
 
-Sequences may define 0+ requirements for roles. These are always applied to the sequence as a whole. Trying to process a sequence with invalid roles will result in a RoleConditionFailedException being thrown.
+Sequences may define 0+ requirements for entities. These are always applied to the sequence as a whole. Trying to process a sequence with invalid entities will result in a EntityConditionFailedException being thrown.
 
 ### Mappings
 
@@ -66,23 +66,23 @@ Mappings without a specific item specified will be applied to all items in the s
 
 From and To inside a mapping support replacement characters. ex: `"from": "{rename_me}"`
 
-### Roles
+### Entities
 
-Roles have attributes that can be used within equations. To inject role attributes into equations you must add a Mapping with a Role property set. Setting the Role property will make the mapping source the role with the specified name.
+Entities have attributes that can be used within equations. To inject entity attributes into equations you must add a Mapping with a Entity property set. Setting the Entity property will make the mapping source the entity with the specified name.
 
-Roles can have 0+ categories for organizational purposes.
+Entities can have 0+ categories for organizational purposes.
 
-Sequences require roles to be aliased according to their purpose in the sequence. To alias a role just clone it with the required name. This will create a deep copy with the alias set accordingly.
+Sequences require entities to be aliased according to their purpose in the sequence. To alias an entity just clone it with the required name. This will create a deep copy with the alias set accordingly.
 
-When no RoleName is specified for a Role mapping the first role passed will be chosen.
+When no EntityName is specified for an Entity mapping the first entity passed will be chosen.
 
 ### ResultItems
 
 While the results of all processed SequenceItems are accessible in the SequenceResult object, it is easier to work with results through the ResultItems pattern.
 
-If a RoleName is set the passed role with that Alias will be attached.
+If a EntityName is set the passed entity with that Alias will be attached.
 
-If FirstRole is true, then the first role passed will be attached.
+If FirstEntity is true, then the first entity passed will be attached.
 
 A FormatMessage can be set which can be a plain string (ex: `"something"`) or a format string (ex: `"{propa}"`). Format strings will have access to all inputs, all results, and any mappings that do not have ItemNames specified.
 
@@ -108,5 +108,5 @@ todo
     CustomFunctionArgumentException
     EquationInputArgumentException
     MappingFailedException
-    MissingRoleException
+    MissingEntityException
     UnknownCustomFunctionException

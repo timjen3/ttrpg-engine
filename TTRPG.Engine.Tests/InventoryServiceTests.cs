@@ -18,8 +18,8 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void Equip_ItemIsInBag_Equipped()
 		{
-			var entity = new Role();
-			var item = new Role("a");
+			var entity = new Entity();
+			var item = new Entity("a");
 			entity.Bag.Add(item);
 
 			Service.Equip(entity, "a", "b");
@@ -32,7 +32,7 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void Equip_ItemNotInBag_Throws()
 		{
-			var entity = new Role();
+			var entity = new Entity();
 
 			Assert.Throws<InventoryServiceException>(() => Service.Equip(entity, "a", "b"));
 		}
@@ -40,9 +40,9 @@ namespace TTRPG.Engine.Tests
 		[Test(Description = "If there is already an item equipped in the slot, it should be unequipped and added to the bag before equipping the new item")]
 		public void Equip_SlotFilled_Swaps()
 		{
-			var entity = new Role();
-			var itema = new Role("a");
-			var itemb = new Role("b");
+			var entity = new Entity();
+			var itema = new Entity("a");
+			var itemb = new Entity("b");
 			entity.InventoryItems["slot1"] = itema;
 			entity.Bag.Add(itemb);
 
@@ -55,8 +55,8 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void Unequip_ItemEquipped_PutInBag()
 		{
-			var entity = new Role();
-			var item = new Role("a");
+			var entity = new Entity();
+			var item = new Entity("a");
 			entity.InventoryItems["b"] = item;
 
 			Service.Unequip(entity, "b");
@@ -69,7 +69,7 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void Unequip_ItemNotEquipped_Throws()
 		{
-			var entity = new Role();
+			var entity = new Entity();
 
 			Assert.Throws<InventoryServiceException>(() => Service.Unequip(entity, "b"));
 		}
@@ -77,8 +77,8 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void Drop_ItemInBag_Dropped()
 		{
-			var entity = new Role();
-			var item = new Role("a");
+			var entity = new Entity();
+			var item = new Entity("a");
 			entity.Bag.Add(item);
 
 			Service.DropItem(entity, "a");
@@ -89,7 +89,7 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void Drop_ItemNotInBag_Throws()
 		{
-			var entity = new Role();
+			var entity = new Entity();
 
 			Assert.Throws<InventoryServiceException>(() => Service.DropItem(entity, "b"));
 		}
@@ -97,8 +97,8 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void PickupItem_ItemAddedToBag()
 		{
-			var entity = new Role();
-			var item = new Role("a");
+			var entity = new Entity();
+			var item = new Entity("a");
 
 			Service.PickupItem(entity, item);
 

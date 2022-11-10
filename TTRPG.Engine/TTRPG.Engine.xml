@@ -75,12 +75,12 @@
         </member>
         <member name="P:TTRPG.Engine.Engine.AutomaticCommand.Filter">
             <summary>
-            	Delegate for roles to be included
+            	Delegate for entities to be included
             </summary>
         </member>
-        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.AliasRolesAs">
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.AliasEntitiesAs">
             <summary>
-            	How to alias included roles
+            	How to alias included entities
             </summary>
         </member>
         <member name="P:TTRPG.Engine.Engine.AutomaticCommand.Inputs">
@@ -98,6 +98,39 @@
             	Commands to be ran automatically
             </summary>
         </member>
+        <member name="T:TTRPG.Engine.Entity">
+            an entity carries a set of attributes into equations
+        </member>
+        <member name="M:TTRPG.Engine.Entity.#ctor">
+            entity parameterless constructor
+        </member>
+        <member name="M:TTRPG.Engine.Entity.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,TTRPG.Engine.Entity},System.Collections.Generic.List{TTRPG.Engine.Entity})">
+            entity constructor
+        </member>
+        <member name="P:TTRPG.Engine.Entity.Name">
+            entity's name
+        </member>
+        <member name="P:TTRPG.Engine.Entity.Attributes">
+            entity's attributes
+        </member>
+        <member name="P:TTRPG.Engine.Entity.Categories">
+            categories that entity belongs to
+        </member>
+        <member name="P:TTRPG.Engine.Entity.InventoryItems">
+            inventory items
+        </member>
+        <member name="P:TTRPG.Engine.Entity.Bag">
+            loose inventory items
+        </member>
+        <member name="P:TTRPG.Engine.Entity.Alias">
+            on originals matches Name, on clones it differs
+        </member>
+        <member name="M:TTRPG.Engine.Entity.CloneAs(System.String)">
+            creates a clone with a different name
+        </member>
+        <member name="M:TTRPG.Engine.Entity.RemoveAlias">
+            Removes Alias
+        </member>
         <member name="T:TTRPG.Engine.Equations.EquationResolver">
             Resolves an equation using mxParser
         </member>
@@ -110,11 +143,11 @@
         <member name="T:TTRPG.Engine.Equations.EquationService">
             contains logic for sequence components
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.GetSourceMappingData(TTRPG.Engine.Mapping,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+        <member name="M:TTRPG.Engine.Equations.EquationService.GetSourceMappingData(TTRPG.Engine.Mapping,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
             Returns source data depending on MappingType
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.CheckRoleConditions(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            Checks role conditions against provided roles
+        <member name="M:TTRPG.Engine.Equations.EquationService.CheckEntityConditions(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
+            Checks entity conditions against provided entities
         </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.#ctor(TTRPG.Engine.Equations.IEquationResolver)">
             EquationService Constructor
@@ -125,28 +158,28 @@
         <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Condition,System.String,System.Collections.Generic.IDictionary{System.String,System.String},TTRPG.Engine.Sequences.SequenceResult,System.Collections.Generic.HashSet{System.String}@)">
             Determine if the condition passes for a sequence item
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.Apply(TTRPG.Engine.Mapping,System.String,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+        <member name="M:TTRPG.Engine.Equations.EquationService.Apply(TTRPG.Engine.Mapping,System.String,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
             Injects the specified mapping into <param name="inputs"/> from the configured source determined by <see cref="T:TTRPG.Engine.MappingType"/>
             <param name="itemName">The sequence item name mapping is being applied for. If the mapping does not apply to that item nothing will happen.</param>
-            <param name="roles">All roles available to the sequence.</param>
+            <param name="entities">All entities available to the sequence.</param>
         </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.GetResult(TTRPG.Engine.SequenceItems.SequenceItem,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IDictionary{System.String,System.String})">
             Process a sequence item and get the result
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.ProcessResults(System.Collections.Generic.IEnumerable{TTRPG.Engine.SequenceItems.ResultItem},System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+        <member name="M:TTRPG.Engine.Equations.EquationService.ProcessResults(System.Collections.Generic.IEnumerable{TTRPG.Engine.SequenceItems.ResultItem},System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
             Process a sequence item and get the result
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
-            <see cref="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})"/>
+        <member name="M:TTRPG.Engine.Equations.EquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Entity,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <see cref="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Entity,System.Collections.Generic.IDictionary{System.String,System.String})"/>
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
-            <see cref="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})"/>
+        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Entity,System.Collections.Generic.IDictionary{System.String,System.String})">
+            <see cref="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Entity,System.Collections.Generic.IDictionary{System.String,System.String})"/>
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            <see cref="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})"/>
+        <member name="M:TTRPG.Engine.Equations.EquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
+            <see cref="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})"/>
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
-            <see cref="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})"/>
+        <member name="M:TTRPG.Engine.Equations.EquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
+            <see cref="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})"/>
         </member>
         <member name="T:TTRPG.Engine.Equations.IEquationResolver">
             <summary>
@@ -166,19 +199,19 @@
             	Processes Sequences.
             </summary>
         </member>
-        <member name="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,TTRPG.Engine.Entity,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
-            	Check if a sequence can be resolved with the given arguments for the specified role.
+            	Check if a sequence can be resolved with the given arguments for the specified entity.
             </summary>
             <remarks>
             	Sequence Conditions are used for validation.
             </remarks>
             <param name="sequence"></param>
-            <param name="role"></param>
+            <param name="entity"></param>
             <param name="inputs"></param>
             <returns></returns>
         </member>
-        <member name="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+        <member name="M:TTRPG.Engine.Equations.IEquationService.Check(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
             <summary>
             	Check if a Sequence can be processed with the given arguments.
             </summary>
@@ -187,47 +220,47 @@
             </remarks>
             <param name="sequence"></param>
             <param name="inputs"></param>
-            <param name="roles"></param>
+            <param name="entities"></param>
             <returns></returns>
         </member>
-        <member name="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Role,System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Entity,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             	Process a single sequence item and get the result
             </summary>
             <param name="item">item to be processed</param>
-            <param name="role">(optional) inject role's attributes</param>
+            <param name="entity">(optional) inject entity's attributes</param>
             <param name="inputs">(optional) inject</param>
             <returns></returns>
         </member>
-        <member name="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Role})">
+        <member name="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.Sequences.Sequence,System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
             <summary>
             	Process a Sequence and get a SequenceResult.
             </summary>
             <param name="sequence"></param>
             <param name="inputs"></param>
-            <param name="roles"></param>
+            <param name="entities"></param>
             <returns></returns>
         </member>
         <member name="T:TTRPG.Engine.IInventoryService">
             <summary>
-            	Manages inventory for roles
+            	Manages inventory for entities
             </summary>
         </member>
-        <member name="M:TTRPG.Engine.IInventoryService.DropItem(TTRPG.Engine.Role,System.String)">
+        <member name="M:TTRPG.Engine.IInventoryService.DropItem(TTRPG.Engine.Entity,System.String)">
             <summary>
             	Remove item from bag
             </summary>
             <param name="entity"></param>
             <param name="itemName"></param>
         </member>
-        <member name="M:TTRPG.Engine.IInventoryService.PickupItem(TTRPG.Engine.Role,TTRPG.Engine.Role)">
+        <member name="M:TTRPG.Engine.IInventoryService.PickupItem(TTRPG.Engine.Entity,TTRPG.Engine.Entity)">
             <summary>
             	Adds item to bag
             </summary>
             <param name="entity"></param>
             <param name="item"></param>
         </member>
-        <member name="M:TTRPG.Engine.IInventoryService.Equip(TTRPG.Engine.Role,System.String,System.String)">
+        <member name="M:TTRPG.Engine.IInventoryService.Equip(TTRPG.Engine.Entity,System.String,System.String)">
             <summary>
             	Equip inventory item from bag
             </summary>
@@ -235,24 +268,24 @@
             <param name="itemName"></param>
             <param name="equipAs"></param>
         </member>
-        <member name="M:TTRPG.Engine.IInventoryService.Unequip(TTRPG.Engine.Role,System.String)">
+        <member name="M:TTRPG.Engine.IInventoryService.Unequip(TTRPG.Engine.Entity,System.String)">
             <summary>
             	Unequip inventory item and put in bag
             </summary>
             <param name="entity"></param>
             <param name="itemName"></param>
         </member>
-        <member name="M:TTRPG.Engine.InventoryService.Equip(TTRPG.Engine.Role,System.String,System.String)">
-            <see cref="M:TTRPG.Engine.IInventoryService.Equip(TTRPG.Engine.Role,System.String,System.String)"/>
+        <member name="M:TTRPG.Engine.InventoryService.Equip(TTRPG.Engine.Entity,System.String,System.String)">
+            <see cref="M:TTRPG.Engine.IInventoryService.Equip(TTRPG.Engine.Entity,System.String,System.String)"/>
         </member>
-        <member name="M:TTRPG.Engine.InventoryService.Unequip(TTRPG.Engine.Role,System.String)">
-            <see cref="M:TTRPG.Engine.IInventoryService.Unequip(TTRPG.Engine.Role,System.String)"/>
+        <member name="M:TTRPG.Engine.InventoryService.Unequip(TTRPG.Engine.Entity,System.String)">
+            <see cref="M:TTRPG.Engine.IInventoryService.Unequip(TTRPG.Engine.Entity,System.String)"/>
         </member>
-        <member name="M:TTRPG.Engine.InventoryService.DropItem(TTRPG.Engine.Role,System.String)">
-            <see cref="M:TTRPG.Engine.IInventoryService.DropItem(TTRPG.Engine.Role,System.String)"/>
+        <member name="M:TTRPG.Engine.InventoryService.DropItem(TTRPG.Engine.Entity,System.String)">
+            <see cref="M:TTRPG.Engine.IInventoryService.DropItem(TTRPG.Engine.Entity,System.String)"/>
         </member>
-        <member name="M:TTRPG.Engine.InventoryService.PickupItem(TTRPG.Engine.Role,TTRPG.Engine.Role)">
-            <see cref="M:TTRPG.Engine.IInventoryService.PickupItem(TTRPG.Engine.Role,TTRPG.Engine.Role)"/>
+        <member name="M:TTRPG.Engine.InventoryService.PickupItem(TTRPG.Engine.Entity,TTRPG.Engine.Entity)">
+            <see cref="M:TTRPG.Engine.IInventoryService.PickupItem(TTRPG.Engine.Entity,TTRPG.Engine.Entity)"/>
         </member>
         <member name="T:TTRPG.Engine.IServiceCollectionExtensions">
             <summary>
@@ -284,7 +317,7 @@
             Parameterless constructor
         </member>
         <member name="M:TTRPG.Engine.Mapping.#ctor(System.String,System.String,System.String,System.String,System.Boolean)">
-            Constructor for a Role Mapping
+            Constructor for an Entity Mapping
         </member>
         <member name="M:TTRPG.Engine.Mapping.#ctor(System.String,System.String,System.String,System.Boolean)">
             Constructor for an Input Mapping
@@ -301,8 +334,8 @@
         <member name="P:TTRPG.Engine.Mapping.ItemName">
             sequence item to apply mapping to
         </member>
-        <member name="P:TTRPG.Engine.Mapping.RoleName">
-            role to pull properties from
+        <member name="P:TTRPG.Engine.Mapping.EntityName">
+            entity to pull properties from
         </member>
         <member name="P:TTRPG.Engine.Mapping.InventoryItemName">
             inventory item to pull properties from
@@ -319,44 +352,11 @@
         <member name="F:TTRPG.Engine.MappingType.Input">
             item is mapped from the input collection
         </member>
-        <member name="F:TTRPG.Engine.MappingType.Role">
-            item is mapped from a role
+        <member name="F:TTRPG.Engine.MappingType.Entity">
+            item is mapped from an entity
         </member>
         <member name="F:TTRPG.Engine.MappingType.InventoryItem">
             item is mapped from an inventory item
-        </member>
-        <member name="T:TTRPG.Engine.Role">
-            a role carries a set of attributes into equations
-        </member>
-        <member name="M:TTRPG.Engine.Role.#ctor">
-            role parameterless constructor
-        </member>
-        <member name="M:TTRPG.Engine.Role.#ctor(System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.Collections.Generic.List{System.String},System.Collections.Generic.Dictionary{System.String,TTRPG.Engine.Role},System.Collections.Generic.List{TTRPG.Engine.Role})">
-            role constructor
-        </member>
-        <member name="P:TTRPG.Engine.Role.Name">
-            role's name
-        </member>
-        <member name="P:TTRPG.Engine.Role.Attributes">
-            role's attributes
-        </member>
-        <member name="P:TTRPG.Engine.Role.Categories">
-            categories that role belongs to
-        </member>
-        <member name="P:TTRPG.Engine.Role.InventoryItems">
-            inventory items
-        </member>
-        <member name="P:TTRPG.Engine.Role.Bag">
-            loose inventory items
-        </member>
-        <member name="P:TTRPG.Engine.Role.Alias">
-            on originals matches Name, on clones it differs
-        </member>
-        <member name="M:TTRPG.Engine.Role.CloneAs(System.String)">
-            creates a clone with a different name
-        </member>
-        <member name="M:TTRPG.Engine.Role.RemoveAlias">
-            Removes Alias
         </member>
         <member name="T:TTRPG.Engine.SequenceItems.ResultItem">
             Configures a result

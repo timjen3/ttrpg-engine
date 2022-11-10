@@ -26,8 +26,8 @@ namespace TTRPG.Engine.Engine
 					&& (!auto.CompletedOnly || processed.Completed));
 			foreach (var match in matches)
 			{
-				var rolesMatching = _data.Roles.Where(x => match.Filter(x));
-				foreach (var roleMatching in rolesMatching)
+				var entitiesMatching = _data.Entities.Where(x => match.Filter(x));
+				foreach (var entityMatching in entitiesMatching)
 				{
 					var command = new EngineCommand();
 					command.MainCommand = match.Command;
@@ -39,10 +39,10 @@ namespace TTRPG.Engine.Engine
 							command.Inputs[kvp.Key] = kvp.Value;
 						}
 					}
-					if (!string.IsNullOrWhiteSpace(match.AliasRolesAs))
-						command.Roles.Add(roleMatching.CloneAs(match.AliasRolesAs));
+					if (!string.IsNullOrWhiteSpace(match.AliasEntitiesAs))
+						command.Entities.Add(entityMatching.CloneAs(match.AliasEntitiesAs));
 					else
-						command.Roles.Add(roleMatching);
+						command.Entities.Add(entityMatching);
 					commands.Add(command);
 				}
 			}

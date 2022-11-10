@@ -15,16 +15,13 @@ namespace TTRPG.Engine
 			NewGame();
 		}
 
-		public List<Role> Roles => _loader.GetRolesAsync().GetAwaiter().GetResult();
+		public List<Entity> Entities => _loader.GetEntitiesAsync().GetAwaiter().GetResult();
 
 		public List<Sequence> Sequences => _loader.GetSequencesAsync().GetAwaiter().GetResult();
 
 		public List<SequenceItem> SequenceItems => _loader.GetSequenceItemsAsync().GetAwaiter().GetResult();
 
 
-		public void NewGame()
-		{
-			_loader.ReloadAsync().GetAwaiter().GetResult();
-		}
+		public void NewGame() => _loader.ReloadAsync().GetAwaiter().GetResult();
 	}
 }

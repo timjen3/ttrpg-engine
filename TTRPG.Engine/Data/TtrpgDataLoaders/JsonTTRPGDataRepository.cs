@@ -11,7 +11,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 	public class JsonTTRPGDataRepository : ITTRPGDataRepository
 	{
 		private readonly TTRPGEngineDataOptions _options;
-		private List<Role> _roles;
+		private List<Entity> _entities;
 		private List<Sequence> _sequences;
 		private List<SequenceItem> _sequenceItems;
 		private Dictionary<string, string> _messageTemplates;
@@ -42,18 +42,18 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			_options = options;
 		}
 
-		public Task<List<Role>> GetRolesAsync()
+		public Task<List<Entity>> GetEntitiesAsync()
 		{
-			if (_roles == null && !string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.RolesFileDirectory))
+			if (_entities == null && !string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.EntitiesFileDirectory))
 			{
-				_roles = Directory.GetFiles(_options.JsonFileStorageOptions.RolesFileDirectory)
-					.SelectMany(filename => JsonFileReader.ReadFile<List<Role>>(filename))
+				_entities = Directory.GetFiles(_options.JsonFileStorageOptions.EntitiesFileDirectory)
+					.SelectMany(filename => JsonFileReader.ReadFile<List<Entity>>(filename))
 					.ToList();
 			}
-			else if (_roles == null)
-				_roles = new List<Role>();
+			else if (_entities == null)
+				_entities = new List<Entity>();
 
-			return Task.FromResult(_roles);
+			return Task.FromResult(_entities);
 		}
 
 		public Task<List<SequenceItem>> GetSequenceItemsAsync()
@@ -101,7 +101,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 
 		public Task ReloadAsync()
 		{
-			_roles = null;
+			_entities = null;
 			_sequences = null;
 			_sequenceItems = null;
 			_messageTemplates = null;

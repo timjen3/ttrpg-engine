@@ -128,47 +128,47 @@
 				"From": "name",
 				"To": "farmer_name",
 				"ItemName": null,
-				"RoleName": "farmer",
-				"MappingType": "Role",
+				"EntityName": "farmer",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "meat",
 				"To": "current_meat",
 				"ItemName": null,
-				"RoleName": "farmer",
-				"MappingType": "Role",
+				"EntityName": "farmer",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "name",
 				"To": "crop_name",
 				"ItemName": null,
-				"RoleName": "crop",
-				"MappingType": "Role",
+				"EntityName": "crop",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "hp",
 				"To": "hp",
 				"ItemName": null,
-				"RoleName": "crop",
-				"MappingType": "Role",
+				"EntityName": "crop",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "stamina",
 				"To": "farmer_stamina",
 				"ItemName": null,
-				"RoleName": "farmer",
-				"MappingType": "Role",
+				"EntityName": "farmer",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "pierce",
 				"To": "pierce",
 				"ItemName": null,
-				"RoleName": "farmer",
+				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -177,7 +177,7 @@
 				"From": "hits",
 				"To": "wHits",
 				"ItemName": "Report Damage",
-				"RoleName": "farmer",
+				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -186,23 +186,23 @@
 				"From": "ac",
 				"To": "ac",
 				"ItemName": null,
-				"RoleName": "crop",
-				"MappingType": "Role",
+				"EntityName": "crop",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "str",
 				"To": "str",
 				"ItemName": "Damage",
-				"RoleName": "farmer",
-				"MappingType": "Role",
+				"EntityName": "farmer",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "hits",
 				"To": "wHits",
 				"ItemName": "Damage",
-				"RoleName": "farmer",
+				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -211,7 +211,7 @@
 				"From": "min",
 				"To": "wMin",
 				"ItemName": "Damage",
-				"RoleName": "farmer",
+				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -220,7 +220,7 @@
 				"From": "max",
 				"To": "wMax",
 				"ItemName": "Damage",
-				"RoleName": "farmer",
+				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -229,7 +229,7 @@
 				"From": "action",
 				"To": "wAction",
 				"ItemName": null,
-				"RoleName": "farmer",
+				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -238,32 +238,32 @@
 				"From": "hp",
 				"To": "old_hp",
 				"ItemName": "Report Damage Taken",
-				"RoleName": "crop",
-				"MappingType": "Role",
+				"EntityName": "crop",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "MAX_HP",
 				"To": "crop_max_hp",
 				"ItemName": null,
-				"RoleName": "crop",
-				"MappingType": "Role",
+				"EntityName": "crop",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "Maturity",
 				"To": "crop_maturity",
 				"ItemName": null,
-				"RoleName": "crop",
-				"MappingType": "Role",
+				"EntityName": "crop",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "Age",
 				"To": "crop_age",
 				"ItemName": null,
-				"RoleName": "crop",
-				"MappingType": "Role",
+				"EntityName": "crop",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			}
 		],
@@ -272,30 +272,30 @@
 				"Name": "HP",
 				"Category": "UpdateAttribute",
 				"Source": "new_hp",
-				"RoleName": "crop"
+				"EntityName": "crop"
 			},
 			{
 				"Name": "Meat",
 				"Category": "UpdateAttribute",
 				"Source": "new_meat",
-				"RoleName": "farmer"
+				"EntityName": "farmer"
 			},
 			{
 				"Name": "Stamina",
 				"Category": "UpdateAttribute",
 				"Source": "new_stamina",
-				"RoleName": "farmer"
+				"EntityName": "farmer"
 			}
 		],
-		"RoleConditions": [
+		"EntityConditions": [
 			{
-				"RoleName": "Farmer",
+				"EntityName": "Farmer",
 				"RequiredCategories": [
 					"Entity"
 				]
 			},
 			{
-				"RoleName": "Crop",
+				"EntityName": "Crop",
 				"RequiredCategories": [
 					"Crop"
 				]

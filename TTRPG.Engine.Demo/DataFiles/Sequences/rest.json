@@ -21,16 +21,16 @@
 				"From": "max_stamina",
 				"To": "max_stamina",
 				"ItemName": null,
-				"RoleName": "sleeper",
-				"MappingType": "Role",
+				"EntityName": "sleeper",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "name",
 				"To": "sleeper_name",
 				"ItemName": null,
-				"RoleName": "sleeper",
-				"MappingType": "Role",
+				"EntityName": "sleeper",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			}
 		],
@@ -39,7 +39,7 @@
 				"Name": "Stamina",
 				"Category": "UpdateAttribute",
 				"Source": "new_stamina",
-				"RoleName": "sleeper"
+				"EntityName": "sleeper"
 			}
 		]
 	}

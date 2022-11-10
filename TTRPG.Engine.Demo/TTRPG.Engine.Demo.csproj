@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -9,10 +9,9 @@
 
   <ItemGroup>
     <None Remove="DataFiles\MessageTemplates\output_target_status.txt" />
-    <None Remove="DataFiles\roles.json" />
-    <None Remove="DataFiles\Roles\animals.json" />
-    <None Remove="DataFiles\Roles\commodities.json" />
-    <None Remove="DataFiles\Roles\terrain.json" />
+    <None Remove="DataFiles\Entities\animals.json" />
+    <None Remove="DataFiles\Entities\commodities.json" />
+    <None Remove="DataFiles\Entities\terrain.json" />
     <None Remove="DataFiles\sequences.json" />
     <None Remove="DataFiles\Sequences\buy_commodity.json" />
     <None Remove="DataFiles\Sequences\hunt.json" />
@@ -26,16 +25,16 @@
     <Content Include="DataFiles\MessageTemplates\output_target_status.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataFiles\Roles\commodities.json">
+    <Content Include="DataFiles\Entities\commodities.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataFiles\Roles\animals.json">
+    <Content Include="DataFiles\Entities\animals.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataFiles\Roles\terrain.json">
+    <Content Include="DataFiles\Entities\terrain.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataFiles\Roles\miner.json">
+    <Content Include="DataFiles\Entities\miner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\Sequences\buy_commodity.json">

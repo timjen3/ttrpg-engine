@@ -5,8 +5,8 @@ namespace TTRPG.Engine
 	{
 		/// item is mapped from the input collection
 		Input = 0,
-		/// item is mapped from a role
-		Role = 2,
+		/// item is mapped from an entity
+		Entity = 2,
 		/// item is mapped from an inventory item
 		InventoryItem = 3
 	}

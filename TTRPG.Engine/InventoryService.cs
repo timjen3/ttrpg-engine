@@ -6,8 +6,8 @@ namespace TTRPG.Engine
 {
 	public class InventoryService : IInventoryService
 	{
-		/// <see cref="IInventoryService.Equip(Role, string, string)"/>
-		public void Equip(Role entity, string itemName, string equipAs)
+		/// <see cref="IInventoryService.Equip(Entity, string, string)"/>
+		public void Equip(Entity entity, string itemName, string equipAs)
 		{
 			// if existing item in slot, unequip
 			if (entity.InventoryItems.ContainsKey(equipAs))
@@ -24,8 +24,8 @@ namespace TTRPG.Engine
 			entity.InventoryItems[equipAs] = item;
 		}
 
-		/// <see cref="IInventoryService.Unequip(Role, string)"/>
-		public void Unequip(Role entity, string itemName)
+		/// <see cref="IInventoryService.Unequip(Entity, string)"/>
+		public void Unequip(Entity entity, string itemName)
 		{
 			if (!entity.InventoryItems.ContainsKey(itemName))
 				throw new InventoryServiceException("Tried to unequip item that is not equipped.");
@@ -35,8 +35,8 @@ namespace TTRPG.Engine
 			entity.Bag.Add(item);
 		}
 
-		/// <see cref="IInventoryService.DropItem(Role, string)"/>
-		public void DropItem(Role entity, string itemName)
+		/// <see cref="IInventoryService.DropItem(Entity, string)"/>
+		public void DropItem(Entity entity, string itemName)
 		{
 			var item = entity.Bag
 				.FirstOrDefault(x => x.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
@@ -46,8 +46,8 @@ namespace TTRPG.Engine
 			entity.Bag.Remove(item);
 		}
 
-		/// <see cref="IInventoryService.PickupItem(Role, Role)"/>
-		public void PickupItem(Role entity, Role item)
+		/// <see cref="IInventoryService.PickupItem(Entity, Entity)"/>
+		public void PickupItem(Entity entity, Entity item)
 		{
 			entity.Bag.Add(item);
 		}

@@ -5,13 +5,13 @@ using TTRPG.Engine.Demo2.Controls;
 
 namespace TTRPG.Engine.Demo2.Helpers;
 
-internal static class RoleExtensions
+internal static class EntityExtensions
 {
-	internal static IEnumerable<Role> FilterToLiveTargets(this IEnumerable<Role> roles, string category) =>
-		roles.Where(x => !string.IsNullOrWhiteSpace(category) && x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase)
+	internal static IEnumerable<Entity> FilterToLiveTargets(this IEnumerable<Entity> entities, string category) =>
+		entities.Where(x => !string.IsNullOrWhiteSpace(category) && x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase)
 			&& int.Parse(x.Attributes["hp"]) > 0);
 
-	internal static DragDropItem MakeDragDropItem(this Role liveTarget)
+	internal static DragDropItem MakeDragDropItem(this Entity liveTarget)
 	{
 		if (liveTarget.Categories.Contains("Crop")
 			&& liveTarget.Attributes["Age"] == liveTarget.Attributes["Maturity"])
@@ -37,12 +37,12 @@ internal static class RoleExtensions
 		};
 	}
 
-	internal static HashSet<string> GetCommodityNames(this List<Role> roles)
-		=> roles.Where(x => x.Categories.Contains("Commodity", StringComparer.OrdinalIgnoreCase))
+	internal static HashSet<string> GetCommodityNames(this List<Entity> entities)
+		=> entities.Where(x => x.Categories.Contains("Commodity", StringComparer.OrdinalIgnoreCase))
 		.Select(x => x.Attributes["resource"])
 		.ToHashSet(StringComparer.OrdinalIgnoreCase);
 
-	internal static List<InventoryDataGridItem> GetInventoryItems(this Role player) =>
+	internal static List<InventoryDataGridItem> GetInventoryItems(this Entity player) =>
 		player.InventoryItems
 			.Where(x => x.Value.Attributes.ContainsKey("equipAs"))
 			.Select(x => new InventoryDataGridItem
@@ -55,7 +55,7 @@ internal static class RoleExtensions
 			.OrderBy(x => x.EquipAs)
 			.ToList();
 
-	internal static List<InventoryDataGridItem> GetBagItems(this Role player) =>
+	internal static List<InventoryDataGridItem> GetBagItems(this Entity player) =>
 		player.Bag
 			.Where(x => x.Attributes.ContainsKey("equipAs"))
 			.Select(x => new InventoryDataGridItem
@@ -68,7 +68,7 @@ internal static class RoleExtensions
 			.OrderBy(x => x.EquipAs)
 			.ToList();
 
-	internal static List<GoodsDataGridItem> GetGoods(this Role player, HashSet<string> commodityNames) =>
+	internal static List<GoodsDataGridItem> GetGoods(this Entity player, HashSet<string> commodityNames) =>
 		player.Attributes
 			.Where(x => commodityNames.Contains(x.Key))
 			.Select(x => new GoodsDataGridItem

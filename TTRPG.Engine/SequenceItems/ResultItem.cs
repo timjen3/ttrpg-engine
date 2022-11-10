@@ -9,9 +9,9 @@ namespace TTRPG.Engine.SequenceItems
 
 		public string Source { get; set; }
 
-		public string RoleName { get; set; }
+		public string EntityName { get; set; }
 
-		public bool FirstRole { get; set; }
+		public bool FirstEntity { get; set; }
 
 		public string FormatMessage { get; set; }
 	}

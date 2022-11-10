@@ -84,63 +84,63 @@
 				"From": "name",
 				"To": "hunter_name",
 				"ItemName": null,
-				"RoleName": "hunter",
-				"MappingType": "Role",
+				"EntityName": "hunter",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "meat",
 				"To": "current_meat",
 				"ItemName": null,
-				"RoleName": "hunter",
-				"MappingType": "Role",
+				"EntityName": "hunter",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "name",
 				"To": "defender_name",
 				"ItemName": null,
-				"RoleName": "defender",
-				"MappingType": "Role",
+				"EntityName": "defender",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "hp",
 				"To": "hp",
 				"ItemName": null,
-				"RoleName": "defender",
-				"MappingType": "Role",
+				"EntityName": "defender",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "meat",
 				"To": "defender_meat",
 				"ItemName": null,
-				"RoleName": "defender",
-				"MappingType": "Role",
+				"EntityName": "defender",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "difficulty",
 				"To": "difficulty",
 				"ItemName": null,
-				"RoleName": "defender",
-				"MappingType": "Role",
+				"EntityName": "defender",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "stamina",
 				"To": "hunter_stamina",
 				"ItemName": null,
-				"RoleName": "hunter",
-				"MappingType": "Role",
+				"EntityName": "hunter",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "pierce",
 				"To": "pierce",
 				"ItemName": null,
-				"RoleName": "hunter",
+				"EntityName": "hunter",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -149,7 +149,7 @@
 				"From": "name",
 				"To": "wName",
 				"ItemName": null,
-				"RoleName": "hunter",
+				"EntityName": "hunter",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -158,8 +158,8 @@
 				"From": "ac",
 				"To": "ac",
 				"ItemName": null,
-				"RoleName": "defender",
-				"MappingType": "Role",
+				"EntityName": "defender",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			}
 		],
@@ -168,24 +168,24 @@
 				"Name": "Meat",
 				"Category": "UpdateAttribute",
 				"Source": "new_meat",
-				"RoleName": "hunter"
+				"EntityName": "hunter"
 			},
 			{
 				"Name": "Stamina",
 				"Category": "UpdateAttribute",
 				"Source": "new_stamina",
-				"RoleName": "hunter"
+				"EntityName": "hunter"
 			}
 		],
-		"RoleConditions": [
+		"EntityConditions": [
 			{
-				"RoleName": "Hunter",
+				"EntityName": "Hunter",
 				"RequiredCategories": [
 					"Entity"
 				]
 			},
 			{
-				"RoleName": "Defender",
+				"EntityName": "Defender",
 				"RequiredCategories": [
 					"Animal"
 				]

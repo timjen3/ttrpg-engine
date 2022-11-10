@@ -11,14 +11,14 @@ namespace TTRPG.Engine.Tests
 	{
 		EquationService EquationService;
 		Dictionary<string, string> Inputs;
-		List<Role> Roles;
+		List<Entity> Entities;
 
 		[SetUp]
 		public void SetupTest()
 		{
 			EquationService = new EquationService(null);
 			Inputs = new Dictionary<string, string>();
-			Roles = new List<Role>();
+			Entities = new List<Entity>();
 		}
 
 		[Test]
@@ -30,7 +30,7 @@ namespace TTRPG.Engine.Tests
 			item.Source = "c";
 			Inputs["c"] = "1";
 
-			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Has.Count.EqualTo(1));
 			Assert.That(resultItems[0].Result, Is.EqualTo("1"));
@@ -44,61 +44,61 @@ namespace TTRPG.Engine.Tests
 			item.Category = "b";
 			item.Source = "c";
 
-			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Is.Empty);
 		}
 
 		[Test]
-		public void ProcessResults_KeyFoundInResultsWithRole_AddedRoleSet()
+		public void ProcessResults_KeyFoundInResultsWithEntity_AddedEntitySet()
 		{
 			var item = new ResultItem();
 			item.Name = "a";
 			item.Category = "b";
 			item.Source = "c";
 			Inputs["c"] = "1";
-			item.RoleName = "d";
-			Roles.Add(new Role("d"));
+			item.EntityName = "d";
+			Entities.Add(new Entity("d"));
 
-			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Has.Count.EqualTo(1));
-			Assert.AreSame(Roles[0], resultItems[0].Role);
+			Assert.AreSame(Entities[0], resultItems[0].Entity);
 		}
 
 		[Test]
-		public void ProcessResults_RoleNotFound_RoleIsNull()
+		public void ProcessResults_EntityNotFound_EntityIsNull()
 		{
 			var item = new ResultItem();
 			item.Name = "a";
 			item.Category = "b";
 			item.Source = "c";
 			Inputs["c"] = "1";
-			item.RoleName = null;
-			Roles.Add(new Role("d", null, null));
+			item.EntityName = null;
+			Entities.Add(new Entity("d", null, null));
 
-			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Has.Count.EqualTo(1));
-			Assert.That(resultItems[0].Role, Is.Null);
+			Assert.That(resultItems[0].Entity, Is.Null);
 		}
 
 		[Test]
-		public void ProcessResults_FirstRoleSelected_FirstRoleChosen()
+		public void ProcessResults_FirstEntitySelected_FirstEntityChosen()
 		{
 			var item = new ResultItem();
 			item.Name = "a";
 			item.Category = "b";
 			item.Source = "c";
-			item.FirstRole = true;
+			item.FirstEntity = true;
 			Inputs["c"] = "1";
-			item.RoleName = null;
-			Roles.Add(new Role("d", null, null));
+			item.EntityName = null;
+			Entities.Add(new Entity("d", null, null));
 
-			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Has.Count.EqualTo(1));
-			Assert.AreSame(Roles[0], resultItems[0].Role);
+			Assert.AreSame(Entities[0], resultItems[0].Entity);
 		}
 
 		// Format Messages
@@ -110,14 +110,14 @@ namespace TTRPG.Engine.Tests
 			item.Name = "a";
 			item.Category = "b";
 			item.Source = "c";
-			item.FirstRole = true;
+			item.FirstEntity = true;
 			item.FormatMessage = "{d}";
 			Inputs["c"] = "1";
 			Inputs["d"] = testValue;
-			item.RoleName = null;
-			Roles.Add(new Role("e", null, null));
+			item.EntityName = null;
+			Entities.Add(new Entity("e", null, null));
 
-			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Has.Count.EqualTo(1));
 			Assert.AreEqual(testValue, resultItems[0].FormatMessage);
@@ -131,12 +131,12 @@ namespace TTRPG.Engine.Tests
 			item.Name = "a";
 			item.Category = "b";
 			item.Source = "c";
-			item.FirstRole = true;
+			item.FirstEntity = true;
 			item.FormatMessage = "{d}";
-			item.RoleName = null;
-			Roles.Add(new Role("e", null, null));
+			item.EntityName = null;
+			Entities.Add(new Entity("e", null, null));
 
-			Assert.Throws<KeyNotFoundException>(() => EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles));
+			Assert.Throws<KeyNotFoundException>(() => EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Entities));
 		}
 
 		[Test]
@@ -147,13 +147,13 @@ namespace TTRPG.Engine.Tests
 			item.Name = "a";
 			item.Category = "b";
 			item.Source = "c";
-			item.FirstRole = true;
+			item.FirstEntity = true;
 			item.FormatMessage = testValue;
 			Inputs["c"] = "1";
-			item.RoleName = null;
-			Roles.Add(new Role("e", null, null));
+			item.EntityName = null;
+			Entities.Add(new Entity("e", null, null));
 
-			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Roles);
+			var resultItems = EquationService.ProcessResults(new ResultItem[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Has.Count.EqualTo(1));
 			Assert.AreEqual(testValue, resultItems[0].FormatMessage);

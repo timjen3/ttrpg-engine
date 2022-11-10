@@ -11,7 +11,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 
 		Task<List<SequenceItem>> GetSequenceItemsAsync();
 
-		Task<List<Role>> GetRolesAsync();
+		Task<List<Entity>> GetEntitiesAsync();
 
 		Task ReloadAsync();
 	}

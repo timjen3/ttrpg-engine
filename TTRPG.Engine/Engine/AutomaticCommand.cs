@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace TTRPG.Engine.Engine
 {
-	public delegate bool RoleMatch(Role role);
+	public delegate bool EntityMatch(Entity entity);
 
 	public class AutomaticCommand
 	{
@@ -17,14 +17,14 @@ namespace TTRPG.Engine.Engine
 		public string Command { get; set; }
 
 		/// <summary>
-		///		Delegate for roles to be included
+		///		Delegate for entities to be included
 		/// </summary>
-		public RoleMatch Filter { get; set; }
+		public EntityMatch Filter { get; set; }
 
 		/// <summary>
-		///		How to alias included roles
+		///		How to alias included entities
 		/// </summary>
-		public string AliasRolesAs { get; set; }
+		public string AliasEntitiesAs { get; set; }
 
 		/// <summary>
 		///		Additional inputs to include
