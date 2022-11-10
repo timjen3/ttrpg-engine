@@ -10,8 +10,8 @@ namespace TTRPG.Engine.Tests
 	internal class RoleMappingTests
 	{
 		Mapping mapping;
-		List<Role> roles;
-		Role role;
+		List<Entity> roles;
+		Entity role;
 		Dictionary<string, string> inputs;
 		EquationService service;
 
@@ -19,11 +19,11 @@ namespace TTRPG.Engine.Tests
 		public void SetupTests()
 		{
 			mapping = new Mapping();
-			mapping.MappingType = MappingType.Role;
-			mapping.RoleName = "r1";
+			mapping.MappingType = MappingType.Entity;
+			mapping.EntityName = "r1";
 			inputs = new Dictionary<string, string>();
-			roles = new List<Role>();
-			role = new Role("r1");
+			roles = new List<Entity>();
+			role = new Entity("r1");
 			roles.Add(role);
 			service = new EquationService(null);
 		}
@@ -101,8 +101,8 @@ namespace TTRPG.Engine.Tests
 			mapping.ThrowOnFailure = true;
 			roles.Clear();
 
-			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
-			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing role: '{mapping.RoleName}'."));
+			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing entity: '{mapping.EntityName}'."));
 		}
 
 		[Test]
@@ -113,7 +113,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 			role.Attributes["a"] = "1";
-			var role2 = new Role("r2", new Dictionary<string, string>(), new List<string>());
+			var role2 = new Entity("r2", new Dictionary<string, string>(), new List<string>());
 			role2.Attributes["a"] = "2";
 			roles.Add(role2);
 
@@ -128,7 +128,7 @@ namespace TTRPG.Engine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.RoleName = null;
+			mapping.EntityName = null;
 			mapping.ItemName = "a";
 			role.Attributes["a"] = "1";
 			mapping.ThrowOnFailure = true;
@@ -144,13 +144,13 @@ namespace TTRPG.Engine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			mapping.RoleName = null;
+			mapping.EntityName = null;
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 			roles.Clear();
 
-			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
-			Assert.That(ex.Message, Is.EqualTo("Mapping failed due to no roles being passed."));
+			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			Assert.That(ex.Message, Is.EqualTo("Mapping failed due to no entities being passed."));
 		}
 
 		[Test]

@@ -38,31 +38,31 @@
 				"From": "age",
 				"To": "current_age",
 				"ItemName": null,
-				"RoleName": "grower",
-				"MappingType": "Role",
+				"EntityName": "grower",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "maturity",
 				"To": "maturity",
 				"ItemName": null,
-				"RoleName": "grower",
-				"MappingType": "Role",
+				"EntityName": "grower",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "name",
 				"To": "crop_name",
 				"ItemName": null,
-				"RoleName": "grower",
-				"MappingType": "Role",
+				"EntityName": "grower",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "elapsed",
 				"To": "elapsed",
 				"ItemName": null,
-				"RoleName": null,
+				"EntityName": null,
 				"MappingType": "Input",
 				"ThrowOnFailure": true
 			}
@@ -72,7 +72,7 @@
 				"Name": "Age",
 				"Category": "UpdateAttribute",
 				"Source": "new_age",
-				"RoleName": "grower"
+				"EntityName": "grower"
 			}
 		]
 	}

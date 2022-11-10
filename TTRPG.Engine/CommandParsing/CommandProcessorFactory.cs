@@ -27,31 +27,31 @@ namespace TTRPG.Engine.CommandParsing
 			{
 				parsedCommand.MainCommand = mainCommand.Value;
 			}
-			// get roles
-			var rolesText = Regex.Match(fullCommand, @"\[.+?\]");
-			if (rolesText.Success)
+			// get entities
+			var entitiesText = Regex.Match(fullCommand, @"\[.+?\]");
+			if (entitiesText.Success)
 			{
-				parsedCommand.Roles = new List<Role>();
-				var rolesTextParts = rolesText.Value.Replace("[", "").Replace("]", "").Split(',');
-				foreach (var nextRolePart in rolesTextParts)
+				parsedCommand.Entities = new List<Entity>();
+				var entitiesTextParts = entitiesText.Value.Replace("[", "").Replace("]", "").Split(',');
+				foreach (var nextEntityPart in entitiesTextParts)
 				{
-					var roleParts = nextRolePart.Split(':');
-					if (roleParts.Length == 2)
+					var entityParts = nextEntityPart.Split(':');
+					if (entityParts.Length == 2)
 					{
-						// alias role
-						var from = nextRolePart.Split(':')[0];
-						var to = nextRolePart.Split(':')[1];
-						var nextRole = _data.Roles.FirstOrDefault(x => x.Name.Equals(from, StringComparison.OrdinalIgnoreCase));
-						if (nextRole != null)
+						// alias entity
+						var from = nextEntityPart.Split(':')[0];
+						var to = nextEntityPart.Split(':')[1];
+						var nextEntity = _data.Entities.FirstOrDefault(x => x.Name.Equals(from, StringComparison.OrdinalIgnoreCase));
+						if (nextEntity != null)
 						{
-							parsedCommand.Roles.Add(nextRole.CloneAs(to));
+							parsedCommand.Entities.Add(nextEntity.CloneAs(to));
 						}
 					}
 					else
 					{
-						// do not alias role
-						var nextRole = _data.Roles.FirstOrDefault(x => x.Name.Equals(nextRolePart, StringComparison.OrdinalIgnoreCase));
-						parsedCommand.Roles.Add(nextRole);
+						// do not alias entity
+						var nextEntity = _data.Entities.FirstOrDefault(x => x.Name.Equals(nextEntityPart, StringComparison.OrdinalIgnoreCase));
+						parsedCommand.Entities.Add(nextEntity);
 					}
 				}
 			}

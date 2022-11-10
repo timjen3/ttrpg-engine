@@ -13,15 +13,15 @@ namespace TTRPG.Engine
 		/// Parameterless constructor
 		public Mapping() { }
 
-		/// Constructor for a Role Mapping
-		public Mapping(string from, string to, string roleName, string itemName = null, bool throwOnFailure = false)
+		/// Constructor for an Entity Mapping
+		public Mapping(string from, string to, string entityName, string itemName = null, bool throwOnFailure = false)
 		{
 			From = from;
 			To = to;
-			RoleName = roleName;
+			EntityName = entityName;
 			ThrowOnFailure = throwOnFailure;
 			ItemName = itemName;
-			MappingType = MappingType.Role;
+			MappingType = MappingType.Entity;
 		}
 
 		/// Constructor for an Input Mapping
@@ -35,13 +35,13 @@ namespace TTRPG.Engine
 		}
 
 		/// Constructor for an InventoryItem Mapping
-		public Mapping(string from, string to, string roleName, string inventoryItemName, string itemName = null, bool throwOnFailure = false)
+		public Mapping(string from, string to, string entityName, string inventoryItemName, string itemName = null, bool throwOnFailure = false)
 		{
 			if (inventoryItemName == null)
 				throw new ArgumentNullException($"nameof{inventoryItemName} cannot be null for an inventory item mapping.");
 			From = from;
 			To = to;
-			RoleName = roleName;
+			EntityName = entityName;
 			ThrowOnFailure = throwOnFailure;
 			ItemName = itemName;
 			InventoryItemName = inventoryItemName;
@@ -57,8 +57,8 @@ namespace TTRPG.Engine
 		/// sequence item to apply mapping to
 		public string ItemName { get; set; }
 
-		/// role to pull properties from
-		public string RoleName { get; set; }
+		/// entity to pull properties from
+		public string EntityName { get; set; }
 
 		/// inventory item to pull properties from
 		public string InventoryItemName { get; set; }

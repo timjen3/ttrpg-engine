@@ -14,39 +14,39 @@ namespace TTRPG.Engine.Equations
 		private readonly IEquationResolver _equationResolver;
 
 		/// Returns source data depending on MappingType
-		IDictionary<string, string> GetSourceMappingData(Mapping mapping, Dictionary<string, string> inputs, IEnumerable<Role> roles)
+		IDictionary<string, string> GetSourceMappingData(Mapping mapping, Dictionary<string, string> inputs, IEnumerable<Entity> entities)
 		{
 			IDictionary<string, string> source;
 			switch (mapping.MappingType)
 			{
 				case MappingType.InventoryItem:
-				case MappingType.Role:
+				case MappingType.Entity:
 				{
-					Role role = null;
-					if (mapping.RoleName == null)
+					Entity entity = null;
+					if (mapping.EntityName == null)
 					{
-						role = roles.FirstOrDefault();
-						if (mapping.ThrowOnFailure && role == null)
-							throw new MissingRoleException($"Mapping failed due to no roles being passed.");
+						entity = entities.FirstOrDefault();
+						if (mapping.ThrowOnFailure && entity == null)
+							throw new MissingEntityException($"Mapping failed due to no entities being passed.");
 					}
 					else
 					{
-						role = roles.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(mapping.RoleName, StringComparison.OrdinalIgnoreCase));
-						if (mapping.ThrowOnFailure && role == null)
-							throw new MissingRoleException($"Mapping failed due to missing role: '{mapping.RoleName}'.");
+						entity = entities.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(mapping.EntityName, StringComparison.OrdinalIgnoreCase));
+						if (mapping.ThrowOnFailure && entity == null)
+							throw new MissingEntityException($"Mapping failed due to missing entity: '{mapping.EntityName}'.");
 					}
 					if (mapping.InventoryItemName != null)
 					{
-						Role item = null;
-						if (role != null && role.InventoryItems.ContainsKey(mapping.InventoryItemName))
-							item = role.InventoryItems[mapping.InventoryItemName];
+						Entity item = null;
+						if (entity != null && entity.InventoryItems.ContainsKey(mapping.InventoryItemName))
+							item = entity.InventoryItems[mapping.InventoryItemName];
 						if (mapping.ThrowOnFailure && item == null)
-							throw new MissingRoleException($"Mapping failed due to role not having item: '{mapping.InventoryItemName}'.");
+							throw new MissingEntityException($"Mapping failed due to entity not having item: '{mapping.InventoryItemName}'.");
 						source = item?.Attributes;
 						break;
 					}
 
-					source = role?.Attributes;
+					source = entity?.Attributes;
 					break;
 				}
 				case MappingType.Input:
@@ -59,19 +59,19 @@ namespace TTRPG.Engine.Equations
 			return source ?? new Dictionary<string, string>();
 		}
 
-		/// Checks role conditions against provided roles
-		bool CheckRoleConditions(Sequence sequence, IEnumerable<Role> roles)
+		/// Checks entity conditions against provided entities
+		bool CheckEntityConditions(Sequence sequence, IEnumerable<Entity> entities)
 		{
-			var roleConditionsMet = sequence.RoleConditions == null || sequence.RoleConditions.All(condition =>
+			var entityConditionsMet = sequence.EntityConditions == null || sequence.EntityConditions.All(condition =>
 			{
-				var target = roles?.FirstOrDefault(role => role?.Alias.Equals(condition.RoleName, StringComparison.OrdinalIgnoreCase) ?? false);
+				var target = entities?.FirstOrDefault(entity => entity?.Alias.Equals(condition.EntityName, StringComparison.OrdinalIgnoreCase) ?? false);
 				if (target == null)
 					return false;
 
 				return condition.RequiredCategories.All(x => target.Categories.Contains(x, StringComparer.OrdinalIgnoreCase));
 			});
 
-			return roleConditionsMet;
+			return entityConditionsMet;
 		}
 
 		/// EquationService Constructor
@@ -117,12 +117,12 @@ namespace TTRPG.Engine.Equations
 
 		/// Injects the specified mapping into <param name="inputs"/> from the configured source determined by <see cref="MappingType"/>
 		/// <param name="itemName">The sequence item name mapping is being applied for. If the mapping does not apply to that item nothing will happen.</param>
-		/// <param name="roles">All roles available to the sequence.</param>
-		internal void Apply(Mapping mapping, string itemName, ref Dictionary<string, string> inputs, IEnumerable<Role> roles)
+		/// <param name="entities">All entities available to the sequence.</param>
+		internal void Apply(Mapping mapping, string itemName, ref Dictionary<string, string> inputs, IEnumerable<Entity> entities)
 		{
 			if (string.IsNullOrWhiteSpace(mapping.ItemName) || string.Equals(itemName, mapping.ItemName, StringComparison.OrdinalIgnoreCase))
 			{
-				var source = GetSourceMappingData(mapping, inputs, roles);
+				var source = GetSourceMappingData(mapping, inputs, entities);
 				// always use inputs for the formatter
 				// ensure the mapped inputs take precedence
 				var mapFormatSource = source.Union(inputs)
@@ -165,7 +165,7 @@ namespace TTRPG.Engine.Equations
 		}
 
 		/// Process a sequence item and get the result
-		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Role> roles)
+		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Entity> entities)
 		{
 			var results = new List<SequenceResultItem>();
 			foreach (var item in items)
@@ -180,13 +180,13 @@ namespace TTRPG.Engine.Equations
 				if (inputs.TryGetValue(item.Source, out string value))
 				{
 					result.Result = value;
-					if (!string.IsNullOrWhiteSpace(item.RoleName))
+					if (!string.IsNullOrWhiteSpace(item.EntityName))
 					{
-						result.Role = roles.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(item.RoleName, StringComparison.OrdinalIgnoreCase));
+						result.Entity = entities.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(item.EntityName, StringComparison.OrdinalIgnoreCase));
 					}
-					else if (item.FirstRole)
+					else if (item.FirstEntity)
 					{
-						result.Role = roles.FirstOrDefault();
+						result.Entity = entities.FirstOrDefault();
 					}
 					results.Add(result);
 				}
@@ -195,8 +195,8 @@ namespace TTRPG.Engine.Equations
 			return results;
 		}
 
-		/// <see cref="IEquationService.Process(SequenceItem, Role, IDictionary{string, string})"/>
-		public SequenceItemResult Process(SequenceItem item, Role role = null, IDictionary<string, string> inputs = null)
+		/// <see cref="IEquationService.Process(SequenceItem, Entity, IDictionary{string, string})"/>
+		public SequenceItemResult Process(SequenceItem item, Entity entity = null, IDictionary<string, string> inputs = null)
 		{
 			var sArgs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var result = new SequenceItemResult();
@@ -204,9 +204,9 @@ namespace TTRPG.Engine.Equations
 			result.Inputs = sArgs;
 			result.ResolvedItem = item;
 			var mappedInputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);
-			if (role != null)
+			if (entity != null)
 			{
-				foreach (var kvp in role.Attributes)
+				foreach (var kvp in entity.Attributes)
 					mappedInputs[kvp.Key] = kvp.Value;
 			}
 			if (item.SequenceItemEquationType == SequenceItemEquationType.Algorithm)
@@ -220,48 +220,48 @@ namespace TTRPG.Engine.Equations
 			return result;
 		}
 
-		/// <see cref="IEquationService.Check(Sequence, Role, IDictionary{string, string})"/>
-		public bool Check(Sequence sequence, Role role, IDictionary<string, string> inputs = null)
+		/// <see cref="IEquationService.Check(Sequence, Entity, IDictionary{string, string})"/>
+		public bool Check(Sequence sequence, Entity entity, IDictionary<string, string> inputs = null)
 		{
-			return Check(sequence, inputs, new Role[] { role });
+			return Check(sequence, inputs, new Entity[] { entity });
 		}
 
-		/// <see cref="IEquationService.Check(Sequence, IDictionary{string, string}, IEnumerable{Role})"/>
-		public bool Check(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
+		/// <see cref="IEquationService.Check(Sequence, IDictionary{string, string}, IEnumerable{Entity})"/>
+		public bool Check(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Entity> entities = null)
 		{
-			if (!CheckRoleConditions(sequence, roles))
+			if (!CheckEntityConditions(sequence, entities))
 				return false;
 
 			inputs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var mappedInputs = new Dictionary<string, string>(inputs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
-			sequence.Mappings.ForEach(x => Apply(x, null, ref mappedInputs, roles));
+			sequence.Mappings.ForEach(x => Apply(x, null, ref mappedInputs, entities));
 			var errorMessages = new HashSet<string>();
 
 			return sequence.Conditions.All(x => Check(x, mappedInputs, ref errorMessages));
 		}
 
-		/// <see cref="IEquationService.Process(Sequence, IDictionary{string, string}, IEnumerable{Role})"/>
-		public SequenceResult Process(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Role> roles = null)
+		/// <see cref="IEquationService.Process(Sequence, IDictionary{string, string}, IEnumerable{Entity})"/>
+		public SequenceResult Process(Sequence sequence, IDictionary<string, string> inputs = null, IEnumerable<Entity> entities = null)
 		{
 			var sArgs = new Dictionary<string, string>(inputs ?? new Dictionary<string, string>(), StringComparer.OrdinalIgnoreCase);  // isolate changes to this method
 			var globalMappings = sequence.Mappings.Where(x => string.IsNullOrWhiteSpace(x.ItemName)).ToList();
-			globalMappings.ForEach(x => Apply(x, null, ref sArgs, roles));  // apply global mappings to all inputs
+			globalMappings.ForEach(x => Apply(x, null, ref sArgs, entities));  // apply global mappings to all inputs
 			var result = new SequenceResult();
 			result.Sequence = sequence;
 			if (sequence.Items.All(x => !x.SetComplete))
 			{
 				result.Completed = true;
 			}
-			if (!CheckRoleConditions(sequence, roles))
+			if (!CheckEntityConditions(sequence, entities))
 			{
-				throw new RoleConditionFailedException("Role conditions not met for this sequence!");
+				throw new EntityConditionFailedException("Entity conditions not met for this sequence!");
 			}
 			var errorMessages = new HashSet<string>();
 			for (int order = 0; order < sequence.Items.Count; order++)
 			{
 				var item = sequence.Items[order];
 				var mappedInputs = new Dictionary<string, string>(sArgs, StringComparer.OrdinalIgnoreCase);  // isolate mapping changes to current sequence item
-				sequence.Mappings.Where(x => !string.IsNullOrWhiteSpace(x.ItemName)).ToList().ForEach(x => Apply(x, item.Name, ref mappedInputs, roles));
+				sequence.Mappings.Where(x => !string.IsNullOrWhiteSpace(x.ItemName)).ToList().ForEach(x => Apply(x, item.Name, ref mappedInputs, entities));
 				if (!sequence.Conditions.All(x => Check(x, item.Name, mappedInputs, result, ref errorMessages)))
 					continue;
 				var itemResult = GetResult(item, order, ref sArgs, mappedInputs);
@@ -278,7 +278,7 @@ namespace TTRPG.Engine.Equations
 				var itemResult = GetResult(errorItem, -1, ref sArgs, sArgs);
 				result.Results.Add(itemResult);
 			}
-			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, roles);
+			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, entities);
 
 			return result;
 		}

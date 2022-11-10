@@ -28,7 +28,7 @@ namespace TTRPG.Engine.Demo
 				StorageType = DataStorageType.JsonFile,
 				JsonFileStorageOptions = new JsonFileStorageOptions
 				{
-					RolesFileDirectory = "DataFiles/Roles",
+					EntitiesFileDirectory = "DataFiles/Entities",
 					SequencesFileDirectory = "DataFiles/Sequences",
 					SequenceItemsFileDirectory = "DataFiles/SequenceItems",
 					MessageTemplatesDirectory = "DataFiles/MessageTemplates"

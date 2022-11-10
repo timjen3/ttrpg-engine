@@ -2,9 +2,9 @@ using System.Collections.Generic;
 
 namespace TTRPG.Engine
 {
-	public class RoleCondition
+	public class EntityCondition
 	{
-		public string RoleName { get; set; }
+		public string EntityName { get; set; }
 
 		public List<string> RequiredCategories { get; set; } = new List<string>();
 	}

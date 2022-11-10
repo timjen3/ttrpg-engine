@@ -11,9 +11,9 @@ namespace TTRPG.Engine.Tests
 	internal class InventoryItemMappingTests
 	{
 		Mapping mapping;
-		List<Role> roles;
-		Role role;
-		Role item;
+		List<Entity> roles;
+		Entity role;
+		Entity item;
 		Dictionary<string, string> inputs;
 		EquationService service;
 
@@ -22,12 +22,12 @@ namespace TTRPG.Engine.Tests
 		{
 			mapping = new Mapping();
 			mapping.MappingType = MappingType.InventoryItem;
-			mapping.RoleName = "r1";
+			mapping.EntityName = "r1";
 			mapping.InventoryItemName = "i1";
 			inputs = new Dictionary<string, string>();
-			roles = new List<Role>();
-			role = new Role("r1");
-			item = new Role("i1");
+			roles = new List<Entity>();
+			role = new Entity("r1");
+			item = new Entity("i1");
 			role.InventoryItems["i1"] = item;
 			roles.Add(role);
 			service = new EquationService(null);
@@ -106,8 +106,8 @@ namespace TTRPG.Engine.Tests
 			mapping.ThrowOnFailure = true;
 			role.InventoryItems.Clear();
 
-			var ex = Assert.Throws<MissingRoleException>(() => service.Apply(mapping, "a", ref inputs, roles));
-			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to role not having item: '{mapping.InventoryItemName}'."));
+			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to entity not having item: '{mapping.InventoryItemName}'."));
 		}
 
 		[Test]
@@ -118,8 +118,8 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 			item.Attributes["a"] = "1";
-			var role2 = new Role("r2");
-			role2.InventoryItems["i1"] = new Role("i1");
+			var role2 = new Entity("r2");
+			role2.InventoryItems["i1"] = new Entity("i1");
 			role2.InventoryItems["i1"].Attributes["a"] = "2";
 			roles.Add(role2);
 

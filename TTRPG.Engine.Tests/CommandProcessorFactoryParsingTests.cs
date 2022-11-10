@@ -15,7 +15,7 @@ namespace TTRPG.Engine.Tests
 	{
 		List<Sequence> Sequences;
 		List<SequenceItem> SequenceItems;
-		List<Role> Roles;
+		List<Entity> Roles;
 		List<ICommandParser> Parsers;
 
 		[SetUp]
@@ -23,7 +23,7 @@ namespace TTRPG.Engine.Tests
 		{
 			Sequences = new List<Sequence>();
 			SequenceItems = new List<SequenceItem>();
-			Roles = new List<Role>();
+			Roles = new List<Entity>();
 			Parsers = new List<ICommandParser>();
 		}
 
@@ -32,7 +32,7 @@ namespace TTRPG.Engine.Tests
 			var mockLoader = new Mock<ITTRPGDataRepository>();
 			mockLoader.Setup(x => x.GetSequencesAsync()).ReturnsAsync(Sequences);
 			mockLoader.Setup(x => x.GetSequenceItemsAsync()).ReturnsAsync(SequenceItems);
-			mockLoader.Setup(x => x.GetRolesAsync()).ReturnsAsync(Roles);
+			mockLoader.Setup(x => x.GetEntitiesAsync()).ReturnsAsync(Roles);
 			var gameObject = new GameObject(mockLoader.Object);
 
 			return new CommandProcessorFactory(gameObject, Parsers);
@@ -47,7 +47,7 @@ namespace TTRPG.Engine.Tests
 
 			Assert.That(parsed.MainCommand, Is.Null);
 			Assert.That(parsed.Inputs, Is.Empty);
-			Assert.That(parsed.Roles, Is.Empty);
+			Assert.That(parsed.Entities, Is.Empty);
 		}
 
 		[Test]
@@ -77,7 +77,7 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void ParseCommand_WithRoles_SetsRoles()
 		{
-			var role = new Role
+			var role = new Entity
 			{
 				Name = "rolea"
 			};
@@ -86,9 +86,9 @@ namespace TTRPG.Engine.Tests
 
 			var parsed = processor.ParseCommand("[rolea:aliasb]");
 
-			Assert.That(parsed.Roles[0].Name, Is.EqualTo("rolea"));
-			Assert.That(parsed.Roles[0].Alias, Is.EqualTo("aliasb"));
-			Assert.That(parsed.Roles[0], Is.Not.SameAs(role));
+			Assert.That(parsed.Entities[0].Name, Is.EqualTo("rolea"));
+			Assert.That(parsed.Entities[0].Alias, Is.EqualTo("aliasb"));
+			Assert.That(parsed.Entities[0], Is.Not.SameAs(role));
 		}
 	}
 }

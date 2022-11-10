@@ -49,15 +49,15 @@
 				"From": "name",
 				"To": "buyer_name",
 				"ItemName": null,
-				"RoleName": "buyer",
-				"MappingType": "Role",
+				"EntityName": "buyer",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "quantity",
 				"To": "quantity_to_buy",
 				"ItemName": null,
-				"RoleName": null,
+				"EntityName": null,
 				"MappingType": "Input",
 				"ThrowOnFailure": true
 			},
@@ -65,32 +65,32 @@
 				"From": "resource",
 				"To": "resource",
 				"ItemName": null,
-				"RoleName": "commodity",
-				"MappingType": "Role",
+				"EntityName": "commodity",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "{resource}",
 				"To": "quantity_on_hand",
 				"ItemName": null,
-				"RoleName": "buyer",
-				"MappingType": "Role",
+				"EntityName": "buyer",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "buy",
 				"To": "buy_price",
 				"ItemName": null,
-				"RoleName": "commodity",
-				"MappingType": "Role",
+				"EntityName": "commodity",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "money",
 				"To": "current_money",
 				"ItemName": null,
-				"RoleName": "buyer",
-				"MappingType": "Role",
+				"EntityName": "buyer",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			}
 		],
@@ -99,25 +99,25 @@
 				"Name": "Money",
 				"Category": "UpdateAttribute",
 				"Source": "new_money",
-				"RoleName": "buyer"
+				"EntityName": "buyer"
 			},
 			{
 				"Name": "Quantity",
 				"Category": "UpdateAttribute",
 				"FormatMessage": "{resource}",
 				"Source": "new_quantity_on_hand",
-				"RoleName": "buyer"
+				"EntityName": "buyer"
 			}
 		],
-		"RoleConditions": [
+		"EntityConditions": [
 			{
-				"RoleName": "Buyer",
+				"EntityName": "Buyer",
 				"RequiredCategories": [
 					"Entity"
 				]
 			},
 			{
-				"RoleName": "Commodity",
+				"EntityName": "Commodity",
 				"RequiredCategories": [
 					"Commodity"
 				]

@@ -12,7 +12,7 @@ namespace TTRPG.Engine.Demo
 		private readonly TTRPGEngine _engine;
 
 		private IEnumerable<string> ListTargetNames(string category) => _data
-			.Roles.Where(x => x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase))
+			.Entities.Where(x => x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase))
 				.Where(x => int.Parse(x.Attributes["hp"]) > 0).
 				Select(x => x.Name);
 

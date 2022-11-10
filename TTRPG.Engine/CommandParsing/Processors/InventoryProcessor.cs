@@ -10,11 +10,11 @@ namespace TTRPG.Engine.CommandParsing.Processors
 		private readonly IInventoryService _service;
 		private readonly EngineCommand _command;
 		private readonly GameObject _data;
-		private readonly Role _entity;
+		private readonly Entity _entity;
 
-		private Role GetClonedInventoryItemByName(string itemName)
+		private Entity GetClonedInventoryItemByName(string itemName)
 		{
-			var item = _data.Roles.Single(r => r.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
+			var item = _data.Entities.Single(r => r.Name.Equals(itemName, StringComparison.OrdinalIgnoreCase));
 
 			return item.CloneAs("_");
 		}
@@ -24,7 +24,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			_service = service;
 			_data = data;
 			_command = command;
-			_entity = command.Roles.FirstOrDefault();
+			_entity = command.Entities.FirstOrDefault();
 		}
 
 		public bool IsValid()
@@ -33,7 +33,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			{
 				return _command != null
 					&& _entity != null
-					&& _data.Roles.Any(r => r.Name.Equals(_command.Inputs["itemname"], StringComparison.OrdinalIgnoreCase));
+					&& _data.Entities.Any(r => r.Name.Equals(_command.Inputs["itemname"], StringComparison.OrdinalIgnoreCase));
 			}
 			if (_command.MainCommand.ToLower().Trim() == "equip")
 			{

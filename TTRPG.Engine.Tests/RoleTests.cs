@@ -4,13 +4,13 @@ using NUnit.Framework;
 namespace TTRPG.Engine.Tests
 {
 	[TestFixture]
-	[TestOf(typeof(Role))]
+	[TestOf(typeof(Entity))]
 	public class RoleTests
 	{
 		[Test]
 		public void CloneAs_CreatesADistinctClone()
 		{
-			var role = new Role();
+			var role = new Entity();
 			role.Name = "a";
 
 			var clone = role.CloneAs("b");
@@ -28,7 +28,7 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void AttributesAreCaseInsensitive()
 		{
-			var role = new Role();
+			var role = new Entity();
 
 			role.Attributes["TEST"] = "1";
 
@@ -43,7 +43,7 @@ namespace TTRPG.Engine.Tests
 			{
 				{ "TEST", "1" },
 			};
-			var role = new Role("a", dictionary, null, null);
+			var role = new Entity("a", dictionary, null, null);
 
 			Assert.That(role.Attributes, Contains.Key("test"));
 			Assert.That(role.Attributes["test"], Is.EqualTo("1"));
@@ -52,7 +52,7 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void AttributesAreCaseInsensitiveWhenPassedNullAttributes()
 		{
-			var role = new Role("a", null, null, null);
+			var role = new Entity("a", null, null, null);
 
 			role.Attributes["TEST"] = "1";
 
@@ -63,9 +63,9 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void InventoryItemsAreCaseInsensitive()
 		{
-			var role = new Role();
+			var role = new Entity();
 
-			role.InventoryItems["TEST"] = new Role("a", null, null, null);
+			role.InventoryItems["TEST"] = new Entity("a", null, null, null);
 
 			Assert.That(role.InventoryItems, Contains.Key("test"));
 			Assert.That(role.InventoryItems["test"].Name, Is.EqualTo("a"));
@@ -74,12 +74,12 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void InventoryItemsAreCaseInsensitiveWhenPassedWithout()
 		{
-			var dictionary = new Dictionary<string, Role>
+			var dictionary = new Dictionary<string, Entity>
 			{
-				{ "TEST", new Role("a", null, null, null) },
+				{ "TEST", new Entity("a", null, null, null) },
 			};
 
-			var role = new Role("a", null, null, dictionary);
+			var role = new Entity("a", null, null, dictionary);
 
 			Assert.That(role.InventoryItems, Contains.Key("test"));
 			Assert.That(role.InventoryItems["test"].Name, Is.EqualTo("a"));
@@ -88,9 +88,9 @@ namespace TTRPG.Engine.Tests
 		[Test]
 		public void InventoryItemsAreCaseInsensitiveWhenPassedNullAttributes()
 		{
-			var role = new Role("a", null, null, null);
+			var role = new Entity("a", null, null, null);
 
-			role.InventoryItems["TEST"] = new Role("a", null, null, null);
+			role.InventoryItems["TEST"] = new Entity("a", null, null, null);
 
 			Assert.That(role.InventoryItems, Contains.Key("test"));
 			Assert.That(role.InventoryItems["test"].Name, Is.EqualTo("a"));

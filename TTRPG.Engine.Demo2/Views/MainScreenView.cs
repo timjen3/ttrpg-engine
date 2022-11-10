@@ -32,7 +32,7 @@ internal class MainScreenView : ViewModelBase
 	private InventoryDataGridItem _selectedInventoryItem;
 	private List<InventoryDataGridItem> _inventoryItems;
 
-	private Role Player => _data.Roles.First(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase));
+	private Entity Player => _data.Entities.First(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase));
 
 	public void OnButtonExecuteCommandClick(object command)
 	{
@@ -59,9 +59,9 @@ internal class MainScreenView : ViewModelBase
 		}
 	}
 
-	private DragDropItem[] GetLiveTargets() => _data.Roles
+	private DragDropItem[] GetLiveTargets() => _data.Entities
 		.FilterToLiveTargets(_selectedTarget)
-		.Select(RoleExtensions.MakeDragDropItem)
+		.Select(EntityExtensions.MakeDragDropItem)
 		.ToArray();
 
 	private void UpdateTargets()
@@ -145,7 +145,7 @@ internal class MainScreenView : ViewModelBase
 	{
 		_data = data;
 		_engine = engine;
-		_commodityNames = data.Roles.GetCommodityNames();
+		_commodityNames = data.Entities.GetCommodityNames();
 		ButtonExecuteCommand = new RelayCommand(new Action<object>(OnButtonExecuteCommandClick));
 		TargetItemFocusCommand = new RelayCommand(new Action<object>(TargetItemFocus));
 		BagItemFocusCommand = new RelayCommand(new Action<object>(BagItemFocused));

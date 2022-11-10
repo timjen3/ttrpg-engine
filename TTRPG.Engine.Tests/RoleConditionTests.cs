@@ -8,7 +8,7 @@ using TTRPG.Engine.Sequences;
 namespace TTRPG.Engine.Tests
 {
 	[TestFixture(Category = "Unit")]
-	[TestOf(typeof(RoleCondition))]
+	[TestOf(typeof(EntityCondition))]
 	public class RoleConditionTests
 	{
 		private EquationService MockEquationService(int processResult)
@@ -26,12 +26,12 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
+			var role = new Entity();
 			role.Name = "a";
 			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
@@ -49,12 +49,12 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
+			var role = new Entity();
 			role.Name = "A";
 			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
@@ -72,13 +72,13 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
+			var role = new Entity();
 			role.Name = "a";
 			role.Alias = "b";
 			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "b",
+				EntityName = "b",
 				RequiredCategories = new List<string>
 				{
 					"c1"
@@ -96,12 +96,12 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
+			var role = new Entity();
 			role.Name = "a";
 			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c2"
@@ -119,12 +119,12 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Role();
+			var role = new Entity();
 			role.Name = "b";
 			role.Categories.Add("c1");
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
@@ -142,16 +142,16 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, (Role)null);
+			bool result = resolver.Check(sequence, (Entity)null);
 
 			Assert.IsFalse(result);
 		}
@@ -161,23 +161,23 @@ namespace TTRPG.Engine.Tests
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
-			var role1 = new Role();
+			var role1 = new Entity();
 			role1.Name = "a";
 			role1.Categories.Add("c1");
-			var role2 = new Role();
+			var role2 = new Entity();
 			role2.Name = "b";
 			role2.Categories.Add("c2");
 			var sequence = new Sequence();
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, null, new List<Role> { role1, role2 });
+			bool result = resolver.Check(sequence, null, new List<Entity> { role1, role2 });
 
 			Assert.IsTrue(result);
 		}
@@ -187,23 +187,23 @@ namespace TTRPG.Engine.Tests
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
-			var role1 = new Role();
+			var role1 = new Entity();
 			role1.Name = "b";
 			role1.Categories.Add("c1");
-			var role2 = new Role();
+			var role2 = new Entity();
 			role2.Name = "c";
 			role2.Categories.Add("c2");
 			var sequence = new Sequence();
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			bool result = resolver.Check(sequence, null, new List<Role> { role1, role2 });
+			bool result = resolver.Check(sequence, null, new List<Entity> { role1, role2 });
 
 			Assert.IsFalse(result);
 		}
@@ -214,16 +214,16 @@ namespace TTRPG.Engine.Tests
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			sequence.RoleConditions.Add(new RoleCondition
+			sequence.EntityConditions.Add(new EntityCondition
 			{
-				RoleName = "a",
+				EntityName = "a",
 				RequiredCategories = new List<string>
 				{
 					"c1"
 				}
 			});
 
-			Assert.Throws<RoleConditionFailedException>(() => resolver.Process(sequence, inputs: null, roles: null));
+			Assert.Throws<EntityConditionFailedException>(() => resolver.Process(sequence, inputs: null, entities: null));
 		}
 	}
 }

@@ -440,18 +440,18 @@ namespace TTRPG.Engine.Tests
 				},
 				Mappings = new List<Mapping>
 				{
-					new Mapping("a", "aa", roleName: "r1", itemName: "a")
+					new Mapping("a", "aa", entityName: "r1", itemName: "a")
 				}
 			};
-			var roles = new List<Role>
+			var roles = new List<Entity>
 			{
-				new Role("r1", new Dictionary<string, string>
+				new Entity("r1", new Dictionary<string, string>
 				{
 					{ "a", "1" }
 				}, new List<string>())
 			};
 
-			var results = EquationService.Process(sequence, roles: roles);
+			var results = EquationService.Process(sequence, entities: roles);
 
 			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
@@ -505,22 +505,22 @@ namespace TTRPG.Engine.Tests
 			{
 				Mappings = new List<Mapping>
 				{
-					new Mapping("a", "aa", roleName: "r1")
+					new Mapping("a", "aa", entityName: "r1")
 				},
 				Conditions = new List<Condition>
 				{
 					new Condition("aa = 1")
 				}
 			};
-			var roles = new List<Role>
+			var roles = new List<Entity>
 			{
-				new Role("r1", new Dictionary<string, string>
+				new Entity("r1", new Dictionary<string, string>
 				{
 					{ "a", "1" }
 				}, new List<string>())
 			};
 
-			var valid = EquationService.Check(sequence, roles: roles);
+			var valid = EquationService.Check(sequence, entities: roles);
 
 			Assert.IsTrue(valid);
 		}
@@ -532,22 +532,22 @@ namespace TTRPG.Engine.Tests
 			{
 				Mappings = new List<Mapping>
 				{
-					new Mapping("a", "aa", roleName: "r1")
+					new Mapping("a", "aa", entityName: "r1")
 				},
 				Conditions = new List<Condition>
 				{
 					new Condition("aa = 1")
 				}
 			};
-			var roles = new List<Role>
+			var roles = new List<Entity>
 			{
-				new Role("r1", new Dictionary<string, string>
+				new Entity("r1", new Dictionary<string, string>
 				{
 					{ "a", "0" }
 				}, new List<string>())
 			};
 
-			var valid = EquationService.Check(sequence, roles: roles);
+			var valid = EquationService.Check(sequence, entities: roles);
 
 			Assert.IsFalse(valid);
 		}

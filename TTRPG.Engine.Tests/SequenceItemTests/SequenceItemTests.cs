@@ -21,14 +21,14 @@ namespace TTRPG.Engine.Tests
 
 		Dictionary<string, string> GlobalInputs;
 		Dictionary<string, string> MappedInputs;
-		Role Role;
+		Entity Role;
 
 		[SetUp]
 		public void SetupTest()
 		{
 			GlobalInputs = new Dictionary<string, string>();
 			MappedInputs = new Dictionary<string, string>();
-			Role = new Role("a");
+			Role = new Entity("a");
 		}
 
 		/// Test that a sequence item resolves a basic algorithm

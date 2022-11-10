@@ -123,55 +123,55 @@
 				"From": "name",
 				"To": "miner_name",
 				"ItemName": null,
-				"RoleName": "miner",
-				"MappingType": "Role",
+				"EntityName": "miner",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "Resource",
 				"To": "resource",
 				"ItemName": null,
-				"RoleName": "terrain",
-				"MappingType": "Role",
+				"EntityName": "terrain",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "{resource}",
 				"To": "current_quantity",
 				"ItemName": null,
-				"RoleName": "miner",
-				"MappingType": "Role",
+				"EntityName": "miner",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "name",
 				"To": "terrain_name",
 				"ItemName": null,
-				"RoleName": "terrain",
-				"MappingType": "Role",
+				"EntityName": "terrain",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "hp",
 				"To": "hp",
 				"ItemName": null,
-				"RoleName": "terrain",
-				"MappingType": "Role",
+				"EntityName": "terrain",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "stamina",
 				"To": "miner_stamina",
 				"ItemName": null,
-				"RoleName": "miner",
-				"MappingType": "Role",
+				"EntityName": "miner",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "pierce",
 				"To": "pierce",
 				"ItemName": null,
-				"RoleName": "miner",
+				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -180,7 +180,7 @@
 				"From": "hits",
 				"To": "wHits",
 				"ItemName": "Report Damage",
-				"RoleName": "miner",
+				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -189,23 +189,23 @@
 				"From": "ac",
 				"To": "ac",
 				"ItemName": null,
-				"RoleName": "terrain",
-				"MappingType": "Role",
+				"EntityName": "terrain",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "str",
 				"To": "str",
 				"ItemName": "Damage",
-				"RoleName": "miner",
-				"MappingType": "Role",
+				"EntityName": "miner",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "hits",
 				"To": "wHits",
 				"ItemName": "Damage",
-				"RoleName": "miner",
+				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -214,7 +214,7 @@
 				"From": "min",
 				"To": "wMin",
 				"ItemName": "Damage",
-				"RoleName": "miner",
+				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -223,7 +223,7 @@
 				"From": "max",
 				"To": "wMax",
 				"ItemName": "Damage",
-				"RoleName": "miner",
+				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -232,7 +232,7 @@
 				"From": "action",
 				"To": "wAction",
 				"ItemName": null,
-				"RoleName": "miner",
+				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
 				"ThrowOnFailure": true
@@ -241,16 +241,16 @@
 				"From": "hp",
 				"To": "old_hp",
 				"ItemName": "Report Damage Taken",
-				"RoleName": "terrain",
-				"MappingType": "Role",
+				"EntityName": "terrain",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "MAX_HP",
 				"To": "terrain_max_hp",
 				"ItemName": null,
-				"RoleName": "terrain",
-				"MappingType": "Role",
+				"EntityName": "terrain",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			}
 		],
@@ -259,31 +259,31 @@
 				"Name": "HP",
 				"Category": "UpdateAttribute",
 				"Source": "new_hp",
-				"RoleName": "terrain"
+				"EntityName": "terrain"
 			},
 			{
 				"Name": "Quantity",
 				"Category": "UpdateAttribute",
 				"FormatMessage": "{resource}",
 				"Source": "new_quantity",
-				"RoleName": "miner"
+				"EntityName": "miner"
 			},
 			{
 				"Name": "Stamina",
 				"Category": "UpdateAttribute",
 				"Source": "new_stamina",
-				"RoleName": "miner"
+				"EntityName": "miner"
 			}
 		],
-		"RoleConditions": [
+		"EntityConditions": [
 			{
-				"RoleName": "Terrain",
+				"EntityName": "Terrain",
 				"RequiredCategories": [
 					"Terrain"
 				]
 			},
 			{
-				"RoleName": "Miner",
+				"EntityName": "Miner",
 				"RequiredCategories": [
 					"PlayerControlled"
 				]

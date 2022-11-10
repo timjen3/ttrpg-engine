@@ -21,20 +21,20 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			_command = command;
 		}
 
-		public bool IsValid() => _sequence != null && _command.Roles != null && _command.Roles.Count > 0;
+		public bool IsValid() => _sequence != null && _command.Entities != null && _command.Entities.Count > 0;
 
 		public ProcessedCommand Process()
 		{
-			var result = _service.Process(_sequence, _command.Inputs, _command.Roles);
+			var result = _service.Process(_sequence, _command.Inputs, _command.Entities);
 
 			// update attributes
 			foreach (var itemResult in result.ResultItems)
 			{
 				if (itemResult.Category.StartsWith("UpdateAttribute", StringComparison.OrdinalIgnoreCase))
 				{
-					var role = _data.Roles.Single(x => x.Name == itemResult.Role.Name);
+					var entity = _data.Entities.Single(x => x.Name == itemResult.Entity.Name);
 					var attributeToUpdate = itemResult.FormatMessage ?? itemResult.Name;
-					role.Attributes[attributeToUpdate] = itemResult.Result;
+					entity.Attributes[attributeToUpdate] = itemResult.Result;
 				}
 			}
 			var messages = result.Results

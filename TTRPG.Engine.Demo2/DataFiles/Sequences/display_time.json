@@ -45,16 +45,16 @@
 				"From": "time",
 				"To": "current_time",
 				"ItemName": null,
-				"RoleName": "time",
-				"MappingType": "Role",
+				"EntityName": "time",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
 				"From": "turn",
 				"To": "current_turn",
 				"ItemName": null,
-				"RoleName": "time",
-				"MappingType": "Role",
+				"EntityName": "time",
+				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			}
 		]

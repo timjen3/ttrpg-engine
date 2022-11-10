@@ -66,7 +66,7 @@ public class SurvivalGame : Game
 					SequenceCategory = "Temporal",
 					Command = "AdvanceTime",
 					Filter = r => r.Name == "Time",
-					AliasRolesAs = "time",
+					AliasEntitiesAs = "time",
 					Inputs = new Dictionary<string, string>{ { "elapsed", "15"} }
 				},
 				new AutomaticCommand
@@ -74,7 +74,7 @@ public class SurvivalGame : Game
 					SequenceCategory = "Temporal",
 					Command = "Grow",
 					Filter = r => r.Categories.Contains("Grows"),
-					AliasRolesAs = "grower",
+					AliasEntitiesAs = "grower",
 					Inputs = new Dictionary<string, string>{ { "elapsed", "1"} }
 				}
 			}
@@ -85,7 +85,7 @@ public class SurvivalGame : Game
 			StorageType = DataStorageType.JsonFile,
 			JsonFileStorageOptions = new JsonFileStorageOptions
 			{
-				RolesFileDirectory = "DataFiles/Roles",
+				EntitiesFileDirectory = "DataFiles/Entities",
 				SequencesFileDirectory = "DataFiles/Sequences",
 				SequenceItemsFileDirectory = "DataFiles/SequenceItems",
 				MessageTemplatesDirectory = "DataFiles/MessageTemplates"
