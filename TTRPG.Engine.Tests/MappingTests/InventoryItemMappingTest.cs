@@ -11,8 +11,8 @@ namespace TTRPG.Engine.Tests
 	internal class InventoryItemMappingTests
 	{
 		Mapping mapping;
-		List<Entity> roles;
-		Entity role;
+		List<Entity> entities;
+		Entity entity;
 		Entity item;
 		Dictionary<string, string> inputs;
 		EquationService service;
@@ -25,11 +25,11 @@ namespace TTRPG.Engine.Tests
 			mapping.EntityName = "r1";
 			mapping.InventoryItemName = "i1";
 			inputs = new Dictionary<string, string>();
-			roles = new List<Entity>();
-			role = new Entity("r1");
+			entities = new List<Entity>();
+			entity = new Entity("r1");
 			item = new Entity("i1");
-			role.InventoryItems["i1"] = item;
-			roles.Add(role);
+			entity.InventoryItems["i1"] = item;
+			entities.Add(entity);
 			service = new EquationService(null);
 		}
 
@@ -40,7 +40,7 @@ namespace TTRPG.Engine.Tests
 			mapping.To = "b";
 			item.Attributes["a"] = "1";
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -54,7 +54,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			item.Attributes["a"] = "1";
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -68,7 +68,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "b";
 			item.Attributes["a"] = "1";
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.True(!inputs.ContainsKey("b"));
 		}
@@ -82,7 +82,7 @@ namespace TTRPG.Engine.Tests
 			item.Attributes["a"] = "1";
 			mapping.ThrowOnFailure = true;
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 		}
 
 		[Test]
@@ -93,7 +93,7 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 
-			var ex = Assert.Throws<MappingFailedException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			var ex = Assert.Throws<MappingFailedException>(() => service.Apply(mapping, "a", ref inputs, entities));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing key: '{mapping.From}'."));
 		}
 
@@ -104,9 +104,9 @@ namespace TTRPG.Engine.Tests
 			mapping.To = "b";
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
-			role.InventoryItems.Clear();
+			entity.InventoryItems.Clear();
 
-			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, entities));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to entity not having item: '{mapping.InventoryItemName}'."));
 		}
 
@@ -118,12 +118,12 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 			item.Attributes["a"] = "1";
-			var role2 = new Entity("r2");
-			role2.InventoryItems["i1"] = new Entity("i1");
-			role2.InventoryItems["i1"].Attributes["a"] = "2";
-			roles.Add(role2);
+			var entity2 = new Entity("r2");
+			entity2.InventoryItems["i1"] = new Entity("i1");
+			entity2.InventoryItems["i1"].Attributes["a"] = "2";
+			entities.Add(entity2);
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));

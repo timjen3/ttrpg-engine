@@ -7,11 +7,11 @@ namespace TTRPG.Engine.Tests
 {
 	[TestFixture(Category = "Unit")]
 	[TestOf(typeof(Mapping))]
-	internal class RoleMappingTests
+	internal class EntityMappingTests
 	{
 		Mapping mapping;
-		List<Entity> roles;
-		Entity role;
+		List<Entity> entities;
+		Entity entity;
 		Dictionary<string, string> inputs;
 		EquationService service;
 
@@ -22,9 +22,9 @@ namespace TTRPG.Engine.Tests
 			mapping.MappingType = MappingType.Entity;
 			mapping.EntityName = "r1";
 			inputs = new Dictionary<string, string>();
-			roles = new List<Entity>();
-			role = new Entity("r1");
-			roles.Add(role);
+			entities = new List<Entity>();
+			entity = new Entity("r1");
+			entities.Add(entity);
 			service = new EquationService(null);
 		}
 
@@ -33,9 +33,9 @@ namespace TTRPG.Engine.Tests
 		{
 			mapping.From = "a";
 			mapping.To = "b";
-			role.Attributes["a"] = "1";
+			entity.Attributes["a"] = "1";
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -47,9 +47,9 @@ namespace TTRPG.Engine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "a";
-			role.Attributes["a"] = "1";
+			entity.Attributes["a"] = "1";
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
@@ -61,9 +61,9 @@ namespace TTRPG.Engine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "b";
-			role.Attributes["a"] = "1";
+			entity.Attributes["a"] = "1";
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.True(!inputs.ContainsKey("b"));
 		}
@@ -74,10 +74,10 @@ namespace TTRPG.Engine.Tests
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "a";
-			role.Attributes["a"] = "1";
+			entity.Attributes["a"] = "1";
 			mapping.ThrowOnFailure = true;
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 		}
 
 		[Test]
@@ -88,115 +88,115 @@ namespace TTRPG.Engine.Tests
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
 
-			var ex = Assert.Throws<MappingFailedException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			var ex = Assert.Throws<MappingFailedException>(() => service.Apply(mapping, "a", ref inputs, entities));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing key: '{mapping.From}'."));
 		}
 
 		[Test]
-		public void Apply_MissingRoleThrow()
+		public void Apply_MissingEntityThrow()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
-			roles.Clear();
+			entities.Clear();
 
-			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, entities));
 			Assert.That(ex.Message, Is.EqualTo($"Mapping failed due to missing entity: '{mapping.EntityName}'."));
 		}
 
 		[Test]
-		public void Apply_MultipleRolesChoosesCorrectOne()
+		public void Apply_MultipleEntitiesChoosesCorrectOne()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
-			role.Attributes["a"] = "1";
-			var role2 = new Entity("r2", new Dictionary<string, string>(), new List<string>());
-			role2.Attributes["a"] = "2";
-			roles.Add(role2);
+			entity.Attributes["a"] = "1";
+			var entity2 = new Entity("r2", new Dictionary<string, string>(), new List<string>());
+			entity2.Attributes["a"] = "2";
+			entities.Add(entity2);
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
 		[Test]
-		public void Apply_RoleNameNotSetChooseFirst()
+		public void Apply_EntityNameNotSetChooseFirst()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.EntityName = null;
 			mapping.ItemName = "a";
-			role.Attributes["a"] = "1";
+			entity.Attributes["a"] = "1";
 			mapping.ThrowOnFailure = true;
 
-			service.Apply(mapping, "a", ref inputs, roles);
+			service.Apply(mapping, "a", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
 		[Test]
-		public void Apply_RoleNameNotSetNoRolesPassedThrow()
+		public void Apply_EntityNameNotSetNoEntitiesPassedThrow()
 		{
 			mapping.From = "a";
 			mapping.To = "b";
 			mapping.EntityName = null;
 			mapping.ItemName = "a";
 			mapping.ThrowOnFailure = true;
-			roles.Clear();
+			entities.Clear();
 
-			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, roles));
+			var ex = Assert.Throws<MissingEntityException>(() => service.Apply(mapping, "a", ref inputs, entities));
 			Assert.That(ex.Message, Is.EqualTo("Mapping failed due to no entities being passed."));
 		}
 
 		[Test]
-		public void Apply_FromFormatStringFromRole()
+		public void Apply_FromFormatStringFromEntity()
 		{
 			mapping.From = "{rename}";
 			mapping.To = "b";
 			mapping.ItemName = null;
 			mapping.ThrowOnFailure = true;
-			role.Attributes["rename"] = "a";
-			role.Attributes["a"] = "1";
+			entity.Attributes["rename"] = "a";
+			entity.Attributes["a"] = "1";
 
-			service.Apply(mapping, "anything", ref inputs, roles);
+			service.Apply(mapping, "anything", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
 		[Test]
-		public void Apply_ToFormatStringFromRole()
+		public void Apply_ToFormatStringFromEntity()
 		{
 			mapping.From = "a";
 			mapping.To = "{rename}";
 			mapping.ItemName = null;
 			mapping.ThrowOnFailure = true;
-			role.Attributes["rename"] = "b";
-			role.Attributes["a"] = "1";
+			entity.Attributes["rename"] = "b";
+			entity.Attributes["a"] = "1";
 
-			service.Apply(mapping, "anything", ref inputs, roles);
+			service.Apply(mapping, "anything", ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));
 		}
 
-		[Test(Description = "Results are available to the mapping formatter. If a value is mapped from a role and exists in the results then the value mapped from the role should take priority.")]
+		[Test(Description = "Results are available to the mapping formatter. If a value is mapped from a entity and exists in the results then the value mapped from the entity should take priority.")]
 		public void Apply_EnsureSourceTakesPriorityOverInputs()
 		{
 			mapping.From = "a";
 			mapping.To = "{rename}";
 			mapping.ItemName = null;
 			mapping.ThrowOnFailure = true;
-			role.Attributes["rename"] = "b";
-			role.Attributes["a"] = "1";
+			entity.Attributes["rename"] = "b";
+			entity.Attributes["a"] = "1";
 			inputs["rename"] = "c";
 
-			service.Apply(mapping, null, ref inputs, roles);
+			service.Apply(mapping, null, ref inputs, entities);
 
 			Assert.That(inputs, Contains.Key("b"));
 			Assert.That(inputs["b"], Is.EqualTo("1"));

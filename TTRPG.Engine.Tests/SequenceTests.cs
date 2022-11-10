@@ -428,9 +428,9 @@ namespace TTRPG.Engine.Tests
 			Assert.That(results.Results[1].Result, Is.EqualTo("1"));
 		}
 
-		/// Test that a role's attribute is mapped properly and injected into the equation
+		/// Test that a entity's attribute is mapped properly and injected into the equation
 		[Test]
-		public void RoleSequenceItemTest()
+		public void EntitySequenceItemTest()
 		{
 			var sequence = new Sequence()
 			{
@@ -443,7 +443,7 @@ namespace TTRPG.Engine.Tests
 					new Mapping("a", "aa", entityName: "r1", itemName: "a")
 				}
 			};
-			var roles = new List<Entity>
+			var entities = new List<Entity>
 			{
 				new Entity("r1", new Dictionary<string, string>
 				{
@@ -451,7 +451,7 @@ namespace TTRPG.Engine.Tests
 				}, new List<string>())
 			};
 
-			var results = EquationService.Process(sequence, entities: roles);
+			var results = EquationService.Process(sequence, entities: entities);
 
 			Assert.That(results.Results[0].Result, Is.EqualTo("1"));
 		}
@@ -499,7 +499,7 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void Check_RoleMappingIntoSequenceCondition_ReturnsTrue()
+		public void Check_EntityMappingIntoSequenceCondition_ReturnsTrue()
 		{
 			var sequence = new Sequence()
 			{
@@ -512,7 +512,7 @@ namespace TTRPG.Engine.Tests
 					new Condition("aa = 1")
 				}
 			};
-			var roles = new List<Entity>
+			var entities = new List<Entity>
 			{
 				new Entity("r1", new Dictionary<string, string>
 				{
@@ -520,13 +520,13 @@ namespace TTRPG.Engine.Tests
 				}, new List<string>())
 			};
 
-			var valid = EquationService.Check(sequence, entities: roles);
+			var valid = EquationService.Check(sequence, entities: entities);
 
 			Assert.IsTrue(valid);
 		}
 
 		[Test]
-		public void Check_RoleMappingIntoSequenceCondition_ReturnsFalse()
+		public void Check_EntityMappingIntoSequenceCondition_ReturnsFalse()
 		{
 			var sequence = new Sequence()
 			{
@@ -539,7 +539,7 @@ namespace TTRPG.Engine.Tests
 					new Condition("aa = 1")
 				}
 			};
-			var roles = new List<Entity>
+			var entities = new List<Entity>
 			{
 				new Entity("r1", new Dictionary<string, string>
 				{
@@ -547,7 +547,7 @@ namespace TTRPG.Engine.Tests
 				}, new List<string>())
 			};
 
-			var valid = EquationService.Check(sequence, entities: roles);
+			var valid = EquationService.Check(sequence, entities: entities);
 
 			Assert.IsFalse(valid);
 		}

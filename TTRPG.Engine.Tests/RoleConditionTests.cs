@@ -9,7 +9,7 @@ namespace TTRPG.Engine.Tests
 {
 	[TestFixture(Category = "Unit")]
 	[TestOf(typeof(EntityCondition))]
-	public class RoleConditionTests
+	public class EntityConditionTests
 	{
 		private EquationService MockEquationService(int processResult)
 		{
@@ -21,14 +21,14 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void Check_RoleHasRequiredCondition_ReturnsTrue()
+		public void Check_EntityHasRequiredCondition_ReturnsTrue()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Entity();
-			role.Name = "a";
-			role.Categories.Add("c1");
+			var entity = new Entity();
+			entity.Name = "a";
+			entity.Categories.Add("c1");
 			sequence.EntityConditions.Add(new EntityCondition
 			{
 				EntityName = "a",
@@ -38,20 +38,20 @@ namespace TTRPG.Engine.Tests
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_RoleWithDifferentCaseHasRequiredCondition_ReturnsTrue()
+		public void Check_EntityWithDifferentCaseHasRequiredCondition_ReturnsTrue()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Entity();
-			role.Name = "A";
-			role.Categories.Add("c1");
+			var entity = new Entity();
+			entity.Name = "A";
+			entity.Categories.Add("c1");
 			sequence.EntityConditions.Add(new EntityCondition
 			{
 				EntityName = "a",
@@ -61,21 +61,21 @@ namespace TTRPG.Engine.Tests
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_RoleWithAliasHasRequiredCondition_ReturnsTrue()
+		public void Check_EntityWithAliasHasRequiredCondition_ReturnsTrue()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Entity();
-			role.Name = "a";
-			role.Alias = "b";
-			role.Categories.Add("c1");
+			var entity = new Entity();
+			entity.Name = "a";
+			entity.Alias = "b";
+			entity.Categories.Add("c1");
 			sequence.EntityConditions.Add(new EntityCondition
 			{
 				EntityName = "b",
@@ -85,20 +85,20 @@ namespace TTRPG.Engine.Tests
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_RoleDoesNotHaveRequiredCondition_ReturnsFalse()
+		public void Check_EntityDoesNotHaveRequiredCondition_ReturnsFalse()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Entity();
-			role.Name = "a";
-			role.Categories.Add("c1");
+			var entity = new Entity();
+			entity.Name = "a";
+			entity.Categories.Add("c1");
 			sequence.EntityConditions.Add(new EntityCondition
 			{
 				EntityName = "a",
@@ -108,20 +108,20 @@ namespace TTRPG.Engine.Tests
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsFalse(result);
 		}
 
 		[Test]
-		public void Check_RoleDoesNotMatch_ReturnsFalse()
+		public void Check_EntityDoesNotMatch_ReturnsFalse()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
 			var sequence = new Sequence();
-			var role = new Entity();
-			role.Name = "b";
-			role.Categories.Add("c1");
+			var entity = new Entity();
+			entity.Name = "b";
+			entity.Categories.Add("c1");
 			sequence.EntityConditions.Add(new EntityCondition
 			{
 				EntityName = "a",
@@ -131,13 +131,13 @@ namespace TTRPG.Engine.Tests
 				}
 			});
 
-			bool result = resolver.Check(sequence, role);
+			bool result = resolver.Check(sequence, entity);
 
 			Assert.IsFalse(result);
 		}
 
 		[Test]
-		public void Check_NullRole_ReturnsFalse()
+		public void Check_NullEntity_ReturnsFalse()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
@@ -157,16 +157,16 @@ namespace TTRPG.Engine.Tests
 		}
 
 		[Test]
-		public void Check_MultipleRolesWithValidOne_ReturnsTrue()
+		public void Check_MultipleEntitiesWithValidOne_ReturnsTrue()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
-			var role1 = new Entity();
-			role1.Name = "a";
-			role1.Categories.Add("c1");
-			var role2 = new Entity();
-			role2.Name = "b";
-			role2.Categories.Add("c2");
+			var entity1 = new Entity();
+			entity1.Name = "a";
+			entity1.Categories.Add("c1");
+			var entity2 = new Entity();
+			entity2.Name = "b";
+			entity2.Categories.Add("c2");
 			var sequence = new Sequence();
 			sequence.EntityConditions.Add(new EntityCondition
 			{
@@ -177,22 +177,22 @@ namespace TTRPG.Engine.Tests
 				}
 			});
 
-			bool result = resolver.Check(sequence, null, new List<Entity> { role1, role2 });
+			bool result = resolver.Check(sequence, null, new List<Entity> { entity1, entity2 });
 
 			Assert.IsTrue(result);
 		}
 
 		[Test]
-		public void Check_MultipleRolesNoneValid_ReturnsFalse()
+		public void Check_MultipleEntitiesNoneValid_ReturnsFalse()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
-			var role1 = new Entity();
-			role1.Name = "b";
-			role1.Categories.Add("c1");
-			var role2 = new Entity();
-			role2.Name = "c";
-			role2.Categories.Add("c2");
+			var entity1 = new Entity();
+			entity1.Name = "b";
+			entity1.Categories.Add("c1");
+			var entity2 = new Entity();
+			entity2.Name = "c";
+			entity2.Categories.Add("c2");
 			var sequence = new Sequence();
 			sequence.EntityConditions.Add(new EntityCondition
 			{
@@ -203,13 +203,13 @@ namespace TTRPG.Engine.Tests
 				}
 			});
 
-			bool result = resolver.Check(sequence, null, new List<Entity> { role1, role2 });
+			bool result = resolver.Check(sequence, null, new List<Entity> { entity1, entity2 });
 
 			Assert.IsFalse(result);
 		}
 
 		[Test]
-		public void Process_MissingRoleRequirement_ThrowsException()
+		public void Process_MissingEntityRequirement_ThrowsException()
 		{
 			int resolverResult = 1;
 			var resolver = MockEquationService(resolverResult);
