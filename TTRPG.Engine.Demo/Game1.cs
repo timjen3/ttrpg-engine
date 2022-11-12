@@ -97,7 +97,7 @@ public class SurvivalGame : Game
 
 		// TODO: use this.Content to load your game content here
 		FontManager.Instance.LoadFonts(Content);
-		SpriteFont font = Content.Load<SpriteFont>("GothamMedium");
+		SpriteFont font = Content.Load<SpriteFont>("OpenSans");
 		FontManager.DefaultFont = _gameEngine.Renderer.CreateFont(font);
 
 		ImageManager.Instance.LoadImages(Content);
