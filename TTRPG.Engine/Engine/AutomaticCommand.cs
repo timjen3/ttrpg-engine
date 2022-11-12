@@ -28,8 +28,9 @@ namespace TTRPG.Engine.Engine
 
 		/// <summary>
 		///		Additional inputs to include
+		///		Will be overriden by sequence-specific CategoryParams associated with this command's SequenceCategory
 		/// </summary>
-		public Dictionary<string, string> Inputs { get; set; } = new Dictionary<string, string>();
+		public Dictionary<string, string> DefaultInputs { get; set; } = new Dictionary<string, string>();
 
 		/// <summary>
 		///		When true only fires for completed sequences

@@ -83,9 +83,10 @@
             	How to alias included entities
             </summary>
         </member>
-        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.Inputs">
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.DefaultInputs">
             <summary>
             	Additional inputs to include
+            	Will be overriden by sequence-specific CategoryParams associated with this command's SequenceCategory
             </summary>
         </member>
         <member name="P:TTRPG.Engine.Engine.AutomaticCommand.CompletedOnly">

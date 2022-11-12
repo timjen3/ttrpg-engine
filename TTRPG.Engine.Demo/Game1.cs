@@ -67,7 +67,7 @@ public class SurvivalGame : Game
 					Command = "AdvanceTime",
 					Filter = r => r.Name == "Time",
 					AliasEntitiesAs = "time",
-					Inputs = new Dictionary<string, string>{ { "elapsed", "15"} }
+					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "15"} }
 				},
 				new AutomaticCommand
 				{
@@ -75,7 +75,7 @@ public class SurvivalGame : Game
 					Command = "Grow",
 					Filter = r => r.Categories.Contains("Grows"),
 					AliasEntitiesAs = "grower",
-					Inputs = new Dictionary<string, string>{ { "elapsed", "1"} }
+					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "1"} }
 				}
 			}
 		});

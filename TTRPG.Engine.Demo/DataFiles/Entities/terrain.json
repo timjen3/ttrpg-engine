@@ -1,11 +1,11 @@
 [
 	{
-		"Name": "DirtBlock1",
+		"Name": "Hill1",
 		"Attributes": {
-			"MAX_HP": "20",
-			"HP": "20",
+			"MAX_HP": "86000",
+			"HP": "86000",
 			"AC": "0",
-			"Name": "DirtBlock1",
+			"Name": "Hill1",
 			"Resource": "dirt"
 		},
 		"Categories": [
@@ -13,12 +13,12 @@
 		]
 	},
 	{
-		"Name": "DirtBlock2",
+		"Name": "Hill2",
 		"Attributes": {
-			"MAX_HP": "30",
-			"HP": "30",
+			"MAX_HP": "350000",
+			"HP": "350000",
 			"AC": "0",
-			"Name": "DirtBlock2",
+			"Name": "Hill2",
 			"Resource": "dirt"
 		},
 		"Categories": [
@@ -26,12 +26,12 @@
 		]
 	},
 	{
-		"Name": "DirtBlock3",
+		"Name": "Hill3",
 		"Attributes": {
-			"MAX_HP": "12",
-			"HP": "12",
+			"MAX_HP": "89000",
+			"HP": "89000",
 			"AC": "0",
-			"Name": "DirtBlock3",
+			"Name": "Hill3",
 			"Resource": "dirt"
 		},
 		"Categories": [
@@ -39,12 +39,12 @@
 		]
 	},
 	{
-		"Name": "DirtBlock4",
+		"Name": "Hill4",
 		"Attributes": {
-			"MAX_HP": "20",
-			"HP": "20",
+			"MAX_HP": "120000",
+			"HP": "120000",
 			"AC": "0",
-			"Name": "DirtBlock4",
+			"Name": "Hill4",
 			"Resource": "dirt"
 		},
 		"Categories": [
@@ -52,12 +52,12 @@
 		]
 	},
 	{
-		"Name": "DirtBlock5",
+		"Name": "Hill5",
 		"Attributes": {
-			"MAX_HP": "20",
-			"HP": "20",
+			"MAX_HP": "500000",
+			"HP": "500000",
 			"AC": "0",
-			"Name": "DirtBlock5",
+			"Name": "Hill5",
 			"Resource": "dirt"
 		},
 		"Categories": [
@@ -65,12 +65,12 @@
 		]
 	},
 	{
-		"Name": "StoneBlock1",
+		"Name": "StoneQuarry1",
 		"Attributes": {
-			"MAX_HP": "20",
-			"HP": "20",
+			"MAX_HP": "89000",
+			"HP": "89000",
 			"AC": "1",
-			"Name": "StoneBlock1",
+			"Name": "StoneQuarry1",
 			"Resource": "stone"
 		},
 		"Categories": [
@@ -78,12 +78,12 @@
 		]
 	},
 	{
-		"Name": "StoneBlock2",
+		"Name": "StoneQuarry2",
 		"Attributes": {
-			"MAX_HP": "20",
-			"HP": "20",
+			"MAX_HP": "16500",
+			"HP": "16500",
 			"AC": "1",
-			"Name": "StoneBlock2",
+			"Name": "StoneQuarry2",
 			"Resource": "stone"
 		},
 		"Categories": [
@@ -91,12 +91,12 @@
 		]
 	},
 	{
-		"Name": "StoneBlock3",
+		"Name": "StoneQuarry3",
 		"Attributes": {
-			"MAX_HP": "10",
-			"HP": "10",
+			"MAX_HP": "75000",
+			"HP": "75000",
 			"AC": "1",
-			"Name": "StoneBlock3",
+			"Name": "StoneQuarry3",
 			"Resource": "stone"
 		},
 		"Categories": [
@@ -104,12 +104,12 @@
 		]
 	},
 	{
-		"Name": "StoneBlock4",
+		"Name": "StoneQuarry4",
 		"Attributes": {
-			"MAX_HP": "20",
-			"HP": "20",
+			"MAX_HP": "91000",
+			"HP": "91000",
 			"AC": "1",
-			"Name": "StoneBlock4",
+			"Name": "StoneQuarry4",
 			"Resource": "stone"
 		},
 		"Categories": [
@@ -117,12 +117,12 @@
 		]
 	},
 	{
-		"Name": "StoneBlock5",
+		"Name": "StoneQuarry5",
 		"Attributes": {
-			"MAX_HP": "20",
-			"HP": "20",
+			"MAX_HP": "167000",
+			"HP": "167000",
 			"AC": "1",
-			"Name": "StoneBlock5",
+			"Name": "StoneQuarry5",
 			"Resource": "stone"
 		},
 		"Categories": [
@@ -130,12 +130,12 @@
 		]
 	},
 	{
-		"Name": "StoneBlock6",
+		"Name": "StoneQuarry6",
 		"Attributes": {
-			"MAX_HP": "500",
-			"HP": "500",
+			"MAX_HP": "211000",
+			"HP": "211000",
 			"AC": "1",
-			"Name": "StoneBlock6",
+			"Name": "StoneQuarry6",
 			"Resource": "stone"
 		},
 		"Categories": [
@@ -143,12 +143,12 @@
 		]
 	},
 	{
-		"Name": "ObsidianBlock1",
+		"Name": "ObsidianDeposit1",
 		"Attributes": {
-			"MAX_HP": "10",
-			"HP": "10",
+			"MAX_HP": "1600",
+			"HP": "1600",
 			"AC": "2",
-			"Name": "ObsidianBlock1",
+			"Name": "ObsidianDeposit1",
 			"Resource": "obsidian"
 		},
 		"Categories": [
