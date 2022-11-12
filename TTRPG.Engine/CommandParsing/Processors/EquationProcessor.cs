@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Sequences;
 
@@ -27,28 +28,41 @@ namespace TTRPG.Engine.CommandParsing.Processors
 		{
 			var result = _service.Process(_sequence, _command.Inputs, _command.Entities);
 
-			// update attributes
-			foreach (var itemResult in result.ResultItems)
-			{
-				if (itemResult.Category.StartsWith("UpdateAttribute", StringComparison.OrdinalIgnoreCase))
-				{
-					var entity = _data.Entities.Single(x => x.Name == itemResult.Entity.Name);
-					var attributeToUpdate = itemResult.FormatMessage ?? itemResult.Name;
-					entity.Attributes[attributeToUpdate] = itemResult.Result;
-				}
-			}
+			// generate message events
 			var messages = result.Results
 				.Where(x => x.ResolvedItem.SequenceItemEquationType == SequenceItems.SequenceItemEquationType.Message)
-				.Select(x => x.Result);
+				.Select(x => new MessageEvent
+				{
+					Level = MessageEventLevel.Info,
+					Message = x.Result
+				});
 
-			return new ProcessedCommand
+			var processed = new ProcessedCommand
 			{
 				Source = _command,
 				CommandCategories = _sequence.Categories,
 				CategoryParams = _sequence.CategoryParams,
-				Messages = messages.ToList(),
 				Completed = result.Completed
 			};
+			processed.Events.AddRange(messages);
+
+			// generate update attributes events
+			foreach (var itemResult in result.ResultItems)
+			{
+				if (itemResult.Category.StartsWith("UpdateAttribute", StringComparison.OrdinalIgnoreCase))
+				{
+					var attributeToUpdate = itemResult.FormatMessage ?? itemResult.Name;
+					processed.Events.Add(new UpdateAttributesEvent
+					{
+						AttributeToUpdate = attributeToUpdate,
+						EntityName = itemResult.Entity.Name,
+						OldValue = "?",  // need to populate this from the sequence, not the game object...since the sequence has a clone created at the time it was kicked off
+						NewValue = itemResult.Result
+					});
+				}
+			}
+
+			return processed;
 		}
 	}
 }
