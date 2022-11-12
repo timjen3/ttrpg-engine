@@ -56,7 +56,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 					{
 						AttributeToUpdate = attributeToUpdate,
 						EntityName = itemResult.Entity.Name,
-						OldValue = "?",
+						OldValue = "?",  // need to populate this from the sequence, not the game object...since the sequence has a clone created at the time it was kicked off
 						NewValue = itemResult.Result
 					});
 				}
