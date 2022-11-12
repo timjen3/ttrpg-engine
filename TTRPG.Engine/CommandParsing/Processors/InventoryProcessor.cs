@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.CommandParsing.Processors
@@ -55,21 +56,24 @@ namespace TTRPG.Engine.CommandParsing.Processors
 					case "equip":
 					{
 						_service.Equip(_entity, itemName: _command.Inputs["itemname"], equipAs: _command.Inputs["equipas"]);
-						processed.Messages = new string[] { $"Equipped {_command.Inputs["itemname"]}." }.ToList();
+						var message = $"Equipped {_command.Inputs["itemname"]}.";
+						processed.Events.Add(new MessageEvent { Level = MessageEventLevel.Info, Message = message });
 						processed.Completed = true;
 						break;
 					}
 					case "unequip":
 					{
 						_service.Unequip(_entity, itemName: _command.Inputs["itemName"]);
-						processed.Messages = new string[] { $"Unequipped {_command.Inputs["itemname"]}." }.ToList();
+						var message = $"Unequipped {_command.Inputs["itemname"]}.";
+						processed.Events.Add(new MessageEvent { Level = MessageEventLevel.Info, Message = message });
 						processed.Completed = true;
 						break;
 					}
 					case "drop":
 					{
 						_service.DropItem(_entity, itemName: _command.Inputs["itemName"]);
-						processed.Messages = new string[] { $"Dropped {_command.Inputs["itemname"]}." }.ToList();
+						var message = $"Dropped {_command.Inputs["itemname"]}.";
+						processed.Events.Add(new MessageEvent { Level = MessageEventLevel.Info, Message = message });
 						processed.Completed = true;
 						break;
 					}
@@ -77,7 +81,8 @@ namespace TTRPG.Engine.CommandParsing.Processors
 					{
 						var item = GetClonedInventoryItemByName(_command.Inputs["itemname"]);
 						_service.PickupItem(_entity, item: item);
-						processed.Messages = new string[] { $"Picked up {_command.Inputs["itemname"]}." }.ToList();
+						var message = $"Picked up {_command.Inputs["itemname"]}.";
+						processed.Events.Add(new MessageEvent { Level = MessageEventLevel.Info, Message = message });
 						processed.Completed = true;
 						break;
 					}
@@ -89,7 +94,7 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			}
 			catch (InventoryServiceException ex)
 			{
-				processed.Messages = new List<string> { ex.Message };
+				processed.Events.Add(new MessageEvent { Level = MessageEventLevel.Info, Message = ex.Message });
 				processed.Failed = true;
 			}
 

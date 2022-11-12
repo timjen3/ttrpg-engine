@@ -3,6 +3,7 @@ using System.Linq;
 using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.Engine;
+using TTRPG.Engine.Engine.Events;
 
 namespace TTRPG.Engine
 {
@@ -14,9 +15,18 @@ namespace TTRPG.Engine
 		private readonly ICommandProcessorFactory _factory;
 		private readonly IEnumerable<ICommandParser> _parsers;
 		private readonly IAutomaticCommandFactory _autoCommandFactory;
+		private readonly GameObject _data;
 
 		private List<ProcessedCommand> ProcessResult(ProcessedCommand result)
 		{
+			foreach (var @event in result.Events)
+			{
+				if (@event is UpdateAttributesEvent attEvent)
+				{
+					var entity = _data.Entities.Single(x => x.Name == attEvent.EntityName);
+					entity.Attributes[attEvent.AttributeToUpdate] = attEvent.NewValue;
+				}
+			}
 			var results = new List<ProcessedCommand> { result };
 
 			foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
@@ -34,11 +44,12 @@ namespace TTRPG.Engine
 		/// <param name="factory"></param>
 		/// <param name="parsers"></param>
 		/// <param name="autoCommandFactory"></param>
-		public TTRPGEngine(ICommandProcessorFactory factory, IEnumerable<ICommandParser> parsers, IAutomaticCommandFactory autoCommandFactory)
+		public TTRPGEngine(ICommandProcessorFactory factory, IEnumerable<ICommandParser> parsers, IAutomaticCommandFactory autoCommandFactory, GameObject data)
 		{
 			_factory = factory;
 			_parsers = parsers;
 			_autoCommandFactory = autoCommandFactory;
+			_data = data;
 		}
 
 		/// <summary>

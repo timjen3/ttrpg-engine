@@ -411,7 +411,7 @@
             	Parses and processes commands
             </summary>
         </member>
-        <member name="M:TTRPG.Engine.TTRPGEngine.#ctor(TTRPG.Engine.CommandParsing.ICommandProcessorFactory,System.Collections.Generic.IEnumerable{TTRPG.Engine.CommandParsing.Parsers.ICommandParser},TTRPG.Engine.Engine.IAutomaticCommandFactory)">
+        <member name="M:TTRPG.Engine.TTRPGEngine.#ctor(TTRPG.Engine.CommandParsing.ICommandProcessorFactory,System.Collections.Generic.IEnumerable{TTRPG.Engine.CommandParsing.Parsers.ICommandParser},TTRPG.Engine.Engine.IAutomaticCommandFactory,TTRPG.Engine.GameObject)">
             <summary>
             	Create new instance of the TTRPGEngine
             </summary>
