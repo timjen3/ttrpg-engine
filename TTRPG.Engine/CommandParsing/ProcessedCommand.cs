@@ -36,5 +36,10 @@ namespace TTRPG.Engine.CommandParsing
 				}
 			}
 		};
+
+		public static List<ProcessedCommand> InvalidCommandList() => new List<ProcessedCommand>
+		{
+			InvalidCommand()
+		};
 	}
 }
