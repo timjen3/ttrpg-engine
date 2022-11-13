@@ -163,18 +163,18 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "Meat",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "Meat",
 				"Source": "new_meat",
-				"EntityName": "hunter"
+				"EntityAlias": "hunter"
 			},
 			{
-				"Name": "Stamina",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "stamina",
 				"Source": "new_stamina",
-				"EntityName": "hunter"
+				"EntityAlias": "hunter"
 			}
 		],
 		"EntityConditions": [

@@ -11,7 +11,7 @@ namespace TTRPG.Engine.Data
 
 			return JsonConvert.DeserializeObject<T>(jsonText, new JsonSerializerSettings
 			{
-				TypeNameHandling = TypeNameHandling.None,
+				TypeNameHandling = TypeNameHandling.None
 			});
 		}
 	}

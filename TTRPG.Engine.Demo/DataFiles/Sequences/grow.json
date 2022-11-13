@@ -67,12 +67,12 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "Age",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "Age",
 				"Source": "new_age",
-				"EntityName": "grower"
+				"EntityAlias": "grower"
 			}
 		]
 	}

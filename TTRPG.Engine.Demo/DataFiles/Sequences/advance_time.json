@@ -42,18 +42,18 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"EventConfig": [
 			{
-				"Name": "Time",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "time",
 				"Source": "new_time",
-				"EntityName": "time"
+				"EntityAlias": "time"
 			},
 			{
-				"Name": "Turn",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "turn",
 				"Source": "new_turn",
-				"EntityName": "time"
+				"EntityAlias": "time"
 			}
 		]
 	}

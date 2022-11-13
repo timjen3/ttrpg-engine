@@ -267,24 +267,24 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "HP",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "HP",
 				"Source": "new_hp",
-				"EntityName": "crop"
+				"EntityAlias": "crop"
 			},
 			{
-				"Name": "Meat",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "meat",
 				"Source": "new_meat",
-				"EntityName": "farmer"
+				"EntityAlias": "farmer"
 			},
 			{
-				"Name": "Stamina",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "stamina",
 				"Source": "new_stamina",
-				"EntityName": "farmer"
+				"EntityAlias": "farmer"
 			}
 		],
 		"EntityConditions": [

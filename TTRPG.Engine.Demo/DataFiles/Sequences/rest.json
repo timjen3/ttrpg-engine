@@ -40,12 +40,12 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "Stamina",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "Stamina",
 				"Source": "new_stamina",
-				"EntityName": "sleeper"
+				"EntityAlias": "sleeper"
 			}
 		]
 	}

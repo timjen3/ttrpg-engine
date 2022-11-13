@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using TTRPG.Engine.CommandParsing;
 
@@ -15,8 +16,12 @@ namespace TTRPG.Engine.Engine.Events
 			{
 				if (@event is UpdateAttributesEvent attEvent)
 				{
-					var entity = _data.Entities.Single(x => x.Name == attEvent.EntityName);
-					entity.Attributes[attEvent.AttributeToUpdate] = attEvent.NewValue;
+					var entityToUpdate = _data.Entities.FirstOrDefault(x => x.Name.Equals(attEvent.EntityName, StringComparison.OrdinalIgnoreCase));
+					if (entityToUpdate == null)
+					{
+						throw new Exception($"Tried to update attribute: {attEvent.AttributeToUpdate} but could not find entity to update: {attEvent.EntityName}");
+					}
+					entityToUpdate.Attributes[attEvent.AttributeToUpdate] = attEvent.NewValue;
 				}
 			}
 		}

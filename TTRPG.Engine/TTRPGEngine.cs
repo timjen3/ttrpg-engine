@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Linq;
 using TTRPG.Engine.CommandParsing;
-using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.Engine;
 using TTRPG.Engine.Engine.Events;
 
@@ -13,7 +11,6 @@ namespace TTRPG.Engine
 	public class TTRPGEngine
 	{
 		private readonly ICommandProcessorFactory _factory;
-		private readonly IEnumerable<ICommandParser> _parsers;
 		private readonly IAutomaticCommandFactory _autoCommandFactory;
 		private readonly ITTRPGEventHandler _eventHandler;
 
@@ -24,20 +21,12 @@ namespace TTRPG.Engine
 		/// <param name="parsers"></param>
 		/// <param name="autoCommandFactory"></param>
 		/// <param name="eventHandler"></param>
-		public TTRPGEngine(ICommandProcessorFactory factory, IEnumerable<ICommandParser> parsers, IAutomaticCommandFactory autoCommandFactory, ITTRPGEventHandler eventHandler)
+		public TTRPGEngine(ICommandProcessorFactory factory, IAutomaticCommandFactory autoCommandFactory, ITTRPGEventHandler eventHandler)
 		{
 			_factory = factory;
-			_parsers = parsers;
 			_autoCommandFactory = autoCommandFactory;
 			_eventHandler = eventHandler;
 		}
-
-		/// <summary>
-		///		Returns example commands from all parsers
-		/// </summary>
-		/// <returns></returns>
-		public IEnumerable<string> GetExampleCommands() => _parsers
-				.SelectMany(p => p.GetExampleCommands());
 
 		/// <summary>
 		///		Parse and process a command

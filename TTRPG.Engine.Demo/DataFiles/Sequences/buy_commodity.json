@@ -94,19 +94,18 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "Money",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "Money",
 				"Source": "new_money",
-				"EntityName": "buyer"
+				"EntityAlias": "buyer"
 			},
 			{
-				"Name": "Quantity",
-				"Category": "UpdateAttribute",
-				"FormatMessage": "{resource}",
+				"EventType": "UpdateAttributes",
+				"AttributeName": "{resource}",
 				"Source": "new_quantity_on_hand",
-				"EntityName": "buyer"
+				"EntityAlias": "buyer"
 			}
 		],
 		"EntityConditions": [

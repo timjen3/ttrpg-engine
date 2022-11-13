@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FormatWith;
+using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Exceptions;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
@@ -164,34 +165,26 @@ namespace TTRPG.Engine.Equations
 			return result;
 		}
 
-		/// Process a sequence item and get the result
-		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Entity> entities)
+		/// Process event config and set results
+		internal List<TTRPGEvent> ProcessResults(IEnumerable<IEventConfig> events, IDictionary<string, string> inputs, IEnumerable<Entity> entities)
 		{
-			var results = new List<SequenceResultItem>();
-			foreach (var item in items)
+			var results = new List<TTRPGEvent>();
+			foreach (var @event in events)
 			{
-				var result = new SequenceResultItem();
-				result.Name = item.Name;
-				result.Category = item.Category;
-				if (!string.IsNullOrWhiteSpace(item.FormatMessage))
+				if (@event is UpdateAttributesEventConfig attEvent)
 				{
-					result.FormatMessage = item.FormatMessage.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
-				}
-				if (inputs.TryGetValue(item.Source, out string value))
-				{
-					result.Result = value;
-					if (!string.IsNullOrWhiteSpace(item.EntityName))
+					if (inputs.TryGetValue(attEvent.Source, out string value))
 					{
-						result.Entity = entities.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(item.EntityName, StringComparison.OrdinalIgnoreCase));
+						var entityToUpdate = entities.Single(x => x.Alias.Equals(attEvent.EntityAlias, StringComparison.OrdinalIgnoreCase));
+						var result = new UpdateAttributesEvent();
+						result.AttributeToUpdate = attEvent.AttributeName.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
+						result.OldValue = entityToUpdate.Attributes[result.AttributeToUpdate];
+						result.NewValue = inputs[attEvent.Source];
+						result.EntityName = entityToUpdate.Name;  // set to true name
+						results.Add(result);
 					}
-					else if (item.FirstEntity)
-					{
-						result.Entity = entities.FirstOrDefault();
-					}
-					results.Add(result);
 				}
 			}
-
 			return results;
 		}
 
@@ -278,7 +271,7 @@ namespace TTRPG.Engine.Equations
 				var itemResult = GetResult(errorItem, -1, ref sArgs, sArgs);
 				result.Results.Add(itemResult);
 			}
-			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, entities);
+			result.Events = ProcessResults(sequence.Events, sArgs, entities);
 
 			return result;
 		}
