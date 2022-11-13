@@ -412,13 +412,14 @@
             	Parses and processes commands
             </summary>
         </member>
-        <member name="M:TTRPG.Engine.TTRPGEngine.#ctor(TTRPG.Engine.CommandParsing.ICommandProcessorFactory,System.Collections.Generic.IEnumerable{TTRPG.Engine.CommandParsing.Parsers.ICommandParser},TTRPG.Engine.Engine.IAutomaticCommandFactory,TTRPG.Engine.GameObject)">
+        <member name="M:TTRPG.Engine.TTRPGEngine.#ctor(TTRPG.Engine.CommandParsing.ICommandProcessorFactory,System.Collections.Generic.IEnumerable{TTRPG.Engine.CommandParsing.Parsers.ICommandParser},TTRPG.Engine.Engine.IAutomaticCommandFactory,TTRPG.Engine.Engine.Events.ITTRPGEventHandler)">
             <summary>
             	Create new instance of the TTRPGEngine
             </summary>
             <param name="factory"></param>
             <param name="parsers"></param>
             <param name="autoCommandFactory"></param>
+            <param name="eventHandler"></param>
         </member>
         <member name="M:TTRPG.Engine.TTRPGEngine.GetExampleCommands">
             <summary>

@@ -7,6 +7,7 @@ using TTRPG.Engine.CommandParsing.Processors;
 using TTRPG.Engine.Data;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.Engine;
+using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Equations.Extensions;
 
@@ -36,6 +37,7 @@ namespace TTRPG.Engine
 			services.AddSingleton<ICommandParser, InventoryCommandParser>();
 			services.TryAddSingleton(new AutomaticCommandFactoryOptions());
 			services.AddSingleton<IAutomaticCommandFactory, AutomaticCommandFactory>();
+			services.AddSingleton<ITTRPGEventHandler, TTRPGEventHandler>();
 			services.AddSingleton<GameObject>();
 			services.AddSingleton<TTRPGEngine>();
 

@@ -15,28 +15,7 @@ namespace TTRPG.Engine
 		private readonly ICommandProcessorFactory _factory;
 		private readonly IEnumerable<ICommandParser> _parsers;
 		private readonly IAutomaticCommandFactory _autoCommandFactory;
-		private readonly GameObject _data;
-
-		private List<ProcessedCommand> ProcessResult(ProcessedCommand result)
-		{
-			foreach (var @event in result.Events)
-			{
-				if (@event is UpdateAttributesEvent attEvent)
-				{
-					var entity = _data.Entities.Single(x => x.Name == attEvent.EntityName);
-					entity.Attributes[attEvent.AttributeToUpdate] = attEvent.NewValue;
-				}
-			}
-			var results = new List<ProcessedCommand> { result };
-
-			foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
-			{
-				var moreResults = Process(autoCommand);
-				results.AddRange(moreResults);
-			}
-
-			return results;
-		}
+		private readonly ITTRPGEventHandler _eventHandler;
 
 		/// <summary>
 		///		Create new instance of the TTRPGEngine
@@ -44,12 +23,13 @@ namespace TTRPG.Engine
 		/// <param name="factory"></param>
 		/// <param name="parsers"></param>
 		/// <param name="autoCommandFactory"></param>
-		public TTRPGEngine(ICommandProcessorFactory factory, IEnumerable<ICommandParser> parsers, IAutomaticCommandFactory autoCommandFactory, GameObject data)
+		/// <param name="eventHandler"></param>
+		public TTRPGEngine(ICommandProcessorFactory factory, IEnumerable<ICommandParser> parsers, IAutomaticCommandFactory autoCommandFactory, ITTRPGEventHandler eventHandler)
 		{
 			_factory = factory;
 			_parsers = parsers;
 			_autoCommandFactory = autoCommandFactory;
-			_data = data;
+			_eventHandler = eventHandler;
 		}
 
 		/// <summary>
@@ -79,14 +59,18 @@ namespace TTRPG.Engine
 			var processor = _factory.Build(command);
 			if (!processor.IsValid())
 			{
-				return new List<ProcessedCommand>
-				{
-					ProcessedCommand.InvalidCommand()
-				};
+				return ProcessedCommand.InvalidCommandList();
 			}
 			var result = processor.Process();
+			_eventHandler.ProcessResult(result);
+			var results = new List<ProcessedCommand> { result };
+			foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
+			{
+				var moreResults = Process(autoCommand);
+				results.AddRange(moreResults);
+			}
 
-			return ProcessResult(result);
+			return results;
 		}
 	}
 }
