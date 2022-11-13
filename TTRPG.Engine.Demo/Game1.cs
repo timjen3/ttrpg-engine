@@ -67,7 +67,7 @@ public class SurvivalGame : Game
 					Command = "AdvanceTime",
 					Filter = r => r.Name == "Time",
 					AliasEntitiesAs = "time",
-					Inputs = new Dictionary<string, string>{ { "elapsed", "15"} }
+					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "15"} }
 				},
 				new AutomaticCommand
 				{
@@ -75,7 +75,7 @@ public class SurvivalGame : Game
 					Command = "Grow",
 					Filter = r => r.Categories.Contains("Grows"),
 					AliasEntitiesAs = "grower",
-					Inputs = new Dictionary<string, string>{ { "elapsed", "1"} }
+					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "1"} }
 				}
 			}
 		});
@@ -97,7 +97,7 @@ public class SurvivalGame : Game
 
 		// TODO: use this.Content to load your game content here
 		FontManager.Instance.LoadFonts(Content);
-		SpriteFont font = Content.Load<SpriteFont>("Arial");
+		SpriteFont font = Content.Load<SpriteFont>("OpenSans");
 		FontManager.DefaultFont = _gameEngine.Renderer.CreateFont(font);
 
 		ImageManager.Instance.LoadImages(Content);

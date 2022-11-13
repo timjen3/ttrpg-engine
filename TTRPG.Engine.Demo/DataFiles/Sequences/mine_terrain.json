@@ -2,6 +2,12 @@
 	{
 		"Name": "MineTerrain",
 		"Example": "MineTerrain [miner:miner,dirtblock1:terrain]",
+		"Categories": [ "Temporal" ],
+		"CategoryParams": {
+			"Temporal": {
+				"elapsed": "15"
+			}
+		},
 		"Items": [
 			{
 				"Name": "Intention",
@@ -13,7 +19,8 @@
 				"Name": "Damage",
 				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
 				"ResultName": "damage",
-				"SequenceItemEquationType": "Algorithm"
+				"SequenceItemEquationType": "Algorithm",
+				"SetComplete": true
 			},
 			{
 				"Name": "Report Damage",
@@ -35,7 +42,8 @@
 			},
 			{
 				"Name": "Claim Resources",
-				"Equation": "current_quantity + max(floor(terrain_max_hp / 3), 1)",
+				"old_Equation": "current_quantity + max(floor(terrain_max_hp / 3), 1)",
+				"Equation": "current_quantity + ceil((hp - new_hp) / 4)",
 				"ResultName": "new_quantity",
 				"SequenceItemEquationType": "Algorithm"
 			},
@@ -93,7 +101,7 @@
 			},
 			{
 				"DependentOnItem": "Take Damage",
-				"Equation": "new_hp <= 0",
+				"Equation": "new_hp < hp",
 				"ItemNames": [
 					"Claim Resources"
 				],

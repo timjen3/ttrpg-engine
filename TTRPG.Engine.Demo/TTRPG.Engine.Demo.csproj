@@ -1,70 +1,103 @@
-<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UseWindowsForms>true</UseWindowsForms>
-    <IsPackable>false</IsPackable>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RollForward>Major</RollForward>
+    <PublishReadyToRun>false</PublishReadyToRun>
+    <TieredCompilation>false</TieredCompilation>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <None Remove="DataFiles\MessageTemplates\output_target_status.txt" />
     <None Remove="DataFiles\Entities\animals.json" />
     <None Remove="DataFiles\Entities\commodities.json" />
+    <None Remove="DataFiles\Entities\crops.json" />
+    <None Remove="DataFiles\Entities\game.json" />
+    <None Remove="DataFiles\Entities\miner.json" />
     <None Remove="DataFiles\Entities\terrain.json" />
-    <None Remove="DataFiles\sequences.json" />
+    <None Remove="DataFiles\SequenceItems\sequence_items.json" />
+    <None Remove="DataFiles\Sequences\advance_time.json" />
     <None Remove="DataFiles\Sequences\buy_commodity.json" />
+    <None Remove="DataFiles\Sequences\display_time.json" />
+    <None Remove="DataFiles\Sequences\grow.json" />
+    <None Remove="DataFiles\Sequences\harvest.json" />
     <None Remove="DataFiles\Sequences\hunt.json" />
+    <None Remove="DataFiles\Sequences\mine_terrain.json" />
     <None Remove="DataFiles\Sequences\rest.json" />
     <None Remove="DataFiles\Sequences\sell_commodity.json" />
     <None Remove="DataFiles\Sequences\status.json" />
-    <None Remove="DataFiles\sequence_items.json" />
+    <None Remove="Icon.ico" />
+    <None Remove="Icon.bmp" />
   </ItemGroup>
-
   <ItemGroup>
     <Content Include="DataFiles\MessageTemplates\output_target_status.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataFiles\Entities\commodities.json">
+    <Content Include="DataFiles\Entities\crops.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Entities\game.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\Entities\animals.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataFiles\Entities\terrain.json">
+    <Content Include="DataFiles\Entities\commodities.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\Entities\miner.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="DataFiles\Sequences\buy_commodity.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataFiles\Sequences\hunt.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataFiles\Sequences\sell_commodity.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataFiles\Sequences\rest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataFiles\Sequences\status.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DataFiles\Sequences\mine_terrain.json">
+    <Content Include="DataFiles\Entities\terrain.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\SequenceItems\sequence_items.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="DataFiles\Sequences\display_time.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\grow.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\buy_commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\harvest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\hunt.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\mine_terrain.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\advance_time.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\rest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\sell_commodity.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Sequences\status.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.28" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <EmbeddedResource Include="Icon.ico" />
+    <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
-
+  <ItemGroup>
+    <PackageReference Include="EmptyKeysUI_MonoGame" Version="3.3.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TTRPG.Engine\TTRPG.Engine.csproj" />
   </ItemGroup>

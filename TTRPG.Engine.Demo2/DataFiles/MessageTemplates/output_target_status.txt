@@ -1,7 +1,0 @@
-﻿HP: {hp} / {max_hp}
-Stamina: {stamina} / {max_stamina}
-Dirt: {dirt}
-Stone: {stone}
-Obsidian: {obsidian}
-Meat: {meat}
-Money: {money}

@@ -31,6 +31,13 @@
 		"Conditions": [
 			{
 				"DependentOnItem": null,
+				"Equation": "quantity_to_buy > 0",
+				"ItemNames": null,
+				"ThrowOnFail": false,
+				"FailureMessage": "Quantity to buy must be greater than 0."
+			},
+			{
+				"DependentOnItem": null,
 				"Equation": "buy_price * quantity_to_buy <= current_money",
 				"ItemNames": null,
 				"ThrowOnFail": false,
