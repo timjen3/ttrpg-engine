@@ -8,6 +8,12 @@ namespace TTRPG.Engine.Engine.Events
 	public class MessageEventConfig : IEventConfig
 	{
 		public TTRPGEventType EventType { get; set; }
+
+		public MessageEventLevel Level { get; set; } = MessageEventLevel.Info;
+
+		public string TemplateFilename { get; set; }
+
+		public string MessageTemplate { get; set; }
 	}
 
 	public class UpdateAttributesEventConfig : IEventConfig

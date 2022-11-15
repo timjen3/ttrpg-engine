@@ -364,21 +364,6 @@
             	The result is loaded into inputs to be made available to following equations
             </summary>
         </member>
-        <member name="T:TTRPG.Engine.SequenceItems.SequenceItemEquationType">
-            <summary>
-            	Identifies the equation type of the sequence item
-            </summary>
-        </member>
-        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemEquationType.Algorithm">
-            <summary>
-            	Equation will be processed as an algorithm
-            </summary>
-        </member>
-        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemEquationType.Message">
-            <summary>
-            	Equation will be processed as a message
-            </summary>
-        </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItemResult">
             <summary>
             	Result for one resolved SequenceItem

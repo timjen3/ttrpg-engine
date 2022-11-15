@@ -36,16 +36,6 @@ namespace TTRPG.Engine.CommandParsing.Processors
 				Events = result.Events
 			};
 
-			// generate message events
-			var messages = result.Results
-				.Where(x => x.ResolvedItem.SequenceItemEquationType == SequenceItems.SequenceItemEquationType.Message)
-				.Select(x => new MessageEvent
-				{
-					Level = MessageEventLevel.Info,
-					Message = x.Result
-				});
-			processed.Events.AddRange(messages);
-
 			return processed;
 		}
 	}

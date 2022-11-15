@@ -150,14 +150,7 @@ namespace TTRPG.Engine.Equations
 			result.Order = order;
 			result.Inputs = mappedInputs;
 			result.ResolvedItem = item;
-			if (item.SequenceItemEquationType == SequenceItemEquationType.Algorithm)
-			{
-				result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
-			}
-			else if (item.SequenceItemEquationType == SequenceItemEquationType.Message)
-			{
-				result.Result = item.Equation.FormatWith(mappedInputs);
-			}
+			result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
 			if (inputs != null)
 			{
 				inputs[item.ResultName] = result.Result.ToString();
@@ -184,6 +177,13 @@ namespace TTRPG.Engine.Equations
 						results.Add(result);
 					}
 				}
+				else if (@event is MessageEventConfig mEvent)
+				{
+					var result = new MessageEvent();
+					result.Message = mEvent.MessageTemplate.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
+					result.Level = mEvent.Level;
+					results.Add(result);
+				}
 			}
 			return results;
 		}
@@ -202,14 +202,8 @@ namespace TTRPG.Engine.Equations
 				foreach (var kvp in entity.Attributes)
 					mappedInputs[kvp.Key] = kvp.Value;
 			}
-			if (item.SequenceItemEquationType == SequenceItemEquationType.Algorithm)
-			{
-				result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
-			}
-			else if (item.SequenceItemEquationType == SequenceItemEquationType.Message)
-			{
-				result.Result = item.Equation.FormatWith(mappedInputs);
-			}
+			result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
+
 			return result;
 		}
 
@@ -265,12 +259,13 @@ namespace TTRPG.Engine.Equations
 				}
 			}
 			// generate error messages
-			foreach (var errorMessage in errorMessages)
-			{
-				var errorItem = new SequenceItem(Guid.NewGuid().ToString(), errorMessage, Guid.NewGuid().ToString(), SequenceItemEquationType.Message);
-				var itemResult = GetResult(errorItem, -1, ref sArgs, sArgs);
-				result.Results.Add(itemResult);
-			}
+			result.Events.AddRange(errorMessages
+				.Select(errorMessage => new MessageEvent
+				{
+					Message = errorMessage,
+					Level = MessageEventLevel.Error
+				}));
+
 			result.Events = ProcessResults(sequence.Events, sArgs, entities);
 
 			return result;
