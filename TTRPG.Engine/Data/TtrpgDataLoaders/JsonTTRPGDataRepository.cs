@@ -30,7 +30,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 
 						return new KeyValuePair<string, string>(templateName, template);
 					})
-					.ToDictionary(kvp => $"[[{kvp.Key}]]", kvp => kvp.Value, StringComparer.OrdinalIgnoreCase);
+					.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.OrdinalIgnoreCase);
 			}
 			else if (_messageTemplates == null)
 				_messageTemplates = new Dictionary<string, string>();
@@ -89,7 +89,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 				{
 					if (@event is MessageEventConfig mEvent)
 					{
-						if (templates.ContainsKey(mEvent.TemplateFilename))
+						if (mEvent.TemplateFilename != null && templates.ContainsKey(mEvent.TemplateFilename))
 						{
 							mEvent.MessageTemplate = templates[mEvent.TemplateFilename];
 						}

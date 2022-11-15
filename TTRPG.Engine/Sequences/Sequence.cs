@@ -15,7 +15,7 @@ namespace TTRPG.Engine.Sequences
 		public List<SequenceItem> Items { get; set; } = new List<SequenceItem>();
 
 		[JsonProperty(ItemConverterType = typeof(TTRPGEventConfigJsonConverter))]
-		public List<IEventConfig> Events { get; set; } = new List<IEventConfig>();
+		public List<EventConfig> Events { get; set; } = new List<EventConfig>();
 
 		public List<Condition> Conditions { get; set; } = new List<Condition>();
 

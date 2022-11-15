@@ -18,7 +18,6 @@ namespace TTRPG.Engine
 		///		Create new instance of the TTRPGEngine
 		/// </summary>
 		/// <param name="factory"></param>
-		/// <param name="parsers"></param>
 		/// <param name="autoCommandFactory"></param>
 		/// <param name="eventHandler"></param>
 		public TTRPGEngine(ICommandProcessorFactory factory, IAutomaticCommandFactory autoCommandFactory, ITTRPGEventHandler eventHandler)

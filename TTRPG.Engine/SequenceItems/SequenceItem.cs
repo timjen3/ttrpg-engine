@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 
 namespace TTRPG.Engine.SequenceItems
 {
@@ -24,5 +24,7 @@ namespace TTRPG.Engine.SequenceItems
 		public string ResultName { get; set; }
 
 		public bool SetComplete { get; set; }
+
+		public List<string> Produces { get; set; } = new List<string>();
 	}
 }

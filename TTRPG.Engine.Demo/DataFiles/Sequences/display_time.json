@@ -25,19 +25,8 @@
 				"Name": "Display Minutes",
 				"Equation": "floor(time_decimal * 3/5 * 100)",
 				"ResultName": "display_minutes",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Display Turn",
-				"Equation": "Turn: {current_turn}",
-				"ResultName": "turn_message",
-				"SequenceItemEquationType": "Message"
-			},
-			{
-				"Name": "Display Day Time",
-				"Equation": "Day {display_day}    {display_hours}:{display_minutes}",
-				"ResultName": "display_day_time",
-				"SequenceItemEquationType": "Message"
+				"SequenceItemEquationType": "Algorithm",
+				"Produces": [ "TurnMessage", "DayTimeMessage" ]
 			}
 		],
 		"Mappings": [
@@ -56,6 +45,20 @@
 				"EntityName": "time",
 				"MappingType": "Entity",
 				"ThrowOnFailure": true
+			}
+		],
+		"Events": [
+			{
+				"EventType": "Message",
+				"Name": "TurnMessage",
+				"MessageTemplate": "Turn: {current_turn}",
+				"Level": "Special"
+			},
+			{
+				"EventType": "Message",
+				"Name": "DayTimeMessage",
+				"MessageTemplate": "Day {display_day}    {display_hours}:{display_minutes}",
+				"Level": "Special"
 			}
 		]
 	}

@@ -37,7 +37,7 @@ namespace TTRPG.Engine.Tests
 			item.EntityAlias = "alias1";
 			Inputs["new_a"] = "1";
 
-			var resultItems = EquationService.ProcessResults(new IEventConfig[] { item }, Inputs, Entities);
+			var resultItems = EquationService.ProcessResults(new EventConfig[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Has.Count.EqualTo(1));
 			Assert.That(resultItems[0], Is.TypeOf<UpdateAttributesEvent>());
@@ -58,7 +58,7 @@ namespace TTRPG.Engine.Tests
 			item.EntityAlias = "alias1";
 			// input not added
 
-			var resultItems = EquationService.ProcessResults(new IEventConfig[] { item }, Inputs, Entities);
+			var resultItems = EquationService.ProcessResults(new EventConfig[] { item }, Inputs, Entities);
 
 			Assert.That(resultItems, Has.Count.EqualTo(0));
 		}

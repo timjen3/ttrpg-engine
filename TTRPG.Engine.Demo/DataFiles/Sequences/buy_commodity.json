@@ -7,25 +7,19 @@
 				"Name": "TotalBuyAmount",
 				"Equation": "buy_price * quantity_to_buy",
 				"ResultName": "total_buy_amount",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Intention",
-				"Equation": "{buyer_name} is buying {quantity_to_buy} {resource} at {buy_price}/unit for a total of {total_buy_amount} moneys.",
-				"ResultName": "intention",
-				"SequenceItemEquationType": "Message"
+				"Produces": [ "IntentionMessage" ]
 			},
 			{
 				"Name": "NewQuantityOnHand",
 				"Equation": "quantity_on_hand + quantity_to_buy",
 				"ResultName": "new_quantity_on_hand",
-				"SequenceItemEquationType": "Algorithm"
+				"Produces": [ "UpdateResource" ]
 			},
 			{
 				"Name": "NewMoney",
 				"Equation": "current_money - total_buy_amount",
 				"ResultName": "new_money",
-				"SequenceItemEquationType": "Algorithm"
+				"Produces": [ "UpdateMoney" ]
 			}
 		],
 		"Conditions": [
@@ -96,13 +90,21 @@
 		],
 		"Events": [
 			{
+				"EventType": "Message",
+				"Name": "IntentionMessage",
+				"MessageTemplate": "{buyer_name} is buying {quantity_to_buy} {resource} at {buy_price}/unit for a total of {total_buy_amount} moneys.",
+				"Level": "Info"
+			},
+			{
 				"EventType": "UpdateAttributes",
+				"Name": "UpdateMoney",
 				"AttributeName": "Money",
 				"Source": "new_money",
 				"EntityAlias": "buyer"
 			},
 			{
 				"EventType": "UpdateAttributes",
+				"Name": "UpdateResource",
 				"AttributeName": "{resource}",
 				"Source": "new_quantity_on_hand",
 				"EntityAlias": "buyer"

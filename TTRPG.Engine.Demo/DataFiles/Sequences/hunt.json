@@ -10,41 +10,26 @@
 		},
 		"Items": [
 			{
-				"Name": "Intention",
-				"Equation": "{hunter_name} is hunting for {defender_name} with a {wName}.",
-				"ResultName": "intention",
-				"SequenceItemEquationType": "Message"
-			},
-			{
 				"Name": "CheckLuck",
 				"Equation": "random(1,1,100) > difficulty",
 				"ResultName": "luck_check",
 				"SequenceItemEquationType": "Algorithm",
-				"SetComplete": true
-			},
-			{
-				"Name": "Report Successful Hunt",
-				"Equation": "The {defender_name} hunt was successful!",
-				"ResultName": "SuccessMsg",
-				"SequenceItemEquationType": "Message"
+				"SetComplete": true,
+				"Produces": [ "IntentionMessage" ]
 			},
 			{
 				"Name": "Drain Stamina",
 				"Equation": "hunter_stamina - 1",
 				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm"
+				"SequenceItemEquationType": "Algorithm",
+				"Produces": [ "UpdateStamina" ]
 			},
 			{
 				"Name": "Claim Meat",
 				"Equation": "current_meat + defender_meat",
 				"ResultName": "new_meat",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Report Meat Taken",
-				"Equation": "Got meat : {current_meat} => {new_meat}",
-				"ResultName": "MeatTakenMsg",
-				"SequenceItemEquationType": "Message"
+				"SequenceItemEquationType": "Algorithm",
+				"Produces": [ "UpdateMeat", "SuccessfulHuntMessage", "NewMeatMessage" ]
 			}
 		],
 		"Conditions": [
@@ -166,15 +151,35 @@
 		"Events": [
 			{
 				"EventType": "UpdateAttributes",
+				"Name": "UpdateMeat",
 				"AttributeName": "Meat",
 				"Source": "new_meat",
 				"EntityAlias": "hunter"
 			},
 			{
 				"EventType": "UpdateAttributes",
+				"Name": "UpdateStamina",
 				"AttributeName": "stamina",
 				"Source": "new_stamina",
 				"EntityAlias": "hunter"
+			},
+			{
+				"EventType": "Message",
+				"Name": "IntentionMessage",
+				"MessageTemplate": "{hunter_name} is hunting for {defender_name} with a {wName}.",
+				"Level": "Info"
+			},
+			{
+				"EventType": "Message",
+				"Name": "SuccessfulHuntMessage",
+				"MessageTemplate": "The {defender_name} hunt was successful!",
+				"Level": "Info"
+			},
+			{
+				"EventType": "Message",
+				"Name": "NewMeatMessage",
+				"MessageTemplate": "Got meat : {current_meat} => {new_meat}",
+				"Level": "Info"
 			}
 		],
 		"EntityConditions": [

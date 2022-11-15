@@ -6,9 +6,9 @@ using TTRPG.Engine.Engine.Events;
 
 namespace TTRPG.Engine.Data.TtrpgDataLoaders
 {
-	internal class TTRPGEventConfigJsonConverter : JsonConverter<IEventConfig>
+	internal class TTRPGEventConfigJsonConverter : JsonConverter<EventConfig>
 	{
-		public override IEventConfig ReadJson(JsonReader reader, Type objectType, IEventConfig existingValue, bool hasExistingValue, JsonSerializer serializer)
+		public override EventConfig ReadJson(JsonReader reader, Type objectType, EventConfig existingValue, bool hasExistingValue, JsonSerializer serializer)
 		{
 			var data = serializer.Deserialize<JObject>(reader);
 			if (data == null)
@@ -27,7 +27,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			throw new NotImplementedException();
 		}
 
-		public override void WriteJson(JsonWriter writer, IEventConfig value, JsonSerializer serializer)
+		public override void WriteJson(JsonWriter writer, EventConfig value, JsonSerializer serializer)
 			=> serializer.Serialize(writer, value);
 	}
 }

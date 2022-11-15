@@ -7,25 +7,22 @@
 				"Name": "TotalSaleAmount",
 				"Equation": "sale_price * quantity_to_sell",
 				"ResultName": "total_sale_amount",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Intention",
-				"Equation": "{seller_name} is selling {quantity_to_sell} {resource} at {sale_price}/unit for a total of {total_sale_amount} moneys.",
-				"ResultName": "intention",
-				"SequenceItemEquationType": "Message"
+				"SequenceItemEquationType": "Algorithm",
+				"Produces": [ "IntentionMessage" ]
 			},
 			{
 				"Name": "NewQuantityOnHand",
 				"Equation": "quantity_on_hand - quantity_to_sell",
 				"ResultName": "new_quantity_on_hand",
-				"SequenceItemEquationType": "Algorithm"
+				"SequenceItemEquationType": "Algorithm",
+				"Produces": [ "UpdateResource" ]
 			},
 			{
 				"Name": "NewMoney",
 				"Equation": "current_money + total_sale_amount",
 				"ResultName": "new_money",
-				"SequenceItemEquationType": "Algorithm"
+				"SequenceItemEquationType": "Algorithm",
+				"Produces": [ "UpdateMoney" ]
 			}
 		],
 		"Conditions": [
@@ -97,15 +94,23 @@
 		"Events": [
 			{
 				"EventType": "UpdateAttributes",
+				"Name": "UpdateMoney",
 				"AttributeName": "Money",
 				"Source": "new_money",
 				"EntityAlias": "seller"
 			},
 			{
 				"EventType": "UpdateAttributes",
+				"Name": "UpdateResource",
 				"AttributeName": "{resource}",
 				"Source": "new_quantity_on_hand",
 				"EntityAlias": "seller"
+			},
+			{
+				"EventType": "Message",
+				"Name": "IntentionMessage",
+				"MessageTemplate": "{seller_name} is selling {quantity_to_sell} {resource} at {sale_price}/unit for a total of {total_sale_amount} moneys.",
+				"Level": "Info"
 			}
 		],
 		"EntityConditions": [
