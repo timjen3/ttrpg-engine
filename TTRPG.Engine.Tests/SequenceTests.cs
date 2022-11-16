@@ -73,7 +73,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Conditions = new List<Condition>
 				{
-					new Condition("b", "ar = 2")
+					new Condition("b", "ar == 2")
 				}
 			};
 
@@ -99,7 +99,7 @@ namespace TTRPG.Engine.Tests
 				}
 			};
 
-			Assert.Throws<EquationInputArgumentException>(() => EquationService.Process(sequence));
+			Assert.Throws<EquationResolverException>(() => EquationService.Process(sequence));
 		}
 
 		/// Test multiple die rolls where second condition is driven by a variable and fails
@@ -115,7 +115,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Conditions = new List<Condition>
 				{
-					new Condition("b", "ar = 2", throwOnFail: true)
+					new Condition("b", "ar == 2", throwOnFail: true)
 				}
 			};
 
@@ -371,7 +371,7 @@ namespace TTRPG.Engine.Tests
 			};
 
 			// die c throws an exception because it does not know about the mapped input
-			Assert.Throws<EquationInputArgumentException>(() => EquationService.Process(sequence));
+			Assert.Throws<CustomFunctionArgumentException>(() => EquationService.Process(sequence));
 		}
 
 		/// Test inject mapped input variables into custom function
@@ -383,7 +383,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "random(1,minValue,maxValue)", "ar"),
+					new SequenceItem("a", "rnd(1,minValue,maxValue)", "ar"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -510,7 +510,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Conditions = new List<Condition>
 				{
-					new Condition("aa = 1")
+					new Condition("aa == 1")
 				}
 			};
 			var entities = new List<Entity>
@@ -537,7 +537,7 @@ namespace TTRPG.Engine.Tests
 				},
 				Conditions = new List<Condition>
 				{
-					new Condition("aa = 1")
+					new Condition("aa == 1")
 				}
 			};
 			var entities = new List<Entity>

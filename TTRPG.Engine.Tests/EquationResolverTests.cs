@@ -62,7 +62,7 @@ namespace TTRPG.Engine.Tests
 			{
 			};
 
-			Assert.Throws<EquationInputArgumentException>(() => EquationResolver.Process(equation, inputs));
+			Assert.Throws<CustomFunctionArgumentException>(() => EquationResolver.Process(equation, inputs));
 		}
 
 		[Test]
@@ -73,14 +73,14 @@ namespace TTRPG.Engine.Tests
 			{
 			};
 
-			Assert.Throws<UnknownCustomFunctionException>(() => EquationResolver.Process(equation, inputs));
+			Assert.Throws<EquationResolverException>(() => EquationResolver.Process(equation, inputs));
 		}
 
 		[Test]
 		[Repeat(1000)]
 		public void Process_RandomFunction_InsertsRandomValue()
 		{
-			var equation = "random(1,1,6)";
+			var equation = "rnd(1,1,6)";
 			var inputs = new Dictionary<string, string>()
 			{
 			};
@@ -95,7 +95,7 @@ namespace TTRPG.Engine.Tests
 		[Repeat(1000)]
 		public void Process_TossFunction_Inserts0or1()
 		{
-			var equation = "toss(0)";
+			var equation = "toss()";
 			var inputs = new Dictionary<string, string>()
 			{
 			};
@@ -110,7 +110,7 @@ namespace TTRPG.Engine.Tests
 		[Repeat(10000)]
 		public void Process_RandomFunctionWithVars_InsertsRandomValue()
 		{
-			var equation = "random(count,minRange,maxRange)";
+			var equation = "rnd(count,minRange,maxRange)";
 			var inputs = new Dictionary<string, string>()
 			{
 				{ "count", "1" },
@@ -127,11 +127,11 @@ namespace TTRPG.Engine.Tests
 		[Repeat(1000)]
 		public void Process_UseExpressionString_SucceedsAndFast()
 		{
-			var equation = "a + b";
+			var equation = "a + ~b~";
 			var inputs = new Dictionary<string, string>()
 			{
 				{ "a", "1" },
-				{ "b", "floor(1.5)" }
+				{ "~b~", "floor(1.5)" }
 			};
 
 			var result = EquationResolver.Process(equation, inputs);

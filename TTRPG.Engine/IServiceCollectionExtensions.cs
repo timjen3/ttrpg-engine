@@ -1,6 +1,8 @@
+using System;
+using System.Linq;
+using Jace;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using org.mariuszgromada.math.mxparser;
 using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.CommandParsing.Processors;
@@ -9,7 +11,6 @@ using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.Engine;
 using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Equations;
-using TTRPG.Engine.Equations.Extensions;
 
 namespace TTRPG.Engine
 {
@@ -25,8 +26,19 @@ namespace TTRPG.Engine
 		/// <returns></returns>
 		public static IServiceCollection AddTTRPGEngineServices(this IServiceCollection services)
 		{
-			services.AddSingleton(new Function("random", new RandomFunctionExtension()));
-			services.AddSingleton(new Function("toss", new CoinTossFunctionExtension()));
+			services.AddSingleton(sp =>
+			{
+				var random = new Random();
+				var engine = new CalculationEngine();
+				// add a couple extra functions
+				engine.AddFunction("rnd", (count, minRange, maxRange)
+					=> Enumerable.Range(1, (int) Math.Floor(count))
+						.Select(i => random.Next((int)Math.Floor(minRange), (int)Math.Floor(maxRange) + 1))
+						.Sum(), false);
+				engine.AddFunction("toss", () => random.Next(0, 1), false);
+
+				return engine;
+			});
 			services.AddSingleton<IEquationResolver, EquationResolver>();
 			services.AddSingleton<IEquationService, EquationService>();
 			services.AddSingleton<IInventoryService, InventoryService>();

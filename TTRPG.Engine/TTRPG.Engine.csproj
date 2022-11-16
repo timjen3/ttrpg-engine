@@ -36,7 +36,7 @@ https://github.com/timjen3/ttrpg-engine/blob/main/Readme.md</Description>
 
   <ItemGroup>
     <PackageReference Include="FormatWith" Version="3.0.1" />
-    <PackageReference Include="MathParser.org-mXparser" Version="5.0.7" />
+    <PackageReference Include="Jace" Version="1.0.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.28" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>

@@ -8,7 +8,7 @@ namespace TTRPG.Engine.Equations
 	public interface IEquationResolver
 	{
 		/// <summary>
-		///		Resolves an mxParser expression
+		///		Resolves a mathematical expression using provided inputs
 		/// </summary>
 		/// <param name="equation"></param>
 		/// <param name="inputs">Arguments to inject into the equation</param>

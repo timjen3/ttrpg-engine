@@ -15,7 +15,7 @@
 			},
 			{
 				"Name": "Display Hours",
-				"Equation": "(current_time # 24) - time_decimal",
+				"Equation": "(current_time % 24) - time_decimal",
 				"ResultName": "display_hours"
 			},
 			{

@@ -11,7 +11,7 @@
 		"Items": [
 			{
 				"Name": "Damage",
-				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
+				"Equation": "max(rnd(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
 				"ResultName": "damage",
 				"SetComplete": true,
 				"Produces": [ "IntentionMessage", "DamageMessage" ]
@@ -24,7 +24,7 @@
 			},
 			{
 				"Name": "Claim Meat",
-				"Equation": "current_meat + ceil((hp - new_hp) / 4)",
+				"Equation": "current_meat + ceiling((hp - new_hp) / 4)",
 				"ResultName": "new_meat",
 				"Produces": [ "UpdateMeat", "MeatTakenMessage" ]
 			},
