@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
+using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
 using TTRPG.Engine.SequenceItems;
@@ -31,7 +32,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1 + 1", "ar", SequenceItemEquationType.Algorithm)
+					new SequenceItem("a", "1 + 1", "ar")
 				}
 			};
 
@@ -48,8 +49,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1 + 1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "1 + ar", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1 + 1", "ar"),
+					new SequenceItem("b", "1 + ar", "br"),
 				}
 			};
 
@@ -67,8 +68,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1 + 1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "1 + ar", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1 + 1", "ar"),
+					new SequenceItem("b", "1 + ar", "br"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -90,7 +91,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1 + 1", "ar", SequenceItemEquationType.Algorithm)
+					new SequenceItem("a", "1 + 1", "ar")
 				},
 				Conditions = new List<Condition>
 				{
@@ -109,8 +110,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "1 + ar", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
+					new SequenceItem("b", "1 + ar", "br"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -129,8 +130,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "1", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
+					new SequenceItem("b", "1", "br"),
 				}
 			};
 
@@ -151,7 +152,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -177,7 +178,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -201,7 +202,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -222,8 +223,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "2", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
+					new SequenceItem("b", "2", "br"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -246,7 +247,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
 				},
 				Conditions = new List<Condition>
 				{
@@ -266,7 +267,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "im", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "im", "ar"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -291,8 +292,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "arr", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
+					new SequenceItem("b", "arr", "br"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -313,8 +314,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "ar + arr", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
+					new SequenceItem("b", "ar + arr", "br"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -335,9 +336,9 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "1", "br", SequenceItemEquationType.Algorithm),
-					new SequenceItem("c", "arr + brr", "cr", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
+					new SequenceItem("b", "1", "br"),
+					new SequenceItem("c", "arr + brr", "cr"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -359,9 +360,9 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "arr", "br", SequenceItemEquationType.Algorithm),
-					new SequenceItem("c", "arr", "cr", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "1", "ar"),
+					new SequenceItem("b", "arr", "br"),
+					new SequenceItem("c", "arr", "cr"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -382,7 +383,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "random(1,minValue,maxValue)", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "random(1,minValue,maxValue)", "ar"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -410,8 +411,8 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "a", "ar", SequenceItemEquationType.Algorithm),
-					new SequenceItem("b", "a", "br", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "a", "ar"),
+					new SequenceItem("b", "a", "br"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -436,7 +437,7 @@ namespace TTRPG.Engine.Tests
 			{
 				Items = new List<SequenceItem>
 				{
-					new SequenceItem("a", "aa", "ar", SequenceItemEquationType.Algorithm),
+					new SequenceItem("a", "aa", "ar"),
 				},
 				Mappings = new List<Mapping>
 				{
@@ -605,7 +606,6 @@ namespace TTRPG.Engine.Tests
 						"a",
 						"0",
 						"r1",
-						SequenceItemEquationType.Algorithm,
 						false
 					)
 				}
@@ -628,7 +628,6 @@ namespace TTRPG.Engine.Tests
 						"a",
 						"0",
 						"r1",
-						SequenceItemEquationType.Algorithm,
 						true
 					)
 				}
@@ -651,7 +650,6 @@ namespace TTRPG.Engine.Tests
 						"a",
 						"0",
 						"r1",
-						SequenceItemEquationType.Algorithm,
 						true
 					)
 				},
@@ -668,6 +666,232 @@ namespace TTRPG.Engine.Tests
 			var result = EquationService.Process(sequence, inputs: inputs);
 
 			Assert.IsFalse(result.Completed);
+		}
+
+		[Test]
+		public void Check_MessageEventOnCompletedItemConditionTrue_EventIsProduced()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"0",
+						"r1",
+						true,
+						new List<string> { "e1" }
+					)
+				},
+				Events = new List<EventConfig>
+				{
+					new MessageEventConfig
+					{
+						Name = "e1",
+						Level = MessageEventLevel.Info,
+						Condition = "1",
+						MessageTemplate = "test message"
+					}
+				}
+			};
+			var result = EquationService.Process(sequence);
+
+			Assert.That(result.Events, Has.Count.EqualTo(1));
+			Assert.That(result.Events[0], Is.InstanceOf<MessageEvent>());
+			var @event = (MessageEvent) result.Events[0];
+			Assert.That(@event.Name, Is.EqualTo("e1"));
+			Assert.That(@event.Level, Is.EqualTo(MessageEventLevel.Info));
+		}
+
+		[Test]
+		public void Check_MessageEventOnCompletedItemNoCondition_EventIsProduced()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"0",
+						"r1",
+						true,
+						new List<string> { "e1" }
+					)
+				},
+				Events = new List<EventConfig>
+				{
+					new MessageEventConfig
+					{
+						Name = "e1",
+						Level = MessageEventLevel.Info,
+						Condition = null,
+						MessageTemplate = "test message"
+					}
+				}
+			};
+			var result = EquationService.Process(sequence);
+
+			Assert.That(result.Events, Has.Count.EqualTo(1));
+			Assert.That(result.Events[0], Is.InstanceOf<MessageEvent>());
+			var @event = (MessageEvent)result.Events[0];
+			Assert.That(@event.Name, Is.EqualTo("e1"));
+			Assert.That(@event.Level, Is.EqualTo(MessageEventLevel.Info));
+		}
+
+		[Test]
+		public void Check_MessageEventOnCompletedItemConditionFalse_EventIsNotProduced()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"0",
+						"r1",
+						true,
+						new List<string> { "e1" }
+					)
+				},
+				Events = new List<EventConfig>
+				{
+					new MessageEventConfig
+					{
+						Name = "e1",
+						Level = MessageEventLevel.Info,
+						Condition = "0",
+						MessageTemplate = "test message"
+					}
+				}
+			};
+			var result = EquationService.Process(sequence);
+
+			Assert.That(result.Events, Has.Count.EqualTo(0));
+		}
+
+		[Test]
+		public void Check_AttEventsOnCompletedItemConditionTrue_EventIsProduced()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"1",
+						"r1",
+						true,
+						new List<string> { "e1" }
+					)
+				},
+				Events = new List<EventConfig>
+				{
+					new UpdateAttributesEventConfig
+					{
+						Name = "e1",
+						Condition = "1",
+						AttributeName = "a",
+						EntityAlias = "alias1",
+						Source = "r1"
+					}
+				}
+			};
+			var entity = new Entity(
+				"entity1",
+				new Dictionary<string, string> { { "a", "0" } }
+			);
+			var entities = new List<Entity>() { entity.CloneAs("alias1") };
+			var result = EquationService.Process(sequence, entities: entities);
+
+			Assert.That(result.Events, Has.Count.EqualTo(1));
+			Assert.That(result.Events[0], Is.InstanceOf<UpdateAttributesEvent>());
+			var @event = (UpdateAttributesEvent)result.Events[0];
+			Assert.That(@event.Name, Is.EqualTo("e1"));
+			Assert.That(@event.OldValue, Is.EqualTo("0"));
+			Assert.That(@event.NewValue, Is.EqualTo("1"));
+			Assert.That(@event.AttributeToUpdate, Is.EqualTo("a"));
+			Assert.That(@event.EntityName, Is.EqualTo("entity1"));
+		}
+
+		[Test]
+		public void Check_AttEventsOnCompletedItemNoCondition_EventIsProduced()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"1",
+						"r1",
+						true,
+						new List<string> { "e1" }
+					)
+				},
+				Events = new List<EventConfig>
+				{
+					new UpdateAttributesEventConfig
+					{
+						Name = "e1",
+						Condition = null,
+						AttributeName = "a",
+						EntityAlias = "alias1",
+						Source = "r1"
+					}
+				}
+			};
+			var entity = new Entity(
+				"entity1",
+				new Dictionary<string, string> { { "a", "0" } }
+			);
+			var entities = new List<Entity>() { entity.CloneAs("alias1") };
+			var result = EquationService.Process(sequence, entities: entities);
+
+			Assert.That(result.Events, Has.Count.EqualTo(1));
+			Assert.That(result.Events[0], Is.InstanceOf<UpdateAttributesEvent>());
+			var @event = (UpdateAttributesEvent)result.Events[0];
+			Assert.That(@event.Name, Is.EqualTo("e1"));
+			Assert.That(@event.OldValue, Is.EqualTo("0"));
+			Assert.That(@event.NewValue, Is.EqualTo("1"));
+			Assert.That(@event.AttributeToUpdate, Is.EqualTo("a"));
+			Assert.That(@event.EntityName, Is.EqualTo("entity1"));
+		}
+
+		[Test]
+		public void Check_AttEventsOnCompletedItemConditionFalse_EventIsNotProduced()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"1",
+						"r1",
+						true,
+						new List<string> { "e1" }
+					)
+				},
+				Events = new List<EventConfig>
+				{
+					new UpdateAttributesEventConfig
+					{
+						Name = "e1",
+						Condition = "0",
+						AttributeName = "a",
+						EntityAlias = "alias1",
+						Source = "r1"
+					}
+				}
+			};
+			var entity = new Entity(
+				"entity1",
+				new Dictionary<string, string> { { "a", "0" } }
+			);
+			var entities = new List<Entity>() { entity.CloneAs("alias1") };
+			var result = EquationService.Process(sequence, entities: entities);
+
+			Assert.That(result.Events, Has.Count.EqualTo(0));
 		}
 	}
 }

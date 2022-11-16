@@ -10,53 +10,29 @@
 		},
 		"Items": [
 			{
-				"Name": "Intention",
-				"Equation": "{farmer_name} {wAction} at {crop_name}.",
-				"ResultName": "intention",
-				"SequenceItemEquationType": "Message"
-			},
-			{
 				"Name": "Damage",
 				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
 				"ResultName": "damage",
-				"SequenceItemEquationType": "Algorithm",
-				"SetComplete": true
-			},
-			{
-				"Name": "Report Damage",
-				"Equation": "{farmer_name} dealt {damage} damage to {crop_name} from {wHits} {wAction}.",
-				"ResultName": "DamageMsg",
-				"SequenceItemEquationType": "Message"
+				"SetComplete": true,
+				"Produces": [ "IntentionMessage", "DamageMessage" ]
 			},
 			{
 				"Name": "Take Damage",
 				"Equation": "max(hp - damage, 0)",
 				"ResultName": "new_hp",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Report Damage Taken",
-				"Equation": "{crop_name} HP : {old_hp} => {new_hp}",
-				"ResultName": "DamageTakenMsg",
-				"SequenceItemEquationType": "Message"
+				"Produces": [ "UpdateHP", "DamageTakenMessage" ]
 			},
 			{
 				"Name": "Claim Meat",
 				"Equation": "current_meat + ceil((hp - new_hp) / 4)",
 				"ResultName": "new_meat",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Report Meat Taken",
-				"Equation": "Got meat : {current_meat} => {new_meat}",
-				"ResultName": "MeatTakenMsg",
-				"SequenceItemEquationType": "Message"
+				"Produces": [ "UpdateMeat", "MeatTakenMessage" ]
 			},
 			{
 				"Name": "Drain Stamina",
 				"Equation": "farmer_stamina - 1",
 				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm"
+				"Produces": [ "UpdateStamina" ]
 			}
 		],
 		"Conditions": [
@@ -176,7 +152,7 @@
 			{
 				"From": "hits",
 				"To": "wHits",
-				"ItemName": "Report Damage",
+				"ItemName": null,
 				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
@@ -193,24 +169,15 @@
 			{
 				"From": "str",
 				"To": "str",
-				"ItemName": "Damage",
+				"ItemName": null,
 				"EntityName": "farmer",
 				"MappingType": "Entity",
 				"ThrowOnFailure": true
 			},
 			{
-				"From": "hits",
-				"To": "wHits",
-				"ItemName": "Damage",
-				"EntityName": "farmer",
-				"InventoryItemName": "weapon",
-				"MappingType": "InventoryItem",
-				"ThrowOnFailure": true
-			},
-			{
 				"From": "min",
 				"To": "wMin",
-				"ItemName": "Damage",
+				"ItemName": null,
 				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
@@ -219,7 +186,7 @@
 			{
 				"From": "max",
 				"To": "wMax",
-				"ItemName": "Damage",
+				"ItemName": null,
 				"EntityName": "farmer",
 				"InventoryItemName": "weapon",
 				"MappingType": "InventoryItem",
@@ -237,7 +204,7 @@
 			{
 				"From": "hp",
 				"To": "old_hp",
-				"ItemName": "Report Damage Taken",
+				"ItemName": null,
 				"EntityName": "crop",
 				"MappingType": "Entity",
 				"ThrowOnFailure": true
@@ -267,24 +234,51 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "HP",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateHP",
+				"AttributeName": "HP",
 				"Source": "new_hp",
-				"EntityName": "crop"
+				"EntityAlias": "crop"
 			},
 			{
-				"Name": "Meat",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateMeat",
+				"AttributeName": "meat",
 				"Source": "new_meat",
-				"EntityName": "farmer"
+				"EntityAlias": "farmer"
 			},
 			{
-				"Name": "Stamina",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateStamina",
+				"AttributeName": "stamina",
 				"Source": "new_stamina",
-				"EntityName": "farmer"
+				"EntityAlias": "farmer"
+			},
+			{
+				"EventType": "Message",
+				"Name": "IntentionMessage",
+				"MessageTemplate": "{farmer_name} {wAction} at {crop_name}.",
+				"Level": "Info"
+			},
+			{
+				"EventType": "Message",
+				"Name": "DamageMessage",
+				"MessageTemplate": "{farmer_name} dealt {damage} damage to {crop_name} from {wHits} {wAction}.",
+				"Level": "Info"
+			},
+			{
+				"EventType": "Message",
+				"Name": "DamageTakenmessage",
+				"MessageTemplate": "{crop_name} HP : {old_hp} => {new_hp}",
+				"Level": "Info"
+			},
+			{
+				"EventType": "Message",
+				"Name": "MeatTakenMessage",
+				"MessageTemplate": "Got meat : {current_meat} => {new_meat}",
+				"Level": "Info"
 			}
 		],
 		"EntityConditions": [

@@ -13,13 +13,7 @@
 				"Name": "Refreshed Stamina",
 				"Equation": "max_stamina",
 				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Report Rest",
-				"Equation": "{sleeper_name} took a nap and feels well rested. Stamina recovered: {max_stamina} / {max_stamina}",
-				"ResultName": "rest_message",
-				"SequenceItemEquationType": "Message"
+				"Produces": [ "UpdateStamina", "RestMessage" ]
 			}
 		],
 		"Mappings": [
@@ -40,12 +34,19 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "Stamina",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateStamina",
+				"AttributeName": "Stamina",
 				"Source": "new_stamina",
-				"EntityName": "sleeper"
+				"EntityAlias": "sleeper"
+			},
+			{
+				"EventType": "Message",
+				"Name": "RestMessage",
+				"MessageTemplate": "{sleeper_name} took a nap and feels well rested. Stamina recovered: {max_stamina} / {max_stamina}",
+				"Level": "Info"
 			}
 		]
 	}

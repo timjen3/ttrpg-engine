@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
@@ -29,7 +30,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 
 						return new KeyValuePair<string, string>(templateName, template);
 					})
-					.ToDictionary(kvp => $"[[{kvp.Key}]]", kvp => kvp.Value, StringComparer.OrdinalIgnoreCase);
+					.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.OrdinalIgnoreCase);
 			}
 			else if (_messageTemplates == null)
 				_messageTemplates = new Dictionary<string, string>();
@@ -84,13 +85,13 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			var templates = await GetMessageTemplatesAsync();
 			foreach (var sequence in _sequences)
 			{
-				foreach (var item in sequence.Items)
+				foreach (var @event in sequence.Events)
 				{
-					if (item.SequenceItemEquationType == SequenceItemEquationType.Message)
+					if (@event is MessageEventConfig mEvent)
 					{
-						if (templates.ContainsKey(item.Equation))
+						if (mEvent.TemplateFilename != null && templates.ContainsKey(mEvent.TemplateFilename))
 						{
-							item.Equation = templates[item.Equation];
+							mEvent.MessageTemplate = templates[mEvent.TemplateFilename];
 						}
 					}
 				}

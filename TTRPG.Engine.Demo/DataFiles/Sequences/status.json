@@ -4,10 +4,10 @@
 		"Example": "Status [miner:target]",
 		"Items": [
 			{
-				"Name": "Report Status",
-				"Equation": "[[output_target_status]]",
+				"Name": "_",
+				"Equation": "1",
 				"ResultName": "status_message",
-				"SequenceItemEquationType": "Message"
+				"Produces": [ "ReportStatus" ]
 			}
 		],
 		"Mappings": [
@@ -88,6 +88,14 @@
 			{
 				"EntityName": "target",
 				"RequiredCategories": []
+			}
+		],
+		"Events": [
+			{
+				"EventType": "Message",
+				"Name": "ReportStatus",
+				"TemplateFilename": "output_target_status",
+				"Level": "Info"
 			}
 		]
 	}

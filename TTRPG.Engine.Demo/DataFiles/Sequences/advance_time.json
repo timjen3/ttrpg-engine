@@ -7,13 +7,13 @@
 				"Name": "Updated Turn",
 				"Equation": "current_turn + 1",
 				"ResultName": "new_turn",
-				"SequenceItemEquationType": "Algorithm"
+				"Produces": [ "UpdateTurn" ]
 			},
 			{
 				"Name": "Updated Time",
 				"Equation": "current_time + (elapsed * 5/300)",
 				"ResultName": "new_time",
-				"SequenceItemEquationType": "Algorithm"
+				"Produces": [ "UpdateTime" ]
 			}
 		],
 		"Mappings": [
@@ -42,18 +42,20 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "Time",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateTime",
+				"AttributeName": "time",
 				"Source": "new_time",
-				"EntityName": "time"
+				"EntityAlias": "time"
 			},
 			{
-				"Name": "Turn",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateTurn",
+				"AttributeName": "turn",
 				"Source": "new_turn",
-				"EntityName": "time"
+				"EntityAlias": "time"
 			}
 		]
 	}

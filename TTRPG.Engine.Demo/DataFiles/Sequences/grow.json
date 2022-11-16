@@ -7,13 +7,7 @@
 				"Name": "Updated Age",
 				"Equation": "min(current_age + (elapsed / 15), maturity)",
 				"ResultName": "new_age",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Report Maturity",
-				"Equation": "{crop_name} has matured!",
-				"ResultName": "maturity_message",
-				"SequenceItemEquationType": "Message"
+				"Produces": [ "UpdateAge", "MaturityMessage" ]
 			}
 		],
 		"Conditions": [
@@ -21,15 +15,6 @@
 				"DependentOnItem": null,
 				"Equation": "current_age < maturity",
 				"ThrowOnFail": false,
-				"FailureMessage": null
-			},
-			{
-				"DependentOnItem": "Updated Age",
-				"Equation": "new_age >= maturity",
-				"ThrowOnFail": false,
-				"ItemNames": [
-					"Report Maturity"
-				],
 				"FailureMessage": null
 			}
 		],
@@ -67,12 +52,20 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "Age",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateAge",
+				"AttributeName": "Age",
 				"Source": "new_age",
-				"EntityName": "grower"
+				"EntityAlias": "grower"
+			},
+			{
+				"EventType": "Message",
+				"Name": "MaturityMessage",
+				"MessageTemplate": "{crop_name} has matured!",
+				"Level": "Info",
+				"Condition": "new_age >= maturity"
 			}
 		]
 	}

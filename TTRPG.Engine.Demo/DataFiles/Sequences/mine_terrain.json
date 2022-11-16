@@ -10,54 +10,30 @@
 		},
 		"Items": [
 			{
-				"Name": "Intention",
-				"Equation": "{miner_name} {wAction} at {terrain_name}.",
-				"ResultName": "intention",
-				"SequenceItemEquationType": "Message"
-			},
-			{
 				"Name": "Damage",
 				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
 				"ResultName": "damage",
-				"SequenceItemEquationType": "Algorithm",
-				"SetComplete": true
-			},
-			{
-				"Name": "Report Damage",
-				"Equation": "{miner_name} dealt {damage} damage to {terrain_name} from {wHits} {wAction}.",
-				"ResultName": "DamageMsg",
-				"SequenceItemEquationType": "Message"
+				"SetComplete": true,
+				"Produces": [ "IntentionMessage", "DamageMessage" ]
 			},
 			{
 				"Name": "Take Damage",
 				"Equation": "max(hp - damage, 0)",
 				"ResultName": "new_hp",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Report Damage Taken",
-				"Equation": "{terrain_name} HP : {old_hp} => {new_hp}",
-				"ResultName": "DamageTakenMsg",
-				"SequenceItemEquationType": "Message"
+				"Produces": [ "UpdateHP", "DamageTakenMessage" ]
 			},
 			{
 				"Name": "Claim Resources",
 				"old_Equation": "current_quantity + max(floor(terrain_max_hp / 3), 1)",
 				"Equation": "current_quantity + ceil((hp - new_hp) / 4)",
 				"ResultName": "new_quantity",
-				"SequenceItemEquationType": "Algorithm"
-			},
-			{
-				"Name": "Report Resources Taken",
-				"Equation": "Got resources : {current_quantity} => {new_quantity}",
-				"ResultName": "ResourcesTakenMsg",
-				"SequenceItemEquationType": "Message"
+				"Produces": [ "UpdateResource", "ResourceMessage" ]
 			},
 			{
 				"Name": "Drain Stamina",
 				"Equation": "miner_stamina - 1",
 				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm"
+				"Produces": [ "UpdateStamina" ]
 			}
 		],
 		"Conditions": [
@@ -179,7 +155,7 @@
 			{
 				"From": "hits",
 				"To": "wHits",
-				"ItemName": "Report Damage",
+				"ItemName": null,
 				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
@@ -196,7 +172,7 @@
 			{
 				"From": "str",
 				"To": "str",
-				"ItemName": "Damage",
+				"ItemName": null,
 				"EntityName": "miner",
 				"MappingType": "Entity",
 				"ThrowOnFailure": true
@@ -204,7 +180,7 @@
 			{
 				"From": "hits",
 				"To": "wHits",
-				"ItemName": "Damage",
+				"ItemName": null,
 				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
@@ -213,7 +189,7 @@
 			{
 				"From": "min",
 				"To": "wMin",
-				"ItemName": "Damage",
+				"ItemName": null,
 				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
@@ -222,7 +198,7 @@
 			{
 				"From": "max",
 				"To": "wMax",
-				"ItemName": "Damage",
+				"ItemName": null,
 				"EntityName": "miner",
 				"InventoryItemName": "pick",
 				"MappingType": "InventoryItem",
@@ -240,7 +216,7 @@
 			{
 				"From": "hp",
 				"To": "old_hp",
-				"ItemName": "Report Damage Taken",
+				"ItemName": null,
 				"EntityName": "terrain",
 				"MappingType": "Entity",
 				"ThrowOnFailure": true
@@ -254,25 +230,47 @@
 				"ThrowOnFailure": true
 			}
 		],
-		"ResultItems": [
+		"Events": [
 			{
-				"Name": "HP",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateHP",
+				"AttributeName": "HP",
 				"Source": "new_hp",
-				"EntityName": "terrain"
+				"EntityAlias": "terrain"
 			},
 			{
-				"Name": "Quantity",
-				"Category": "UpdateAttribute",
-				"FormatMessage": "{resource}",
-				"Source": "new_quantity",
-				"EntityName": "miner"
-			},
-			{
-				"Name": "Stamina",
-				"Category": "UpdateAttribute",
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateStamina",
+				"AttributeName": "stamina",
 				"Source": "new_stamina",
-				"EntityName": "miner"
+				"EntityAlias": "miner"
+			},
+			{
+				"EventType": "UpdateAttributes",
+				"Name": "UpdateResource",
+				"AttributeName": "{resource}",
+				"Source": "new_quantity",
+				"EntityAlias": "miner"
+			},
+			{
+				"Name": "IntentionMessage",
+				"EventType": "Message",
+				"MessageTemplate": "{miner_name} {wAction} at {terrain_name}."
+			},
+			{
+				"Name": "DamageMessage",
+				"EventType": "Message",
+				"MessageTemplate": "{miner_name} dealt {damage} damage to {terrain_name} from {wHits} {wAction}."
+			},
+			{
+				"Name": "DamageTakenMessage",
+				"EventType": "Message",
+				"MessageTemplate": "{terrain_name} HP : {old_hp} => {new_hp}"
+			},
+			{
+				"Name": "ResourceMessage",
+				"EventType": "Message",
+				"MessageTemplate": "Got resources : {current_quantity} => {new_quantity}"
 			}
 		],
 		"EntityConditions": [

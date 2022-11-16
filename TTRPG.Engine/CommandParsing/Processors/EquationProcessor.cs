@@ -27,40 +27,14 @@ namespace TTRPG.Engine.CommandParsing.Processors
 		public ProcessedCommand Process()
 		{
 			var result = _service.Process(_sequence, _command.Inputs, _command.Entities);
-
-			// generate message events
-			var messages = result.Results
-				.Where(x => x.ResolvedItem.SequenceItemEquationType == SequenceItems.SequenceItemEquationType.Message)
-				.Select(x => new MessageEvent
-				{
-					Level = MessageEventLevel.Info,
-					Message = x.Result
-				});
-
 			var processed = new ProcessedCommand
 			{
 				Source = _command,
 				CommandCategories = _sequence.Categories,
 				CategoryParams = _sequence.CategoryParams,
-				Completed = result.Completed
+				Completed = result.Completed,
+				Events = result.Events
 			};
-			processed.Events.AddRange(messages);
-
-			// generate update attributes events
-			foreach (var itemResult in result.ResultItems)
-			{
-				if (itemResult.Category.StartsWith("UpdateAttribute", StringComparison.OrdinalIgnoreCase))
-				{
-					var attributeToUpdate = itemResult.FormatMessage ?? itemResult.Name;
-					processed.Events.Add(new UpdateAttributesEvent
-					{
-						AttributeToUpdate = attributeToUpdate,
-						EntityName = itemResult.Entity.Name,
-						OldValue = "?",  // need to populate this from the sequence, not the game object...since the sequence has a clone created at the time it was kicked off
-						NewValue = itemResult.Result
-					});
-				}
-			}
 
 			return processed;
 		}

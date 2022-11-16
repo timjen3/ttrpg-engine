@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using Newtonsoft.Json;
+using TTRPG.Engine.Data.TtrpgDataLoaders;
+using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.SequenceItems;
 
 namespace TTRPG.Engine.Sequences
@@ -11,7 +14,8 @@ namespace TTRPG.Engine.Sequences
 
 		public List<SequenceItem> Items { get; set; } = new List<SequenceItem>();
 
-		public List<ResultItem> ResultItems { get; set; } = new List<ResultItem>();
+		[JsonProperty(ItemConverterType = typeof(TTRPGEventConfigJsonConverter))]
+		public List<EventConfig> Events { get; set; } = new List<EventConfig>();
 
 		public List<Condition> Conditions { get; set; } = new List<Condition>();
 

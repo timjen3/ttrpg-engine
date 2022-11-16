@@ -167,8 +167,8 @@
         <member name="M:TTRPG.Engine.Equations.EquationService.GetResult(TTRPG.Engine.SequenceItems.SequenceItem,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String}@,System.Collections.Generic.IDictionary{System.String,System.String})">
             Process a sequence item and get the result
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationService.ProcessResults(System.Collections.Generic.IEnumerable{TTRPG.Engine.SequenceItems.ResultItem},System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
-            Process a sequence item and get the result
+        <member name="M:TTRPG.Engine.Equations.EquationService.ProcessResults(System.Collections.Generic.IEnumerable{TTRPG.Engine.Engine.Events.EventConfig},System.Collections.Generic.IDictionary{System.String,System.String},System.Collections.Generic.IEnumerable{TTRPG.Engine.Entity})">
+            Process event config and set results
         </member>
         <member name="M:TTRPG.Engine.Equations.EquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Entity,System.Collections.Generic.IDictionary{System.String,System.String})">
             <see cref="M:TTRPG.Engine.Equations.IEquationService.Process(TTRPG.Engine.SequenceItems.SequenceItem,TTRPG.Engine.Entity,System.Collections.Generic.IDictionary{System.String,System.String})"/>
@@ -359,27 +359,9 @@
         <member name="F:TTRPG.Engine.MappingType.InventoryItem">
             item is mapped from an inventory item
         </member>
-        <member name="T:TTRPG.Engine.SequenceItems.ResultItem">
-            Configures a result
-        </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItem">
             <summary>
             	The result is loaded into inputs to be made available to following equations
-            </summary>
-        </member>
-        <member name="T:TTRPG.Engine.SequenceItems.SequenceItemEquationType">
-            <summary>
-            	Identifies the equation type of the sequence item
-            </summary>
-        </member>
-        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemEquationType.Algorithm">
-            <summary>
-            	Equation will be processed as an algorithm
-            </summary>
-        </member>
-        <member name="F:TTRPG.Engine.SequenceItems.SequenceItemEquationType.Message">
-            <summary>
-            	Equation will be processed as a message
             </summary>
         </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItemResult">
@@ -412,20 +394,13 @@
             	Parses and processes commands
             </summary>
         </member>
-        <member name="M:TTRPG.Engine.TTRPGEngine.#ctor(TTRPG.Engine.CommandParsing.ICommandProcessorFactory,System.Collections.Generic.IEnumerable{TTRPG.Engine.CommandParsing.Parsers.ICommandParser},TTRPG.Engine.Engine.IAutomaticCommandFactory,TTRPG.Engine.Engine.Events.ITTRPGEventHandler)">
+        <member name="M:TTRPG.Engine.TTRPGEngine.#ctor(TTRPG.Engine.CommandParsing.ICommandProcessorFactory,TTRPG.Engine.Engine.IAutomaticCommandFactory,TTRPG.Engine.Engine.Events.ITTRPGEventHandler)">
             <summary>
             	Create new instance of the TTRPGEngine
             </summary>
             <param name="factory"></param>
-            <param name="parsers"></param>
             <param name="autoCommandFactory"></param>
             <param name="eventHandler"></param>
-        </member>
-        <member name="M:TTRPG.Engine.TTRPGEngine.GetExampleCommands">
-            <summary>
-            	Returns example commands from all parsers
-            </summary>
-            <returns></returns>
         </member>
         <member name="M:TTRPG.Engine.TTRPGEngine.Process(System.String)">
             <summary>

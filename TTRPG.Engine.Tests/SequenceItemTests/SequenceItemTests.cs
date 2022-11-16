@@ -37,28 +37,12 @@ namespace TTRPG.Engine.Tests
 		{
 			int equationResult = 1;
 			int order = 0;
-			var item = new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm);
+			var item = new SequenceItem("a", "1", "ar");
 			var resolver = MockEquationService(equationResult);
 
 			var result = resolver.GetResult(item, order, ref GlobalInputs);
 
 			Assert.That(result.Result, Is.EqualTo(equationResult.ToString()));
-			Assert.That(result.Order, Is.EqualTo(order));
-		}
-
-		/// Test that a sequence item resolves a basic message
-		[Test]
-		public void SequenceItemResolvesMessageTest()
-		{
-			string messageResult = "Hello a.";
-			int order = 0;
-			var item = new SequenceItem("a", "Hello {name}.", "ar", SequenceItemEquationType.Message);
-			var resolver = MockEquationService(0);
-			MappedInputs["name"] = "a";
-
-			var result = resolver.GetResult(item, order, ref GlobalInputs, MappedInputs);
-
-			Assert.That(result.Result, Is.EqualTo(messageResult));
 			Assert.That(result.Order, Is.EqualTo(order));
 		}
 
@@ -68,44 +52,12 @@ namespace TTRPG.Engine.Tests
 		{
 			int equationResult = 1;
 			int order = 0;
-			var item = new SequenceItem("a", "1", "ar", SequenceItemEquationType.Algorithm);
+			var item = new SequenceItem("a", "1", "ar");
 			var resolver = MockEquationService(equationResult);
 
 			var result = resolver.Process(item, Entity, MappedInputs);
 
 			Assert.That(result.Result, Is.EqualTo(equationResult.ToString()));
-			Assert.That(result.Order, Is.EqualTo(order));
-		}
-
-		/// Test that a sequence item can be processed individually
-		[Test]
-		public void SequenceItemProcessMessageTest()
-		{
-			string messageResult = "Hello a.";
-			int order = 0;
-			var item = new SequenceItem("a", "Hello {name}.", "ar", SequenceItemEquationType.Message);
-			var resolver = MockEquationService(0);
-			MappedInputs["name"] = "a";
-
-			var result = resolver.Process(item, Entity, MappedInputs);
-
-			Assert.That(result.Result, Is.EqualTo(messageResult));
-			Assert.That(result.Order, Is.EqualTo(order));
-		}
-
-		/// Test that a sequence item can be processed individually
-		[Test]
-		public void SequenceItemProcessMessageWithEntityTest()
-		{
-			string messageResult = "Hello a.";
-			int order = 0;
-			var item = new SequenceItem("a", "Hello {name}.", "ar", SequenceItemEquationType.Message);
-			var resolver = MockEquationService(0);
-			Entity.Attributes["name"] = "a";
-
-			var result = resolver.Process(item, Entity, MappedInputs);
-
-			Assert.That(result.Result, Is.EqualTo(messageResult));
 			Assert.That(result.Order, Is.EqualTo(order));
 		}
 	}

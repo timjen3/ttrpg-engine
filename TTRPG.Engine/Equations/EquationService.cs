@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FormatWith;
+using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Exceptions;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
@@ -149,14 +150,7 @@ namespace TTRPG.Engine.Equations
 			result.Order = order;
 			result.Inputs = mappedInputs;
 			result.ResolvedItem = item;
-			if (item.SequenceItemEquationType == SequenceItemEquationType.Algorithm)
-			{
-				result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
-			}
-			else if (item.SequenceItemEquationType == SequenceItemEquationType.Message)
-			{
-				result.Result = item.Equation.FormatWith(mappedInputs);
-			}
+			result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
 			if (inputs != null)
 			{
 				inputs[item.ResultName] = result.Result.ToString();
@@ -164,34 +158,40 @@ namespace TTRPG.Engine.Equations
 			return result;
 		}
 
-		/// Process a sequence item and get the result
-		internal List<SequenceResultItem> ProcessResults(IEnumerable<ResultItem> items, IDictionary<string, string> inputs, IEnumerable<Entity> entities)
+		/// Process event config and set results
+		internal List<TTRPGEvent> ProcessResults(IEnumerable<EventConfig> events, IDictionary<string, string> inputs, IEnumerable<Entity> entities)
 		{
-			var results = new List<SequenceResultItem>();
-			foreach (var item in items)
+			var results = new List<TTRPGEvent>();
+			foreach (var @event in events)
 			{
-				var result = new SequenceResultItem();
-				result.Name = item.Name;
-				result.Category = item.Category;
-				if (!string.IsNullOrWhiteSpace(item.FormatMessage))
+				if (@event.Condition != null && _equationResolver.Process(@event.Condition, inputs) == 0)
 				{
-					result.FormatMessage = item.FormatMessage.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
+					continue;
 				}
-				if (inputs.TryGetValue(item.Source, out string value))
+
+				if (@event is UpdateAttributesEventConfig attEvent)
 				{
-					result.Result = value;
-					if (!string.IsNullOrWhiteSpace(item.EntityName))
+					if (inputs.TryGetValue(attEvent.Source, out string value))
 					{
-						result.Entity = entities.SingleOrDefault(x => x.Alias != null && x.Alias.Equals(item.EntityName, StringComparison.OrdinalIgnoreCase));
+						var entityToUpdate = entities.Single(x => x.Alias.Equals(attEvent.EntityAlias, StringComparison.OrdinalIgnoreCase));
+						var result = new UpdateAttributesEvent();
+						result.Name = attEvent.Name;
+						result.AttributeToUpdate = attEvent.AttributeName.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
+						result.OldValue = entityToUpdate.Attributes[result.AttributeToUpdate];
+						result.NewValue = inputs[attEvent.Source];
+						result.EntityName = entityToUpdate.Name;  // set to true name
+						results.Add(result);
 					}
-					else if (item.FirstEntity)
-					{
-						result.Entity = entities.FirstOrDefault();
-					}
+				}
+				else if (@event is MessageEventConfig mEvent)
+				{
+					var result = new MessageEvent();
+					result.Name = mEvent.Name;
+					result.Message = mEvent.MessageTemplate.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
+					result.Level = mEvent.Level;
 					results.Add(result);
 				}
 			}
-
 			return results;
 		}
 
@@ -209,14 +209,8 @@ namespace TTRPG.Engine.Equations
 				foreach (var kvp in entity.Attributes)
 					mappedInputs[kvp.Key] = kvp.Value;
 			}
-			if (item.SequenceItemEquationType == SequenceItemEquationType.Algorithm)
-			{
-				result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
-			}
-			else if (item.SequenceItemEquationType == SequenceItemEquationType.Message)
-			{
-				result.Result = item.Equation.FormatWith(mappedInputs);
-			}
+			result.Result = _equationResolver.Process(item.Equation, mappedInputs).ToString();
+
 			return result;
 		}
 
@@ -256,6 +250,7 @@ namespace TTRPG.Engine.Equations
 			{
 				throw new EntityConditionFailedException("Entity conditions not met for this sequence!");
 			}
+			var firedEvents = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 			var errorMessages = new HashSet<string>();
 			for (int order = 0; order < sequence.Items.Count; order++)
 			{
@@ -266,19 +261,22 @@ namespace TTRPG.Engine.Equations
 					continue;
 				var itemResult = GetResult(item, order, ref sArgs, mappedInputs);
 				result.Results.Add(itemResult);
+				item.Produces.ForEach(e => firedEvents.Add(e));
 				if (item.SetComplete)
 				{
 					result.Completed = true;
 				}
 			}
-			// generate error messages
-			foreach (var errorMessage in errorMessages)
-			{
-				var errorItem = new SequenceItem(Guid.NewGuid().ToString(), errorMessage, Guid.NewGuid().ToString(), SequenceItemEquationType.Message);
-				var itemResult = GetResult(errorItem, -1, ref sArgs, sArgs);
-				result.Results.Add(itemResult);
-			}
-			result.ResultItems = ProcessResults(sequence.ResultItems, sArgs, entities);
+
+			var validEvents = sequence.Events
+				.Where(e => firedEvents.Contains(e.Name));
+			result.Events = ProcessResults(validEvents, sArgs, entities);
+			result.Events.AddRange(errorMessages
+				.Select(errorMessage => new MessageEvent
+				{
+					Message = errorMessage,
+					Level = MessageEventLevel.Error
+				}));
 
 			return result;
 		}
