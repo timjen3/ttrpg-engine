@@ -6,26 +6,22 @@
 			{
 				"Name": "Display Day",
 				"Equation": "floor(current_time / 24) + 1",
-				"ResultName": "display_day",
-				"SequenceItemEquationType": "Algorithm"
+				"ResultName": "display_day"
 			},
 			{
 				"Name": "Decimal Only",
 				"Equation": "current_time - floor(current_time)",
-				"ResultName": "time_decimal",
-				"SequenceItemEquationType": "Algorithm"
+				"ResultName": "time_decimal"
 			},
 			{
 				"Name": "Display Hours",
 				"Equation": "(current_time # 24) - time_decimal",
-				"ResultName": "display_hours",
-				"SequenceItemEquationType": "Algorithm"
+				"ResultName": "display_hours"
 			},
 			{
 				"Name": "Display Minutes",
 				"Equation": "floor(time_decimal * 3/5 * 100)",
 				"ResultName": "display_minutes",
-				"SequenceItemEquationType": "Algorithm",
 				"Produces": [ "TurnMessage", "DayTimeMessage" ]
 			}
 		],

@@ -13,7 +13,6 @@
 				"Name": "CheckLuck",
 				"Equation": "random(1,1,100) > difficulty",
 				"ResultName": "luck_check",
-				"SequenceItemEquationType": "Algorithm",
 				"SetComplete": true,
 				"Produces": [ "IntentionMessage" ]
 			},
@@ -21,15 +20,13 @@
 				"Name": "Drain Stamina",
 				"Equation": "hunter_stamina - 1",
 				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm",
 				"Produces": [ "UpdateStamina" ]
 			},
 			{
 				"Name": "Claim Meat",
 				"Equation": "current_meat + defender_meat",
 				"ResultName": "new_meat",
-				"SequenceItemEquationType": "Algorithm",
-				"Produces": [ "UpdateMeat", "SuccessfulHuntMessage", "NewMeatMessage" ]
+				"Produces": [ "SuccessfulHuntMessage", "UpdateMeat", "NewMeatMessage" ]
 			}
 		],
 		"Conditions": [

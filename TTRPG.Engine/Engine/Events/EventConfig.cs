@@ -2,7 +2,7 @@ namespace TTRPG.Engine.Engine.Events
 {
 	public abstract class EventConfig
 	{
-		public TTRPGEventType EventType { get; }
+		public TTRPGEventType EventType { get; set; }
 
 		public string Name { get; set; }
 
@@ -16,6 +16,8 @@ namespace TTRPG.Engine.Engine.Events
 		public string TemplateFilename { get; set; }
 
 		public string MessageTemplate { get; set; }
+
+		public MessageEventConfig() => EventType = TTRPGEventType.Message;
 	}
 
 	public class UpdateAttributesEventConfig : EventConfig
@@ -25,5 +27,7 @@ namespace TTRPG.Engine.Engine.Events
 		public string Source { get; set; }
 
 		public string EntityAlias { get; set; }
+
+		public UpdateAttributesEventConfig() => EventType = TTRPGEventType.UpdateAttributes;
 	}
 }

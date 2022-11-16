@@ -7,7 +7,6 @@
 				"Name": "Updated Age",
 				"Equation": "min(current_age + (elapsed / 15), maturity)",
 				"ResultName": "new_age",
-				"SequenceItemEquationType": "Algorithm",
 				"Produces": [ "UpdateAge", "MaturityMessage" ]
 			}
 		],

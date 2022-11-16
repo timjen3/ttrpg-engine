@@ -13,29 +13,26 @@
 				"Name": "Damage",
 				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
 				"ResultName": "damage",
-				"SequenceItemEquationType": "Algorithm",
-				"SetComplete": true
+				"SetComplete": true,
+				"Produces": [ "IntentionMessage", "DamageMessage" ]
 			},
 			{
 				"Name": "Take Damage",
 				"Equation": "max(hp - damage, 0)",
 				"ResultName": "new_hp",
-				"SequenceItemEquationType": "Algorithm",
-				"Produces": [ "UpdateHP" ]
+				"Produces": [ "UpdateHP", "DamageTakenMessage" ]
 			},
 			{
 				"Name": "Claim Meat",
 				"Equation": "current_meat + ceil((hp - new_hp) / 4)",
 				"ResultName": "new_meat",
-				"SequenceItemEquationType": "Algorithm",
-				"Produces": [ "UpdateMeat" ]
+				"Produces": [ "UpdateMeat", "MeatTakenMessage" ]
 			},
 			{
 				"Name": "Drain Stamina",
 				"Equation": "farmer_stamina - 1",
 				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm",
-				"Produces": [ "UpdateStamina", "IntentionMessage", "DamageMessage", "DamageTakenMessage", "MeatTakenMessage" ]
+				"Produces": [ "UpdateStamina" ]
 			}
 		],
 		"Conditions": [

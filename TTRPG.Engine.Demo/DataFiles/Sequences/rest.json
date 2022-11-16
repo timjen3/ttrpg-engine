@@ -13,7 +13,6 @@
 				"Name": "Refreshed Stamina",
 				"Equation": "max_stamina",
 				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm",
 				"Produces": [ "UpdateStamina", "RestMessage" ]
 			}
 		],

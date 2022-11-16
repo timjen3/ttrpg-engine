@@ -7,21 +7,18 @@
 				"Name": "TotalSaleAmount",
 				"Equation": "sale_price * quantity_to_sell",
 				"ResultName": "total_sale_amount",
-				"SequenceItemEquationType": "Algorithm",
 				"Produces": [ "IntentionMessage" ]
 			},
 			{
 				"Name": "NewQuantityOnHand",
 				"Equation": "quantity_on_hand - quantity_to_sell",
 				"ResultName": "new_quantity_on_hand",
-				"SequenceItemEquationType": "Algorithm",
 				"Produces": [ "UpdateResource" ]
 			},
 			{
 				"Name": "NewMoney",
 				"Equation": "current_money + total_sale_amount",
 				"ResultName": "new_money",
-				"SequenceItemEquationType": "Algorithm",
 				"Produces": [ "UpdateMoney" ]
 			}
 		],

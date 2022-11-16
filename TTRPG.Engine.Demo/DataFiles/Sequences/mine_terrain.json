@@ -13,30 +13,27 @@
 				"Name": "Damage",
 				"Equation": "max(random(wHits,wMin,wMax) - ac + floor(str / 4), 0)",
 				"ResultName": "damage",
-				"SequenceItemEquationType": "Algorithm",
-				"SetComplete": true
+				"SetComplete": true,
+				"Produces": [ "IntentionMessage", "DamageMessage" ]
 			},
 			{
 				"Name": "Take Damage",
 				"Equation": "max(hp - damage, 0)",
 				"ResultName": "new_hp",
-				"SequenceItemEquationType": "Algorithm",
-				"Produces": [ "UpdateHP" ]
+				"Produces": [ "UpdateHP", "DamageTakenMessage" ]
 			},
 			{
 				"Name": "Claim Resources",
 				"old_Equation": "current_quantity + max(floor(terrain_max_hp / 3), 1)",
 				"Equation": "current_quantity + ceil((hp - new_hp) / 4)",
 				"ResultName": "new_quantity",
-				"SequenceItemEquationType": "Algorithm",
-				"Produces": [ "UpdateResource" ]
+				"Produces": [ "UpdateResource", "ResourceMessage" ]
 			},
 			{
 				"Name": "Drain Stamina",
 				"Equation": "miner_stamina - 1",
 				"ResultName": "new_stamina",
-				"SequenceItemEquationType": "Algorithm",
-				"Produces": [ "UpdateStamina", "IntentionMessage", "DamageMessage", "DamageTakenMessage", "ResourceMessage" ]
+				"Produces": [ "UpdateStamina" ]
 			}
 		],
 		"Conditions": [

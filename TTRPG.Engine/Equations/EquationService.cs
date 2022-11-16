@@ -175,6 +175,7 @@ namespace TTRPG.Engine.Equations
 					{
 						var entityToUpdate = entities.Single(x => x.Alias.Equals(attEvent.EntityAlias, StringComparison.OrdinalIgnoreCase));
 						var result = new UpdateAttributesEvent();
+						result.Name = attEvent.Name;
 						result.AttributeToUpdate = attEvent.AttributeName.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
 						result.OldValue = entityToUpdate.Attributes[result.AttributeToUpdate];
 						result.NewValue = inputs[attEvent.Source];
@@ -185,6 +186,7 @@ namespace TTRPG.Engine.Equations
 				else if (@event is MessageEventConfig mEvent)
 				{
 					var result = new MessageEvent();
+					result.Name = mEvent.Name;
 					result.Message = mEvent.MessageTemplate.FormatWith(inputs, MissingKeyBehaviour.ThrowException);
 					result.Level = mEvent.Level;
 					results.Add(result);

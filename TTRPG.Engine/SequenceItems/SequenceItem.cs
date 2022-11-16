@@ -9,12 +9,13 @@ namespace TTRPG.Engine.SequenceItems
 	{
 		public SequenceItem() { }
 
-		public SequenceItem(string name, string equation, string resultName, bool setComplete = false)
+		public SequenceItem(string name, string equation, string resultName, bool setComplete = false, List<string> produces = null)
 		{
 			Name = name;
 			Equation = equation;
 			ResultName = resultName;
 			SetComplete = setComplete;
+			Produces = produces ?? new List<string>();
 		}
 
 		public string Name { get; set; }
