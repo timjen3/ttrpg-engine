@@ -19,13 +19,9 @@ Sequences contain a list of sequence items that are resolved in the configured o
 
 ### Sequence Items
 
-Sequence Items declare a `ResultName`. After being resolved the result is injected into the inputs collection for use by following sequence items, conditions, and mappings.
+Each item in a sequence resolves a single calculation, the result of which is available to subsequent items. The result can be referenced by subsequent items using the `ResultName`.
 
-Equations work in different ways depending on the value of SequenceItemEquationType:
-
-1. Algorithm: The Equation property contains a formula to be ran through mxParser. All variables are usable, but be aware that the order of the item matters when items use the results from other items. For instance `(damage + damage_modifier) / 2`. See mxParser for tutorials: http://mathparser.org/
-
-2. Message: The Equation property contains a format string to be populated with variables. For instance `{damage} damage was dealt to the target.`
+After being resolved the result is injected into the inputs collection for use by following sequence items, conditions, and mappings.
 
 A single sequence item can be processed with the equation service without being part of a sequence along with 0 or 1 Entity, and 0 or 1 input collection. Since there is no mapping, all of the entity's attributes will be available for equations.
 
@@ -33,14 +29,14 @@ A single sequence item can be processed with the equation service without being 
 
 When using the AddTTRPGEngineServices ServiceCollection extension method, several custom functions will be available to equations for ease of use. This is a list of available custom functions:
 
-    random(n,minRange,maxRange) : get sum of n random numbers all having values between minRange and maxRange.
-    toss(0) : returns 0 or 1 at random; parameter does nothing (mxParser requires >=1 param for user defined functions)
+    rnd(n,minRange,maxRange) : get sum of n random numbers all having values between minRange and maxRange.
+    toss() : returns 0 or 1 at random
 
 Variables from inputs/entities can be injected into custom functions.
 
     random(1,minRange,maxRange)
 
-To add additional user defined functions simply add singletons of type org.mariuszgromada.math.mxparser.Function to the service collection.
+todo: #113
 
 ### Conditions 
 
@@ -69,6 +65,8 @@ From and To inside a mapping support replacement characters. ex: `"from": "{rena
 ### Entities
 
 Entities have attributes that can be used within equations. To inject entity attributes into equations you must add a Mapping with a Entity property set. Setting the Entity property will make the mapping source the entity with the specified name.
+
+Derived Attributes are attributes that are themselves formulas. They might be derived from other attributes, or simply a random number (ie: "rnd(1,1,6)"). These are supported with some caveats. The attribute key must start and end with a tilda (~).
 
 Entities can have 0+ categories for organizational purposes.
 

@@ -133,7 +133,16 @@
             Removes Alias
         </member>
         <member name="T:TTRPG.Engine.Equations.EquationResolver">
-            Resolves an equation using mxParser
+            Resolves an equation using jace
+        </member>
+        <member name="M:TTRPG.Engine.Equations.EquationResolver.IsEmbeddedFunction(System.String)">
+            <summary>
+            	The previous math parsing implementation supported injecting string variables
+            	Inputs could look like this:
+            		{"a": "1", "b": "random(1,2,3)"}
+            	so equation: "a + b" would be resolved as "a + random(1,2,3)"
+            	since jace doesn't support this, a tweak has been made where string inputs to be injected must have a key matching the regex: "^~.+~$"
+            </summary>
         </member>
         <member name="M:TTRPG.Engine.Equations.EquationResolver.#ctor(Jace.CalculationEngine)">
             Constructor for Equation Resolver
@@ -189,7 +198,7 @@
         </member>
         <member name="M:TTRPG.Engine.Equations.IEquationResolver.Process(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
-            	Resolves an mxParser expression
+            	Resolves a mathematical expression using provided inputs
             </summary>
             <param name="equation"></param>
             <param name="inputs">Arguments to inject into the equation</param>
