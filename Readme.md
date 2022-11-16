@@ -66,7 +66,7 @@ From and To inside a mapping support replacement characters. ex: `"from": "{rena
 
 Entities have attributes that can be used within equations. To inject entity attributes into equations you must add a Mapping with a Entity property set. Setting the Entity property will make the mapping source the entity with the specified name.
 
-Derived Attributes are attributes that are themselves formulas. They might be derived from other attributes, or simply a random number (ie: "rnd(1,1,6)"). These are supported with some caveats. The attribute key must start and end with a tilda (~).
+Derived Attributes are attributes that are themselves formulas. They might be derived from other attributes, or simply a random number (ie: "rnd(1,1,6)"). These are supported with some caveats. The attribute key must start and end with a tilda (~). Equations that use these derived attributes must reference them in the same manner, ie: ~attribute~
 
 Entities can have 0+ categories for organizational purposes.
 
