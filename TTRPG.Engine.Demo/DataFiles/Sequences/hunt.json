@@ -11,7 +11,7 @@
 		"Items": [
 			{
 				"Name": "CheckLuck",
-				"Equation": "random(1,1,100) > difficulty",
+				"Equation": "rnd(1,1,100) > difficulty",
 				"ResultName": "luck_check",
 				"SetComplete": true,
 				"Produces": [ "IntentionMessage" ]

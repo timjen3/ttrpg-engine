@@ -135,11 +135,11 @@
         <member name="T:TTRPG.Engine.Equations.EquationResolver">
             Resolves an equation using mxParser
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationResolver.#ctor(System.Collections.Generic.IEnumerable{org.mariuszgromada.math.mxparser.Function})">
+        <member name="M:TTRPG.Engine.Equations.EquationResolver.#ctor(Jace.CalculationEngine)">
             Constructor for Equation Resolver
         </member>
         <member name="M:TTRPG.Engine.Equations.EquationResolver.Process(System.String,System.Collections.Generic.IDictionary{System.String,System.String})">
-            adds inputs as arguments and resolves equation with mxParser
+            adds inputs as arguments and resolves equation with jace.net
         </member>
         <member name="T:TTRPG.Engine.Equations.EquationService">
             contains logic for sequence components

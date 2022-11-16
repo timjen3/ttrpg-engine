@@ -1,6 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using org.mariuszgromada.math.mxparser;
+using Jace;
 using TTRPG.Engine.Exceptions;
 
 namespace TTRPG.Engine.Equations
@@ -8,78 +9,33 @@ namespace TTRPG.Engine.Equations
 	/// Resolves an equation using mxParser
 	public class EquationResolver : IEquationResolver
 	{
-		private readonly Dictionary<string, Expression> _compiledFunctions = new Dictionary<string, Expression>();
-		private readonly Function[] _functions;
+		private readonly CalculationEngine _engine;
 
-		private Expression GetExpression(string equation)
-		{
-			if (!_compiledFunctions.ContainsKey(equation))
-			{
-				_compiledFunctions[equation] = new Expression(equation);
-				_compiledFunctions[equation].removeAllConstants();  // reduce confusion from variables like "c" already existing
-				_compiledFunctions[equation].addFunctions(_functions);
-			}
-			return _compiledFunctions[equation];
-		}
-
-		private void SetArgument(Argument arg, string input)
-		{
-			if (double.TryParse(input, out double parsedDouble))
-			{
-				arg.setArgumentValue(parsedDouble);
-			}
-			else
-			{
-				// unlike the setArgumentValue method this causes recompilation so avoid when unchanged
-				if (arg.getArgumentExpressionString() != input)
-				{
-					arg.setArgumentExpressionString(input);
-				}
-			}
-		}
-
-		private void SetArguments(Expression exp, IDictionary<string, string> inputs)
-		{
-			if (inputs != null)
-			{
-				foreach (var kvp in inputs)
-				{
-					Argument arg = exp.getArgument(kvp.Key.Trim());
-					if (arg == null)
-					{
-						arg = new Argument(kvp.Key.Trim());
-						exp.addArguments(arg);
-					}
-					SetArgument(arg, kvp.Value);
-				}
-			}
-		}
+		private IDictionary<string, double> GetDoubleInputs(IDictionary<string, string> inputs) => inputs
+				.Where(kvp => double.TryParse(kvp.Value, out double _))
+				.ToDictionary(kvp => kvp.Key, kvp => double.Parse(kvp.Value));
 
 		/// Constructor for Equation Resolver
-		public EquationResolver(IEnumerable<Function> functions)
-		{
-			_functions = functions.ToArray();
-		}
+		public EquationResolver(CalculationEngine engine) => _engine = engine;
 
-		/// adds inputs as arguments and resolves equation with mxParser
+		/// adds inputs as arguments and resolves equation with jace.net
 		public double Process(string equation, IDictionary<string, string> inputs)
 		{
-			var exp = GetExpression(equation);
-			// resolve function with mxparser
-			SetArguments(exp, inputs);
-			var result = exp.calculate();
-			// if function failed to resolve throw exception
-			if (double.IsNaN(result))
+			try
 			{
-				string[] missingFunctions = exp.getMissingUserDefinedFunctions();
-				if (missingFunctions.Any())
-					throw new UnknownCustomFunctionException($"Unknown functions: {string.Join(", ", missingFunctions)}");
-				string[] missingValues = exp.getMissingUserDefinedArguments();
-				if (missingValues.Any())
-					throw new EquationInputArgumentException($"Missing params: {string.Join(", ", missingValues)}");
-				throw new EquationInputArgumentException(exp.getErrorMessage());
+				var dInputs = GetDoubleInputs(inputs);
+				var result = _engine.Calculate(equation, dInputs);
+
+				return result;
 			}
-			return result;
+			catch (VariableNotDefinedException ex)
+			{
+				throw new CustomFunctionArgumentException(equation, ex);
+			}
+			catch (Exception ex)
+			{
+				throw new EquationResolverException(equation, ex);
+			}
 		}
 	}
 }
