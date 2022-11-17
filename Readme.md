@@ -31,10 +31,12 @@ When using the AddTTRPGEngineServices ServiceCollection extension method, severa
 
     rnd(n,minRange,maxRange) : get sum of n random numbers all having values between minRange and maxRange.
     toss() : returns 0 or 1 at random
+    roundx(n,digits) : rounds number to the specified number of digits
+    also see list of built in functions: [Jace](https://github.com/pieterderycke/Jace/blob/master/Jace/CalculationEngine.cs#L388)
 
 Variables from inputs/entities can be injected into custom functions.
 
-    random(1,minRange,maxRange)
+    rnd(1,minRange,maxRange)
 
 todo: #113
 

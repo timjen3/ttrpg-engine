@@ -36,6 +36,7 @@ namespace TTRPG.Engine
 						.Select(i => random.Next((int)Math.Floor(minRange), (int)Math.Floor(maxRange) + 1))
 						.Sum(), false);
 				engine.AddFunction("toss", () => random.Next(0, 1), false);
+				engine.AddFunction("roundx", (number, digits) => Math.Round(number, (int) digits));
 
 				return engine;
 			});
