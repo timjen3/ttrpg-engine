@@ -893,5 +893,41 @@ namespace TTRPG.Engine.Tests
 
 			Assert.That(result.Events, Has.Count.EqualTo(0));
 		}
+
+		[Test]
+		public void Check_AttEventsOnCompletedItemValueUnchanged_EventIsNotProduced()
+		{
+			var sequence = new Sequence()
+			{
+				Items = new List<SequenceItem>
+				{
+					new SequenceItem(
+						"a",
+						"1",
+						"r1",
+						true,
+						new List<string> { "e1" }
+					)
+				},
+				Events = new List<EventConfig>
+				{
+					new UpdateAttributesEventConfig
+					{
+						Name = "e1",
+						AttributeName = "a",
+						EntityAlias = "alias1",
+						Source = "r1"
+					}
+				}
+			};
+			var entity = new Entity(
+				"entity1",
+				new Dictionary<string, string> { { "a", "1" } }
+			);
+			var entities = new List<Entity>() { entity.CloneAs("alias1") };
+			var result = EquationService.Process(sequence, entities: entities);
+
+			Assert.That(result.Events, Has.Count.EqualTo(0));
+		}
 	}
 }

@@ -180,7 +180,10 @@ namespace TTRPG.Engine.Equations
 						result.OldValue = entityToUpdate.Attributes[result.AttributeToUpdate];
 						result.NewValue = inputs[attEvent.Source];
 						result.EntityName = entityToUpdate.Name;  // set to true name
-						results.Add(result);
+						if (result.OldValue != result.NewValue)
+						{
+							results.Add(result);
+						}
 					}
 				}
 				else if (@event is MessageEventConfig mEvent)

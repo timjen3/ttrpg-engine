@@ -1,0 +1,75 @@
+[
+	{
+		"Name": "Eat",
+		"Example": "Eat [miner:eater] {elapsed:15}",
+		"Items": [
+			{
+				"Name": "Calculate Hunger",
+				"Equation": "elapsed / 15 / 60",
+				"ResultName": "hunger",
+				"Produces": [ "HungerMessage", "HPReduced" ]
+			},
+			{
+				"Name": "Calculate New Meat",
+				"Equation": "roundx(max(current_meat - hunger, 0), 3)",
+				"ResultName": "new_meat",
+				"Produces": [ "MeatEaten" ]
+			},
+			{
+				"Name": "Calculate New HP",
+				"Equation": "ifless(current_meat - hunger, 0, roundx(current_hp - (.01 * elapsed), 3), current_hp)",
+				"ResultName": "new_hp"
+			}
+		],
+		"Mappings": [
+			{
+				"From": "hp",
+				"To": "current_hp",
+				"ItemName": null,
+				"EntityName": "eater",
+				"MappingType": "Entity",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "meat",
+				"To": "current_meat",
+				"ItemName": null,
+				"EntityName": "eater",
+				"MappingType": "Entity",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "elapsed",
+				"To": "elapsed",
+				"ItemName": null,
+				"EntityName": null,
+				"MappingType": "Input",
+				"ThrowOnFailure": true
+			}
+		],
+		"Events": [
+			{
+				"EventType": "UpdateAttributes",
+				"Name": "MeatEaten",
+				"AttributeName": "Meat",
+				"Source": "new_meat",
+				"EntityAlias": "eater"
+			},
+			{
+				"EventType": "Message",
+				"Name": "HungerMessage",
+				"MessageTemplate": "Your hunger is not being met!",
+				"Level": "Info",
+				"Condition": "hunger > current_meat"
+			},
+			{
+				"EventType": "UpdateAttributes",
+				"Name": "HPReduced",
+				"AttributeName": "HP",
+				"Source": "new_hp",
+				"EntityAlias": "eater",
+				"Condition": "hunger > current_meat"
+			}
+		]
+	}
+]

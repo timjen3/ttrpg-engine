@@ -76,6 +76,14 @@ public class SurvivalGame : Game
 					Filter = r => r.Categories.Contains("Grows"),
 					AliasEntitiesAs = "grower",
 					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "1"} }
+				},
+				new AutomaticCommand
+				{
+					SequenceCategory = "Temporal",
+					Command = "Eat",
+					Filter = r => r.Categories.Contains("Biological"),
+					AliasEntitiesAs = "eater",
+					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "1" } }
 				}
 			}
 		});
