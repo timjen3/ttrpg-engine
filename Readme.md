@@ -76,16 +76,6 @@ Sequences require entities to be aliased according to their purpose in the seque
 
 When no EntityName is specified for an Entity mapping the first entity passed will be chosen.
 
-### ResultItems
-
-While the results of all processed SequenceItems are accessible in the SequenceResult object, it is easier to work with results through the ResultItems pattern.
-
-If a EntityName is set the passed entity with that Alias will be attached.
-
-If FirstEntity is true, then the first entity passed will be attached.
-
-A FormatMessage can be set which can be a plain string (ex: `"something"`) or a format string (ex: `"{propa}"`). Format strings will have access to all inputs, all results, and any mappings that do not have ItemNames specified.
-
 ## TTRPGEngine
 
 The engine has built in parsers for processing different kinds of commands.
