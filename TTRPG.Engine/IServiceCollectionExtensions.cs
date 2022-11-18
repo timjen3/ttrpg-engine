@@ -48,8 +48,10 @@ namespace TTRPG.Engine
 			services.AddSingleton<ICommandProcessorFactory, CommandProcessorFactory>();
 			services.AddSingleton<ITTRPGCommandProcessor, EquationProcessor>();
 			services.AddSingleton<ITTRPGCommandProcessor, InventoryProcessor>();
+			services.AddSingleton<ITTRPGCommandProcessor, RoleProcessor>();
 			services.AddSingleton<ICommandParser, EquationCommandParser>();
 			services.AddSingleton<ICommandParser, InventoryCommandParser>();
+			services.AddSingleton<ICommandParser, RoleCommandParser>();
 			services.TryAddSingleton(new AutomaticCommandFactoryOptions());
 			services.AddSingleton<IAutomaticCommandFactory, AutomaticCommandFactory>();
 			services.AddSingleton<ITTRPGEventHandler, TTRPGEventHandler>();
