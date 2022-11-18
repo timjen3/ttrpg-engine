@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TTRPG.Engine
+namespace TTRPG.Engine.Roles
 {
 	/// an entity carries a set of attributes into equations
 	public class Entity
@@ -35,10 +35,12 @@ namespace TTRPG.Engine
 
 		/// entity's name
 		public string Name { get; set; }
+		/// role name this entity belongs to
+		public string RoleName { get; set; }
 		/// entity's attributes
 		public Dictionary<string, string> Attributes { get; }
 		/// categories that entity belongs to
-		public List<string> Categories { get; }
+		public List<string> Categories { get; set; }
 		/// inventory items
 		public Dictionary<string, Entity> InventoryItems { get; }
 		/// loose inventory items

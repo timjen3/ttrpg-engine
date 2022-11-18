@@ -11,6 +11,7 @@ using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.Engine;
 using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Equations;
+using TTRPG.Engine.Roles;
 
 namespace TTRPG.Engine
 {
@@ -43,6 +44,7 @@ namespace TTRPG.Engine
 			services.AddSingleton<IEquationResolver, EquationResolver>();
 			services.AddSingleton<IEquationService, EquationService>();
 			services.AddSingleton<IInventoryService, InventoryService>();
+			services.AddSingleton<IRoleService, RoleService>();
 			services.AddSingleton<ICommandProcessorFactory, CommandProcessorFactory>();
 			services.AddSingleton<ITTRPGCommandProcessor, EquationProcessor>();
 			services.AddSingleton<ITTRPGCommandProcessor, InventoryProcessor>();

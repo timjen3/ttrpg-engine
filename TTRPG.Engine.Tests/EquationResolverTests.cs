@@ -127,11 +127,11 @@ namespace TTRPG.Engine.Tests
 		[Repeat(1000)]
 		public void Process_UseExpressionString_SucceedsAndFast()
 		{
-			var equation = "a + ~b~";
+			var equation = "a + [[b]]";
 			var inputs = new Dictionary<string, string>()
 			{
 				{ "a", "1" },
-				{ "~b~", "floor(1.5)" }
+				{ "[[b]]", "floor(1.5)" }
 			};
 
 			var result = EquationResolver.Process(equation, inputs);

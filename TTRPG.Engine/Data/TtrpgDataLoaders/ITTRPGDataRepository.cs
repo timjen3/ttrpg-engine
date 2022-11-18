@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
@@ -12,6 +13,8 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 		Task<List<SequenceItem>> GetSequenceItemsAsync();
 
 		Task<List<Entity>> GetEntitiesAsync();
+
+		Task<List<Role>> GetRolesAsync();
 
 		Task ReloadAsync();
 	}

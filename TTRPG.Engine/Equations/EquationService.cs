@@ -4,6 +4,7 @@ using System.Linq;
 using FormatWith;
 using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Exceptions;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 

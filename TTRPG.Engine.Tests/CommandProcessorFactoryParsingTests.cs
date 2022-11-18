@@ -4,6 +4,7 @@ using NUnit.Framework;
 using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 

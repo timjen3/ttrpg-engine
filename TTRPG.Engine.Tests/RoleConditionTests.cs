@@ -3,6 +3,7 @@ using Moq;
 using NUnit.Framework;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Tests

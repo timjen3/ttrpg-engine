@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TTRPG.Engine
+namespace TTRPG.Engine.Roles
 {
 	public class EntityCondition
 	{

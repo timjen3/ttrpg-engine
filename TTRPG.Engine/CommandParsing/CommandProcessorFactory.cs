@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using TTRPG.Engine.CommandParsing.Parsers;
 using TTRPG.Engine.CommandParsing.Processors;
+using TTRPG.Engine.Roles;
 
 namespace TTRPG.Engine.CommandParsing
 {

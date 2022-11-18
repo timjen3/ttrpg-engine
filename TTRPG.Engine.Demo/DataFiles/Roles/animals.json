@@ -1,0 +1,40 @@
+[
+	{
+		"Name": "Bear",
+		"Attributes": [
+			{
+				"Key": "HP",
+				"AttributeType": "IntRange",
+				"MinValue": 1,
+				"MaxValue": 1
+			},
+			{
+				"Key": "Difficulty",
+				"AttributeType": "IntRange",
+				"MinValue": 80,
+				"MaxValue": 95
+			},
+			{
+				"Key": "AC",
+				"AttributeType": "StaticInt",
+				"Value": 2
+			},
+			{
+				"Key": "Resource",
+				"AttributeType": "StaticString",
+				"Value": "meat"
+			},
+			{
+				"Key": "Name",
+				"AttributeType": "StaticString",
+				"Value": "Animal"
+			}
+		],
+		"DerivedAttributes": {
+			"[[meat]]": "((AC - 1) * 10) + Difficulty"
+		},
+		"Categories": [
+			"Animal"
+		]
+	}
+]

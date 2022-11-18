@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Moq;
 using NUnit.Framework;
 using TTRPG.Engine.Equations;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
 
 namespace TTRPG.Engine.Tests

@@ -24,7 +24,7 @@
 			},
 			{
 				"Name": "Claim Meat",
-				"Equation": "current_meat + defender_meat",
+				"Equation": "current_meat + [[defender_meat]]",
 				"ResultName": "new_meat",
 				"Produces": [ "SuccessfulHuntMessage", "UpdateMeat", "NewMeatMessage" ]
 			}
@@ -95,8 +95,8 @@
 				"ThrowOnFailure": true
 			},
 			{
-				"From": "meat",
-				"To": "defender_meat",
+				"From": "[[meat]]",
+				"To": "[[defender_meat]]",
 				"ItemName": null,
 				"EntityName": "defender",
 				"MappingType": "Entity",
