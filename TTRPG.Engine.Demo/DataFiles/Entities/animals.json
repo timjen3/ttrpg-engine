@@ -1,9 +1,10 @@
 [
 	{
 		"Name": "Deer",
+		"RoleName": "Animal",
 		"Attributes": {
 			"HP": "1",
-			"Meat": "60",
+			"[[meat]]": "60",
 			"Difficulty": "75",
 			"AC": "1",
 			"Name": "Deer",
@@ -15,9 +16,10 @@
 	},
 	{
 		"Name": "Rabbit",
+		"RoleName": "Animal",
 		"Attributes": {
 			"HP": "1",
-			"Meat": "12",
+			"[[meat]]": "12",
 			"Difficulty": "30",
 			"AC": "1",
 			"Name": "Rabbit",
@@ -29,9 +31,10 @@
 	},
 	{
 		"Name": "Squirrel",
+		"RoleName": "Animal",
 		"Attributes": {
 			"HP": "1",
-			"Meat": "20",
+			"[[meat]]": "20",
 			"Difficulty": "35",
 			"AC": "1",
 			"Name": "Squirrel",
@@ -43,26 +46,13 @@
 	},
 	{
 		"Name": "Chipmunk",
+		"RoleName": "Animal",
 		"Attributes": {
 			"HP": "1",
-			"Meat": "8",
+			"[[meat]]": "8",
 			"Difficulty": "5",
 			"AC": "1",
 			"Name": "Chipmunk",
-			"Resource": "meat"
-		},
-		"Categories": [
-			"Animal"
-		]
-	},
-	{
-		"Name": "Bear",
-		"Attributes": {
-			"HP": "1",
-			"Meat": "300",
-			"Difficulty": "90",
-			"AC": "2",
-			"Name": "Bear",
 			"Resource": "meat"
 		},
 		"Categories": [

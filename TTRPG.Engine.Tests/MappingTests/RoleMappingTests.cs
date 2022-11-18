@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
+using TTRPG.Engine.Roles;
 
 namespace TTRPG.Engine.Tests
 {

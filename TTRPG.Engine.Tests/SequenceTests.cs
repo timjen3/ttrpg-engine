@@ -4,6 +4,7 @@ using NUnit.Framework;
 using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Exceptions;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 

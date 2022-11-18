@@ -18,6 +18,7 @@
     <None Remove="DataFiles\Entities\game.json" />
     <None Remove="DataFiles\Entities\miner.json" />
     <None Remove="DataFiles\Entities\terrain.json" />
+    <None Remove="DataFiles\Roles\animals.json" />
     <None Remove="DataFiles\SequenceItems\sequence_items.json" />
     <None Remove="DataFiles\Sequences\advance_time.json" />
     <None Remove="DataFiles\Sequences\buy_commodity.json" />
@@ -53,6 +54,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\Entities\terrain.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DataFiles\Roles\animals.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="DataFiles\SequenceItems\sequence_items.json">

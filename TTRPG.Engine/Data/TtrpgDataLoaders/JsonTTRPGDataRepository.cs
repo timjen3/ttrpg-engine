@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using TTRPG.Engine.Engine.Events;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
@@ -15,6 +16,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 		private List<Entity> _entities;
 		private List<Sequence> _sequences;
 		private List<SequenceItem> _sequenceItems;
+		private List<Role> _roles;
 		private Dictionary<string, string> _messageTemplates;
 
 		private Task<Dictionary<string, string>> GetMessageTemplatesAsync()
@@ -100,11 +102,26 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			return _sequences;
 		}
 
+		public Task<List<Role>> GetRolesAsync()
+		{
+			if (_roles == null && !string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.RolesFileDirectory))
+			{
+				_roles = Directory.GetFiles(_options.JsonFileStorageOptions.RolesFileDirectory)
+					.SelectMany(filename => JsonFileReader.ReadFile<List<Role>>(filename))
+					.ToList();
+			}
+			else if (_roles == null)
+				_roles = new List<Role>();
+
+			return Task.FromResult(_roles);
+		}
+
 		public Task ReloadAsync()
 		{
 			_entities = null;
 			_sequences = null;
 			_sequenceItems = null;
+			_roles = null;
 			_messageTemplates = null;
 
 			return Task.CompletedTask;

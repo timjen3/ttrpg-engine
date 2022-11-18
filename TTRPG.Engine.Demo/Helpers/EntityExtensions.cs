@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TTRPG.Engine.Demo2.Controls;
+using TTRPG.Engine.Roles;
 
 namespace TTRPG.Engine.Demo2.Helpers;
 

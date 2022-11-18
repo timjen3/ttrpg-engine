@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 

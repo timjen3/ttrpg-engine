@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
+using TTRPG.Engine.Roles;
 
 namespace TTRPG.Engine.Tests
 {

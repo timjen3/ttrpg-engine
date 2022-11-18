@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.Engine.Events;
+using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
 
 namespace TTRPG.Engine.Sequences

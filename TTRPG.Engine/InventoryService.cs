@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using TTRPG.Engine.Exceptions;
+using TTRPG.Engine.Roles;
 
 namespace TTRPG.Engine
 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Exceptions;
+using TTRPG.Engine.Roles;
 
 namespace TTRPG.Engine.CommandParsing.Processors
 {
