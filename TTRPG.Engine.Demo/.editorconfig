@@ -1,0 +1,10 @@
+##########################################
+# Common Settings
+##########################################
+
+# This file is the top-most EditorConfig file
+root = false
+
+# Ignore paths
+[*.xaml.cs]
+generated_code = true

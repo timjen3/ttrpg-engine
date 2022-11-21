@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Equations;
 using TTRPG.Engine.Sequences;
 

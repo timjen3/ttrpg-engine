@@ -699,7 +699,7 @@ namespace TTRPG.Engine.Tests
 
 			Assert.That(result.Events, Has.Count.EqualTo(1));
 			Assert.That(result.Events[0], Is.InstanceOf<MessageEvent>());
-			var @event = (MessageEvent) result.Events[0];
+			var @event = (MessageEvent)result.Events[0];
 			Assert.That(@event.Name, Is.EqualTo("e1"));
 			Assert.That(@event.Level, Is.EqualTo(MessageEventLevel.Info));
 		}
