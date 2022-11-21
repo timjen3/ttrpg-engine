@@ -19,7 +19,7 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			{
 				return data.ToObject<IntRangeAttributeDefinition>();
 			}
-			else if(eventType.Equals("StaticInt", StringComparison.OrdinalIgnoreCase))
+			else if (eventType.Equals("StaticInt", StringComparison.OrdinalIgnoreCase))
 			{
 				return data.ToObject<StaticIntAttributeDefinition>();
 			}
