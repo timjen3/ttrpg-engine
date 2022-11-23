@@ -5,7 +5,7 @@
 
     <IsPackable>true</IsPackable>
 
-    <Version>0.5.14</Version>
+    <Version>0.5.15</Version>
 
     <Authors>Timothy Jannace</Authors>
 
@@ -27,7 +27,7 @@ https://github.com/timjen3/ttrpg-engine/blob/main/Readme.md</Description>
 
     <PackageReleaseNotes></PackageReleaseNotes>
 
-    <AssemblyVersion>0.5.14.0</AssemblyVersion>
+    <AssemblyVersion>0.5.15.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
