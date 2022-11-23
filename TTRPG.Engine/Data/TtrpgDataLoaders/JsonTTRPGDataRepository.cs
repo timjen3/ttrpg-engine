@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,31 +14,23 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 	public class JsonTTRPGDataRepository : ITTRPGDataRepository
 	{
 		private readonly TTRPGEngineDataOptions _options;
-		private List<Entity> _entities;
-		private List<Sequence> _sequences;
-		private List<SequenceItem> _sequenceItems;
-		private List<Role> _roles;
-		private Dictionary<string, string> _messageTemplates;
 
-		private Task<Dictionary<string, string>> GetMessageTemplatesAsync()
+		private async Task<Dictionary<string, string>> GetMessageTemplatesAsync()
 		{
-			if (_messageTemplates == null && !string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.MessageTemplatesDirectory))
+			var messageTemplates = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+			if (!string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.MessageTemplatesDirectory))
 			{
-				_messageTemplates = Directory.GetFiles(_options.JsonFileStorageOptions.MessageTemplatesDirectory)
-					.Select(filename => new FileInfo(filename))
-					.Select(fileInfo =>
-					{
-						var templateName = fileInfo.Name.Remove(fileInfo.Name.LastIndexOf('.'));
-						var template = File.ReadAllText(fileInfo.FullName);
-
-						return new KeyValuePair<string, string>(templateName, template);
-					})
-					.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, StringComparer.OrdinalIgnoreCase);
+				var fileNames = Directory.GetFiles(_options.JsonFileStorageOptions.MessageTemplatesDirectory);
+				foreach (var fileName in fileNames)
+				{
+					var fileInfo = new FileInfo(fileName);
+					var templateName = fileInfo.Name.Remove(fileInfo.Name.LastIndexOf('.'));
+					var template = await File.ReadAllTextAsync(fileInfo.FullName);
+					messageTemplates[templateName] = template;
+				}
 			}
-			else if (_messageTemplates == null)
-				_messageTemplates = new Dictionary<string, string>();
 
-			return Task.FromResult(_messageTemplates);
+			return messageTemplates;
 		}
 
 		public JsonTTRPGDataRepository(TTRPGEngineDataOptions options)
@@ -45,47 +38,58 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			_options = options;
 		}
 
-		public Task<List<Entity>> GetEntitiesAsync()
+		public async Task<List<Entity>> GetEntitiesAsync()
 		{
-			if (_entities == null && !string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.EntitiesFileDirectory))
+			var entities = new List<Entity>();
+			if (!string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.EntitiesFileDirectory))
 			{
-				_entities = Directory.GetFiles(_options.JsonFileStorageOptions.EntitiesFileDirectory)
-					.SelectMany(filename => JsonFileReader.ReadFile<List<Entity>>(filename))
-					.ToList();
+				var fileNames = Directory.GetFiles(_options.JsonFileStorageOptions.EntitiesFileDirectory);
+				foreach (var fileName in fileNames)
+				{
+					var moreEntities = await JsonFileReader.ReadFileAsync<List<Entity>>(fileName);
+					entities.AddRange(moreEntities);
+				}
 			}
-			else if (_entities == null)
-				_entities = new List<Entity>();
 
-			return Task.FromResult(_entities);
+			return entities;
 		}
 
-		public Task<List<SequenceItem>> GetSequenceItemsAsync()
+		public async Task<List<SequenceItem>> GetSequenceItemsAsync()
 		{
-			if (_sequenceItems == null && !string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.SequenceItemsFileDirectory))
+			var sequenceItems = new List<SequenceItem>();
+			if (!string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.SequenceItemsFileDirectory))
 			{
-				_sequenceItems = Directory.GetFiles(_options.JsonFileStorageOptions.SequenceItemsFileDirectory)
-					.SelectMany(filename => JsonFileReader.ReadFile<List<SequenceItem>>(filename))
-					.ToList();
+				var fileNames = Directory.GetFiles(_options.JsonFileStorageOptions.SequenceItemsFileDirectory);
+				foreach (var fileName in fileNames)
+				{
+					var moreSequenceItems = await JsonFileReader.ReadFileAsync<List<SequenceItem>>(fileName);
+					sequenceItems.AddRange(moreSequenceItems);
+				}
 			}
-			else if (_sequenceItems == null)
-				_sequenceItems = new List<SequenceItem>();
 
-			return Task.FromResult(_sequenceItems);
+			return sequenceItems;
 		}
 
 		public async Task<List<Sequence>> GetSequencesAsync()
 		{
-			if (_sequences == null && !string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.SequencesFileDirectory))
+			var sequences = new List<Sequence>();
+			if (!string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.SequencesFileDirectory))
 			{
-				_sequences = Directory.GetFiles(_options.JsonFileStorageOptions.SequencesFileDirectory)
-					.SelectMany(filename => JsonFileReader.ReadFile<List<Sequence>>(filename))
-					.ToList();
+				var fileNames = Directory.GetFiles(_options.JsonFileStorageOptions.SequencesFileDirectory);
+				foreach (var fileName in fileNames)
+				{
+					var moreSequences = await JsonFileReader.ReadFileAsync<List<Sequence>>(fileName);
+					sequences.AddRange(moreSequences);
+				}
 			}
-			else if (_sequences == null)
-				_sequences = new List<Sequence>();
+			if (!sequences.Any())
+			{
+				return sequences;
+			}
+
 			// replace message with template if match is found
 			var templates = await GetMessageTemplatesAsync();
-			foreach (var sequence in _sequences)
+			foreach (var sequence in sequences)
 			{
 				foreach (var @event in sequence.Events)
 				{
@@ -99,32 +103,42 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 				}
 			}
 
-			return _sequences;
+			return sequences;
 		}
 
-		public Task<List<Role>> GetRolesAsync()
+		public async Task<List<Role>> GetRolesAsync()
 		{
-			if (_roles == null && !string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.RolesFileDirectory))
+			var roles = new List<Role>();
+			if (!string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.RolesFileDirectory))
 			{
-				_roles = Directory.GetFiles(_options.JsonFileStorageOptions.RolesFileDirectory)
-					.SelectMany(filename => JsonFileReader.ReadFile<List<Role>>(filename))
-					.ToList();
+				var fileNames = Directory.GetFiles(_options.JsonFileStorageOptions.RolesFileDirectory);
+				foreach (var fileName in fileNames)
+				{
+					var moreRoles = await JsonFileReader.ReadFileAsync<List<Role>>(fileName);
+					roles.AddRange(moreRoles);
+				}
 			}
-			else if (_roles == null)
-				_roles = new List<Role>();
 
-			return Task.FromResult(_roles);
+			return roles;
 		}
 
-		public Task ReloadAsync()
+		public async Task<List<string>> GetCommandsAsync()
 		{
-			_entities = null;
-			_sequences = null;
-			_sequenceItems = null;
-			_roles = null;
-			_messageTemplates = null;
+			var commands = new List<string>();
+			if (!string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.CommandsDirectory))
+			{
+				var fileNames = Directory.GetFiles(_options.JsonFileStorageOptions.CommandsDirectory);
+				foreach (var fileName in fileNames)
+				{
+					var moreCommandsText = await File.ReadAllTextAsync(fileName);
+					var splitCommands = moreCommandsText.Split("\n", StringSplitOptions.RemoveEmptyEntries)
+						.Select(command => command.Trim())
+						.Where(command => !string.IsNullOrWhiteSpace(command) && !command.StartsWith("//"));
+					commands.AddRange(splitCommands);
+				}
+			}
 
-			return Task.CompletedTask;
+			return commands;
 		}
 	}
 }

@@ -14,20 +14,36 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			{
 				return null;
 			}
-			var eventType = data["AttributeType"].ToString();
-			if (eventType.Equals("IntRange", StringComparison.OrdinalIgnoreCase))
+			var attributeTypeString = data["AttributeType"].ToString();
+			var attributeType = (RoleAttributeType) Enum.Parse(typeof(RoleAttributeType), attributeTypeString);
+			// convert to specified subclass
+			if (attributeType == RoleAttributeType.IntRange)
 			{
 				return data.ToObject<IntRangeAttributeDefinition>();
 			}
-			else if (eventType.Equals("StaticInt", StringComparison.OrdinalIgnoreCase))
+			else if (attributeType == RoleAttributeType.StaticInt)
 			{
 				return data.ToObject<StaticIntAttributeDefinition>();
 			}
-			else if (eventType.ToString().Equals("StaticString", StringComparison.OrdinalIgnoreCase))
+			else if (attributeType == RoleAttributeType.StaticString)
 			{
 				return data.ToObject<StaticStringAttributeDefinition>();
 			}
-			throw new NotImplementedException();
+			else if (attributeType == RoleAttributeType.Reference)
+			{
+				return data.ToObject<ReferenceAttributeDefinition>();
+			}
+			else if (attributeType == RoleAttributeType.Derived)
+			{
+				var derAttribute = data.ToObject<DerivedAttributeDefinition>();
+				if (!DerivedAttributeDefinition.IsEmbeddedFunction(derAttribute.Key))
+				{
+					throw DerivedAttributeDefinition.CallOutInvalidDerivedAttribute(derAttribute.Key);
+				}
+
+				return derAttribute;
+			}
+			throw new NotImplementedException($"Unrecognized role attribute type: {attributeTypeString}");
 		}
 
 		public override void WriteJson(JsonWriter writer, RoleAttributeDefinition value, JsonSerializer serializer)

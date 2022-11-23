@@ -14,7 +14,8 @@ namespace TTRPG.Engine.CommandParsing
 
 		public List<TTRPGEvent> Events { get; set; } = new List<TTRPGEvent>();
 
-		public List<string> Messages => Events.Where(x => x.Category == TTRPGEventType.Message)
+		public List<string> Messages => Events
+			.Where(x => x is MessageEvent)
 			.Cast<MessageEvent>()
 			.Select(x => x.Message)
 			.ToList();

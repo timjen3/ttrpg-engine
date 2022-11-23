@@ -5,18 +5,17 @@ using System.Linq;
 using EmptyKeys.UserInterface.Controls;
 using EmptyKeys.UserInterface.Input;
 using EmptyKeys.UserInterface.Mvvm;
-using TTRPG.Engine.Demo2.Controls;
-using TTRPG.Engine.Demo2.Helpers;
+using TTRPG.Engine.Demo.Controls;
+using TTRPG.Engine.Demo.Helpers;
 using TTRPG.Engine.Roles;
 
-namespace TTRPG.Engine.Demo2.Views;
+namespace TTRPG.Engine.Demo.Views;
 
 internal class MainScreenView : ViewModelBase
 {
 	#region Private
 	private readonly GameObject _data;
 	private readonly TTRPGEngine _engine;
-	private readonly IRoleService _roleService;
 	private readonly HashSet<string> _commodityNames;
 
 	private ObservableCollection<DragDropItem> _targets;
@@ -62,7 +61,8 @@ internal class MainScreenView : ViewModelBase
 	}
 
 	private DragDropItem[] GetLiveTargets() => _data.Entities
-		.FilterToLiveTargets(_selectedTarget)
+		.FilterToCategory(_selectedTarget)
+		.Where(x => int.Parse(x.Attributes["HP"]) > 0)
 		.Select(EntityExtensions.MakeDragDropItem)
 		.ToArray();
 
@@ -136,22 +136,16 @@ internal class MainScreenView : ViewModelBase
 
 	private void UpdateTimeResult()
 	{
-		var result = _engine.Process("DisplayTime [time:time]")
-			.First();
+		var result = _engine.Process("DisplayTime [time:time]").First();
 		TurnResult = result.Messages.First();
 		TimeResult = result.Messages.Last();
 	}
 	#endregion
 
-	public MainScreenView(GameObject data, TTRPGEngine engine, IRoleService roleService)
+	public MainScreenView(GameObject data, TTRPGEngine engine)
 	{
 		_data = data;
 		_engine = engine;
-		_roleService = roleService;
-		// add some random animals
-		_roleService.Birth("Bear");
-		_roleService.Birth("Bear");
-		_roleService.Birth("Bear");
 		_commodityNames = data.Entities.GetCommodityNames();
 		ButtonExecuteCommand = new RelayCommand(new Action<object>(OnButtonExecuteCommandClick));
 		TargetItemFocusCommand = new RelayCommand(new Action<object>(TargetItemFocus));

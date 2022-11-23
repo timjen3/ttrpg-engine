@@ -1,4 +1,4 @@
-namespace TTRPG.Engine.Demo2.Controls;
+namespace TTRPG.Engine.Demo.Controls;
 
 internal class InventoryDataGridItem
 {

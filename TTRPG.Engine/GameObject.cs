@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.Roles;
 using TTRPG.Engine.SequenceItems;
@@ -10,21 +12,34 @@ namespace TTRPG.Engine
 	{
 		private readonly ITTRPGDataRepository _loader;
 
-		public GameObject(ITTRPGDataRepository loader)
+		public GameObject(ITTRPGDataRepository loader) => _loader = loader;
+
+		public async Task LoadAsync(TTRPGEngine engine)
 		{
-			_loader = loader;
-			NewGame();
+			Roles = await _loader.GetRolesAsync();
+			Entities = await _loader.GetEntitiesAsync();
+			Sequences = await _loader.GetSequencesAsync();
+			SequenceItems = await _loader.GetSequenceItemsAsync();
+			// process commands
+			var commands = await _loader.GetCommandsAsync();
+			foreach (var command in commands)
+			{
+				engine.Process(command);
+			}
 		}
 
-		public List<Entity> Entities => _loader.GetEntitiesAsync().GetAwaiter().GetResult();
+		public List<Entity> Entities { get; private set; }
 
-		public List<Sequence> Sequences => _loader.GetSequencesAsync().GetAwaiter().GetResult();
+		public List<Sequence> Sequences { get; private set; }
 
-		public List<SequenceItem> SequenceItems => _loader.GetSequenceItemsAsync().GetAwaiter().GetResult();
+		public List<SequenceItem> SequenceItems { get; private set; }
 
-		public List<Role> Roles => _loader.GetRolesAsync().GetAwaiter().GetResult();
+		public List<Role> Roles { get; private set; }
 
-
-		public void NewGame() => _loader.ReloadAsync().GetAwaiter().GetResult();
+		/// <summary>
+		///		Remove specified entity from game
+		/// </summary>
+		/// <param name="entityName"></param>
+		public void Bury(string entityName) => Entities.RemoveAll(r => r.Name.Equals(entityName, StringComparison.OrdinalIgnoreCase));
 	}
 }

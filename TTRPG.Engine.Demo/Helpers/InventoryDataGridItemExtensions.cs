@@ -1,6 +1,6 @@
-using TTRPG.Engine.Demo2.Controls;
+using TTRPG.Engine.Demo.Controls;
 
-namespace TTRPG.Engine.Demo2.Helpers;
+namespace TTRPG.Engine.Demo.Helpers;
 
 internal static class InventoryDataGridItemExtensions
 {

@@ -40,9 +40,9 @@ namespace EmptyKeys.UserInterface.Generated {
         }
         
         private void InitializeResources() {
-            // Resource - [DataTemplateKey(TTRPG.Engine.Demo2.Controls.DragDropItem)] DataTemplate
+            // Resource - [DataTemplateKey(TTRPG.Engine.Demo.Controls.DragDropItem)] DataTemplate
             Func<UIElement, UIElement> r_0_dtFunc = r_0_dtMethod;
-            this.Add(typeof(TTRPG.Engine.Demo2.Controls.DragDropItem), new DataTemplate(typeof(TTRPG.Engine.Demo2.Controls.DragDropItem), r_0_dtFunc));
+            this.Add(typeof(TTRPG.Engine.Demo.Controls.DragDropItem), new DataTemplate(typeof(TTRPG.Engine.Demo.Controls.DragDropItem), r_0_dtFunc));
             // Resource - [TitleResource] String
             this.Add("TitleResource", "Survival Game");
         }

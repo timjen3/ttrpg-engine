@@ -1,6 +1,6 @@
 using EmptyKeys.UserInterface.Mvvm;
 
-namespace TTRPG.Engine.Demo2.Controls;
+namespace TTRPG.Engine.Demo.Controls;
 
 internal class DragDropItem : BindableBase
 {

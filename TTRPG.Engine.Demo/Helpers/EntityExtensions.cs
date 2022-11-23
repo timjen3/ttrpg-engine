@@ -1,40 +1,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using TTRPG.Engine.Demo2.Controls;
+using TTRPG.Engine.Demo.Controls;
 using TTRPG.Engine.Roles;
 
-namespace TTRPG.Engine.Demo2.Helpers;
+namespace TTRPG.Engine.Demo.Helpers;
 
 internal static class EntityExtensions
 {
-	internal static IEnumerable<Entity> FilterToLiveTargets(this IEnumerable<Entity> entities, string category) =>
-		entities.Where(x => !string.IsNullOrWhiteSpace(category) && x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase)
-			&& int.Parse(x.Attributes["hp"]) > 0);
+	internal static IEnumerable<Entity> FilterToCategory(this IEnumerable<Entity> entities, string category) =>
+		entities.Where(x => !string.IsNullOrWhiteSpace(category) && x.Categories.Contains(category, StringComparer.OrdinalIgnoreCase));
 
-	internal static DragDropItem MakeDragDropItem(this Entity liveTarget)
+	internal static DragDropItem MakeDragDropItem(this Entity entity)
 	{
-		if (liveTarget.Categories.Contains("Crop")
-			&& liveTarget.Attributes["Age"] == liveTarget.Attributes["Maturity"])
+		if (entity.Categories.Contains("Crop", StringComparer.OrdinalIgnoreCase)
+			&& entity.Attributes["Age"] == entity.Attributes["Maturity"])
 		{
 			return new DragDropItem
 			{
-				Name = $"{liveTarget.Name} (Mature)",
-				Code = liveTarget.Name
+				Name = $"{entity.Name} (Mature)",
+				Code = entity.Name
 			};
 		}
-		if (liveTarget.Categories.Contains("Animal"))
+		if (entity.Categories.Contains("Animal", StringComparer.OrdinalIgnoreCase))
 		{
 			return new DragDropItem
 			{
-				Name = $"{liveTarget.Name} (AC: {liveTarget.Attributes["AC"]})",
-				Code = liveTarget.Name
+				Name = $"{entity.Name} (AC: {entity.Attributes["AC"]})",
+				Code = entity.Name
 			};
 		}
 		return new DragDropItem
 		{
-			Name = liveTarget.Name,
-			Code = liveTarget.Name
+			Name = entity.Name,
+			Code = entity.Name
 		};
 	}
 

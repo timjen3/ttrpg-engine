@@ -16,6 +16,8 @@ namespace TTRPG.Engine.Data
 		public string RolesFileDirectory { get; set; }
 
 		public string MessageTemplatesDirectory { get; set; }
+
+		public string CommandsDirectory { get; set; }
 	}
 
 	public class TTRPGEngineDataOptions
