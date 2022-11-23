@@ -32,7 +32,7 @@ namespace TTRPG.Engine.Engine
 					var command = new EngineCommand();
 					command.MainCommand = match.Command;
 					command.Inputs = match.DefaultInputs;
-					if (processed.CategoryParams.TryGetValue(match.SequenceCategory, out var extraInputs))
+					if (match.SequenceCategory != null && processed.CategoryParams.TryGetValue(match.SequenceCategory, out var extraInputs))
 					{
 						foreach (var kvp in extraInputs)
 						{

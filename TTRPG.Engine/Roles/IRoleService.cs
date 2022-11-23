@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TTRPG.Engine.Roles
 {
 	public interface IRoleService
@@ -5,14 +7,10 @@ namespace TTRPG.Engine.Roles
 		/// <summary>
 		///		Create a new entity from a role
 		/// </summary>
-		/// <param name="roleName"></param>
+		/// <param name="role"></param>
+		/// <param name="inputs"></param>
+		/// <param name="name"></param>
 		/// <returns></returns>
-		Entity Birth(string roleName);
-
-		/// <summary>
-		///		Remove an entity from the game
-		/// </summary>
-		/// <param name="entityName"></param>
-		void Bury(string entityName);
+		Entity Birth(Role role, Dictionary<string, string> inputs, string name = null);
 	}
 }

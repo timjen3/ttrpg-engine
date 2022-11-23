@@ -1,6 +1,6 @@
 using System;
 
-namespace TTRPG.Engine.Demo2.Helpers;
+namespace TTRPG.Engine.Demo.Helpers;
 
 internal static class TextBoxCommandHelpers
 {

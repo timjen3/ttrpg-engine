@@ -5,7 +5,7 @@ using TTRPG.Engine.Roles;
 
 namespace TTRPG.Engine.CommandParsing.Parsers
 {
-	public class RoleCommandParser : ICommandParser
+	public class EntityCommandParser : ICommandParser
 	{
 		private static readonly HashSet<string> CommandLookup = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
 		{
@@ -16,7 +16,7 @@ namespace TTRPG.Engine.CommandParsing.Parsers
 		private readonly IRoleService _service;
 		private readonly GameObject _data;
 
-		public RoleCommandParser(IRoleService service, GameObject data)
+		public EntityCommandParser(IRoleService service, GameObject data)
 		{
 			_service = service;
 			_data = data;
@@ -34,7 +34,7 @@ namespace TTRPG.Engine.CommandParsing.Parsers
 
 		public ITTRPGCommandProcessor GetProcessor(EngineCommand command)
 		{
-			return new RoleProcessor(_service, _data, command);
+			return new EntityProcessor(_service, _data, command);
 		}
 	}
 }

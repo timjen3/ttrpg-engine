@@ -24,7 +24,7 @@
 			},
 			{
 				"Name": "Claim Meat",
-				"Equation": "current_meat + [[defender_meat]]",
+				"Equation": "roundx(current_meat + [[defender_meat]], 3)",
 				"ResultName": "new_meat",
 				"Produces": [ "SuccessfulHuntMessage", "UpdateMeat", "NewMeatMessage" ]
 			}

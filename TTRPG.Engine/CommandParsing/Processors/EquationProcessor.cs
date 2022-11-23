@@ -12,6 +12,11 @@ namespace TTRPG.Engine.CommandParsing.Processors
 		private readonly GameObject _data;
 		private readonly EngineCommand _command;
 
+		private bool RequiresEntities => _sequence.Mappings.Any(x => x.MappingType == MappingType.Entity);
+		private bool HasEntities => _command.Entities != null && _command.Entities.Count > 0;
+		private bool RequiresInputs => _sequence.Mappings.Any(x => x.MappingType == MappingType.Input);
+		private bool HasInputs => _command.Inputs != null && _command.Inputs.Count > 0;
+
 		public EquationProcessor(IEquationService service, GameObject data, EngineCommand command)
 		{
 			_service = service;
@@ -21,7 +26,9 @@ namespace TTRPG.Engine.CommandParsing.Processors
 			_command = command;
 		}
 
-		public bool IsValid() => _sequence != null && _command.Entities != null && _command.Entities.Count > 0;
+		public bool IsValid() => _sequence != null
+			&& (!RequiresEntities || HasEntities)
+			&& (!RequiresInputs || HasInputs);
 
 		public ProcessedCommand Process()
 		{

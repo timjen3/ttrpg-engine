@@ -7,7 +7,7 @@
 				"Name": "Calculate Hunger",
 				"Equation": "elapsed / 15 / 60",
 				"ResultName": "hunger",
-				"Produces": [ "HungerMessage", "HPReduced" ]
+				"Produces": [ "HungerMessage" ]
 			},
 			{
 				"Name": "Calculate New Meat",
@@ -16,15 +16,30 @@
 				"Produces": [ "MeatEaten" ]
 			},
 			{
-				"Name": "Calculate New HP",
+				"Name": "Calculate Reduced HP",
 				"Equation": "ifless(current_meat - hunger, 0, roundx(current_hp - (.01 * elapsed), 3), current_hp)",
-				"ResultName": "new_hp"
+				"ResultName": "reduced_hp",
+				"Produces": [ "HPReduced" ]
+			},
+			{
+				"Name": "Calculate Increased HP",
+				"Equation": "ifless(current_hp, max_hp, min(roundx(current_hp + (.002 * elapsed), 3), max_hp), current_hp)",
+				"ResultName": "increased_hp",
+				"Produces": [ "HPIncreased" ]
 			}
 		],
 		"Mappings": [
 			{
 				"From": "hp",
 				"To": "current_hp",
+				"ItemName": null,
+				"EntityName": "eater",
+				"MappingType": "Entity",
+				"ThrowOnFailure": true
+			},
+			{
+				"From": "max_hp",
+				"To": "max_hp",
 				"ItemName": null,
 				"EntityName": "eater",
 				"MappingType": "Entity",
@@ -66,9 +81,17 @@
 				"EventType": "UpdateAttributes",
 				"Name": "HPReduced",
 				"AttributeName": "HP",
-				"Source": "new_hp",
+				"Source": "reduced_hp",
 				"EntityAlias": "eater",
 				"Condition": "hunger > current_meat"
+			},
+			{
+				"EventType": "UpdateAttributes",
+				"Name": "HPIncreased",
+				"AttributeName": "HP",
+				"Source": "increased_hp",
+				"EntityAlias": "eater",
+				"Condition": "hunger <= current_meat && current_hp < max_hp"
 			}
 		]
 	}

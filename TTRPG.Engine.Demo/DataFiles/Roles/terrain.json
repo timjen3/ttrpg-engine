@@ -1,0 +1,26 @@
+[
+	{
+		"Name": "Terrain",
+		"Attributes": [
+			{
+				"Key": "AC",
+				"AttributeType": "StaticInt",
+				"Value": 0
+			},
+			{
+				"Key": "MAX_HP",
+				"AttributeType": "IntRange",
+				"MinValue": 5000,
+				"MaxValue": 30000
+			},
+			{
+				"Key": "HP",
+				"AttributeType": "Reference",
+				"ReferenceKey": "MAX_HP"
+			}
+		],
+		"Categories": [
+			"Terrain"
+		]
+	}
+]

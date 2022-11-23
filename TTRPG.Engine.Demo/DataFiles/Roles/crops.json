@@ -1,0 +1,17 @@
+[
+	{
+		"Name": "Crop",
+		"Attributes": [
+			{
+				"Key": "AC",
+				"AttributeType": "StaticInt",
+				"Value": 0
+			}
+		],
+		"Categories": [
+			"Grows",
+			"Crop",
+			"Mortal"
+		]
+	}
+]

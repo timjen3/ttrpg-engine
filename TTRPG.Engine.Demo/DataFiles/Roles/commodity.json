@@ -1,0 +1,15 @@
+[
+	{
+		"Name": "Commodity",
+		"Attributes": [
+			{
+				"Key": "HP",
+				"AttributeType": "StaticInt",
+				"Value": 1
+			}
+		],
+		"Categories": [
+			"Commodity"
+		]
+	}
+]

@@ -102,18 +102,6 @@
         <member name="T:TTRPG.Engine.Equations.EquationResolver">
             Resolves an equation using jace
         </member>
-        <member name="M:TTRPG.Engine.Equations.EquationResolver.IsEmbeddedFunction(System.String)">
-            <summary>
-            	The previous math parsing implementation supported injecting string variables
-            	Inputs could look like this:
-            		{"a": "1", "b": "rnd(1,2,3)"}
-            	so equation: "a + b" would be resolved as "a + rnd(1,2,3)"
-            	since jace doesn't support this, a tweak has been made where string inputs to be injected must have a key matching the regex: "^\[\[.+\]\]$"
-            	Inputs must look like this:
-            		{"a": "1", "[[b]]": "rnd(1,2,3)"}
-            	and equation: "a + [[b]]" will be resolved as "a + rnd(1,2,3)"
-            </summary>
-        </member>
         <member name="M:TTRPG.Engine.Equations.EquationResolver.#ctor(Jace.CalculationEngine)">
             Constructor for Equation Resolver
         </member>
@@ -220,6 +208,12 @@
             <param name="inputs"></param>
             <param name="entities"></param>
             <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.GameObject.Bury(System.String)">
+            <summary>
+            	Remove specified entity from game
+            </summary>
+            <param name="entityName"></param>
         </member>
         <member name="T:TTRPG.Engine.IInventoryService">
             <summary>
@@ -338,6 +332,24 @@
         <member name="F:TTRPG.Engine.MappingType.InventoryItem">
             item is mapped from an inventory item
         </member>
+        <member name="T:TTRPG.Engine.Roles.Attributes.DerivedAttributeDefinition">
+            <summary>
+            	The previous math parsing implementation supported injecting string variables
+            	Inputs could look like this:
+            		{"a": "1", "b": "rnd(1,2,3)"}
+            	so equation: "a + b" would be resolved as "a + rnd(1,2,3)"
+            	since jace doesn't support this, a tweak has been made where string inputs to be injected must have a key matching the regex: "^\[\[.+\]\]$"
+            	Inputs must look like this:
+            		{"a": "1", "[[b]]": "rnd(1,2,3)"}
+            	and equation: "a + [[b]]" will be resolved as "a + rnd(1,2,3)"
+            </summary>
+        </member>
+        <member name="T:TTRPG.Engine.Roles.Attributes.ReferenceAttributeDefinition">
+            <summary>
+            	Set after all other attributes.
+            	Set to the value of the referenced attribute
+            </summary>
+        </member>
         <member name="T:TTRPG.Engine.Roles.Entity">
             an entity carries a set of attributes into equations
         </member>
@@ -349,9 +361,6 @@
         </member>
         <member name="P:TTRPG.Engine.Roles.Entity.Name">
             entity's name
-        </member>
-        <member name="P:TTRPG.Engine.Roles.Entity.RoleName">
-            role name this entity belongs to
         </member>
         <member name="P:TTRPG.Engine.Roles.Entity.Attributes">
             entity's attributes
@@ -374,20 +383,16 @@
         <member name="M:TTRPG.Engine.Roles.Entity.RemoveAlias">
             Removes Alias
         </member>
-        <member name="M:TTRPG.Engine.Roles.IRoleService.Birth(System.String)">
+        <member name="M:TTRPG.Engine.Roles.IRoleService.Birth(TTRPG.Engine.Roles.Role,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             	Create a new entity from a role
             </summary>
-            <param name="roleName"></param>
+            <param name="role"></param>
+            <param name="inputs"></param>
+            <param name="name"></param>
             <returns></returns>
         </member>
-        <member name="M:TTRPG.Engine.Roles.IRoleService.Bury(System.String)">
-            <summary>
-            	Remove an entity from the game
-            </summary>
-            <param name="entityName"></param>
-        </member>
-        <member name="M:TTRPG.Engine.Roles.Role.Next">
+        <member name="M:TTRPG.Engine.Roles.Role.Next(System.String)">
             Get next available name
         </member>
         <member name="T:TTRPG.Engine.SequenceItems.SequenceItem">

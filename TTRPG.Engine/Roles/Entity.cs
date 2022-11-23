@@ -35,8 +35,6 @@ namespace TTRPG.Engine.Roles
 
 		/// entity's name
 		public string Name { get; set; }
-		/// role name this entity belongs to
-		public string RoleName { get; set; }
 		/// entity's attributes
 		public Dictionary<string, string> Attributes { get; }
 		/// categories that entity belongs to

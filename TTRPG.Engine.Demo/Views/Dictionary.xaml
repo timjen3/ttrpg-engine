@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:ek="clr-namespace:EmptyKeys.UserInterface.Designer;assembly=EmptyKeys.UserInterface.Designer"
-                    xmlns:data="clr-namespace:TTRPG.Engine.Demo2.Controls;assembly=TTRPG.Engine.Demo2" >
+                    xmlns:data="clr-namespace:TTRPG.Engine.Demo.Controls;assembly=TTRPG.Engine.Demo" >
 
     <system:String x:Key="TitleResource">Survival Game</system:String>
 

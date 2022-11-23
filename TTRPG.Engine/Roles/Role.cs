@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using Newtonsoft.Json;
@@ -7,15 +8,20 @@ using TTRPG.Engine.Roles.Attributes;
 
 namespace TTRPG.Engine.Roles
 {
+	public class RoleIndex
+	{
+		private int _index = 0;
+
+		public int Next() => Interlocked.Increment(ref _index);
+	}
+
 	public class Role
 	{
-		private static int _index;
+		private ConcurrentDictionary<string, RoleIndex> _roleIndex = new ConcurrentDictionary<string, RoleIndex>(StringComparer.OrdinalIgnoreCase);
 
-		public Role(int startingIndex = 0)
+		public Role()
 		{
-			_index = startingIndex;
 			Attributes = new List<RoleAttributeDefinition>();
-			DerivedAttributes = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 			Categories = new List<string>();
 		}
 
@@ -24,11 +30,25 @@ namespace TTRPG.Engine.Roles
 		[JsonProperty(ItemConverterType = typeof(TTRPGAttributeTypeJsonConverter))]
 		public List<RoleAttributeDefinition> Attributes { get; set; }
 
-		public Dictionary<string, string> DerivedAttributes { get; set; }
-
 		public List<string> Categories { get; set; }
 
 		/// Get next available name
-		public string Next() => $"{Name}-{Interlocked.Increment(ref _index)}";
+		public string Next(string name = null)
+		{
+			name ??= Name;
+			if (!_roleIndex.ContainsKey(name))
+			{
+				_roleIndex[name] = new RoleIndex();
+			}
+			var nextIndex = _roleIndex[name].Next();
+			if (nextIndex == 1)
+			{
+				return name;
+			}
+			else
+			{
+				return $"{name}-{nextIndex}";
+			}
+		}
 	}
 }

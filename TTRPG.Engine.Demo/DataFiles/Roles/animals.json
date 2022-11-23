@@ -27,14 +27,46 @@
 			{
 				"Key": "Name",
 				"AttributeType": "StaticString",
-				"Value": "Animal"
+				"Value": "Bear"
+			},
+			{
+				"Key": "[[meat]]",
+				"AttributeType": "Derived",
+				"Value": "(max(AC - 1, 0) * 10) + Difficulty"
 			}
 		],
-		"DerivedAttributes": {
-			"[[meat]]": "((AC - 1) * 10) + Difficulty"
-		},
 		"Categories": [
-			"Animal"
+			"Animal",
+			"Mortal"
+		]
+	},
+	{
+		"Name": "Animal",
+		"Attributes": [
+			{
+				"Key": "hp",
+				"AttributeType": "StaticInt",
+				"Value": 1
+			},
+			{
+				"Key": "AC",
+				"AttributeType": "StaticInt",
+				"Value": 1
+			},
+			{
+				"Key": "Resource",
+				"AttributeType": "StaticString",
+				"Value": "meat"
+			},
+			{
+				"Key": "[[meat]]",
+				"AttributeType": "Derived",
+				"Value": "(max(AC - 1, 0) * 10) + Difficulty"
+			}
+		],
+		"Categories": [
+			"Animal",
+			"Mortal"
 		]
 	}
 ]

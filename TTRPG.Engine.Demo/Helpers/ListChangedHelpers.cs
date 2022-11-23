@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TTRPG.Engine.Demo2.Helpers;
+namespace TTRPG.Engine.Demo.Helpers;
 
 internal static class ListChangedHelpers
 {

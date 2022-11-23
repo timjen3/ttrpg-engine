@@ -16,6 +16,6 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 
 		Task<List<Role>> GetRolesAsync();
 
-		Task ReloadAsync();
+		Task<List<string>> GetCommandsAsync();
 	}
 }

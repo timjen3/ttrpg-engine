@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using TTRPG.Engine.Data;
-using TTRPG.Engine.Demo2.Views;
+using TTRPG.Engine.Demo.Views;
 using TTRPG.Engine.Engine;
 using TTRPG.Engine.Roles;
 
@@ -98,12 +98,14 @@ public class SurvivalGame : Game
 				SequencesFileDirectory = "DataFiles/Sequences",
 				SequenceItemsFileDirectory = "DataFiles/SequenceItems",
 				MessageTemplatesDirectory = "DataFiles/MessageTemplates",
-				RolesFileDirectory = "DataFiles/Roles"
+				RolesFileDirectory = "DataFiles/Roles",
+				CommandsDirectory = "DataFiles/Commands"
 			}
 		});
 		var provider = collection.BuildServiceProvider();
 		var gameObject = provider.GetRequiredService<GameObject>();
 		var engine = provider.GetRequiredService<TTRPGEngine>();
+		gameObject.LoadAsync(engine).GetAwaiter().GetResult();
 		var roleService = provider.GetRequiredService<IRoleService>();
 
 		// TODO: use this.Content to load your game content here
@@ -116,7 +118,7 @@ public class SurvivalGame : Game
 		EffectManager.Instance.LoadEffects(Content);
 
 		_mainScreen = new MainScreenViewPage(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
-		_mainScreen.DataContext = new MainScreenView(gameObject, engine, roleService);
+		_mainScreen.DataContext = new MainScreenView(gameObject, engine);
 
 		// input bindings
 		RelayCommand command = new RelayCommand(new Action<object>(o => Exit()));

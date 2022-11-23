@@ -1,0 +1,29 @@
+// animals
+Birth {roleName:animal,name:Deer,difficulty:65}
+Birth {roleName:animal,name:Young Deer,difficulty:25}
+Birth {roleName:animal,name:Squirrel,difficulty:12}
+Birth {roleName:animal,name:Rabbit,difficulty:16}
+Birth {roleName:animal,name:Chipmunk,difficulty:7}
+Birth {roleName:bear,name:Bear}
+Birth {roleName:bear,name:Bear}
+
+// commodities
+Birth {roleName:commodity,resource:dirt,name:Dirt,Sell:0.01,Buy:0.1}
+Birth {roleName:commodity,resource:stone,name:Stone,Sell:0.25,Buy:1.0}
+Birth {roleName:commodity,resource:obsidian,name:Obsidian,Sell:4.0,Buy:16.0}
+Birth {roleName:commodity,resource:meat,name:Meat,Sell:1.0,Buy:4.0}
+
+// crops
+Birth {roleName:crop,name:Corn,maturity:5760,age:5760,hp:150,max_hp:500}
+Birth {roleName:crop,name:Corn,maturity:5760,age:5560,hp:500,max_hp:500}
+Birth {roleName:crop,name:Potato,maturity:5760,age:4900,hp:500,max_hp:500}
+Birth {roleName:crop,name:Tomato,maturity:5760,age:0,hp:500,max_hp:500}
+Birth {roleName:crop,name:Pea Plant,maturity:5760,age:0,hp:500,max_hp:500}
+
+// terrain
+Birth {roleName:terrain,name:Hill,resource:dirt}
+Birth {roleName:terrain,name:Quarry,resource:stone}
+Birth {roleName:terrain,name:Quarry,resource:stone}
+Birth {roleName:terrain,name:Hill,resource:dirt}
+Birth {roleName:terrain,name:Quarry,resource:stone}
+Birth {roleName:terrain,name:Obsidian Deposit,resource:obsidian,hp:500,max_hp:500,ac:2}
