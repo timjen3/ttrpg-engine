@@ -24,7 +24,7 @@ namespace TTRPG.Engine
 			var commands = await _loader.GetCommandsAsync();
 			foreach (var command in commands)
 			{
-				engine.Process(command);
+				engine?.Process(command);
 			}
 		}
 

@@ -18,6 +18,7 @@ namespace TTRPG.Engine.Tests
 		List<SequenceItem> SequenceItems;
 		List<Entity> Entities;
 		List<Role> Roles;
+		List<string> Commands;
 		List<ICommandParser> Parsers;
 
 		[SetUp]
@@ -27,19 +28,20 @@ namespace TTRPG.Engine.Tests
 			SequenceItems = new List<SequenceItem>();
 			Entities = new List<Entity>();
 			Roles = new List<Role>();
+			Commands = new List<string>();
 			Parsers = new List<ICommandParser>();
 		}
 
 		ICommandProcessorFactory BuildCommandProcessorFactory()
 		{
-			var mockEngine = new Mock<TTRPGEngine>();
 			var mockLoader = new Mock<ITTRPGDataRepository>();
 			mockLoader.Setup(x => x.GetSequencesAsync()).ReturnsAsync(Sequences);
 			mockLoader.Setup(x => x.GetSequenceItemsAsync()).ReturnsAsync(SequenceItems);
 			mockLoader.Setup(x => x.GetEntitiesAsync()).ReturnsAsync(Entities);
 			mockLoader.Setup(x => x.GetRolesAsync()).ReturnsAsync(Roles);
+			mockLoader.Setup(x => x.GetCommandsAsync()).ReturnsAsync(Commands);
 			var gameObject = new GameObject(mockLoader.Object);
-			gameObject.LoadAsync(mockEngine.Object).GetAwaiter().GetResult();
+			gameObject.LoadAsync(null).GetAwaiter().GetResult();
 
 			return new CommandProcessorFactory(gameObject, Parsers);
 		}
