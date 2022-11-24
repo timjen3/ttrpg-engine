@@ -5,6 +5,7 @@ using System.Linq;
 using EmptyKeys.UserInterface.Controls;
 using EmptyKeys.UserInterface.Input;
 using EmptyKeys.UserInterface.Mvvm;
+using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.Demo.Controls;
 using TTRPG.Engine.Demo.Helpers;
 using TTRPG.Engine.Roles;
@@ -33,7 +34,30 @@ internal class MainScreenView : ViewModelBase
 	private InventoryDataGridItem _selectedInventoryItem;
 	private List<InventoryDataGridItem> _inventoryItems;
 
-	private Entity Player => _data.Entities.First(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase));
+	private Entity Player => _data.Entities.FirstOrDefault(x => x.Name.Equals("miner", StringComparison.OrdinalIgnoreCase));
+
+	private void ProcessEvents(IEnumerable<ProcessedCommand> results)
+	{
+		foreach (var result in results)
+		{
+			if (result.Source.MainCommand == "Status")
+			{
+				StatusResult = result.Messages.First();
+			}
+			else if (result.Source.MainCommand == "DisplayTime")
+			{
+				TurnResult = result.Messages.First();
+				TimeResult = result.Messages.Last();
+			}
+			else
+			{
+				foreach (var message in result.Messages)
+				{
+					CommandResult += $"{message}\n";
+				}
+			}
+		}
+	}
 
 	public void OnButtonExecuteCommandClick(object command)
 	{
@@ -45,7 +69,8 @@ internal class MainScreenView : ViewModelBase
 			try
 			{
 				var result = _engine.Process(commandText);
-				CommandResult = string.Join("\n", result.SelectMany(x => x.Messages));
+				CommandResult = "";
+				ProcessEvents(result);
 				UpdateTimeResult();
 				UpdateTargets();
 				UpdateGoods();
@@ -62,7 +87,7 @@ internal class MainScreenView : ViewModelBase
 
 	private DragDropItem[] GetLiveTargets() => _data.Entities
 		.FilterToCategory(_selectedTarget)
-		.Where(x => int.Parse(x.Attributes["HP"]) > 0)
+		//.Where(x => int.Parse(x.Attributes["HP"]) > 0)
 		.Select(EntityExtensions.MakeDragDropItem)
 		.ToArray();
 
@@ -113,7 +138,7 @@ internal class MainScreenView : ViewModelBase
 	private void UpdateStatusResult()
 	{
 		var statusResult = _engine.Process("Status [miner:target]");
-		StatusResult = statusResult.First().Messages.First();
+		ProcessEvents(statusResult);
 	}
 
 	private void UpdateBagItems()
@@ -136,9 +161,8 @@ internal class MainScreenView : ViewModelBase
 
 	private void UpdateTimeResult()
 	{
-		var result = _engine.Process("DisplayTime [time:time]").First();
-		TurnResult = result.Messages.First();
-		TimeResult = result.Messages.Last();
+		var results = _engine.Process("DisplayTime [time:time]");
+		ProcessEvents(results);
 	}
 	#endregion
 

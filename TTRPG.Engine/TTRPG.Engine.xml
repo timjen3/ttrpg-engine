@@ -63,6 +63,11 @@
         <member name="P:TTRPG.Engine.Condition.FailureMessage">
             Custom message for failure if ThrowOnFail is true; if ThrowOnFail is false it will be added as a result
         </member>
+        <member name="T:TTRPG.Engine.Engine.AutomaticCommand">
+            <summary>
+            	TODO: split this class into two: one to be triggered by sequences and one to run independent of sequence
+            </summary>
+        </member>
         <member name="P:TTRPG.Engine.Engine.AutomaticCommand.SequenceCategory">
             <summary>
             	Fire this command after any sequences matching the specified category
@@ -98,6 +103,19 @@
             <summary>
             	Commands to be ran automatically
             </summary>
+        </member>
+        <member name="M:TTRPG.Engine.Engine.IAutomaticCommandFactory.GetAutomaticCommands(TTRPG.Engine.CommandParsing.ProcessedCommand)">
+            <summary>
+            	Returns commands triggered by the processed command
+            </summary>
+            <param name="processed"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TTRPG.Engine.Engine.IAutomaticCommandFactory.GetAutomaticCommands(System.Collections.Generic.IEnumerable{TTRPG.Engine.Roles.Entity})">
+            <summary>
+            	Returns commands not triggered by sequences in particular
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:TTRPG.Engine.Equations.EquationResolver">
             Resolves an equation using jace
@@ -429,6 +447,9 @@
             <summary>
             	Parses and processes commands
             </summary>
+        </member>
+        <member name="M:TTRPG.Engine.TTRPGEngine.InternalProcess(TTRPG.Engine.EngineCommand)">
+            recursive; process a command and process any automatic commands triggered
         </member>
         <member name="M:TTRPG.Engine.TTRPGEngine.#ctor(TTRPG.Engine.CommandParsing.ICommandProcessorFactory,TTRPG.Engine.Engine.IAutomaticCommandFactory,TTRPG.Engine.Engine.Events.ITTRPGEventHandler)">
             <summary>

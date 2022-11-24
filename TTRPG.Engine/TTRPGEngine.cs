@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using TTRPG.Engine.CommandParsing;
 using TTRPG.Engine.Engine;
 using TTRPG.Engine.Engine.Events;
@@ -13,6 +15,33 @@ namespace TTRPG.Engine
 		private readonly ICommandProcessorFactory _factory;
 		private readonly IAutomaticCommandFactory _autoCommandFactory;
 		private readonly ITTRPGEventHandler _eventHandler;
+
+		/// recursive; process a command and process any automatic commands triggered
+		private List<ProcessedCommand> InternalProcess(EngineCommand command)
+		{
+			var results = new List<ProcessedCommand>();
+			try
+			{
+				var processor = _factory.Build(command);
+				if (!processor.IsValid())
+				{
+					return ProcessedCommand.InvalidCommandList();
+				}
+				var result = processor.Process();
+				_eventHandler.ProcessResult(result);
+				results.Add(result);
+				foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
+				{
+					var moreResults = InternalProcess(autoCommand);
+					results.AddRange(moreResults);
+				}
+			}
+			catch (Exception ex)
+			{
+				results.Add(ProcessedCommand.InvalidCommand(ex.Message));
+			}
+			return results;
+		}
 
 		/// <summary>
 		///		Create new instance of the TTRPGEngine
@@ -44,18 +73,24 @@ namespace TTRPG.Engine
 		/// <param name="command"></param>
 		public List<ProcessedCommand> Process(EngineCommand command)
 		{
-			var processor = _factory.Build(command);
-			if (!processor.IsValid())
+			// process command and any commands specifically triggered by it
+			var results = InternalProcess(command);
+			// process commands
+			try
 			{
-				return ProcessedCommand.InvalidCommandList();
+				var affectedEntities = results.SelectMany(x => x.Source.Entities);
+				if (affectedEntities.Any())
+				{
+					foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(affectedEntities))
+					{
+						var moreResults = InternalProcess(autoCommand);
+						results.AddRange(moreResults);
+					}
+				}
 			}
-			var result = processor.Process();
-			_eventHandler.ProcessResult(result);
-			var results = new List<ProcessedCommand> { result };
-			foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
+			catch (Exception ex)
 			{
-				var moreResults = Process(autoCommand);
-				results.AddRange(moreResults);
+				results.Add(ProcessedCommand.InvalidCommand(ex.Message));
 			}
 
 			return results;

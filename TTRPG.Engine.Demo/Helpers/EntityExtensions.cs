@@ -43,7 +43,7 @@ internal static class EntityExtensions
 		.ToHashSet(StringComparer.OrdinalIgnoreCase);
 
 	internal static List<InventoryDataGridItem> GetInventoryItems(this Entity player) =>
-		player.InventoryItems
+		player?.InventoryItems
 			.Where(x => x.Value.Attributes.ContainsKey("equipAs"))
 			.Select(x => new InventoryDataGridItem
 			{
@@ -56,7 +56,7 @@ internal static class EntityExtensions
 			.ToList();
 
 	internal static List<InventoryDataGridItem> GetBagItems(this Entity player) =>
-		player.Bag
+		player?.Bag
 			.Where(x => x.Attributes.ContainsKey("equipAs"))
 			.Select(x => new InventoryDataGridItem
 			{
@@ -69,7 +69,7 @@ internal static class EntityExtensions
 			.ToList();
 
 	internal static List<GoodsDataGridItem> GetGoods(this Entity player, HashSet<string> commodityNames) =>
-		player.Attributes
+		player?.Attributes
 			.Where(x => commodityNames.Contains(x.Key))
 			.Select(x => new GoodsDataGridItem
 			{

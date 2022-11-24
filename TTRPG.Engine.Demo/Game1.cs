@@ -85,6 +85,11 @@ public class SurvivalGame : Game
 					Filter = r => r.Categories.Contains("Biological"),
 					AliasEntitiesAs = "eater",
 					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "1" } }
+				},
+				new AutomaticCommand
+				{
+					Command = "Bury",
+					Filter = r => r.Categories.Contains("Mortal") && double.Parse(r.Attributes["HP"]) <= 0
 				}
 			}
 		});

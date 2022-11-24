@@ -26,14 +26,14 @@ namespace TTRPG.Engine.CommandParsing
 
 		public bool Completed { get; set; }
 
-		public static ProcessedCommand InvalidCommand() => new ProcessedCommand
+		public static ProcessedCommand InvalidCommand(string message = null) => new ProcessedCommand
 		{
 			Valid = false,
 			Failed = true,
 			Events = new List<TTRPGEvent> { new MessageEvent
 				{
 					Level = MessageEventLevel.Error,
-					Message = "Invalid command."
+					Message = message ?? "Invalid command."
 				}
 			}
 		};

@@ -2,7 +2,7 @@
 	{
 		"Name": "Miner",
 		"Attributes": {
-			"Name": "Player",
+			"Name": "Miner",
 			"hp": "20",
 			"max_hp": "20",
 			"max_stamina": "20",
@@ -17,7 +17,8 @@
 		"Categories": [
 			"Entity",
 			"Biological",
-			"PlayerControlled"
+			"PlayerControlled",
+			"Mortal"
 		],
 		"InventoryItems": {
 			"Pick": {

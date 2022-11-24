@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TTRPG.Engine.Roles;
 
@@ -5,6 +6,9 @@ namespace TTRPG.Engine.Engine
 {
 	public delegate bool EntityMatch(Entity entity);
 
+	/// <summary>
+	///		TODO: split this class into two: one to be triggered by sequences and one to run independent of sequence
+	/// </summary>
 	public class AutomaticCommand
 	{
 		/// <summary>
@@ -31,7 +35,7 @@ namespace TTRPG.Engine.Engine
 		///		Additional inputs to include
 		///		Will be overriden by sequence-specific CategoryParams associated with this command's SequenceCategory
 		/// </summary>
-		public Dictionary<string, string> DefaultInputs { get; set; } = new Dictionary<string, string>();
+		public Dictionary<string, string> DefaultInputs { get; set; } = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
 		/// <summary>
 		///		When true only fires for completed sequences
