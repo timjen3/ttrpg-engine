@@ -94,8 +94,16 @@
 			{
 				"EventType": "Message",
 				"Name": "ReportStatus",
+				"MessageTemplate": "You died. :(",
+				"Level": "Info",
+				"Condition": "HP <= 0"
+			},
+			{
+				"EventType": "Message",
+				"Name": "ReportStatus",
 				"TemplateFilename": "output_target_status",
-				"Level": "Info"
+				"Level": "Info",
+				"Condition": "HP > 0"
 			}
 		]
 	}
