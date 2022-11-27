@@ -101,7 +101,6 @@ public class SurvivalGame : Game
 			{
 				EntitiesFileDirectory = "DataFiles/Entities",
 				SequencesFileDirectory = "DataFiles/Sequences",
-				SequenceItemsFileDirectory = "DataFiles/SequenceItems",
 				MessageTemplatesDirectory = "DataFiles/MessageTemplates",
 				RolesFileDirectory = "DataFiles/Roles",
 				CommandsDirectory = "DataFiles/Commands"

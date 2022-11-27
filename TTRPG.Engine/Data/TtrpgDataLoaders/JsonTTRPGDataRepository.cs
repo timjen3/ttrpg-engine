@@ -6,7 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TTRPG.Engine.Engine.Events;
 using TTRPG.Engine.Roles;
-using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine.Data.TtrpgDataLoaders
@@ -52,22 +51,6 @@ namespace TTRPG.Engine.Data.TtrpgDataLoaders
 			}
 
 			return entities;
-		}
-
-		public async Task<List<SequenceItem>> GetSequenceItemsAsync()
-		{
-			var sequenceItems = new List<SequenceItem>();
-			if (!string.IsNullOrWhiteSpace(_options.JsonFileStorageOptions.SequenceItemsFileDirectory))
-			{
-				var fileNames = Directory.GetFiles(_options.JsonFileStorageOptions.SequenceItemsFileDirectory);
-				foreach (var fileName in fileNames)
-				{
-					var moreSequenceItems = await JsonFileReader.ReadFileAsync<List<SequenceItem>>(fileName);
-					sequenceItems.AddRange(moreSequenceItems);
-				}
-			}
-
-			return sequenceItems;
 		}
 
 		public async Task<List<Sequence>> GetSequencesAsync()

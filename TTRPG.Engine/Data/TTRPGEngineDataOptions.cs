@@ -9,8 +9,6 @@ namespace TTRPG.Engine.Data
 	{
 		public string SequencesFileDirectory { get; set; }
 
-		public string SequenceItemsFileDirectory { get; set; }
-
 		public string EntitiesFileDirectory { get; set; }
 
 		public string RolesFileDirectory { get; set; }

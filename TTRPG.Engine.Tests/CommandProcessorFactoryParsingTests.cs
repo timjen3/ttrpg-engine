@@ -36,7 +36,6 @@ namespace TTRPG.Engine.Tests
 		{
 			var mockLoader = new Mock<ITTRPGDataRepository>();
 			mockLoader.Setup(x => x.GetSequencesAsync()).ReturnsAsync(Sequences);
-			mockLoader.Setup(x => x.GetSequenceItemsAsync()).ReturnsAsync(SequenceItems);
 			mockLoader.Setup(x => x.GetEntitiesAsync()).ReturnsAsync(Entities);
 			mockLoader.Setup(x => x.GetRolesAsync()).ReturnsAsync(Roles);
 			mockLoader.Setup(x => x.GetCommandsAsync()).ReturnsAsync(Commands);

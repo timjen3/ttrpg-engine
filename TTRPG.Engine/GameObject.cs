@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TTRPG.Engine.Data.TtrpgDataLoaders;
 using TTRPG.Engine.Roles;
-using TTRPG.Engine.SequenceItems;
 using TTRPG.Engine.Sequences;
 
 namespace TTRPG.Engine
@@ -19,7 +18,6 @@ namespace TTRPG.Engine
 			Roles = await _loader.GetRolesAsync();
 			Entities = await _loader.GetEntitiesAsync();
 			Sequences = await _loader.GetSequencesAsync();
-			SequenceItems = await _loader.GetSequenceItemsAsync();
 			// process commands
 			var commands = await _loader.GetCommandsAsync();
 			foreach (var command in commands)
@@ -31,8 +29,6 @@ namespace TTRPG.Engine
 		public List<Entity> Entities { get; private set; }
 
 		public List<Sequence> Sequences { get; private set; }
-
-		public List<SequenceItem> SequenceItems { get; private set; }
 
 		public List<Role> Roles { get; private set; }
 
