@@ -19,7 +19,7 @@ namespace TTRPG.Engine
 		/// recursive; process a command and process any automatic commands triggered
 		private List<ProcessedCommand> InternalProcess(EngineCommand command)
 		{
-			EngineCommand currentCommand = command;
+			var currentCommand = command;
 			var results = new List<ProcessedCommand>();
 			try
 			{
@@ -75,6 +75,7 @@ namespace TTRPG.Engine
 		/// <param name="command"></param>
 		public List<ProcessedCommand> Process(EngineCommand command)
 		{
+			var currentCommand = command;
 			// process command and any commands specifically triggered by it
 			var results = InternalProcess(command);
 			// process commands
@@ -85,6 +86,7 @@ namespace TTRPG.Engine
 				{
 					foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(affectedEntities))
 					{
+						currentCommand = autoCommand;
 						var moreResults = InternalProcess(autoCommand);
 						results.AddRange(moreResults);
 					}
@@ -92,7 +94,7 @@ namespace TTRPG.Engine
 			}
 			catch (Exception ex)
 			{
-				results.Add(ProcessedCommand.InvalidCommand(ex.Message));
+				results.Add(ProcessedCommand.InvalidCommand($"{currentCommand.MainCommand}: {ex.Message}"));
 			}
 
 			return results;
