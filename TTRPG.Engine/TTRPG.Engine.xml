@@ -63,22 +63,12 @@
         <member name="P:TTRPG.Engine.Condition.FailureMessage">
             Custom message for failure if ThrowOnFail is true; if ThrowOnFail is false it will be added as a result
         </member>
-        <member name="T:TTRPG.Engine.Engine.AutomaticCommand">
-            <summary>
-            	TODO: split this class into two: one to be triggered by sequences and one to run independent of sequence
-            </summary>
-        </member>
-        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.SequenceCategory">
-            <summary>
-            	Fire this command after any sequences matching the specified category
-            </summary>
-        </member>
         <member name="P:TTRPG.Engine.Engine.AutomaticCommand.Command">
             <summary>
             	Command to be executed
             </summary>
         </member>
-        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.Filter">
+        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.EntityFilter">
             <summary>
             	Delegate for entities to be included
             </summary>
@@ -91,12 +81,6 @@
         <member name="P:TTRPG.Engine.Engine.AutomaticCommand.DefaultInputs">
             <summary>
             	Additional inputs to include
-            	Will be overriden by sequence-specific CategoryParams associated with this command's SequenceCategory
-            </summary>
-        </member>
-        <member name="P:TTRPG.Engine.Engine.AutomaticCommand.CompletedOnly">
-            <summary>
-            	When true only fires for completed sequences
             </summary>
         </member>
         <member name="P:TTRPG.Engine.Engine.AutomaticCommandFactoryOptions.AutomaticCommands">
@@ -104,7 +88,7 @@
             	Commands to be ran automatically
             </summary>
         </member>
-        <member name="M:TTRPG.Engine.Engine.IAutomaticCommandFactory.GetAutomaticCommands(TTRPG.Engine.CommandParsing.ProcessedCommand)">
+        <member name="M:TTRPG.Engine.Engine.IAutomaticCommandFactory.GetSequenceAutomaticCommands(TTRPG.Engine.CommandParsing.ProcessedCommand)">
             <summary>
             	Returns commands triggered by the processed command
             </summary>
@@ -116,6 +100,16 @@
             	Returns commands not triggered by sequences in particular
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:TTRPG.Engine.Engine.SequenceAutoCommand.SequenceCategory">
+            <summary>
+            	Command fires for any sequences with this category
+            </summary>
+        </member>
+        <member name="P:TTRPG.Engine.Engine.SequenceAutoCommand.CompletedOnly">
+            <summary>
+            	When true only fires for completed sequences
+            </summary>
         </member>
         <member name="T:TTRPG.Engine.Equations.EquationResolver">
             Resolves an equation using jace

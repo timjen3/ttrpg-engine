@@ -62,34 +62,34 @@ public class SurvivalGame : Game
 		{
 			AutomaticCommands = new List<AutomaticCommand>
 			{
-				new AutomaticCommand
+				new SequenceAutoCommand
 				{
 					SequenceCategory = "Temporal",
 					Command = "AdvanceTime",
-					Filter = r => r.Name == "Time",
+					EntityFilter = r => r.Name == "Time",
 					AliasEntitiesAs = "time",
 					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "15"} }
 				},
-				new AutomaticCommand
+				new SequenceAutoCommand
 				{
 					SequenceCategory = "Temporal",
 					Command = "Grow",
-					Filter = r => r.Categories.Contains("Grows"),
+					EntityFilter = r => r.Categories.Contains("Grows"),
 					AliasEntitiesAs = "grower",
 					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "1"} }
 				},
-				new AutomaticCommand
+				new SequenceAutoCommand
 				{
 					SequenceCategory = "Temporal",
 					Command = "Eat",
-					Filter = r => r.Categories.Contains("Biological"),
+					EntityFilter = r => r.Categories.Contains("Biological"),
 					AliasEntitiesAs = "eater",
 					DefaultInputs = new Dictionary<string, string>{ { "elapsed", "1" } }
 				},
 				new AutomaticCommand
 				{
 					Command = "Bury",
-					Filter = r => r.Categories.Contains("Mortal") && double.Parse(r.Attributes["HP"]) <= 0
+					EntityFilter = r => r.Categories.Contains("Mortal") && double.Parse(r.Attributes["HP"]) <= 0
 				}
 			}
 		});

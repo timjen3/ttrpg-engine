@@ -18,18 +18,18 @@ namespace TTRPG.Engine.Engine
 				var command = new EngineCommand();
 				command.MainCommand = commandConfig.Command;
 				command.Inputs = commandConfig.DefaultInputs;
-				if (commandConfig.SequenceCategory != null && categoryParams != null
-					&& categoryParams.TryGetValue(commandConfig.SequenceCategory, out var extraInputs))
+				if (commandConfig is SequenceAutoCommand sequenceConfig)
 				{
-					foreach (var kvp in extraInputs)
+					if (sequenceConfig.SequenceCategory != null && categoryParams != null
+						&& categoryParams.TryGetValue(sequenceConfig.SequenceCategory, out var extraInputs))
 					{
-						command.Inputs[kvp.Key] = kvp.Value;
+						foreach (var kvp in extraInputs)
+						{
+							command.Inputs[kvp.Key] = kvp.Value;
+						}
 					}
 				}
-				if (!string.IsNullOrWhiteSpace(commandConfig.AliasEntitiesAs))
-					command.Entities.Add(entityMatching.CloneAs(commandConfig.AliasEntitiesAs));
-				else
-					command.Entities.Add(entityMatching);
+				command.Entities.Add(entityMatching.CloneAs(commandConfig.AliasEntitiesAs ?? entityMatching.Name));
 				commands.Add(command);
 			}
 			return commands;
@@ -41,19 +41,22 @@ namespace TTRPG.Engine.Engine
 			_data = data;
 		}
 
-		public IEnumerable<EngineCommand> GetAutomaticCommands(ProcessedCommand processed)
+		public IEnumerable<EngineCommand> GetSequenceAutomaticCommands(ProcessedCommand processed)
 		{
 			if (!processed.Valid || processed.Failed)
 				return new EngineCommand[0];
 
 			var results = new List<EngineCommand>();
+
 			var triggeredCommands = _options.AutomaticCommands
-				.Where(auto => auto.SequenceCategory != null
-					&& processed.CommandCategories.Contains(auto.SequenceCategory)
+				.Where(auto => auto is SequenceAutoCommand)
+				.Cast<SequenceAutoCommand>()
+				.Where(auto => processed.CommandCategories.Contains(auto.SequenceCategory)
 					&& (!auto.CompletedOnly || processed.Completed));
+
 			foreach (var command in triggeredCommands)
 			{
-				var entities = _data.Entities.Where(x => command.Filter(x));
+				var entities = _data.Entities.Where(x => command.EntityFilter(x));
 				results.AddRange(BuildEngineCommands(command, entities, processed.CategoryParams));
 			}
 
@@ -64,11 +67,13 @@ namespace TTRPG.Engine.Engine
 		{
 			var results = new List<EngineCommand>();
 
-			var sequencelessCommands = _options.AutomaticCommands
-				.Where(x => x.SequenceCategory == null);
-			foreach (var command in sequencelessCommands)
+			var autoCommands = _options.AutomaticCommands
+				.Where(x => x.GetType() == typeof(AutomaticCommand))
+				.Cast<AutomaticCommand>();
+
+			foreach (var command in autoCommands)
 			{
-				var matchingEntities = entities.Where(entity => command.Filter(entity));
+				var matchingEntities = entities.Where(entity => command.EntityFilter(entity));
 				results.AddRange(BuildEngineCommands(command, matchingEntities));
 			}
 

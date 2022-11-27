@@ -11,7 +11,7 @@ namespace TTRPG.Engine.Engine
 		/// </summary>
 		/// <param name="processed"></param>
 		/// <returns></returns>
-		IEnumerable<EngineCommand> GetAutomaticCommands(ProcessedCommand processed);
+		IEnumerable<EngineCommand> GetSequenceAutomaticCommands(ProcessedCommand processed);
 
 		/// <summary>
 		///		Returns commands not triggered by sequences in particular

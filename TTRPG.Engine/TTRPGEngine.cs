@@ -19,6 +19,7 @@ namespace TTRPG.Engine
 		/// recursive; process a command and process any automatic commands triggered
 		private List<ProcessedCommand> InternalProcess(EngineCommand command)
 		{
+			EngineCommand currentCommand = command;
 			var results = new List<ProcessedCommand>();
 			try
 			{
@@ -30,15 +31,16 @@ namespace TTRPG.Engine
 				var result = processor.Process();
 				_eventHandler.ProcessResult(result);
 				results.Add(result);
-				foreach (var autoCommand in _autoCommandFactory.GetAutomaticCommands(result))
+				foreach (var autoCommand in _autoCommandFactory.GetSequenceAutomaticCommands(result))
 				{
+					currentCommand = autoCommand;
 					var moreResults = InternalProcess(autoCommand);
 					results.AddRange(moreResults);
 				}
 			}
 			catch (Exception ex)
 			{
-				results.Add(ProcessedCommand.InvalidCommand(ex.Message));
+				results.Add(ProcessedCommand.InvalidCommand($"{currentCommand.MainCommand}: {ex.Message}"));
 			}
 			return results;
 		}
